@@ -476,7 +476,7 @@ e realizzabili).
 > Start/Stop/Continue:
 >
 > - **Start** (iniziare a fare): scrivere una breve nota nella descrizione
->   di ogni Merge Request per spiegare "perché", non solo "cosa" cambia.
+>   di ogni Pull Request per spiegare "perché", non solo "cosa" cambia.
 > - **Stop** (smettere di fare): accettare nuove richieste urgenti a metà
 >   sprint senza discuterne prima con il Product Owner.
 > - **Continue** (continuare a fare): il pairing tra un developer senior e
@@ -855,7 +855,7 @@ Esempi tipici di criteri di Definition of Done (di nuovo, variano da team
 a team e spesso si arricchiscono nel tempo):
 
 - il codice è stato scritto e sottoposto a code review (vedi la sezione
-  su Git e GitLab — spesso corrisponde a una Merge Request approvata);
+  su Git e GitHub — spesso corrisponde a una Pull Request approvata);
 - i test automatici sono stati scritti e passano;
 - la funzionalità è stata verificata manualmente secondo i criteri di
   accettazione della User Story;
@@ -866,7 +866,7 @@ a team e spesso si arricchiscono nel tempo):
 > 📌 **Esempio pratico** — la Definition of Done applicata alla User Story
 > "Come cliente, voglio salvare più indirizzi di spedizione":
 >
-> - [x] Codice scritto e Merge Request approvata da almeno un altro
+> - [x] Codice scritto e Pull Request approvata da almeno un altro
 >   developer
 > - [x] Test automatici scritti e superati con successo
 > - [x] Funzionalità verificata manualmente rispetto ai criteri di
@@ -942,7 +942,7 @@ elenco realistico di attività quotidiane e ricorrenti:
   segnalare a manager o altri reparti quelli che richiedono un intervento
   esterno al team.
 - **Aggiornare e mantenere leggibile la board del team** (fisica o
-  digitale, es. su Azure DevOps o Jira): verificare che lo stato delle
+  digitale, es. su GitHub Projects o Jira): verificare che lo stato delle
   User Story rifletta la realtà, che nulla resti "bloccato" senza che
   nessuno se ne accorga, che la board comunichi a colpo d'occhio lo stato
   reale del lavoro.
@@ -993,7 +993,7 @@ trovare tu.
 Gli esercizi seguenti servono a consolidare quanto visto in questa sezione
 con qualcosa che puoi davvero fare, non solo leggere. Non serve un progetto
 reale per farli: puoi usare scenari immaginari, e diversi da quelli
-già proposti nel piano di studio (sezione 17) — qui l'obiettivo è
+già proposti nel piano di studio (sezione 16) — qui l'obiettivo è
 approfondire con più dettaglio, proprio perché questa è la sezione più
 importante del corso per il tuo ruolo.
 
@@ -1068,7 +1068,7 @@ importante del corso per il tuo ruolo.
 
 - [7. Kanban](../07-kanban/README.md) — un altro framework Agile, spesso complementare o alternativo a Scrum
 - [8. Project Management](../08-project-management/README.md) — come gli strumenti di gestione progetto si integrano con la pratica quotidiana di uno Scrum Master
-- [16. Glossario](../16-glossario/README.md) — per ripassare velocemente i termini di questa sezione
+- [15. Glossario](../15-glossario/README.md) — per ripassare velocemente i termini di questa sezione
 
 ## 📚 Risorse
 

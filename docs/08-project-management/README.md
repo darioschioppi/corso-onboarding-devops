@@ -170,8 +170,8 @@ Un esempio concreto di ciascuna categoria, per un progetto software reale:
 | **Dependency** | "Il rilascio della nuova funzionalità di pagamento dipende dall'approvazione di sicurezza da parte di un team esterno al progetto, previsto per la settimana prossima." |
 
 Nella pratica, un RAID Log è semplicemente una tabella condivisa (spesso in
-un foglio, in una board dedicata, o in strumenti come Azure DevOps, che
-vedremo nella sezione 10), aggiornata regolarmente, con colonne tipo:
+un foglio, in una board dedicata, o in una Issue "fissata" in cima al
+repository GitHub del progetto), aggiornata regolarmente, con colonne tipo:
 descrizione, categoria, responsabile, impatto, stato, data di apertura,
 azione prevista.
 
@@ -451,9 +451,9 @@ Gli strumenti principali di monitoraggio in un contesto Agile:
   progetto (con il burnup vedi anche se il "totale" sale, mentre il
   burndown da solo può confondere un aumento di scope con un rallentamento
   del team).
-- **Dashboard**: pannelli visuali (spesso in Azure DevOps, Jira, o simili)
-  che aggregano lo stato del backlog, delle Merge Request aperte, dei
-  risultati delle pipeline di CI/CD, in un colpo d'occhio.
+- **Dashboard**: pannelli visuali (spesso in GitHub Projects, Jira, o
+  simili) che aggregano lo stato del backlog, delle Pull Request aperte,
+  dei risultati delle pipeline di CI/CD, in un colpo d'occhio.
 
 Un burndown chart "sano" tende ad avvicinarsi a una linea diagonale che
 scende gradualmente verso zero. Una rappresentazione testuale semplificata,
@@ -566,7 +566,7 @@ Due macro-categorie di report, con caratteristiche molto diverse:
 | **Frequenza tipica** | Settimanale o mensile | Quotidiana o per sprint |
 | **Livello di dettaglio** | Alto livello: stato generale, rischi principali, milestone raggiunte o a rischio | Dettagliato: singoli task, blocchi tecnici, chi sta facendo cosa |
 | **Linguaggio** | Orientato al business, senza gergo tecnico | Tecnico, con riferimenti diretti a task, PR, ambienti |
-| **Contenuto tipico** | Avanzamento % rispetto alla roadmap, KPI di sintesi, rischi da RAID Log con impatto su tempi/costi | Burndown/burnup dello sprint, stato delle Merge Request, esito delle pipeline CI/CD |
+| **Contenuto tipico** | Avanzamento % rispetto alla roadmap, KPI di sintesi, rischi da RAID Log con impatto su tempi/costi | Burndown/burnup dello sprint, stato delle Pull Request, esito delle pipeline CI/CD |
 | **Obiettivo** | Dare fiducia e visibilità decisionale a chi non segue i dettagli ogni giorno | Coordinare il lavoro quotidiano e risolvere blocchi in tempo reale |
 
 **Esempio pratico**: la stessa informazione — "il rilascio della nuova
@@ -582,7 +582,7 @@ molto diversi:
   "Il test di sicurezza automatizzato ha rilevato una vulnerabilità nella
   gestione dei token di sessione nel modulo di pagamento (vedi issue
   #128); serve un fix nel branch `fix/token-sicurezza` prima di riaprire
-  la Merge Request e far ripartire la pipeline."
+  la Pull Request e far ripartire la pipeline."
 
 Stessa realtà, due livelli di risoluzione informativa. Un errore comune dei
 Project Manager junior è portare al cliente il livello di dettaglio
@@ -750,7 +750,7 @@ hai già imparato in 8.1-8.9 trova qui il suo "cassetto" ufficiale.
 | **Ambito** (Scope Management) | Definire cosa è (e cosa NON è) incluso nel progetto, ed evitare che cresca senza controllo | 8.14 (WBS e scope creep) |
 | **Tempi** (Schedule Management) | Pianificare attività, dipendenze e durate nel tempo | 8.6 (pianificazione a più livelli), 8.15 (schedule e critical path) |
 | **Costi** (Cost Management) | Stimare, allocare e controllare il budget | 8.16 (EVM) |
-| **Qualità** (Quality Management) | Garantire che il risultato soddisfi gli standard richiesti | sezione 11 (quality gate nella pipeline CI/CD), 8.18 |
+| **Qualità** (Quality Management) | Garantire che il risultato soddisfi gli standard richiesti | sezione 10 (quality gate nella pipeline CI/CD), 8.18 |
 | **Risorse** (Resource Management) | Gestire le persone e gli strumenti necessari al progetto | RACI (8.3), team ShopFacile |
 | **Comunicazione** (Communications Management) | Decidere cosa comunicare, a chi, con quale frequenza e formato | 8.9 (reportistica) |
 | **Rischi** (Risk Management) | Identificare, valutare e mitigare eventi incerti che possono impattare il progetto | 8.2 (RAID Log), 8.5 (rischio) |
@@ -1139,7 +1139,7 @@ suo ruolo di Developer/QA, incarna entrambe le attività — quando definisce
 insieme al team gli standard di test e code review sta facendo Quality
 Assurance; quando verifica concretamente che una funzionalità superi i
 test prima del rilascio sta facendo Quality Control. E i **quality gate**
-della pipeline CI/CD, che hai visto (o vedrai) nella sezione 11, sono
+della pipeline CI/CD, che hai visto (o vedrai) nella sezione 10, sono
 proprio l'automazione del Quality Control: un controllo oggettivo e
 ripetibile, al posto di un giudizio manuale ogni volta.
 
@@ -1337,11 +1337,11 @@ manager, clienti e fornitori:
   realtà di gran parte delle aziende in cui lavorerai.
 
 Nelle prossime sezioni vedrai come molti di questi concetti si traducano in
-strumenti concreti: la cultura DevOps (sezione 9) e la piattaforma Azure
-DevOps (sezione 10) offrono board, dashboard, work item e pipeline che
-mettono in pratica esattamente ciò che hai visto qui — RAID Log, RACI,
-burndown chart e KPI diventano funzionalità cliccabili in uno strumento
-reale.
+strumenti concreti: la cultura DevOps (sezione 9) e piattaforme come
+GitHub (già vista nella sezione 4) e la pipeline di CI/CD (sezione 10)
+offrono board, dashboard, Issue e pipeline che mettono in pratica esattamente
+ciò che hai visto qui — RAID Log, RACI, burndown chart e KPI diventano
+funzionalità cliccabili in uno strumento reale.
 
 ---
 
@@ -1463,12 +1463,12 @@ strumento conta meno del ragionamento che ci metti dietro.
 
 ## 🔗 Collegamenti
 
+- [4. Git e GitHub](../04-git-e-github/README.md) — dove Issue, Pull Request e GitHub Projects diventano gli strumenti concreti per tracciare RAID Log e dashboard
 - [5. Agile](../05-agile/README.md) — i principi che spiegano perché, in un contesto Agile, lo scope è la variabile che si adatta e non il tempo
 - [6. Scrum](../06-scrum/README.md) — i ruoli (Scrum Master, Product Owner) e la Sprint Retrospective che dialogano con Project Manager, sponsor e lessons learned del PMBOK
 - [9. DevOps](../09-devops/README.md) — la cultura e le pratiche che rendono possibile un monitoraggio continuo e KPI come deployment frequency e MTTR
-- [10. Azure DevOps](../10-azure-devops/README.md) — dove RACI, RAID Log, burndown chart e dashboard diventano strumenti concreti da usare ogni giorno
-- [11. CI/CD](../11-ci-cd/README.md) — i quality gate della pipeline come automazione concreta del Quality Control visto in 8.18
-- [16. Glossario](../16-glossario/README.md) — le definizioni sintetiche di RAID Log, RACI, milestone, change request e degli altri termini incontrati in questa sezione
+- [10. CI/CD](../10-ci-cd/README.md) — i quality gate della pipeline come automazione concreta del Quality Control visto in 8.18
+- [15. Glossario](../15-glossario/README.md) — le definizioni sintetiche di RAID Log, RACI, milestone, change request e degli altri termini incontrati in questa sezione
 
 ## 📚 Risorse
 

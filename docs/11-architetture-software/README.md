@@ -1,7 +1,7 @@
-# 12. Architetture software
+# 11. Architetture software
 
 
-> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/12-architetture-software.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/11-architetture-software.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione 2 (Fondamenti di informatica) hai già incontrato i mattoncini
@@ -9,7 +9,7 @@ di base: API, REST, database, container. In questa sezione facciamo un passo
 in più: vediamo come questi mattoncini vengono **combinati insieme** per
 costruire il software di cui il tuo team si occupa — e lo facciamo seguendo
 di nuovo **ShopFacile**, la piattaforma e-commerce già incontrata nelle
-sezioni DevOps, Azure DevOps e CI/CD, con **Marco** nel ruolo di chi discute
+sezioni DevOps e CI/CD, con **Marco** nel ruolo di chi discute
 spesso le scelte infrastrutturali e architetturali del progetto.
 
 Non ti serve saper progettare un'architettura software — è il lavoro degli
@@ -37,7 +37,7 @@ Al termine di questa sezione saprai:
 
 ---
 
-## 12.1 Cos'è un'architettura software
+## 11.1 Cos'è un'architettura software
 
 Quando si costruisce una casa, prima di posare un mattone si disegna una
 **pianta**: dove va la cucina, dove il bagno, come sono collegate le stanze,
@@ -61,7 +61,7 @@ decidere: il monolite e i microservizi.
 
 ---
 
-## 12.2 Architettura Monolitica
+## 11.2 Architettura Monolitica
 
 Un'architettura **monolitica** (dal greco "un unico blocco di pietra") è
 quella in cui **tutto il software è scritto e distribuito come un unico
@@ -148,7 +148,7 @@ alternativa: i microservizi.
 
 ---
 
-## 12.3 Architettura a Microservizi
+## 11.3 Architettura a Microservizi
 
 Un'architettura a **microservizi** divide il software in tanti **piccoli
 servizi indipendenti**, ciascuno responsabile di **una sola area** (es. "il
@@ -224,7 +224,7 @@ graph LR
 **Esempio pratico**: **Marco** e il resto del team decidono di scomporre
 ShopFacile in microservizi: il catalogo prodotti diventa un servizio
 separato, con il suo repository e la sua pipeline di rilascio (quella vista
-nella sezione 11). Se il team vuole aggiungere un nuovo filtro di ricerca
+nella sezione 10). Se il team vuole aggiungere un nuovo filtro di ricerca
 nel catalogo, rilascia **solo quel servizio**: i pagamenti e la gestione
 ordini continuano a funzionare esattamente come prima, senza bisogno di
 essere ritestati o rilasciati di nuovo.
@@ -269,7 +269,7 @@ non un ritardo da recuperare.
 
 ---
 
-## 12.4 Come comunicano i componenti
+## 11.4 Come comunicano i componenti
 
 Nel momento in cui ShopFacile è diventato un insieme di servizi separati
 (catalogo, ordini, pagamenti, magazzino), è emersa una domanda nuova: come
@@ -373,7 +373,7 @@ Esempi di strumenti che sentirai citare per questo scopo: **RabbitMQ**,
 
 ---
 
-## 12.5 Frontend vs Backend
+## 11.5 Frontend vs Backend
 
 Finora abbiamo parlato di come i servizi di ShopFacile comunicano **tra
 loro**. Ma c'è un'altra comunicazione altrettanto importante: quella tra il
@@ -443,7 +443,7 @@ rapporto con il nome più tecnico che porta, il modello client-server.
 
 ---
 
-## 12.6 Client-Server: il concetto base
+## 11.6 Client-Server: il concetto base
 
 Hai già incontrato questo concetto nella sezione 2 parlando di HTTP: il
 modello **client-server** è l'idea di base secondo cui esiste un **client**
@@ -476,7 +476,7 @@ rispondere a questa domanda è l'architettura a 3 livelli.
 
 ---
 
-## 12.7 Architettura a 3 livelli
+## 11.7 Architettura a 3 livelli
 
 Un modo molto comune, semplice e diffuso di organizzare un'applicazione,
 soprattutto nei sistemi gestionali "classici", è l'**architettura a 3
@@ -550,7 +550,7 @@ che abbiamo dato per scontato finora: il serverless.
 
 ---
 
-## 12.8 Un accenno al Serverless
+## 11.8 Un accenno al Serverless
 
 Finora abbiamo parlato di software che gira su server (fisici, virtuali, o
 container) che devono restare **sempre attivi**, pronti a rispondere in
@@ -584,7 +584,7 @@ lunghe, il modello serverless può introdurre piccoli ritardi ("tempo di
 avvio a freddo") o limiti di durata.
 
 Esempi di servizi serverless che sentirai citare: **Azure Functions**, **AWS
-Lambda**. Ne riparleremo con più dettaglio nella sezione 13 (Cloud).
+Lambda**. Ne riparleremo con più dettaglio nella sezione 12 (Cloud).
 
 Con questo abbiamo attraversato tutte le scelte architetturali principali
 che il team di ShopFacile ha dovuto affrontare, da "un blocco unico o tanti
@@ -593,7 +593,7 @@ bisogno?". Prima di passare al Cloud, fermiamoci un momento a riepilogare.
 
 ---
 
-## 12.9 Riepilogo: cosa ti serve ricordare
+## 11.9 Riepilogo: cosa ti serve ricordare
 
 Non devi memorizzare ogni dettaglio di questa sezione. Ti basta portarti via
 questi concetti chiave, che ti aiuteranno a capire meglio le conversazioni
@@ -678,7 +678,7 @@ conversazione e fare le domande giuste.
    quali pezzi lo compongono.
 
 5. **Compila la tabella di confronto con un esempio reale.** Riprendi la
-   tabella "Monolite vs Microservizi" della sezione 12.3 e, per ogni riga,
+   tabella "Monolite vs Microservizi" della sezione 11.3 e, per ogni riga,
    scrivi a fianco un esempio concreto (reale o immaginario) legato al
    contesto del tuo progetto.
    ✅ **Come verificare**: condividi la tabella compilata con la tua collega
@@ -698,8 +698,8 @@ conversazione e fare le domande giuste.
 
 ## 🔗 Collegamenti
 
-- [13. Cloud](../13-cloud/README.md) — dove vedremo come queste architetture vengono effettivamente eseguite su infrastrutture cloud come Azure o AWS
-- [14. Sicurezza](../14-sicurezza/README.md) — dove vedremo come proteggere questi componenti e le comunicazioni tra di essi
+- [12. Cloud](../12-cloud/README.md) — dove vedremo come queste architetture vengono effettivamente eseguite su infrastrutture cloud come Azure o AWS
+- [13. Sicurezza](../13-sicurezza/README.md) — dove vedremo come proteggere questi componenti e le comunicazioni tra di essi
 
 ## 📚 Risorse
 

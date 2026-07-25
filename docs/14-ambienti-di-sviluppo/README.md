@@ -1,10 +1,10 @@
-# 15. Ambienti di sviluppo
+# 14. Ambienti di sviluppo
 
 
-> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/15-ambienti-di-sviluppo.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/14-ambienti-di-sviluppo.pdf)** — utile per la stampa o la lettura offline.
 
 
-Nella sezione [11. CI/CD](../11-ci-cd/README.md) hai già incontrato il
+Nella sezione [10. CI/CD](../10-ci-cd/README.md) hai già incontrato il
 concetto di **ambiente**: sai che il codice non passa direttamente dal
 computer di uno sviluppatore agli utenti finali, ma attraversa diverse
 "tappe" (Dev, Test/QA, Staging, Produzione) prima di arrivare al
@@ -34,7 +34,7 @@ Alla fine di questa sezione saprai:
 
 ---
 
-## 15.1 Perché servire diversi ambienti: la "prova costume"
+## 14.1 Perché servire diversi ambienti: la "prova costume"
 
 Immagina uno spettacolo teatrale che debutta davanti al pubblico pagante
 la prima serata, senza mai aver fatto una prova. Nessun regista
@@ -78,7 +78,7 @@ flowchart LR
 
 ---
 
-## 15.2 Ambiente di Sviluppo (Dev)
+## 14.2 Ambiente di Sviluppo (Dev)
 
 L'ambiente di **Sviluppo** è dove nasce il codice. Ogni sviluppatore
 scrive e prova le proprie modifiche, quasi sempre in due modalità
@@ -111,11 +111,11 @@ un problema per nessuno fuori dal team di sviluppo.
 > stessa modifica viene automaticamente distribuita anche nell'**ambiente
 > Dev condiviso** in cloud, dove i colleghi possono verificare che
 > funzioni insieme al resto dell'applicazione, ancora prima che Marco
-> apra la Merge Request.
+> apra la Pull Request.
 
 ---
 
-## 15.3 Ambiente di Test / QA
+## 14.3 Ambiente di Test / QA
 
 Una volta che la correzione di Marco supera i controlli automatici della
 pipeline (build, unit test, analisi di qualità — visti nella sezione
@@ -152,7 +152,7 @@ lontanamente agli utenti reali. Se qualcosa non funziona, il codice
 
 ---
 
-## 15.4 Ambiente di Staging (Pre-produzione)
+## 14.4 Ambiente di Staging (Pre-produzione)
 
 Superato anche il secondo giro di test, la correzione del carrello è
 pronta per un controllo ancora più realistico, in un ambiente che assomiglia
@@ -200,7 +200,7 @@ diversi.
 
 ---
 
-## 15.5 Ambiente di Produzione
+## 14.5 Ambiente di Produzione
 
 Dopo Dev, Test/QA e Staging, resta un'ultima tappa, quella in cui il bug
 del carrello incontra finalmente i clienti veri di ShopFacile. La
@@ -253,7 +253,7 @@ Non è più "lavoro in corso": è il prodotto finito, in uso.
 
 ---
 
-## 15.6 I quattro ambienti, fase per fase
+## 14.6 I quattro ambienti, fase per fase
 
 Il viaggio della correzione al carrello, visto passo per passo nel box
 precedente, si può anche osservare "da fermo", guardando in un unico
@@ -300,7 +300,7 @@ flowchart TD
 
 ---
 
-## 15.7 "Funziona sul mio computer": perché gli ambienti devono somigliarsi
+## 14.7 "Funziona sul mio computer": perché gli ambienti devono somigliarsi
 
 Il percorso della correzione al carrello ha funzionato senza sorprese
 proprio perché Dev, Test/QA, Staging e Produzione si somigliano il più
@@ -345,7 +345,7 @@ tenuto quanto più possibile identico alla Produzione.
 
 ---
 
-## 15.8 Dati di test vs dati reali
+## 14.8 Dati di test vs dati reali
 
 Sapere che l'artifact è sempre lo stesso risolve il problema del codice,
 ma resta un'altra domanda: se il codice è identico, i dati che usa devono
@@ -370,13 +370,13 @@ Per questo si usano invece:
   specifica.
 
 Questo tema è collegato a doppio filo con quanto visto nella sezione
-[14. Sicurezza](../14-sicurezza/README.md): la protezione dei dati
+[13. Sicurezza](../13-sicurezza/README.md): la protezione dei dati
 personali non è solo una questione di "chi può leggerli in produzione",
 ma anche di "dove questi dati non devono mai nemmeno arrivare".
 
 ---
 
-## 15.9 Configurazioni per ambiente
+## 14.9 Configurazioni per ambiente
 
 Dati diversi non bastano da soli: se lo stesso artifact deve girare su
 dati e infrastrutture diverse in ogni ambiente, deve anche sapere in
@@ -425,7 +425,7 @@ tema della sicurezza approfondito nella sezione dedicata.
 
 ---
 
-## 15.10 Chi ha accesso a quali ambienti
+## 14.10 Chi ha accesso a quali ambienti
 
 Hai visto chi lavora in ciascun ambiente lungo il percorso del bug del
 carrello: Marco in Dev, Giulia in Test/QA, Sara e Ahmed in Staging, un
@@ -459,7 +459,7 @@ del cast può girare liberamente per il teatro.
 
 ---
 
-## 15.11 Riepilogo
+## 14.11 Riepilogo
 
 Il bug del carrello di ShopFacile ci ha accompagnato da Marco in Dev fino
 al rilascio in Produzione: riassumiamo i concetti principali visti lungo
@@ -546,14 +546,13 @@ incontrato nella sezione CI/CD:
 
 ## 🔗 Collegamenti
 
-- [11. CI/CD](../11-ci-cd/README.md) — come la pipeline promuove il codice tra questi stessi ambienti
-- [16. Glossario](../16-glossario/README.md) — definizioni rapide di Dev, Staging, Produzione e termini correlati
+- [10. CI/CD](../10-ci-cd/README.md) — come la pipeline promuove il codice tra questi stessi ambienti
+- [15. Glossario](../15-glossario/README.md) — definizioni rapide di Dev, Staging, Produzione e termini correlati
 
 ## 📚 Risorse
 
-- [Microsoft Learn — Panoramica sugli ambienti di rilascio](https://learn.microsoft.com/it-it/azure/devops/pipelines/process/environments)
+- [GitHub Docs — Usare gli ambienti per il deployment](https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment)
 - [Atlassian — What is a staging environment](https://www.atlassian.com/continuous-delivery/software-testing/what-is-staging-environment)
 - [Martin Fowler — Bliki: DeploymentEnvironment](https://martinfowler.com/bliki/DeploymentEnvironment.html)
 - [OWASP — Data Protection e ambienti non di produzione](https://owasp.org/www-project-top-ten/)
-- [GitLab Docs — Manage deployment environments](https://docs.gitlab.com/ci/environments/)
 - [12 Factor App — Config](https://12factor.net/config)

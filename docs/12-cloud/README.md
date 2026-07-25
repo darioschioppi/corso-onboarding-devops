@@ -1,7 +1,7 @@
-# 13. Cloud
+# 12. Cloud
 
 
-> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/13-cloud.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/12-cloud.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione precedente hai visto come è "fatto" un software: monolite o
@@ -27,7 +27,7 @@ Al termine di questa sezione saprai:
 
 ---
 
-## 13.1 Cos'è il cloud computing
+## 12.1 Cos'è il cloud computing
 
 Immagina di dover organizzare una cena per 50 persone. Hai due opzioni:
 
@@ -80,7 +80,7 @@ Questo cambia radicalmente il modo di lavorare:
 
 ---
 
-## 13.2 I tre modelli principali: IaaS, PaaS, SaaS
+## 12.2 I tre modelli principali: IaaS, PaaS, SaaS
 
 Migrare ShopFacile sul cloud non è stata una scelta "tutto o niente": Marco
 ha dovuto decidere, pezzo per pezzo dell'infrastruttura, **quanta
@@ -93,7 +93,7 @@ prenotare una stanza d'hotel con servizio completo.
 
 Nel mondo cloud questi tre livelli si chiamano **IaaS**, **PaaS** e **SaaS**.
 
-### 13.2.1 IaaS — Infrastructure as Service
+### 12.2.1 IaaS — Infrastructure as Service
 
 **IaaS** significa "infrastruttura come servizio". Il provider ti affitta
 l'**infrastruttura grezza**: server virtuali, spazio di archiviazione (dischi
@@ -126,7 +126,7 @@ riscriverlo.
 > (CPU, RAM) dal pannello di controllo del provider, invece di aspettare
 > settimane per un nuovo server fisico.
 
-### 13.2.2 PaaS — Platform as Service
+### 12.2.2 PaaS — Platform as Service
 
 Se con la fattura Marco ha scelto di portarsi dietro anche il sistema
 operativo da gestire, per il catalogo prodotti di ShopFacile — la parte
@@ -157,7 +157,7 @@ server e sistemi operativi.
 > **Esempio pratico**: Ahmed finisce di scrivere una nuova funzionalità per
 > il catalogo prodotti di ShopFacile (i filtri di ricerca per categoria). Con
 > un servizio PaaS, pubblica il codice (spesso con un comando o con la
-> pipeline vista nella sezione 11) e in pochi minuti la nuova versione è
+> pipeline vista nella sezione 10) e in pochi minuti la nuova versione è
 > online, raggiungibile via browser, senza che nessuno debba configurare un
 > sistema operativo, aprire porte di rete o installare un runtime a mano. In
 > parallelo, i dati del catalogo vivono in un database gestito: nessuno del
@@ -166,7 +166,7 @@ server e sistemi operativi.
 > automatico, e se qualcosa va storto è possibile ripristinare un backup
 > recente con pochi clic.
 
-### 13.2.3 SaaS — Software as Service
+### 12.2.3 SaaS — Software as Service
 
 Con IaaS e PaaS, il team di ShopFacile ha comunque scritto e distribuito
 codice proprio. C'è però un terzo livello, ancora più delegato, che il team
@@ -184,11 +184,11 @@ dove e come girano i server dietro.
 
 Esempi concreti che usi già ogni giorno: **Gmail** o **Outlook** (posta
 elettronica), **Office 365** o **Google Workspace** (documenti e foglio di
-calcolo), **Salesforce** (gestione clienti), la stessa **Azure DevOps** che
-hai visto nella sezione 10, o **Slack**/**Teams** per la comunicazione. In
-tutti questi casi apri un browser, accedi con le tue credenziali, e il
-software è già lì, funzionante, aggiornato, senza che tu debba installare o
-gestire nulla.
+calcolo), **Salesforce** (gestione clienti), lo stesso **GitHub** che usi
+per il codice e le pipeline del progetto, o **Slack**/**Teams** per la
+comunicazione. In tutti questi casi apri un browser, accedi con le tue
+credenziali, e il software è già lì, funzionante, aggiornato, senza che tu
+debba installare o gestire nulla.
 
 Chi usa SaaS: chiunque abbia bisogno di una funzionalità (email, CRM,
 gestione progetti) senza voler sviluppare o mantenere il software che la
@@ -196,7 +196,7 @@ fornisce.
 
 > **Esempio pratico**: il team di ShopFacile ha bisogno di gestire il
 > backlog, le pipeline e i repository del progetto. Nessuno "installa"
-> Azure DevOps su un server: Sara e Luca si registrano, aprono il browser,
+> GitHub su un server: Sara e Luca si registrano, aprono il browser,
 > accedono con le proprie credenziali e il servizio è già lì, pronto all'uso
 > e aggiornato dal provider senza che il team debba fare nulla. Lo stesso
 > vale per la posta elettronica aziendale o per lo strumento di
@@ -206,7 +206,7 @@ fornisce.
 
 ---
 
-## 13.3 Confronto: chi gestisce cosa
+## 12.3 Confronto: chi gestisce cosa
 
 Ora che Marco ha usato tutti e tre i livelli su pezzi diversi
 dell'infrastruttura di ShopFacile, conviene vedere in un colpo d'occhio come
@@ -272,15 +272,15 @@ flowchart LR
 
 ---
 
-## 13.4 Azure: panoramica generale
+## 12.4 Azure: panoramica generale
 
 Visti i tre modelli in astratto, è utile sapere anche su quale provider
 concreto ShopFacile li ha effettivamente implementati. **Microsoft Azure** è
 la piattaforma cloud di Microsoft, ed è quella che incontrerai più spesso in
-questo corso e nel lavoro quotidiano, dato che il team usa già Azure DevOps
-(sezione 10) e vi ha migrato la propria infrastruttura. Azure offre
-centinaia di servizi; qui vediamo solo i concetti principali, giusto per
-riconoscerli quando li sentirai nominare.
+questo corso e nel lavoro quotidiano, dato che il team vi ha migrato la
+propria infrastruttura. Azure offre centinaia di servizi; qui vediamo solo
+i concetti principali, giusto per riconoscerli quando li sentirai
+nominare.
 
 - **Macchine virtuali (Virtual Machines)** — il servizio IaaS di base: un
   server virtuale su cui installare qualsiasi sistema operativo e software,
@@ -305,7 +305,7 @@ Service" o "i dati sono su Blob Storage" saprai di cosa si sta parlando.
 
 ---
 
-## 13.5 AWS: la principale alternativa
+## 12.5 AWS: la principale alternativa
 
 ShopFacile ha scelto Azure, ma non è l'unico provider possibile: se un giorno
 il progetto dovesse integrarsi con un partner che usa un altro fornitore, o
@@ -332,7 +332,7 @@ semplice.
 
 ---
 
-## 13.6 Scalabilità: verticale vs orizzontale
+## 12.6 Scalabilità: verticale vs orizzontale
 
 Che si scelga Azure o AWS, il motivo per cui Marco ha spinto per il cloud fin
 dall'inizio ha un nome preciso: la scalabilità. Uno dei grandi vantaggi del
@@ -373,7 +373,7 @@ comprare un nuovo server richiede settimane.
 
 ---
 
-## 13.7 Pay-as-you-go: paghi solo quello che usi
+## 12.7 Pay-as-you-go: paghi solo quello che usi
 
 Poter scalare su e giù in pochi minuti sarebbe un vantaggio a metà se si
 continuasse comunque a pagare come prima, a prescindere dall'uso: il pezzo
@@ -399,7 +399,7 @@ anni, usato o no).
 
 ---
 
-## 13.8 Regioni, data center e alta disponibilità
+## 12.8 Regioni, data center e alta disponibilità
 
 Pagare solo per quello che si usa presuppone che ci sia sempre qualcosa da
 usare: se ShopFacile fosse ospitata in un solo data center e quello avesse un
@@ -434,7 +434,7 @@ Con questo, il percorso di ShopFacile dal server in ufficio a un'infrastruttura
 cloud distribuita su più data center è completo: riassumiamo i concetti
 principali visti lungo la strada.
 
-## 13.9 Riepilogo: cosa ti serve ricordare
+## 12.9 Riepilogo: cosa ti serve ricordare
 
 - **Cloud computing**: usare risorse informatiche (server, storage, rete) di
   qualcun altro via internet, invece di possedere e gestire hardware
@@ -485,17 +485,17 @@ principali visti lungo la strada.
    hai classificato correttamente almeno 3 servizi su 4.
 
 2. **Costruisci la tua "torta delle responsabilità".** Senza guardare la
-   tabella della sezione 13.3, ridisegna a mano su un foglio le righe
+   tabella della sezione 12.3, ridisegna a mano su un foglio le righe
    Applicazioni/Dati/Runtime/Sistema operativo/Server e prova a compilare le
    colonne On-Premise, IaaS, PaaS, SaaS indicando chi gestisce cosa.
    ✅ **Come verificare**: confronta il tuo schema con la tabella originale
-   nella sezione 13.3; se hai più di due celle diverse, rileggi la sezione
+   nella sezione 12.3; se hai più di due celle diverse, rileggi la sezione
    13.2 prima di andare avanti.
 
 3. **Traduci Azure in AWS (e viceversa).** Prendi 4 servizi Azure a caso tra
-   quelli citati nella sezione 13.4 (es. Virtual Machines, App Service, Blob
+   quelli citati nella sezione 12.4 (es. Virtual Machines, App Service, Blob
    Storage, AKS) e scrivi a memoria il loro equivalente AWS, senza guardare
-   la tabella della sezione 13.5. Poi controlla.
+   la tabella della sezione 12.5. Poi controlla.
    ✅ **Come verificare**: hai indovinato almeno 3 corrispondenze su 4 senza
    guardare la tabella.
 
@@ -514,7 +514,7 @@ principali visti lungo la strada.
    ore su 24 per un mese, e quanto costerebbe invece tenerla attiva solo 8
    ore al giorno nei giorni lavorativi. Confronta i due numeri.
    ✅ **Come verificare**: il secondo scenario deve costare meno di un terzo
-   del primo; se il conto non torna, rileggi la sezione 13.7 sul concetto di
+   del primo; se il conto non torna, rileggi la sezione 12.7 sul concetto di
    pagamento a consumo.
 
 6. **Individua le regioni del progetto reale.** Chiedi a un collega
@@ -530,8 +530,8 @@ principali visti lungo la strada.
 
 ## 🔗 Collegamenti
 
-- [14. Sicurezza](../14-sicurezza/README.md) — dove vedremo come proteggere i dati e i sistemi che girano su queste infrastrutture cloud
-- [15. Ambienti di sviluppo](../15-ambienti-di-sviluppo/README.md) — dove vedremo come sviluppo, test e produzione si organizzano concretamente, spesso proprio su infrastrutture cloud come quelle viste qui
+- [13. Sicurezza](../13-sicurezza/README.md) — dove vedremo come proteggere i dati e i sistemi che girano su queste infrastrutture cloud
+- [14. Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) — dove vedremo come sviluppo, test e produzione si organizzano concretamente, spesso proprio su infrastrutture cloud come quelle viste qui
 
 ## 📚 Risorse
 

@@ -1,7 +1,7 @@
-# 4. Git e GitLab
+# 4. Git e GitHub
 
 
-> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/04-git-e-gitlab.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/04-git-e-github.pdf)** — utile per la stampa o la lettura offline.
 
 
 Se hai mai lavorato su un documento Word con altre persone, probabilmente
@@ -9,13 +9,13 @@ conosci già l'incubo dei file chiamati `Progetto_finale_v2_DEFINITIVO_uso_quest
 Qualcuno ha modificato una frase, qualcun altro ha cancellato per errore
 un paragrafo importante, e nessuno ricorda più qual è la versione "buona".
 
-Git e GitLab esistono per risolvere esattamente questo problema, ma applicato
+Git e GitHub esistono per risolvere esattamente questo problema, ma applicato
 al codice sorgente di un software: migliaia di file di testo che decine di
 persone modificano ogni giorno, in parallelo, senza pestarsi i piedi a
 vicenda.
 
 Questa è probabilmente la sezione più "pratica" del corso: gli strumenti che
-imparerai qui li vedrai citati in ogni standup, in ogni merge request, in
+imparerai qui li vedrai citati in ogni standup, in ogni pull request, in
 ogni pipeline di CI/CD. Non serve che tu diventi uno sviluppatore, ma è
 fondamentale che tu capisca il vocabolario e la logica di fondo, perché è il
 linguaggio con cui il tuo team lavora ogni giorno.
@@ -24,10 +24,10 @@ linguaggio con cui il tuo team lavora ogni giorno.
 
 Alla fine di questa sezione saprai:
 
-- spiegare la differenza tra Git e GitLab;
+- spiegare la differenza tra Git e GitHub;
 - capire cosa sono repository, commit, branch e merge;
-- capire come funziona una Merge Request e perché è il cuore della
-  collaborazione su GitLab;
+- capire come funziona una Pull Request e perché è il cuore della
+  collaborazione su GitHub;
 - distinguere Issue, Release e Tag;
 - conoscere due modelli di lavoro (workflow) molto diffusi: **Git Flow** e
   **Trunk Based Development**, e capire quando si usa l'uno o l'altro.
@@ -63,67 +63,66 @@ se quello andava giù, si perdeva tutto.
 
 ```mermaid
 flowchart LR
-    A[Computer di Marco] <-->|sincronizzazione| S[(Repository di ShopFacile<br/>su GitLab)]
+    A[Computer di Marco] <-->|sincronizzazione| S[(Repository di ShopFacile<br/>su GitHub)]
     B[Computer di Giulia] <-->|sincronizzazione| S
     C[Computer di Ahmed] <-->|sincronizzazione| S
 ```
 
 Git funziona da **riga di comando** (il terminale), ma esistono anche
-interfacce grafiche (come GitKraken, o l'integrazione diretta in Visual
-Studio Code) che rendono tutto più visuale. In questo corso vedrai comandi
-da terminale a scopo illustrativo: non devi memorizzarli a memoria,
-l'obiettivo è che tu capisca **la logica**.
+interfacce grafiche (come GitHub Desktop, GitKraken, o l'integrazione
+diretta in Visual Studio Code) che rendono tutto più visuale. In questo
+corso vedrai comandi da terminale a scopo illustrativo: non devi
+memorizzarli a memoria, l'obiettivo è che tu capisca **la logica**.
 
 ---
 
-## 4.2 Cos'è GitLab (e non è la stessa cosa di Git!)
+## 4.2 Cos'è GitHub (e non è la stessa cosa di Git!)
 
-Nel diagramma di prima abbiamo scritto "GitLab" sopra il server remoto un po' di sfuggita: è il momento di chiarire di cosa si tratta davvero. Uno degli equivoci più comuni per chi inizia, infatti, è pensare che Git e GitLab
+Nel diagramma di prima abbiamo scritto "GitHub" sopra il server remoto un po' di sfuggita: è il momento di chiarire di cosa si tratta davvero. Uno degli equivoci più comuni per chi inizia, infatti, è pensare che Git e GitHub
 siano la stessa cosa. Non lo sono.
 
-| | Git | GitLab |
+| | Git | GitHub |
 |---|---|---|
 | **Cos'è** | Uno strumento (software) | Una piattaforma online (un servizio) |
-| **Dove vive** | Sul tuo computer | Su internet (cloud), o su un server aziendale (self-hosted) |
+| **Dove vive** | Sul tuo computer | Su internet (cloud), o su un server aziendale (GitHub Enterprise) |
 | **Cosa fa** | Gestisce la cronologia delle modifiche | Ospita i repository online e aggiunge funzionalità di collaborazione |
 | **Necessario?** | Sì, è il motore | No, è un servizio che *usa* Git |
 
 > 💡 **Analogia**: Git è come il motore di un'auto: fa il lavoro tecnico di
-> spostare la macchina. GitLab è come una concessionaria con parcheggio,
+> spostare la macchina. GitHub è come una concessionaria con parcheggio,
 > assistenza e servizi extra: ospita l'auto, la rende visibile ad altri,
 > offre strumenti di manutenzione condivisa. Potresti guidare l'auto (usare
-> Git) senza mai passare dalla concessionaria (senza mai usare GitLab) — ma
+> Git) senza mai passare dalla concessionaria (senza mai usare GitHub) — ma
 > se lavori in team, avere un posto centrale dove parcheggiare e collaborare
 > è estremamente comodo.
 
-GitLab, in concreto, offre:
+GitHub, in concreto, offre:
 
 - uno spazio online dove "ospitare" i repository (i progetti);
-- strumenti di collaborazione come **Merge Request**, **Issue**, revisioni
+- strumenti di collaborazione come **Pull Request**, **Issue**, revisioni
   del codice, commenti;
-- automazioni (**GitLab CI/CD**, che vedremo nella sezione CI/CD);
+- automazioni (**GitHub Actions**, che vedremo nella sezione CI/CD);
 - gestione di permessi, team, sicurezza.
 
-GitLab **non è l'unica piattaforma** di questo tipo. L'alternativa più
-diffusa in contesti aziendali come il tuo è:
-
-- **Azure DevOps Repos**: la componente di versionamento codice della
-  suite Azure DevOps di Microsoft (che vedremo nella sezione 10) — in
-  alcuni contesti aziendali è la piattaforma principale.
+GitHub **non è l'unica piattaforma** di questo tipo: esistono alternative
+diffuse con funzionalità molto simili, a volte con nomi leggermente
+diversi per gli stessi concetti — ma la logica di fondo resta sempre
+identica: Git sotto il cofano, una piattaforma di collaborazione sopra.
 
 Il concetto di fondo è sempre lo stesso (Git sotto il cofano), cambia la
-piattaforma "concessionaria" sopra. In questo corso useremo GitLab come
-riferimento perché è molto diffusa sia in versione cloud sia
-**self-hosted** (installata sui server dell'azienda, ad esempio su un
-indirizzo come `gitlab.tuaazienda.it`), ed è una scelta molto comune nelle
-realtà aziendali che vogliono mantenere il controllo completo della propria
-infrastruttura.
+piattaforma "concessionaria" sopra. In questo corso useremo GitHub come
+riferimento perché è la piattaforma usata realmente dal team, sia in
+versione cloud (`github.com`) sia, in alcuni contesti aziendali più grandi,
+in versione **self-hosted** con **GitHub Enterprise Server** (installata
+sui server dell'azienda, ad esempio su un indirizzo come
+`github.tuaazienda.it`), quando l'azienda vuole mantenere il controllo
+completo della propria infrastruttura.
 
 ---
 
 ## 4.3 Repository: il "progetto" versionato
 
-GitLab ospita i progetti, dicevamo: ma cosa contiene esattamente uno di quei progetti da un punto di vista tecnico? La risposta è il repository. Un **repository** (spesso abbreviato "repo") è semplicemente **la cartella
+GitHub ospita i progetti, dicevamo: ma cosa contiene esattamente uno di quei progetti da un punto di vista tecnico? La risposta è il repository. Un **repository** (spesso abbreviato "repo") è semplicemente **la cartella
 di un progetto**, ma tracciata da Git. Contiene tutti i file del progetto
 (codice, documentazione, configurazioni) più una cartella speciale
 invisibile chiamata `.git`, dove Git conserva tutta la cronologia delle
@@ -135,7 +134,7 @@ modifiche.
 
 Un repository può essere:
 - **locale**: la copia che vive sul tuo computer;
-- **remoto**: la copia ospitata online (su GitLab, cloud o self-hosted),
+- **remoto**: la copia ospitata online (su GitHub, cloud o self-hosted),
   che funge da punto di incontro condiviso tra tutti i membri del team.
 
 ```bash
@@ -143,22 +142,22 @@ Un repository può essere:
 git init
 
 # Oppure "clonare" (scaricare) un repository che esiste già online
-git clone https://gitlab.com/nome-organizzazione/nome-progetto.git
+git clone https://github.com/nome-organizzazione/nome-progetto.git
 ```
 
 Dopo un `git clone`, avrai sul tuo computer una copia completa del
 progetto, compresa tutta la sua storia — pronta per essere modificata.
 
 > 🧪 **Esempio pratico**: immagina che Marco ti mandi il link al
-> repository GitLab del progetto, ad esempio
-> `https://gitlab.com/shopfacile/backend-api` (o, se l'azienda usa
+> repository GitHub del progetto, ad esempio
+> `https://github.com/shopfacile/backend-api` (o, se l'azienda usa
 > un'istanza self-hosted, qualcosa come
-> `https://gitlab.tuaazienda.it/shopfacile/backend-api`). Aprendolo nel
+> `https://github.tuaazienda.it/shopfacile/backend-api`). Aprendolo nel
 > browser vedrai: una lista di cartelle e file (il codice), un pulsante
-> blu "Clone" per clonarlo, il numero di branch attivi, e una voce
+> verde "Code" per clonarlo, il numero di branch attivi, e una voce
 > "Commits" con la cronologia di tutte le modifiche fatte finora. Se lo
 > clonassi sul tuo computer con
-> `git clone https://gitlab.com/shopfacile/backend-api.git`, ti
+> `git clone https://github.com/shopfacile/backend-api.git`, ti
 > ritroveresti in una cartella `backend-api` con dentro tutti quei file,
 > pronti per essere letti — anche se non li modifichi mai.
 
@@ -191,7 +190,7 @@ git commit -m "Aggiunge la validazione del campo email nel form di registrazione
 ```
 
 Alcune buone pratiche sui messaggi di commit (le vedrai spesso menzionate
-nelle Merge Request del team):
+nelle Pull Request del team):
 
 - il messaggio deve spiegare **il perché**, non solo il "cosa" (il "cosa"
   si vede già dal codice cambiato);
@@ -250,7 +249,7 @@ git checkout -b feature/login-utente
 ```
 
 Convenzioni di naming comuni per i branch (utili da riconoscere quando le
-vedi nelle Merge Request):
+vedi nelle Pull Request):
 
 - `feature/...` → nuova funzionalità (es. `feature/login-utente`)
 - `fix/...` o `bugfix/...` → correzione di un bug
@@ -345,18 +344,17 @@ lavoro fatto nella linea principale.
 
 ---
 
-## 4.7 Merge Request: il cuore della collaborazione su GitLab
+## 4.7 Pull Request: il cuore della collaborazione su GitHub
 
-Abbiamo visto come funziona un merge da riga di comando, ma nella pratica quotidiana su GitLab il merge non viene quasi mai lanciato "a freddo": passa prima per uno strumento che formalizza la richiesta e apre lo spazio per la revisione, la Merge Request. Una **Merge Request** (spesso abbreviata **MR**) è una **richiesta
+Abbiamo visto come funziona un merge da riga di comando, ma nella pratica quotidiana su GitHub il merge non viene quasi mai lanciato "a freddo": passa prima per uno strumento che formalizza la richiesta e apre lo spazio per la revisione, la Pull Request. Una **Pull Request** (spesso abbreviata **PR**) è una **richiesta
 formale** di unire le modifiche di un branch dentro un altro branch (di
 solito dentro `main`), passando prima per una **revisione** da parte di
 altri membri del team.
 
 Questo è probabilmente il concetto più importante di tutta la sezione,
 perché è il meccanismo attraverso cui lavora quasi ogni team che usa
-GitLab. (Su Azure DevOps, che vedremo nella sezione 10, lo stesso identico
-concetto si chiama "Pull Request" — non farti confondere dal nome
-diverso: la logica è la stessa.)
+GitHub. (Su altre piattaforme lo stesso identico concetto può avere un
+nome diverso — non farti confondere dal nome: la logica è la stessa.)
 
 > 💡 **Analogia**: è come sottoporre una bozza di documento a un collega
 > prima di renderla definitiva. Non modifichi direttamente il documento
@@ -364,25 +362,25 @@ diverso: la logica è la stessa.)
 > commenti, magari chiede correzioni, e solo quando tutti sono d'accordo la
 > bozza diventa la versione ufficiale.
 
-Il flusso tipico di una Merge Request:
+Il flusso tipico di una Pull Request:
 
 1. Uno sviluppatore (ad esempio Marco) crea un branch e ci lavora (con i suoi commit).
-2. Quando il lavoro è pronto, apre una **Merge Request** su GitLab,
+2. Quando il lavoro è pronto, apre una **Pull Request** su GitHub,
    proponendo di unire quel branch dentro `main` (o dentro un altro branch
    di destinazione).
 3. Altri membri del team fanno la **code review**: leggono le modifiche,
    lasciano commenti, chiedono chiarimenti o correzioni.
 4. Spesso, in parallelo, delle **pipeline automatiche** (CI/CD, che
-   vedremo nella sezione 11) eseguono automaticamente test e controlli di
-   qualità sul codice della MR.
+   vedremo nella sezione 10) eseguono automaticamente test e controlli di
+   qualità sul codice della PR.
 5. Quando tutto è approvato ("approved") e i controlli automatici sono
-   passati (i cosiddetti "check verdi"), la Merge Request viene unita
-   (merge) — spesso con un semplice click sul pulsante "Merge" su GitLab.
+   passati (i cosiddetti "check verdi"), la Pull Request viene unita
+   (merge) — spesso con un semplice click sul pulsante "Merge" su GitHub.
 
 ```mermaid
 flowchart LR
     A[Sviluppatore crea branch] --> B[Lavora e crea commit]
-    B --> C[Apre una Merge Request]
+    B --> C[Apre una Pull Request]
     C --> D{Code review<br/>del team}
     D -- richieste modifiche --> B
     D -- approvata --> E{Check automatici<br/>CI/CD passati?}
@@ -390,26 +388,27 @@ flowchart LR
     E -- sì --> F[Merge dentro main]
 ```
 
-Perché le Merge Request sono così importanti per un Project Manager?
+Perché le Pull Request sono così importanti per un Project Manager?
 Perché sono il punto in cui puoi **misurare visivamente lo stato di
-avanzamento** del lavoro: quante MR sono aperte, quante sono in attesa di
+avanzamento** del lavoro: quante PR sono aperte, quante sono in attesa di
 revisione, quanto tempo restano aperte prima di essere unite (un indicatore
 utile di quanto è fluido il processo del team).
 
 > 🧪 **Esempio pratico**: Marco ha finito la feature login su ShopFacile. I
-> passaggi concreti su GitLab sarebbero:
+> passaggi concreti su GitHub sarebbero:
 > 1. Push del branch: `git push origin feature/login-utente`.
-> 2. Su GitLab compare un banner "Create merge request": clicca, scrivi
+> 2. Su GitHub compare un banner "Compare & pull request": clicca, scrivi
 >    un titolo (es. "Aggiunge login utente con validazione email") e una
 >    descrizione di cosa cambia e perché.
-> 3. Assegna Giulia come reviewer/approver.
+> 3. Assegna Giulia come reviewer.
 > 4. Giulia lascia commenti tipo "Perché qui usiamo `==` invece di
 >    `===`?" — Marco risponde o corregge con un nuovo commit sullo
->    stesso branch, che aggiorna automaticamente la MR.
+>    stesso branch, che aggiorna automaticamente la PR.
 > 5. Quando i commenti sono risolti e i check automatici (CI/CD) sono
->    verdi, Giulia clicca "Approve", poi qualcuno clicca "Merge".
+>    verdi, Giulia clicca "Approve", poi qualcuno clicca "Merge pull
+>    request".
 >
-> Da Project Manager, vedresti questa MR nella sezione "Merge requests"
+> Da Project Manager, vedresti questa PR nella sezione "Pull requests"
 > del repository con un'etichetta verde "Open" che diventa viola "Merged"
 > a fine processo.
 
@@ -417,7 +416,7 @@ utile di quanto è fluido il processo del team).
 
 ## 4.8 Issue: tracciare bug e richieste
 
-Finora abbiamo parlato di codice già scritto: branch, commit, merge request. Ma da dove nasce il lavoro stesso, cioè "cosa" bisogna scrivere o correggere? Spesso nasce da una Issue. Una **Issue** è una "voce" che descrive un problema da risolvere o una
+Finora abbiamo parlato di codice già scritto: branch, commit, pull request. Ma da dove nasce il lavoro stesso, cioè "cosa" bisogna scrivere o correggere? Spesso nasce da una Issue. Una **Issue** è una "voce" che descrive un problema da risolvere o una
 richiesta da realizzare: un bug da correggere, una nuova funzionalità da
 sviluppare, un miglioramento da valutare.
 
@@ -433,13 +432,13 @@ Una Issue tipicamente contiene:
 - un **assegnatario** (chi ci lavora);
 - commenti di discussione.
 
-Le Issue si possono collegare direttamente alle Merge Request: è comune
-vedere in una MR la frase "Closes #42", che indica che, una volta unita
-quella MR, la Issue numero 42 verrà chiusa automaticamente perché risolta.
+Le Issue si possono collegare direttamente alle Pull Request: è comune
+vedere in una PR la frase "Closes #42", che indica che, una volta unita
+quella PR, la Issue numero 42 verrà chiusa automaticamente perché risolta.
 
-Molti team di progetto (incluso probabilmente il tuo) usano le Issue di
-GitLab — o l'equivalente "Work Item" in Azure DevOps — come base per la
-gestione del backlog che vedremo nelle sezioni su Agile, Scrum e Kanban.
+Molti team di progetto (incluso probabilmente il tuo) usano le **Issue di
+GitHub** come base per la gestione del backlog che vedremo nelle sezioni
+su Agile, Scrum e Kanban.
 
 > 🧪 **Esempio pratico**: un cliente di ShopFacile segnala che il pulsante "Conferma
 > ordine" non funziona su un certo browser. Sara apre una Issue così:
@@ -450,8 +449,8 @@ gestione del backlog che vedremo nelle sezioni su Agile, Scrum e Kanban.
 > - **Assegnatario**: Ahmed, che se ne occuperà
 >
 > Ahmed apre un branch `fix/conferma-ordine-safari`, risolve il
-> problema, e nella descrizione della Merge Request scrive "Closes #57"
-> (dove 57 è il numero della Issue): una volta unita la MR, GitLab chiude
+> problema, e nella descrizione della Pull Request scrive "Closes #57"
+> (dove 57 è il numero della Issue): una volta unita la PR, GitHub chiude
 > automaticamente la Issue numero 57.
 
 ---
@@ -476,13 +475,13 @@ Le release seguono spesso uno schema di numerazione chiamato
 - **PATCH**: correzioni di bug, senza nuove funzionalità (es. `2.3.0` →
   `2.3.1`).
 
-Su GitLab, una Release viene solitamente accompagnata da **note di
+Su GitHub, una Release viene solitamente accompagnata da **note di
 rilascio** (release notes): un elenco leggibile di cosa è cambiato,
 utilissimo anche per un Project Manager che deve comunicare al cliente o
 agli stakeholder cosa contiene la nuova versione.
 
 > 🧪 **Esempio pratico**: il team di ShopFacile rilascia la versione `2.3.0` del
-> prodotto. Sulla pagina "Releases" di GitLab troveresti una voce con:
+> prodotto. Sulla pagina "Releases" di GitHub troveresti una voce con:
 > - tag `v2.3.0`;
 > - titolo "Versione 2.3.0 — Gestione utenti";
 > - note di rilascio tipo: "✨ Nuove funzionalità: gestione ruoli utente.
@@ -515,7 +514,7 @@ git push origin v2.3.0
 ```
 
 Differenza pratica tra Tag e Release: il **tag** è un concetto di Git
-(un puntatore a un commit), mentre la **Release** è un concetto di GitLab
+(un puntatore a un commit), mentre la **Release** è un concetto di GitHub
 costruito sopra un tag, con in più note descrittive, file scaricabili
 (binari, installer) e visibilità nella pagina del progetto.
 
@@ -539,7 +538,7 @@ costruito sopra un tag, con in più note descrittive, file scaricabili
 
 ## 4.11 Git Flow: un workflow strutturato a più branch
 
-Finora abbiamo visto i singoli "mattoncini" (branch, merge, MR, tag, release): ma come si combinano insieme in una strategia coerente, giorno per giorno, per tutto il team? Un primo modello molto diffuso è Git Flow. **Git Flow** è un modello di organizzazione dei branch molto diffuso,
+Finora abbiamo visto i singoli "mattoncini" (branch, merge, PR, tag, release): ma come si combinano insieme in una strategia coerente, giorno per giorno, per tutto il team? Un primo modello molto diffuso è Git Flow. **Git Flow** è un modello di organizzazione dei branch molto diffuso,
 pensato per progetti con **cicli di rilascio pianificati** (es. una nuova
 versione ogni mese) e la necessità di gestire più cose in parallelo: nuove
 funzionalità, preparazione di una release, correzioni urgenti su
@@ -669,7 +668,7 @@ diventa rischioso.
 > - il filtro non è ancora pronto per tutti gli utenti, quindi lo nasconde
 >   dietro un feature flag chiamato `nuovo_filtro_ricerca_attivo`
 >   (inizialmente spento);
-> - entro sera apre una MR piccola e veloce da revisionare, e la unisce in
+> - entro sera apre una PR piccola e veloce da revisionare, e la unisce in
 >   `main`;
 > - il codice è ora in produzione ma invisibile agli utenti (flag spento);
 >   quando il team è pronto, attiva il flag per tutti (o per un gruppo di
@@ -713,7 +712,7 @@ git push origin <branch|tag>          # invia branch/tag al repository remoto
 Ricorda: non serve che tu memorizzi tutti questi comandi a memoria. Ciò
 che conta, nel tuo ruolo, è capire **cosa rappresentano concettualmente**
 (uno scatto, un ramo, un'unione) per poter seguire con consapevolezza le
-conversazioni tecniche del team, leggere lo stato di una Merge Request, e
+conversazioni tecniche del team, leggere lo stato di una Pull Request, e
 capire perché il team ha scelto un certo workflow.
 
 ---
@@ -722,11 +721,11 @@ capire perché il team ha scelto un certo workflow.
 
 Gli esercizi che seguono ti servono a consolidare i concetti visti in
 questa sezione con le mani sulla tastiera. Non serve nessun progetto reale:
-puoi farli tutti con un account GitLab gratuito e un repository di prova
+puoi farli tutti con un account GitHub gratuito e un repository di prova
 che poi puoi anche eliminare.
 
 1. **Crea un repository e fai il tuo primo commit.**
-   Crea un repository di prova su GitLab (pubblico o privato, non
+   Crea un repository di prova su GitHub (pubblico o privato, non
    importa), clonalo sul tuo computer con `git clone`, crea un file
    `note.txt` con dentro una riga di testo a piacere, poi lancia
    `git add note.txt` e `git commit -m "Primo commit di prova"`.
@@ -755,21 +754,21 @@ che poi puoi anche eliminare.
    e `note.txt` deve contenere solo il testo finale che hai scelto, senza
    marcatori residui.
 
-4. **Apri una Merge Request fittizia su GitLab.**
+4. **Apri una Pull Request fittizia su GitHub.**
    Fai il push del branch `feature/prova` (o uno nuovo) con
-   `git push origin feature/prova`, poi su GitLab apri una Merge Request
+   `git push origin feature/prova`, poi su GitHub apri una Pull Request
    verso `main`, scrivendo un titolo e una breve descrizione di cosa
    cambia. Se hai un amico o un collega disponibile, chiedigli di
    lasciarti un commento; altrimenti lasciatelo da solo per vedere come
    funziona l'interfaccia.
-   ✅ **Come verificare**: la Merge Request compare nella sezione
-   "Merge requests" del repository con stato "Open", e mostra
-   correttamente i file modificati nel tab "Changes".
+   ✅ **Come verificare**: la Pull Request compare nella sezione
+   "Pull requests" del repository con stato "Open", e mostra
+   correttamente i file modificati nel tab "Files changed".
 
 5. **Crea un tag e una Release.**
    Sul repository di prova, crea un tag annotato con
    `git tag -a v0.1.0 -m "Prima versione di prova"`, invialo con
-   `git push origin v0.1.0`, poi su GitLab vai nella sezione "Releases" e
+   `git push origin v0.1.0`, poi su GitHub vai nella sezione "Releases" e
    pubblica una Release basata su quel tag, con qualche nota di rilascio
    scritta da te.
    ✅ **Come verificare**: il tag `v0.1.0` compare lanciando `git tag`, e
@@ -794,18 +793,17 @@ che poi puoi anche eliminare.
 - [3. Come nasce un software](../03-come-nasce-un-software/README.md) — dove si inserisce Git nel ciclo di vita di un progetto software
 - [5. Agile](../05-agile/README.md) — il mindset dietro le pratiche di integrazione frequente che abbiamo visto con il Trunk Based Development
 - [9. DevOps](../09-devops/README.md) — la cultura di automazione e rilascio continuo che rende possibile il Trunk Based Development
-- [10. Azure DevOps](../10-azure-devops/README.md) — Repos, l'equivalente di GitLab nella suite Microsoft
-- [11. CI/CD](../11-ci-cd/README.md) — le pipeline automatiche che si attivano su commit e Merge Request
-- [16. Glossario](../16-glossario/README.md) — per ripassare velocemente i termini di questa sezione
+- [10. CI/CD](../10-ci-cd/README.md) — le pipeline automatiche (GitHub Actions) che si attivano su commit e Pull Request
+- [15. Glossario](../15-glossario/README.md) — per ripassare velocemente i termini di questa sezione
 
 ## 📚 Risorse
 
 - [Documentazione ufficiale di Git](https://git-scm.com/doc)
 - [Git — Book (Pro Git, gratuito e in italiano)](https://git-scm.com/book/it/v2)
-- [GitLab Docs](https://docs.gitlab.com/)
+- [GitHub Docs](https://docs.github.com)
 - [Learn Git Branching (esercizi interattivi nel browser)](https://learngitbranching.js.org/)
-- [GitLab Docs — Tutorials](https://docs.gitlab.com/tutorials/)
-- [About merge requests — GitLab Docs](https://docs.gitlab.com/user/project/merge_requests/)
+- [GitHub Docs — Get started](https://docs.github.com)
+- [About pull requests — GitHub Docs](https://docs.github.com)
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Semantic Versioning](https://semver.org/lang/it/)
 - [Trunk Based Development](https://trunkbaseddevelopment.com/)

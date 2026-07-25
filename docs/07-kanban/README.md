@@ -114,9 +114,11 @@ flowchart LR
 > nessuno "a che punto siamo?".
 
 Le board Kanban possono essere fisiche (un muro con post-it) o digitali
-(strumenti come Azure DevOps Boards, Trello, Jira). Nella sezione 10
-vedrai come si costruisce concretamente una board Kanban dentro
-Azure DevOps.
+(strumenti come GitHub Projects, Trello, Jira). Su GitHub, ad esempio,
+una board di questo tipo si costruisce con **GitHub Projects**: le
+colonne diventano stati personalizzabili e le card possono collegarsi
+direttamente a Issue e Pull Request del repository, così lo stato del
+lavoro sul codice si riflette automaticamente sulla board.
 
 > 💡 **Esempio pratico**: immagina la board Kanban del team di
 > **ShopFacile**, con 4 colonne — **To Do**, **In Sviluppo**, **In Test**,
@@ -453,8 +455,8 @@ di questa sezione su Kanban.
 
 ## 🔗 Collegamenti
 
+- [4. Git e GitHub](../04-git-e-github/README.md) — dove Issue e Pull Request diventano le card di una board Kanban costruita con GitHub Projects
 - [8. Project Management](../08-project-management/README.md) — come usare le metriche di flusso (Lead Time, Cycle Time, Throughput) per monitorare un progetto
-- [10. Azure DevOps](../10-azure-devops/README.md) — come costruire e configurare concretamente una board Kanban con Azure DevOps Boards
 
 ## 📚 Risorse
 

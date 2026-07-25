@@ -15,7 +15,7 @@ tempo.**
 Questo è il mondo di **DevOps**. È una delle parole che sentirai
 pronunciare più spesso nel tuo team, quasi sempre associata a strumenti
 molto concreti (pipeline, ambienti, dashboard) che vedrai nel dettaglio
-nella prossima sezione, dedicata ad Azure DevOps. Ma prima di usare gli
+nella prossima sezione, dedicata al CI/CD. Ma prima di usare gli
 strumenti, devi capire **l'idea** che c'è dietro — perché DevOps, prima di
 essere una piattaforma o un insieme di pratiche tecniche, è **un modo di
 pensare al lavoro del team**. Se capisci bene questa sezione, tutto quello
@@ -90,7 +90,7 @@ squadre separate con interessi contrapposti.
 > sola squadra**, non come due squadre che si passano un pacco.
 
 Vale la pena essere ancora più precisi su un equivoco molto comune, perché
-lo sentirai spesso sul lavoro: quando qualcuno dice "usiamo Azure DevOps"
+lo sentirai spesso sul lavoro: quando qualcuno dice "usiamo GitHub Actions"
 o "abbiamo automatizzato con strumenti DevOps", si riferisce agli
 **strumenti** che rendono più facile *applicare* la cultura DevOps (ad
 esempio le pipeline di cui parleremo più avanti). Ma installare quegli
@@ -478,7 +478,7 @@ più persone che lavorano insieme sullo stesso progetto.
 molto frequentemente** (più volte al giorno, tipicamente), invece di
 lavorare separati per settimane e unire tutto solo alla fine.
 
-Ricorda cosa hai visto nella sezione su Git e GitLab: quando più persone
+Ricorda cosa hai visto nella sezione su Git e GitHub: quando più persone
 lavorano sullo stesso codice in branch diversi, unire i cambiamenti (il
 *merge*) può generare conflitti. Più tempo passa tra un'integrazione e la
 successiva, più il codice dei diversi sviluppatori si allontana l'uno
@@ -487,7 +487,7 @@ grandi, complicati da risolvere e rischiosi.
 
 CI risolve questo problema imponendo una disciplina precisa: **ogni volta
 che uno sviluppatore propone un cambiamento (tipicamente con un commit o
-una Merge Request), un sistema automatico esegue immediatamente la build del
+una Pull Request), un sistema automatico esegue immediatamente la build del
 progetto e i test automatici**, per verificare che quel cambiamento si
 integri correttamente con tutto il resto del codice, senza romperlo.
 
@@ -505,7 +505,7 @@ Il ciclo tipico di CI, ogni volta che qualcuno propone un cambiamento:
 
 ```mermaid
 flowchart LR
-    A["👨‍💻 Sviluppatore<br/>propone un cambiamento<br/>(commit / Merge Request)"] --> B["🔨 Build automatica<br/>il codice compila?"]
+    A["👨‍💻 Sviluppatore<br/>propone un cambiamento<br/>(commit / Pull Request)"] --> B["🔨 Build automatica<br/>il codice compila?"]
     B -->|sì| C["🧪 Test automatici<br/>tutto funziona ancora?"]
     B -->|no| E["❌ Feedback immediato<br/>allo sviluppatore"]
     C -->|passano| D["✅ Codice integrato<br/>nel ramo principale"]
@@ -513,10 +513,10 @@ flowchart LR
     E -.->|correzione rapida| A
 ```
 
-> 🛠️ **Esempio pratico**: **Ahmed** apre una Merge Request che modifica la
+> 🛠️ **Esempio pratico**: **Ahmed** apre una Pull Request che modifica la
 > funzione di calcolo dello sconto su un ordine di ShopFacile. Ecco cosa
 > succede, passo per passo, in una pipeline di CI tipica (li vedrai nel
-> dettaglio nella sezione 11):
+> dettaglio nella sezione 10):
 >
 > 1. Il codice modificato viene "caricato" (push) sul repository condiviso.
 > 2. La pipeline si attiva automaticamente (il cosiddetto *trigger*), senza
@@ -528,7 +528,7 @@ flowchart LR
 > 5. Se un test fallisce (magari Ahmed ha sbagliato un calcolo), la
 >    pipeline segnala l'errore in pochi minuti, direttamente nella Pull
 >    Request, prima che il codice venga integrato. Sarà **Giulia**, che
->    revisiona spesso queste Merge Request, ad aiutarlo a individuare il
+>    revisiona spesso queste Pull Request, ad aiutarlo a individuare il
 >    problema.
 > 6. Solo se build e test passano, il codice viene integrato nel ramo
 >    principale — pronto per le fasi successive (Delivery o Deployment).
@@ -610,7 +610,7 @@ umano.
 >   pochi minuti dal commit originale, senza che nessuno clicchi nulla.
 >
 > La differenza pratica che noterai osservando una pipeline reale (lo farai
-> nella sezione 11): nel primo caso c'è uno step chiamato tipicamente
+> nella sezione 10): nel primo caso c'è uno step chiamato tipicamente
 > "Approvazione" o "Gate" che aspetta un umano; nel secondo caso quello
 > step semplicemente non esiste.
 
@@ -761,7 +761,7 @@ I vantaggi concreti di questo approccio:
   lavoro manuale ripetitivo.
 
 Alcuni strumenti diffusi di IaC che potresti incontrare (li vedrai citati
-anche nella sezione 13 sul Cloud):
+anche nella sezione 12 sul Cloud):
 
 - **Terraform**: uno degli strumenti IaC più diffusi in assoluto,
   utilizzabile con diversi fornitori cloud (AWS, Azure, Google Cloud e
@@ -980,7 +980,7 @@ Perché il logging è così importante nel contesto DevOps:
   una certa soglia in pochi minuti.
 
 Un aspetto pratico da conoscere: nei sistemi moderni, composti da tanti
-servizi diversi (specialmente nei sistemi che vedrai nella sezione 12
+servizi diversi (specialmente nei sistemi che vedrai nella sezione 11
 sulle architetture software), i log di ciascun servizio vengono spesso
 raccolti in un **unico sistema centralizzato**, per poterli cercare e
 correlare tutti insieme, invece di dover collegarsi manualmente a decine
@@ -988,9 +988,9 @@ di server diversi per leggere ciascuno il proprio file di log locale.
 
 Con questo, il team di ShopFacile — e tu insieme a loro — ha attraversato
 tutti i concetti chiave di DevOps, dalla cultura agli strumenti concreti.
-Prima di passare ad Azure DevOps, la piattaforma dove questi concetti
-diventano schermate cliccabili, vale la pena fermarsi un momento a
-ricapitolare il percorso fatto.
+Prima di passare al CI/CD, dove questi concetti diventano una pipeline
+concreta e cliccabile, vale la pena fermarsi un momento a ricapitolare il
+percorso fatto.
 
 ---
 
@@ -1028,10 +1028,10 @@ sviluppa il software e chi lo gestisce in produzione.
   tracce; il **logging** è la registrazione dettagliata degli eventi,
   fondamentale per la diagnosi e la tracciabilità.
 
-Nella prossima sezione vedrai come tutti questi concetti — pipeline CI/CD,
-board di lavoro, dashboard di monitoraggio — si traducano in funzionalità
-concrete e cliccabili all'interno di **Azure DevOps**, la piattaforma che
-il team usa ogni giorno per metterli in pratica.
+Nella prossima sezione vedrai come tutti questi concetti — in particolare
+la pipeline CI/CD — si traducano in un meccanismo concreto e verificabile,
+fatto di fasi precise, trigger e controlli automatici, che il team usa
+ogni giorno per metterli in pratica.
 
 ---
 
@@ -1129,9 +1129,8 @@ del progetto ogni volta che puoi.
 
 ## 🔗 Collegamenti
 
-- [10. Azure DevOps](../10-azure-devops/README.md) — la piattaforma dove le pratiche DevOps viste qui diventano board, pipeline e dashboard concrete
-- [11. CI/CD](../11-ci-cd/README.md) — approfondimento tecnico su pipeline, Continuous Integration, Delivery e Deployment
-- [13. Cloud](../13-cloud/README.md) — dove gira davvero l'infrastruttura gestita con Infrastructure as Code
+- [10. CI/CD](../10-ci-cd/README.md) — approfondimento tecnico su pipeline, Continuous Integration, Delivery e Deployment
+- [12. Cloud](../12-cloud/README.md) — dove gira davvero l'infrastruttura gestita con Infrastructure as Code
 
 ## 📚 Risorse
 

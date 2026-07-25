@@ -1,7 +1,7 @@
-# 19. Risorse online
+# 18. Risorse online
 
 
-> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/19-risorse-online.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/18-risorse-online.pdf)** — utile per la stampa o la lettura offline.
 
 
 ## Come usare questa sezione
@@ -13,7 +13,7 @@ Il modo giusto di usarla è così:
 - Mentre studi una sezione (ad esempio la 6, su Scrum), torna qui e apri l'area corrispondente ("Agile, Scrum, Kanban") per trovare materiale di approfondimento se un argomento ti ha incuriosito o non ti è chiaro al 100%.
 - Se in una riunione qualcuno cita uno strumento o un concetto che non conosci, puoi tornare qui in un secondo momento (non durante la riunione!) e cercare la risorsa giusta per approfondire con calma.
 - Non serve leggere ogni link elencato: sono alternative e integrazioni, non un elenco di compiti a casa. Scegli quelle che si adattano al tuo modo di imparare (alcune persone preferiscono leggere documentazione, altre guardare video, altre seguire corsi strutturati passo passo).
-- Molte risorse sono in inglese: è normale, ed è anche una buona palestra, perché la quasi totalità della documentazione tecnica "primaria" (Microsoft, GitLab, AWS, OWASP...) nasce in inglese e le traduzioni arrivano dopo, quando arrivano.
+- Molte risorse sono in inglese: è normale, ed è anche una buona palestra, perché la quasi totalità della documentazione tecnica "primaria" (GitHub, AWS, OWASP...) nasce in inglese e le traduzioni arrivano dopo, quando arrivano.
 
 Le risorse sono raggruppate in 6 aree, che corrispondono ai grandi blocchi del corso.
 
@@ -32,14 +32,14 @@ Le risorse sono raggruppate in 6 aree, che corrispondono ai grandi blocchi del c
 
 ---
 
-## 2. Sviluppo software e Git/GitLab
+## 2. Sviluppo software e Git/GitHub
 
-*(per le sezioni 3-4 — Come nasce un software, Git e GitLab)*
+*(per le sezioni 3-4 — Come nasce un software, Git e GitHub)*
 
 - **Git — documentazione ufficiale** — Documentazione ufficiale — Il sito ufficiale del progetto Git, con la guida di riferimento e il libro gratuito "Pro Git" scaricabile in italiano e altre lingue. — https://git-scm.com/
-- **GitLab Docs** — Documentazione ufficiale — La documentazione ufficiale di GitLab: guide passo passo su repository, merge request, issue e tutte le funzionalità della piattaforma. — https://docs.gitlab.com/
+- **GitHub Docs** — Documentazione ufficiale — La documentazione ufficiale di GitHub: guide passo passo su repository, pull request, issue e tutte le funzionalità della piattaforma. — https://docs.github.com/
 - **Learn Git Branching** — Corso gratuito interattivo — Un tutorial visuale e interattivo (gratuito) che fa vedere graficamente cosa succede a branch e commit man mano che esegui comandi Git; ottimo per capire il "modello mentale" di Git senza usare il terminale. — https://learngitbranching.js.org/
-- **GitLab Docs — Tutorials** — Corso gratuito — Tutorial interattivi ufficiali di GitLab, per imparare facendo (merge request, collaborazione, GitLab CI/CD). — https://docs.gitlab.com/tutorials/
+- **GitHub Skills** — Corso gratuito interattivo — Corsi interattivi ufficiali di GitHub, per imparare facendo (pull request, collaborazione, GitHub Actions). — https://skills.github.com/
 - **Atlassian Git Tutorials** — Articolo / documentazione — Una serie di guide molto chiare (con immagini) sui concetti fondamentali di Git: branching, merge, workflow di team. — https://www.atlassian.com/git
 - **roadmap.sh — Backend / Full Stack roadmap** — Corso gratuito / percorso guidato — Mappe gratuite che mostrano, in ordine, i concetti che uno sviluppatore impara per costruire software, utili per capire il "vocabolario" dei tuoi colleghi sviluppatori. — https://roadmap.sh/
 
@@ -71,14 +71,11 @@ Le risorse sono raggruppate in 6 aree, che corrispondono ai grandi blocchi del c
 
 ---
 
-## 5. DevOps, Azure DevOps, CI/CD
+## 5. DevOps e CI/CD
 
-*(per le sezioni 9-11 — DevOps, Azure DevOps, CI/CD)*
+*(per le sezioni 9-10 — DevOps, CI/CD)*
 
-- **Microsoft Learn — Cos'è DevOps** — Documentazione ufficiale — La spiegazione ufficiale Microsoft dei principi DevOps, con il modello CALMS e le pratiche principali (CI/CD, monitoraggio, cultura collaborativa). — https://learn.microsoft.com/devops/what-is-devops
-- **Microsoft Learn — Documentazione Azure DevOps** — Documentazione ufficiale — La documentazione completa e ufficiale di Azure DevOps: Boards, Repos, Pipelines, Artifacts e Test Plans, con guide passo passo. — https://learn.microsoft.com/azure/devops/
-- **Microsoft Learn — Percorsi di formazione DevOps** — Corso gratuito — Percorsi formativi gratuiti e ufficiali Microsoft su DevOps e Azure DevOps, organizzati per moduli con esercizi pratici. — https://learn.microsoft.com/training/browse/?terms=devops
-- **GitLab Docs — CI/CD** — Documentazione ufficiale — La documentazione ufficiale di GitLab CI/CD, lo strumento di pipeline integrato in GitLab, utile per confrontare un approccio alternativo a quello di Azure Pipelines. — https://docs.gitlab.com/ci/
+- **GitHub Docs — GitHub Actions** — Documentazione ufficiale — La documentazione completa e ufficiale di GitHub Actions, lo strumento di pipeline CI/CD integrato in GitHub: workflow, runner, artifact, con guide passo passo. — https://docs.github.com/actions
 - **Martin Fowler — Continuous Integration** — Articolo — Un articolo di riferimento, scritto da uno degli autori più citati nel mondo dello sviluppo software, che spiega in profondità cos'è la Continuous Integration e perché conta. — https://martinfowler.com/articles/continuousIntegration.html
 - **Atlassian — CI/CD Pipeline** — Articolo — Guida pratica con schemi visuali su cosa sono le pipeline di CI/CD e come si differenziano CI, delivery continua e deployment continuo. — https://www.atlassian.com/continuous-delivery/continuous-integration
 - **Docker — documentazione ufficiale** — Documentazione ufficiale — Se nelle pipeline del team senti parlare di container e immagini Docker, questa è la documentazione ufficiale con cui iniziare a orientarsi. — https://docs.docker.com/
@@ -88,7 +85,7 @@ Le risorse sono raggruppate in 6 aree, che corrispondono ai grandi blocchi del c
 
 ## 6. Architetture, Cloud, Sicurezza
 
-*(per le sezioni 12-14 — Architetture software, Cloud, Sicurezza)*
+*(per le sezioni 11-13 — Architetture software, Cloud, Sicurezza)*
 
 - **Microsoft Learn — Azure Architecture Center** — Documentazione ufficiale — Raccolta ufficiale di pattern architetturali, best practice e glossario dedicati alle architetture cloud moderne (utile anche solo per orientarsi tra i diagrammi che il team potrebbe mostrarti). — https://learn.microsoft.com/azure/architecture/
 - **Microsoft Learn — Fondamenti di Azure** — Corso gratuito — Il percorso formativo gratuito e ufficiale Microsoft per capire i concetti base del cloud: risorse, regioni, modelli di servizio (IaaS/PaaS/SaaS). — https://learn.microsoft.com/training/azure/
@@ -97,15 +94,15 @@ Le risorse sono raggruppate in 6 aree, che corrispondono ai grandi blocchi del c
 - **OWASP Top 10** — Documentazione ufficiale — La classifica ufficiale e gratuita delle vulnerabilità di sicurezza più critiche per le applicazioni web, un riferimento citato in moltissimi contratti e audit di sicurezza. — https://owasp.org/www-project-top-ten/
 - **OWASP Foundation** — Documentazione ufficiale / community — Il sito della fondazione OWASP, con decine di progetti e guide gratuite sulla sicurezza applicativa, oltre a eventi e community locali. — https://owasp.org/
 - **Microsoft Learn — Zero Trust e concetti di sicurezza** — Documentazione ufficiale — Introduzione ufficiale Microsoft ai principi moderni di sicurezza applicati al cloud, utile per capire il vocabolario che i colleghi tecnici usano nelle discussioni su sicurezza e accessi. — https://learn.microsoft.com/security/zero-trust/
-- **Microsoft Learn — DevSecOps** — Documentazione ufficiale — Approfondimento su come la sicurezza si integra nel ciclo DevOps, con pratiche come lo "shift left" già incontrato nella sezione 14. — https://learn.microsoft.com/devops/operate/security-in-devops
+- **Microsoft Learn — DevSecOps** — Documentazione ufficiale — Approfondimento su come la sicurezza si integra nel ciclo DevOps, con pratiche come lo "shift left" già incontrato nella sezione 13. — https://learn.microsoft.com/devops/operate/security-in-devops
 
 ---
 
 ## Come restare aggiornato nel tempo
 
-Il mondo DevOps si evolve rapidamente: nuove funzionalità di Azure DevOps, nuove versioni degli strumenti, nuove pratiche di sicurezza. Non serve rincorrere ogni novità, ma un aggiornamento periodico e leggero ti aiuterà a non restare indietro. Qualche suggerimento pratico:
+Il mondo DevOps si evolve rapidamente: nuove funzionalità di GitHub, nuove versioni degli strumenti, nuove pratiche di sicurezza. Non serve rincorrere ogni novità, ma un aggiornamento periodico e leggero ti aiuterà a non restare indietro. Qualche suggerimento pratico:
 
-- **Segui i blog ufficiali degli strumenti che usa il team**: sia Microsoft (Azure DevOps Blog, Azure Blog) sia GitLab (GitLab Blog) pubblicano regolarmente novità, cambi di funzionalità e guide pratiche — bastano 10 minuti ogni tanto per restare al passo.
+- **Segui i blog ufficiali degli strumenti che usa il team**: sia GitHub (The GitHub Blog) sia i principali cloud provider (Microsoft Azure, AWS) pubblicano regolarmente novità, cambi di funzionalità e guide pratiche — bastano 10 minuti ogni tanto per restare al passo.
 - **Iscriviti a una newsletter di settore**: esistono diverse newsletter gratuite (via email) dedicate ad Agile, DevOps o Project Management che riassumono settimanalmente le notizie più rilevanti, così non devi andare a cercarle una per una.
 - **Partecipa a community e, se possibile, a un evento o webinar all'anno**: gruppi locali o online di Scrum Master/Agile Coach, conferenze di settore (anche solo guardando le registrazioni gratuite pubblicate dopo l'evento) e community come quella di Scrum.org o PMI ti mettono in contatto con altre persone che affrontano le tue stesse sfide quotidiane.
 
@@ -113,5 +110,5 @@ Il mondo DevOps si evolve rapidamente: nuove funzionalità di Azure DevOps, nuov
 
 ## 🔗 Collegamenti
 
-- [16. Glossario](../16-glossario/README.md) — per ripassare rapidamente la terminologia incontrata in queste risorse
-- [17. Piano di studio](../17-piano-di-studio/README.md) — il percorso settimanale in cui inserire, se vuoi, l'approfondimento di alcune di queste risorse
+- [15. Glossario](../15-glossario/README.md) — per ripassare rapidamente la terminologia incontrata in queste risorse
+- [16. Piano di studio](../16-piano-di-studio/README.md) — il percorso settimanale in cui inserire, se vuoi, l'approfondimento di alcune di queste risorse

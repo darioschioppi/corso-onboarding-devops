@@ -1,13 +1,13 @@
-# 14. Sicurezza
+# 13. Sicurezza
 
 
-> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/14-sicurezza.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/13-sicurezza.pdf)** — utile per la stampa o la lettura offline.
 
 
 Fin qui hai visto come il codice viene scritto, integrato, testato e
-rilasciato attraverso una pipeline (sezione 11), come viene organizzato in
-architetture e servizi (sezione 12), e dove "vive" fisicamente
-nell'infrastruttura cloud (sezione 13). Manca un ultimo ingrediente, che non
+rilasciato attraverso una pipeline (sezione 10), come viene organizzato in
+architetture e servizi (sezione 11), e dove "vive" fisicamente
+nell'infrastruttura cloud (sezione 12). Manca un ultimo ingrediente, che non
 è un passaggio in più nel processo ma una **lente che attraversa tutti i
 passaggi precedenti**: la sicurezza informatica.
 
@@ -38,7 +38,7 @@ Al termine di questa sezione saprai:
 - capire cos'è il **DevSecOps** e il principio dello **"shift left"** della
   sicurezza;
 - capire come gli scan di sicurezza automatici si inseriscono nella pipeline
-  CI/CD già vista nella sezione 11;
+  CI/CD già vista nella sezione 10;
 - spiegare, a livello base, perché il **GDPR** e la protezione dei dati
   personali riguardano anche il tuo lavoro di PM;
 - capire perché **backup e disaster recovery** sono parte della sicurezza,
@@ -46,7 +46,7 @@ Al termine di questa sezione saprai:
 
 ---
 
-## 14.1 Perché la sicurezza riguarda anche un PM, non solo i tecnici
+## 13.1 Perché la sicurezza riguarda anche un PM, non solo i tecnici
 
 Prova a pensarla così: la sicurezza informatica è come **l'impianto
 antincendio di un edificio**. Non lo vedi quasi mai in azione, ci speri di
@@ -92,7 +92,7 @@ lavoro, fatto più tardi, costa di più.
 
 ---
 
-## 14.2 Autenticazione vs Autorizzazione
+## 13.2 Autenticazione vs Autorizzazione
 
 Il caricamento delle foto di resa solleva subito una domanda concreta: chi
 può fare cosa, su quei file e su ShopFacile in generale? È il momento di
@@ -140,8 +140,8 @@ flowchart TD
     style OK fill:#d4edda
 ```
 
-**Esempio pratico nel progetto**: Ahmed può autenticarsi correttamente sulla
-piattaforma Azure DevOps del progetto ShopFacile (sa la password, entra),
+**Esempio pratico nel progetto**: Ahmed può autenticarsi correttamente su
+GitHub, la piattaforma del progetto ShopFacile (sa la password, entra),
 ma essere autorizzato solo a **leggere** il codice del repository del
 catalogo prodotti e non a **modificare** le impostazioni della pipeline di
 produzione — quel permesso è riservato, ad esempio, a Marco o a Luca. Due
@@ -150,7 +150,7 @@ autorizzazioni completamente diverse.
 
 ---
 
-## 14.3 Password, credenziali e MFA: le buone pratiche di base
+## 13.3 Password, credenziali e MFA: le buone pratiche di base
 
 Autenticazione e autorizzazione presuppongono entrambe una cosa: che sia
 davvero difficile "spacciarsi" per qualcun altro. Ed è proprio qui, sulle
@@ -198,16 +198,16 @@ flowchart LR
     style OK fill:#d4edda
 ```
 
-Nel progetto, è molto probabile che l'accesso a strumenti sensibili (Azure
-DevOps, ambiente cloud, VPN aziendale) richieda l'MFA per policy aziendale:
-se ti viene chiesto di installare un'app di autenticazione sul telefono per
-lavoro, ora sai perché.
+Nel progetto, è molto probabile che l'accesso a strumenti sensibili
+(GitHub, ambiente cloud, VPN aziendale) richieda l'MFA per policy
+aziendale: se ti viene chiesto di installare un'app di autenticazione sul
+telefono per lavoro, ora sai perché.
 
 **Esempio pratico**: immagina che la password di un membro del team venga
 scoperta perché usata anche su un altro servizio online violato in passato
 (è più comune di quanto sembri: succede quando la stessa password viene
-riusata su più siti). Chi ha ottenuto quella password prova ad accedere ad
-Azure DevOps con quelle credenziali. Senza MFA, entrerebbe subito. Con
+riusata su più siti). Chi ha ottenuto quella password prova ad accedere a
+GitHub con quelle credenziali. Senza MFA, entrerebbe subito. Con
 l'MFA attivo, il sistema chiede anche il codice generato dall'app sul
 telefono di quella persona: l'attaccante non lo ha, e l'accesso viene
 bloccato. Questo è esattamente il motivo per cui, dopo un data breach di
@@ -216,7 +216,7 @@ verifica che l'MFA sia attivo", non solo la prima.
 
 ---
 
-## 14.4 HTTPS e crittografia: un richiamo veloce
+## 13.4 HTTPS e crittografia: un richiamo veloce
 
 Password e MFA proteggono l'accesso a un sistema, ma non bastano da sole:
 anche quando i dati viaggiano in rete o restano salvati da qualche parte,
@@ -275,7 +275,7 @@ viceversa — un cliente attento chiede entrambe.
 
 ---
 
-## 14.5 Vulnerabilità comuni: perché il codice va "testato" anche per la sicurezza
+## 13.5 Vulnerabilità comuni: perché il codice va "testato" anche per la sicurezza
 
 Cifrare i dati non serve a nulla se il codice stesso ha una falla che
 permette di aggirare i controlli a monte: è il momento di guardare da
@@ -315,7 +315,7 @@ Il punto per te, come PM, non è saper riconoscere queste vulnerabilità nel
 codice — è sapere che **esistono categorie note e ricorrenti** di errori di
 questo tipo, e che per questo il codice va **testato anche per la
 sicurezza**, con strumenti dedicati, esattamente come si testa la
-correttezza funzionale con i test automatici visti nella sezione 11.
+correttezza funzionale con i test automatici visti nella sezione 10.
 
 **Esempio pratico**: Ahmed, ancora alle prime armi, scrive una nuova
 funzionalità per applicare i codici promozionali al carrello e, per fare
@@ -323,7 +323,7 @@ in fretta, costruisce la query verso il database concatenando
 direttamente il testo digitato dal cliente nel campo "codice
 promozionale", senza validarlo. Durante la code review, Giulia — che
 segue da vicino test e qualità del codice — nota il problema e segnala
-la Merge Request come da correggere prima ancora che arrivi a un test
+la Pull Request come da correggere prima ancora che arrivi a un test
 funzionale: è esattamente il tipo di errore (un classico caso di SQL
 Injection) che un developer alle prime esperienze può commettere senza
 malizia, e che una revisione attenta deve intercettare prima del
@@ -331,7 +331,7 @@ rilascio, non dopo.
 
 ---
 
-## 14.6 OWASP Top 10: il riferimento standard del settore
+## 13.6 OWASP Top 10: il riferimento standard del settore
 
 Riconoscere una singola query pericolosa in una code review è utile, ma
 il team non può fare affidamento solo sulla memoria di chi legge il
@@ -358,7 +358,7 @@ ti serve sapere è:
   questo elenco di rischi noti;
   
 - gli strumenti automatici di analisi di sicurezza che vedrai nella
-  pipeline (paragrafo 14.8) fanno spesso riferimento esplicito a queste
+  pipeline (paragrafo 13.8) fanno spesso riferimento esplicito a queste
   categorie;
 - è aggiornata periodicamente, perché le tecniche di attacco e le
   tecnologie usate nel software cambiano nel tempo.
@@ -382,7 +382,7 @@ standard riconosciuto, non "a occhio".
 
 ---
 
-## 14.7 DevSecOps: la sicurezza fin dall'inizio ("shift left")
+## 13.7 DevSecOps: la sicurezza fin dall'inizio ("shift left")
 
 La OWASP Top 10 dice *cosa* controllare; resta da capire *quando* farlo
 nel ciclo di vita del progetto — ed è qui che entra in gioco un principio
@@ -425,7 +425,7 @@ funzionali: un errore di progettazione trovato durante la stesura dei
 requisiti costa una discussione; lo stesso errore scoperto in produzione,
 con dati reali di utenti reali già esposti, può costare giorni di lavoro
 d'emergenza, comunicazioni al cliente e, potenzialmente, obblighi legali di
-notifica (ne parliamo al paragrafo 14.9).
+notifica (ne parliamo al paragrafo 13.9).
 
 Per un PM/Scrum Master, il DevSecOps si traduce concretamente in domande
 da porsi già in fase di pianificazione, non solo a rilascio imminente:
@@ -435,11 +435,11 @@ configurato sulla pipeline di questo progetto?".
 
 ---
 
-## 14.8 Scan di sicurezza nella pipeline CI/CD
+## 13.8 Scan di sicurezza nella pipeline CI/CD
 
 Il "shift left" resta un principio astratto finché non si traduce in
 qualcosa che gira automaticamente a ogni commit: vediamo concretamente
-come. Nella sezione [11. CI/CD](../11-ci-cd/README.md) hai già incontrato,
+come. Nella sezione [10. CI/CD](../10-ci-cd/README.md) hai già incontrato,
 nella fase "Analisi di qualità e sicurezza del codice" e nella tabella dei
 quality gate, l'idea che la pipeline includa controlli automatici di
 sicurezza. Qui rendiamo quel concetto un po' più concreto.
@@ -451,7 +451,7 @@ pipeline, verificano cose diverse:
   Testing)**: analizza il codice sorgente, senza eseguirlo, cercando
   pattern noti di vulnerabilità (es. un punto dove un dato dell'utente
   finisce, senza controlli, dentro una query SQL — il rischio di SQL
-  Injection visto al paragrafo 14.5).
+  Injection visto al paragrafo 13.5).
 - **Analisi delle dipendenze (SCA - Software Composition Analysis)**:
   quasi nessun software è scritto completamente da zero — si usano
   librerie esterne (open source o commerciali). Questi strumenti
@@ -462,7 +462,7 @@ pipeline, verificano cose diverse:
   esecuzione (tipicamente in un ambiente di test), simulando alcune delle
   tecniche di un vero attaccante, per vedere come si comporta davvero.
 
-Il risultato di questi scan si traduce, come già visto nella sezione 11, in
+Il risultato di questi scan si traduce, come già visto nella sezione 10, in
 un **quality gate**: se viene trovata una vulnerabilità sopra una certa
 soglia di gravità (tipicamente "alta" o "critica"), la pipeline si ferma e
 il rilascio viene bloccato finché il problema non viene risolto — non è
@@ -470,7 +470,7 @@ diverso, nel meccanismo, da un test funzionale che fallisce.
 
 ```mermaid
 flowchart LR
-    C[Commit / Merge Request] --> SAST[🔍 SAST<br/>analisi codice sorgente]
+    C[Commit / Pull Request] --> SAST[🔍 SAST<br/>analisi codice sorgente]
     SAST --> SCA[📦 SCA<br/>analisi librerie/dipendenze]
     SCA --> DAST[🎯 DAST<br/>analisi app in esecuzione]
     DAST --> GATE{Quality Gate<br/>sicurezza}
@@ -497,7 +497,7 @@ fosse accorto da solo, magari troppo tardi.
 
 ---
 
-## 14.9 GDPR e privacy dei dati: un accenno essenziale
+## 13.9 GDPR e privacy dei dati: un accenno essenziale
 
 Gli scan automatici proteggono il codice, ma c'è un'altra dimensione della
 sicurezza che riguarda direttamente le persone i cui dati ShopFacile
@@ -512,7 +512,7 @@ Non è un tema puramente etico ("è giusto proteggere i dati delle persone"),
 sanzioni economiche (che possono essere molto rilevanti), obbligo di
 comunicare la violazione alle autorità competenti e, spesso, agli stessi
 utenti coinvolti entro tempi stretti, oltre al danno reputazionale già
-visto al paragrafo 14.1.
+visto al paragrafo 13.1.
 
 Per il tuo ruolo, alcuni concetti base sufficienti per orientarti:
 
@@ -550,7 +550,7 @@ non un semplice bug da correggere alla prossima release.
 
 ---
 
-## 14.10 Backup e disaster recovery: il piano B quando qualcosa va storto
+## 13.10 Backup e disaster recovery: il piano B quando qualcosa va storto
 
 Anche il progetto più attento a GDPR, scan e code review non è immune da
 un imprevisto puro e semplice: un tema che a volte viene percepito come
@@ -609,7 +609,7 @@ precisione.
 
 ---
 
-## 14.11 Riepilogo
+## 13.11 Riepilogo
 
 In questa sezione hai visto i concetti di base della sicurezza informatica
 utili al tuo ruolo di PM/Scrum Master:
@@ -677,7 +677,7 @@ voce, o scrivendo due righe) a queste domande:
 
 2. **Controlla l'MFA sui tuoi strumenti di lavoro**: verifica se hai
    l'autenticazione a più fattori attiva su tutti gli strumenti che usi per
-   lavoro (email aziendale, Azure DevOps, VPN). Se manca su qualcuno,
+   lavoro (email aziendale, GitHub, VPN). Se manca su qualcuno,
    attivala (o chiedi all'IT come fare).
    ✅ **Come verificare**: puoi elencare, per ogni strumento di lavoro che
    usi, se l'MFA è attiva sì/no, e sai spiegare a un collega perché è
@@ -728,8 +728,8 @@ voce, o scrivendo due righe) a queste domande:
 
 ## 🔗 Collegamenti
 
-- [15. Ambienti di sviluppo](../15-ambienti-di-sviluppo/README.md) — come si configurano in pratica accessi, credenziali e isolamento tra Dev, Test, Staging e Produzione
-- [16. Glossario](../16-glossario/README.md) — per ripassare rapidamente ogni termine visto in questa sezione
+- [14. Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) — come si configurano in pratica accessi, credenziali e isolamento tra Dev, Test, Staging e Produzione
+- [15. Glossario](../15-glossario/README.md) — per ripassare rapidamente ogni termine visto in questa sezione
 
 ## 📚 Risorse
 

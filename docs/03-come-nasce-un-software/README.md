@@ -6,7 +6,7 @@
 
 Nella sezione precedente hai imparato cosa sono hardware, software, reti e altri concetti di base dell'informatica. Ora facciamo un passo avanti: come nasce, concretamente, un software? Chi lo progetta? Chi lo scrive? Chi decide quando è pronto per essere usato dalle persone?
 
-Capire questo processo è fondamentale per te, futuro Junior Project Manager, perché il tuo lavoro consisterà proprio nel coordinare le persone e le attività che compongono questo processo. Non dovrai scrivere codice, ma dovrai capire di cosa parlano gli sviluppatori, cosa significa "abbiamo trovato un bug in produzione" o "la merge request è ancora in review", e come si inserisce ogni attività nel percorso complessivo di un progetto software.
+Capire questo processo è fondamentale per te, futuro Junior Project Manager, perché il tuo lavoro consisterà proprio nel coordinare le persone e le attività che compongono questo processo. Non dovrai scrivere codice, ma dovrai capire di cosa parlano gli sviluppatori, cosa significa "abbiamo trovato un bug in produzione" o "la pull request è ancora in review", e come si inserisce ogni attività nel percorso complessivo di un progetto software.
 
 Pensa a questa sezione come alla mappa di un territorio che esplorerai per tutta la tua carriera: oggi impari i nomi delle vie principali, poi con l'esperienza scoprirai i dettagli di ogni singolo quartiere.
 
@@ -20,7 +20,7 @@ Alla fine di questa sezione saprai:
 - Distinguere un requisito funzionale da un requisito non funzionale
 - Spiegare la differenza tra bug e feature
 - Capire perché il software viene "numerato" con le versioni
-- Comprendere, a livello concettuale, cosa sono branch, merge request, code review e merge
+- Comprendere, a livello concettuale, cosa sono branch, pull request, code review e merge
 
 ## 🔄 Il ciclo di vita del software
 
@@ -53,7 +53,7 @@ Vediamo ora ogni fase nel dettaglio.
 
 È la fase in cui si stabilisce **cosa** deve fare il software, senza ancora preoccuparsi di **come** lo farà tecnicamente. È come quando parli con un architetto e gli dici "vogliamo tre camere, una cucina abitabile e un balcone": stai descrivendo un bisogno, non stai disegnando la pianta.
 
-In questa fase il project manager, il cliente e gli analisti si incontrano per capire cosa serve davvero. Il risultato è un documento (o una lista di elementi in uno strumento come Jira o Azure DevOps, che vedremo più avanti) che elenca i **requisiti**.
+In questa fase il project manager, il cliente e gli analisti si incontrano per capire cosa serve davvero. Il risultato è un documento (o una lista di elementi in uno strumento come Jira o GitHub Issues, che vedremo più avanti) che elenca i **requisiti**.
 
 **Esempio pratico**: durante una riunione su ShopFacile, il cliente dice "vogliamo che i nostri utenti possano cercare i prodotti nel catalogo per nome o categoria". Sara, la Product Owner, trascrive questa richiesta in una card del backlog, magari titolata "Ricerca prodotti nel catalogo", senza ancora sapere se si useranno filtri, una barra di ricerca testuale o entrambe le cose: quella scelta arriverà nella fase successiva.
 
@@ -261,25 +261,25 @@ gitGraph
     merge feature-login id: "unione al ramo principale"
 ```
 
-Questo concetto sarà spiegato con molti più dettagli pratici (comandi, strumenti, esempi passo-passo) nella prossima sezione dedicata a Git e GitLab. Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi.
+Questo concetto sarà spiegato con molti più dettagli pratici (comandi, strumenti, esempi passo-passo) nella prossima sezione dedicata a Git e GitHub. Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi.
 
 **Esempio pratico**: mentre Ahmed lavora sul branch `feature-ricerca-prodotti` per aggiungere la barra di ricerca, Giulia lavora in parallelo sul branch `fix-carrello` per correggere il bug del prezzo negativo visto prima. Nessuno dei due deve aspettare che l'altro finisca: lavorano entrambi sul proprio ramo, isolati, e uniranno le modifiche al tronco principale quando saranno pronti, ciascuno con i suoi tempi.
 
-## 🔁 Dal branch al merge: merge request e code review
+## 🔁 Dal branch al merge: pull request e code review
 
 Un branch isolato, però, non può restare isolato per sempre: prima o poi il lavoro va ricongiunto al tronco principale. Ma una volta che uno sviluppatore ha finito di lavorare sul proprio ramo (ad esempio ha completato la feature "login con email"), non può semplicemente "ricongiungere" le sue modifiche al tronco principale senza controlli. Sarebbe rischioso: e se il suo codice avesse errori? E se rompesse qualcosa che già funzionava?
 
-Per questo, prima di unire le modifiche, si passa attraverso due passaggi fondamentali: la **merge request** e la **code review**.
+Per questo, prima di unire le modifiche, si passa attraverso due passaggi fondamentali: la **pull request** e la **code review**.
 
-### Merge Request: "propongo questa modifica"
+### Pull Request: "propongo questa modifica"
 
-Una **merge request** (spesso abbreviata **MR** — su altre piattaforme lo stesso concetto può avere un nome diverso, ma la logica è identica) è, in parole semplici, una richiesta formale: "ho finito di lavorare su questo ramo, per favore controllate il mio lavoro e, se va bene, unitelo al progetto principale".
+Una **pull request** (spesso abbreviata **PR** — su altre piattaforme lo stesso concetto può avere un nome diverso, ma la logica è identica) è, in parole semplici, una richiesta formale: "ho finito di lavorare su questo ramo, per favore controllate il mio lavoro e, se va bene, unitelo al progetto principale".
 
-È come quando, dopo aver scritto una relazione di lavoro, non la invii direttamente al cliente, ma la mandi prima al tuo responsabile per un controllo. La merge request è esattamente quella richiesta di controllo, applicata al codice.
+È come quando, dopo aver scritto una relazione di lavoro, non la invii direttamente al cliente, ma la mandi prima al tuo responsabile per un controllo. La pull request è esattamente quella richiesta di controllo, applicata al codice.
 
-**Esempio pratico**: Ahmed, che ha finito la barra di ricerca prodotti, apre una merge request con un titolo come "Aggiunta ricerca prodotti per nome e categoria" e una descrizione che spiega cosa cambia, come è stato testato e magari uno screenshot del risultato. A quel punto la merge request compare in una lista visibile a tutto il team (su GitLab o Azure DevOps), pronta per essere revisionata.
+**Esempio pratico**: Ahmed, che ha finito la barra di ricerca prodotti, apre una pull request con un titolo come "Aggiunta ricerca prodotti per nome e categoria" e una descrizione che spiega cosa cambia, come è stato testato e magari uno screenshot del risultato. A quel punto la pull request compare in una lista visibile a tutto il team su GitHub, pronta per essere revisionata.
 
-Aprire la merge request, però, non basta: qualcuno deve davvero leggere quel codice prima che diventi parte ufficiale del progetto. È il momento della code review.
+Aprire la pull request, però, non basta: qualcuno deve davvero leggere quel codice prima che diventi parte ufficiale del progetto. È il momento della code review.
 
 ### Code Review: il controllo dei colleghi
 
@@ -294,18 +294,18 @@ Perché è importante che sia qualcun altro a controllare, e non solo chi ha scr
 
 Se durante la code review emergono problemi, chi ha scritto il codice apporta le correzioni richieste, e il processo si ripete finché tutti sono soddisfatti.
 
-**Esempio pratico**: Giulia, revisionando la merge request della ricerca prodotti, lascia un commento del tipo "qui la ricerca fa distinzione tra maiuscole e minuscole, un utente che scrive 'scarpe' con la S minuscola non troverebbe 'Scarpe' scritto con la maiuscola: puoi correggerlo?". Ahmed corregge il codice, aggiorna la merge request, e Giulia la approva.
+**Esempio pratico**: Giulia, revisionando la pull request della ricerca prodotti, lascia un commento del tipo "qui la ricerca fa distinzione tra maiuscole e minuscole, un utente che scrive 'scarpe' con la S minuscola non troverebbe 'Scarpe' scritto con la maiuscola: puoi correggerlo?". Ahmed corregge il codice, aggiorna la pull request, e Giulia la approva.
 
 ### Merge: l'unione finale
 
-La code review è stata superata: non resta che rendere ufficiale il lavoro. Quando la merge request è stata approvata dai colleghi durante la code review, si procede al **merge**: l'unione definitiva delle modifiche del ramo (branch) al progetto principale. A questo punto, quella nuova funzionalità o correzione diventa parte ufficiale del software, pronta per le fasi successive (ulteriori test, e infine il rilascio).
+La code review è stata superata: non resta che rendere ufficiale il lavoro. Quando la pull request è stata approvata dai colleghi durante la code review, si procede al **merge**: l'unione definitiva delle modifiche del ramo (branch) al progetto principale. A questo punto, quella nuova funzionalità o correzione diventa parte ufficiale del software, pronta per le fasi successive (ulteriori test, e infine il rilascio).
 
 **Esempio pratico**: dopo l'approvazione, Ahmed (o un collega con i permessi adeguati) clicca sul bottone "Merge" nello strumento usato dal team. Da quel momento, il codice della barra di ricerca fa parte del branch principale `main` di ShopFacile, insieme al lavoro di tutti gli altri membri del team, e sarà incluso nel prossimo rilascio pianificato.
 
 ```mermaid
 flowchart LR
     A[🌿 Creazione del branch] --> B[💻 Sviluppo della modifica<br/>sul branch]
-    B --> C[📨 Apertura Merge Request]
+    B --> C[📨 Apertura Pull Request]
     C --> D[👀 Code Review<br/>da parte dei colleghi]
     D -->|Richieste modifiche| B
     D -->|Approvato ✅| E[🔀 Merge nel branch principale]
@@ -319,17 +319,17 @@ flowchart LR
     style F fill:#ede7f6
 ```
 
-Questo flusso — branch, merge request, code review, merge — è oggi lo standard adottato dalla stragrande maggioranza dei team di sviluppo professionali nel mondo, e lo ritroverai costantemente nel tuo lavoro quotidiano come Project Manager, anche solo per monitorare lo stato di avanzamento delle attività del team.
+Questo flusso — branch, pull request, code review, merge — è oggi lo standard adottato dalla stragrande maggioranza dei team di sviluppo professionali nel mondo, e lo ritroverai costantemente nel tuo lavoro quotidiano come Project Manager, anche solo per monitorare lo stato di avanzamento delle attività del team.
 
 ## 🧩 Come si collegano tutti questi concetti
 
-Abbiamo visto tanti termini uno alla volta: requisiti, bug, feature, versioning, branch, merge request, code review, merge. Facciamo un piccolo riepilogo con un esempio end-to-end sul progetto ShopFacile, per vedere come tutti i concetti di questa sezione si incastrano insieme in un caso reale (semplificato):
+Abbiamo visto tanti termini uno alla volta: requisiti, bug, feature, versioning, branch, pull request, code review, merge. Facciamo un piccolo riepilogo con un esempio end-to-end sul progetto ShopFacile, per vedere come tutti i concetti di questa sezione si incastrano insieme in un caso reale (semplificato):
 
 1. Il cliente chiede una nuova funzionalità: "vogliamo che gli utenti possano recuperare la password" → è un **requisito funzionale**, che Sara fa finire nel backlog di ShopFacile come **feature**.
 2. Marco fa l'**analisi**: decide di implementarla con un'email contenente un link temporaneo.
 3. Ahmed crea un **branch** dedicato e inizia lo **sviluppo**, scrivendo il codice necessario.
 4. Durante lo sviluppo scopre e corregge anche un piccolo **bug** preesistente in una funzione che invia le email.
-5. Finito il lavoro, apre una **merge request**.
+5. Finito il lavoro, apre una **pull request**.
 6. Giulia esegue la **code review**, chiede una piccola modifica per rispettare un **requisito non funzionale** (il link deve scadere dopo 30 minuti per motivi di sicurezza).
 7. Ahmed corregge, Giulia approva, si fa il **merge**.
 8. Il team esegue il **testing** (unitario, di integrazione e manuale) sulla nuova funzionalità.
@@ -340,7 +340,7 @@ Come vedi, tutti questi termini che oggi possono sembrare astratti sono in realt
 
 ## 📝 Esercizi pratici
 
-Questi esercizi ti aiutano a consolidare i concetti di questa sezione prima di passare a Git e GitLab. Non servono strumenti particolari: bastano carta, penna e, dove indicato, una breve chiacchierata con un collega.
+Questi esercizi ti aiutano a consolidare i concetti di questa sezione prima di passare a Git e GitHub. Non servono strumenti particolari: bastano carta, penna e, dove indicato, una breve chiacchierata con un collega.
 
 1. **Mappa il ciclo di vita su un caso reale.** Pensa a una funzionalità che sai essere stata rilasciata di recente nel progetto (chiedi a un collega se non ne conosci una) e scrivi, riga per riga, come pensi si siano svolte le sei fasi del ciclo di vita (requisiti, analisi, sviluppo, testing, rilascio, manutenzione) per quel caso specifico. Non preoccuparti di essere preciso al 100%: l'obiettivo è esercitarti a "vedere" le fasi in un esempio concreto.
    ✅ **Come verificare**: mostra la tua mappa a un collega del team e chiedigli di correggere i punti in cui hai sbagliato o semplificato troppo.
@@ -354,20 +354,20 @@ Questi esercizi ti aiutano a consolidare i concetti di questa sezione prima di p
 4. **Simula un versioning.** Immagina che il software del progetto sia alla versione 3.4.2. Elenca 4 eventi ipotetici (2 bug fix, 1 nuova feature, 1 cambiamento che rompe la compatibilità) e scrivi, in ordine, come cambierebbe il numero di versione dopo ciascun evento.
    ✅ **Come verificare**: rileggi le regole MAJOR.MINOR.PATCH di questa sezione e verifica che ogni tuo passaggio le rispetti (ad esempio, un nuovo MAJOR deve riportare MINOR e PATCH a zero).
 
-5. **Disegna il flusso branch → merge con un esempio del progetto.** Su un foglio (anche a mano), disegna il flowchart "branch, sviluppo, merge request, code review, merge" visto in questa sezione, ma sostituendo le etichette generiche con un esempio verosimile del progetto (es. "branch fix-notifiche-email" invece di "creazione del branch"). Poi racconta il disegno a voce alta, come se lo spiegassi a un collega nuovo arrivato.
+5. **Disegna il flusso branch → merge con un esempio del progetto.** Su un foglio (anche a mano), disegna il flowchart "branch, sviluppo, pull request, code review, merge" visto in questa sezione, ma sostituendo le etichette generiche con un esempio verosimile del progetto (es. "branch fix-notifiche-email" invece di "creazione del branch"). Poi racconta il disegno a voce alta, come se lo spiegassi a un collega nuovo arrivato.
    ✅ **Come verificare**: se riesci a raccontare il disegno senza guardare gli appunti e senza incepparti su nessun passaggio, hai interiorizzato bene il flusso.
 
 ## 🔗 Collegamenti
 
-- [4. Git e GitLab](../04-git-e-gitlab/README.md) — per capire in pratica, con comandi ed esempi, come funzionano davvero branch, commit, merge request e merge
+- [4. Git e GitHub](../04-git-e-github/README.md) — per capire in pratica, con comandi ed esempi, come funzionano davvero branch, commit, pull request e merge
 - [5. Agile](../05-agile/README.md) — per scoprire come i team moderni organizzano il ciclo di vita del software in iterazioni brevi e continue
 - [9. DevOps](../09-devops/README.md) — per approfondire come le fasi di sviluppo, testing e rilascio vengono oggi collegate e automatizzate
-- [11. CI/CD](../11-ci-cd/README.md) — per capire come build, test e deploy possono essere automatizzati end-to-end
+- [10. CI/CD](../10-ci-cd/README.md) — per capire come build, test e deploy possono essere automatizzati end-to-end
 
 ## 📚 Risorse
 
 - [Atlassian — What is SDLC? Software Development Life Cycle Explained](https://www.atlassian.com/agile/software-development/sdlc) — panoramica chiara sul ciclo di vita del software
 - [Semantic Versioning 2.0.0](https://semver.org/) — la specifica ufficiale del versionamento semantico (in inglese, ma con esempi semplici)
-- [GitLab Docs — About merge requests](https://docs.gitlab.com/user/project/merge_requests/) — documentazione ufficiale su cosa sono e come funzionano le merge request
+- [GitHub Docs — About pull requests](https://docs.github.com) — documentazione ufficiale su cosa sono e come funzionano le pull request
 - [Atlassian — Code Review Best Practices](https://www.atlassian.com/agile/software-development/code-reviews) — guida pratica sul perché e come si fa code review
 - [Wikipedia — Software bug (storia del termine, inclusa la storia della falena di Grace Hopper)](https://en.wikipedia.org/wiki/Software_bug) — approfondimento storico e tecnico sull'origine del termine "bug"

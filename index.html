@@ -57,9 +57,29 @@
         crossChapter: true,
         crossChapterText: true
       },
-      mermaidConfig: {
-        theme: 'default'
-      }
+      plugins: [
+        function (hook) {
+          // Plugin personalizzato per il rendering dei diagrammi Mermaid.
+          // Sostituisce il vecchio plugin "docsify-mermaid", incompatibile con
+          // le versioni recenti di mermaid.js (causava diagrammi non renderizzati,
+          // visibili solo come testo/codice grezzo).
+          hook.doneEach(function () {
+            var blocks = document.querySelectorAll('pre[data-lang="mermaid"]');
+            if (!blocks.length || !window.mermaid) return;
+            blocks.forEach(function (pre) {
+              var code = pre.querySelector('code');
+              if (!code) return;
+              var div = document.createElement('div');
+              div.className = 'mermaid';
+              div.textContent = code.textContent;
+              pre.replaceWith(div);
+            });
+            window.mermaid.run({ querySelector: '.mermaid' }).catch(function (err) {
+              console.error('Errore nel rendering di un diagramma Mermaid:', err);
+            });
+          });
+        }
+      ]
     };
   </script>
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
@@ -67,10 +87,9 @@
   <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-count/dist/countable.js"></script>
   <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
   <script>
-    mermaid.initialize({ startOnLoad: true });
+    mermaid.initialize({ startOnLoad: false, theme: 'default' });
   </script>
 </body>
 </html>

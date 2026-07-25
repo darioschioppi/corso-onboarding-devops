@@ -47,7 +47,17 @@ Alla fine di questa sezione saprai:
   (burndown/burnup, stand-up, dashboard);
 - conoscere i principali **KPI** usati in un team Agile/DevOps;
 - distinguere i diversi livelli di **reportistica**, a seconda di chi la
-  legge.
+  legge;
+- capire cosa sono il **PMI**, la certificazione **PMP** e la **PMBOK
+  Guide**, e come si collocano rispetto ad Agile/Scrum;
+- riconoscere i **5 process group** e le **10 knowledge area** del PMBOK,
+  collegandoli agli strumenti già visti nel corso;
+- scrivere un **project charter** essenziale e distinguere una **WBS**
+  (scomposizione del lavoro) da un Product Backlog;
+- leggere un **percorso critico (critical path)** semplice e interpretare
+  le metriche base dell'**Earned Value Management** (PV, EV, AC, SPI, CPI);
+- muoverti con sicurezza in un contesto **ibrido**, che unisce pratiche PMP
+  e pratiche Agile, come accade in molte aziende reali.
 
 ---
 
@@ -187,7 +197,7 @@ al suo ruolo di Scrum Master:
 | ID | Categoria | Descrizione | Responsabile | Impatto (1-5) | Stato | Aperto il |
 |---|---|---|---|---|---|---|
 | R-12 | Risk | Il fornitore di hosting ha comunicato una finestra di manutenzione non pianificata nella settimana del rilascio | Luca (Tech Lead) | 4 | Aperto | 03/06 |
-| R-13 | Risk | Se non testiamo il carico prima del Black Friday, rischio di rallentamenti sotto picco di traffico | Giulia (QA Lead) | 5 | In mitigazione | 05/06 |
+| R-13 | Risk | Se non testiamo il carico prima del Black Friday, rischio di rallentamenti sotto picco di traffico | Giulia (Developer/QA) | 5 | In mitigazione | 05/06 |
 | A-07 | Assumption | Stiamo assumendo che l'ambiente di staging resti disponibile fino a fine mese | Luca (Project Manager) | 3 | Da verificare | 01/06 |
 | A-08 | Assumption | Assumiamo che Sara fornisca il feedback sul design entro 3 giorni lavorativi | Luca (Project Manager) | 2 | Da verificare | 04/06 |
 | I-04 | Issue | Il servizio di invio SMS di terze parti restituisce errori 500 dal 06/06 | Marco (Sviluppatore backend) | 4 | In corso | 06/06 |
@@ -583,7 +593,694 @@ competenze più preziose del ruolo.
 
 ---
 
-## 8.10 Riepilogo
+## 8.10 Il PMP e il PMBOK: che cosa sono e perché ti riguardano
+
+Finora hai visto strumenti singoli — RAID Log, RACI, milestone, KPI — presi
+in prestito dalla pratica di progetto senza dire da dove arrivano. In
+realtà molti di questi strumenti fanno parte di un corpo di conoscenza
+molto più ampio e riconosciuto a livello internazionale: quello del
+**PMI**, il **Project Management Institute**, l'associazione professionale
+di riferimento per chi fa project management in senso tradizionale.
+
+Il PMI pubblica una guida di riferimento chiamata **PMBOK Guide**
+(**Project Management Body of Knowledge**, cioè "corpo di conoscenza del
+project management"): non un metodo rigido da applicare uguale ovunque, ma
+una raccolta organizzata di terminologia, processi e buone pratiche
+riconosciute a livello globale. È un po' come un grande manuale di
+riferimento — non un romanzo da leggere in ordine, ma un'enciclopedia da
+consultare per trovare il vocabolario giusto per un problema di progetto.
+
+Il PMI offre anche una certificazione professionale molto conosciuta nel
+settore, il **PMP** (**Project Management Professional**). In sintesi,
+senza entrare in numeri precisi che cambiano nel tempo, per ottenerla
+occorre tipicamente dimostrare:
+
+- un certo numero di **ore di esperienza pratica** nella gestione di
+  progetti (l'esatta soglia varia in base al titolo di studio posseduto);
+- un certo numero di **ore di formazione specifica** in project management;
+- il superamento di un **esame** che verifica la conoscenza dei processi,
+  delle aree di conoscenza e la capacità di applicarli a scenari pratici.
+
+> ⚠️ **Nota prudente**: i requisiti esatti (ore minime di esperienza e di
+> formazione, formato e durata dell'esame) cambiano periodicamente e
+> variano in base al percorso di studi di chi si candida. Se in futuro ti
+> interesserà la certificazione, verifica sempre i requisiti aggiornati
+> direttamente sul sito ufficiale del PMI, non su fonti secondarie.
+
+Un punto che genera spesso confusione, e che è importante chiarire subito:
+**il PMP/PMBOK non è "l'opposto" di Agile e Scrum**. Non stai per imparare
+un metodo waterfall in conflitto con tutto quello visto finora. Alcuni
+elementi utili a capire perché:
+
+- Il PMI stesso ha una certificazione dedicata all'Agile, la
+  **PMI-ACP** (**Agile Certified Practitioner**), segno che riconosce
+  l'approccio Agile come uno standard professionale a sé, non come una
+  moda da ignorare.
+- La versione più recente della guida, la **PMBOK Guide, 7th Edition**
+  (pubblicata nel 2021), ha cambiato profondamente impostazione rispetto
+  alle edizioni precedenti: non è più organizzata per "processi da
+  eseguire in un certo ordine", ma per **principi** generali e per
+  **performance domain** (aree di prestazione), pensati per essere
+  applicabili sia a progetti pianificati in anticipo sia a progetti gestiti
+  in modo iterativo/Agile. Ne parliamo con più dettaglio nella sezione 8.20.
+- Molte aziende reali — probabilmente anche quella per cui lavorerai — non
+  scelgono "Agile puro" o "PMP puro", ma un **approccio ibrido**: usano il
+  linguaggio e alcuni strumenti del PMBOK (stakeholder, rischio, budget,
+  reportistica) dentro un modo di lavorare quotidiano che resta Agile
+  (sprint, backlog, retrospettive).
+
+Nel contesto di questo corso, quindi, il modo più utile di vedere il PMP e
+il PMBOK non è "il metodo alternativo a Scrum", ma un **vocabolario comune
+e una cassetta degli attrezzi**: tanti degli strumenti che hai già usato
+con ShopFacile (RAID Log, RACI, stakeholder, KPI) sono, di fatto, pratiche
+che il PMBOK descrive in modo formale — tu le hai già viste "in azione" nel
+contesto Agile, ora le colleghiamo al loro nome e alla loro origine
+"ufficiale".
+
+---
+
+## 8.11 I 5 gruppi di processi (process group)
+
+Il primo di questi collegamenti riguarda **come si organizza il lavoro di
+un progetto nel tempo**: il PMBOK (nell'impostazione più tradizionale,
+quella della 6th Edition, di cui parliamo ancora perché è la più diffusa
+nel vocabolario comune del settore) organizza le attività di un progetto
+in **5 gruppi di processi**
+(process group). Il punto da capire bene, soprattutto se il termine
+"processo" ti suona come "fase rigida e sequenziale": **non sono fasi che
+si susseguono una volta e basta**, ma gruppi di attività che **si
+ripetono**, spesso più volte, durante la vita del progetto.
+
+I 5 process group sono:
+
+1. **Avvio (Initiating)**: si definisce il progetto (o una sua fase/
+   iterazione) ad alto livello — obiettivi, stakeholder chiave, perché
+   vale la pena farlo. È il momento del **project charter**, che vedremo
+   nella prossima sottosezione.
+2. **Pianificazione (Planning)**: si definisce come si raggiungeranno gli
+   obiettivi — scope, tempi, costi, qualità, rischi, comunicazione. È il
+   gruppo di processi più corposo nel PMBOK tradizionale.
+3. **Esecuzione (Executing)**: si fa il lavoro previsto dal piano —
+   sviluppo, test, coordinamento del team.
+4. **Monitoraggio e Controllo (Monitoring & Controlling)**: si verifica
+   l'andamento rispetto al piano e si interviene se serve — è la stessa
+   logica del monitoraggio che hai visto in 8.7, formalizzata a livello di
+   intero progetto.
+5. **Chiusura (Closing)**: si conclude formalmente il progetto (o una sua
+   fase), si verifica che il lavoro sia stato accettato, si raccolgono le
+   lezioni apprese (lo vedremo in 8.19).
+
+> 💡 **Analogia**: pensa ai process group non come alle fasi di un viaggio
+> in treno (parti, viaggi, arrivi, fine), ma come ai **ruoli di un
+> cruscotto d'auto durante tutto il viaggio**: c'è sempre un momento in cui
+> decidi la destinazione (avvio), uno in cui scegli la strada (pianifica),
+> uno in cui guidi (esecuzione), uno in cui guardi lo specchietto e il
+> tachimetro (monitoraggio e controllo) — e questi quattro si alternano e
+> si ripetono in continuazione, non uno alla volta e mai più. Solo quando
+> parcheggi definitivamente a destinazione c'è la chiusura.
+
+Il collegamento con ciò che già conosci è diretto: **ogni sprint di
+ShopFacile contiene, in piccolo, tutti e cinque i process group**. Lo
+Sprint Planning è un mini-avvio più pianificazione; i giorni di sviluppo
+sono esecuzione; la Daily Scrum e il burndown sono monitoraggio e
+controllo; la Sprint Review è, in un certo senso, una piccola chiusura (si
+verifica cosa è stato completato) — e la Sprint Retrospective aggiunge la
+raccolta delle lezioni apprese, proprio come la chiusura formale di un
+progetto più grande.
+
+```mermaid
+flowchart LR
+    AV["1. Avvio<br/>Perché lo facciamo,<br/>chi è coinvolto"] --> PI["2. Pianificazione<br/>Come lo faremo"]
+    PI --> ES["3. Esecuzione<br/>Lo facciamo"]
+    ES --> MC["4. Monitoraggio e Controllo<br/>Stiamo andando bene?"]
+    MC -->|si riapre se serve| PI
+    MC --> CH["5. Chiusura<br/>Accettazione e lezioni apprese"]
+```
+
+**Esempio pratico**: nel progetto ShopFacile, il rilascio del modulo
+pagamenti che hai già incontrato più volte in questa sezione può essere
+letto con la lente dei process group: **Avvio** è il momento in cui Sara
+propone l'iniziativa e se ne definisce l'obiettivo di business;
+**Pianificazione** è quando Luca e il team stimano il lavoro e lo
+distribuiscono su più sprint; **Esecuzione** sono gli sprint in cui Marco,
+Giulia e Ahmed sviluppano e testano; **Monitoraggio e Controllo** è il
+RAID Log, la RACI e il burndown che hai già visto tenere sotto controllo
+l'andamento; **Chiusura** è il go-live in produzione seguito dalla
+retrospettiva sul rilascio.
+
+Sapere **quando** si lavora (i process group) non dice ancora **su cosa**
+si lavora. Il PMBOK organizza anche i contenuti del project management per
+temi: sono le knowledge area, ed è la mappa più utile per collegare tutto
+quello che hai già imparato in questa sezione.
+
+---
+
+## 8.12 Le aree di conoscenza (knowledge area)
+
+Oltre ai process group ("quando"), il PMBOK tradizionale (6th Edition)
+organizza il contenuto del project management in **10 aree di conoscenza**
+(knowledge area): temi trasversali che si applicano, in misura diversa,
+in tutti i process group. Questa è probabilmente la tabella più importante
+di questa sezione, perché **funziona da mappa**: quasi tutto quello che
+hai già imparato in 8.1-8.9 trova qui il suo "cassetto" ufficiale.
+
+| Area di conoscenza | Di cosa si occupa | Dove l'hai già vista nel corso |
+|---|---|---|
+| **Integrazione** (Integration Management) | Coordinare tutte le altre aree in un piano coerente; gestire le modifiche in modo controllato | 8.13 (project charter), 8.17 (triplo vincolo e change request) |
+| **Ambito** (Scope Management) | Definire cosa è (e cosa NON è) incluso nel progetto, ed evitare che cresca senza controllo | 8.14 (WBS e scope creep) |
+| **Tempi** (Schedule Management) | Pianificare attività, dipendenze e durate nel tempo | 8.6 (pianificazione a più livelli), 8.15 (schedule e critical path) |
+| **Costi** (Cost Management) | Stimare, allocare e controllare il budget | 8.16 (EVM) |
+| **Qualità** (Quality Management) | Garantire che il risultato soddisfi gli standard richiesti | sezione 11 (quality gate nella pipeline CI/CD), 8.18 |
+| **Risorse** (Resource Management) | Gestire le persone e gli strumenti necessari al progetto | RACI (8.3), team ShopFacile |
+| **Comunicazione** (Communications Management) | Decidere cosa comunicare, a chi, con quale frequenza e formato | 8.9 (reportistica) |
+| **Rischi** (Risk Management) | Identificare, valutare e mitigare eventi incerti che possono impattare il progetto | 8.2 (RAID Log), 8.5 (rischio) |
+| **Approvvigionamenti** (Procurement Management) | Gestire fornitori esterni e contratti | 8.18 (es. il fornitore di pagamenti di ShopFacile) |
+| **Stakeholder** (Stakeholder Management) | Identificare e gestire le persone/gruppi con un interesse nel progetto | 8.1 (stakeholder) |
+
+> 💡 **Da notare**: leggendo la terza colonna, salta all'occhio che **non
+> stai imparando dieci concetti nuovi**. Stai scoprendo che gli strumenti
+> già usati con ShopFacile — RAID Log, RACI, reportistica, pianificazione a
+> livelli — sono, con un altro nome, esattamente le knowledge area del
+> PMBOK. È lo stesso terreno visto da due vocabolari diversi, non due
+> materie diverse.
+
+Un chiarimento importante sulla versione della guida: questa
+organizzazione in 5 process group e 10 knowledge area è quella della
+**PMBOK Guide, 6th Edition**. Con la **7th Edition** (2021) il PMI ha
+cambiato profondamente struttura, passando a **12 principi** e **8
+performance domain** (di cui parliamo nella sezione 8.20): le 10 knowledge
+area non sono "sbagliate" o sparite dal vocabolario del settore — restano
+un riferimento pratico molto diffuso e utile per organizzare le idee — ma
+non sono più l'ossatura ufficiale dell'ultima edizione della guida. Le
+riportiamo qui perché restano il modo più comune con cui i temi di project
+management vengono ancora insegnati e discussi nella pratica.
+
+Con questa mappa in mano, puoi ora ripartire dall'inizio del "ciclo di
+vita" di un progetto secondo il PMBOK: il documento che lo fa nascere
+ufficialmente, il project charter.
+
+---
+
+## 8.13 Il Project Charter: l'atto di nascita del progetto
+
+Se il process group di Avvio (8.11) è il momento in cui un progetto nasce
+ufficialmente, il **project charter** è il documento che lo certifica per
+scritto. È, in un certo senso, l'**atto di nascita del progetto**: prima
+che esista un charter approvato, formalmente il progetto non dovrebbe
+nemmeno iniziare (niente budget allocato, niente team assegnato in modo
+ufficiale).
+
+Un project charter, anche in versione semplice, contiene tipicamente:
+
+- **Obiettivi del progetto**: perché lo facciamo, cosa vogliamo ottenere.
+- **Scope di alto livello**: cosa è dentro e cosa è fuori dal progetto (in
+  poche righe, non nel dettaglio — quello arriva con la WBS, sezione 8.14).
+- **Stakeholder chiave**: chi ha un ruolo decisivo (si collega diretto a
+  8.1).
+- **Budget e tempi indicativi**: un ordine di grandezza, non ancora una
+  pianificazione dettagliata.
+- **Sponsor**: la persona (o il gruppo) che autorizza formalmente il
+  progetto e ne è responsabile finale davanti all'organizzazione.
+- **Criteri di successo**: come sapremo, alla fine, se il progetto ha
+  raggiunto l'obiettivo.
+
+Il charter viene tipicamente **approvato dallo sponsor** (o da chi ha il
+potere di allocare budget e risorse), non dal Project Manager stesso: chi
+gestisce il progetto lo scrive (o lo redige insieme allo sponsor), ma
+serve un'autorizzazione che venga "da sopra" per renderlo legittimo.
+
+> 🛠️ **Esempio pratico**: un project charter essenziale per ShopFacile,
+> per il progetto "nuovo modulo di pagamento" che hai già incontrato più
+> volte in questa sezione:
+>
+> | Campo | Contenuto |
+> |---|---|
+> | **Obiettivo** | Aggiungere un nuovo metodo di pagamento (carta di credito con autenticazione forte) per ridurre gli abbandoni al checkout |
+> | **Scope di alto livello** | Incluso: integrazione con il nuovo fornitore di pagamenti, test di sicurezza, rilascio in produzione. Escluso: rifacimento dell'intero flusso di checkout |
+> | **Stakeholder chiave** | Sara (Product Owner/business), team sicurezza interno, fornitore esterno di pagamenti |
+> | **Budget e tempi indicativi** | Circa 3 sprint, nessun costo aggiuntivo oltre l'abbonamento al servizio del fornitore |
+> | **Sponsor** | Il responsabile e-commerce dell'azienda che possiede ShopFacile |
+> | **Criteri di successo** | Il nuovo metodo di pagamento è disponibile in produzione, supera i test di sicurezza, e non introduce un aumento del tasso di errore al checkout |
+
+Da notare quanto questo charter sia in realtà "leggero": non è un
+documento di 40 pagine, ma un riassunto di una pagina che allinea tutti su
+obiettivo, confini e responsabilità **prima** di iniziare a lavorare. Una
+volta chiarito il "cosa e perché" a livello generale, il passo successivo
+è scomporlo in pezzi di lavoro gestibili: è il compito della WBS.
+
+---
+
+## 8.14 Scope e WBS (Work Breakdown Structure)
+
+Il charter definisce lo scope solo "a grandi linee". Il **Scope
+Management** (gestione dell'ambito) si occupa di renderlo preciso e di
+difenderlo nel tempo — perché il rischio più comune, in qualsiasi
+progetto, è che l'ambito cresca senza controllo: si chiama **scope creep**.
+
+> ⚠️ **Esempio concreto di scope creep**: lo sprint del team ShopFacile è
+> già iniziato con un obiettivo chiaro ("integrare il nuovo metodo di
+> pagamento"). A metà sprint, **Sara** chiede di aggiungere "già che ci
+> siamo, mostriamo anche lo storico delle transazioni nel profilo utente".
+> Presa isolatamente, la richiesta ha senso per il business — ma se viene
+> accettata senza discussione, senza rivalutare tempi o rimuovere altro
+> lavoro dallo sprint, è **scope creep**: lo scope cresce "di nascosto",
+> mettendo a rischio l'obiettivo originale dello sprint. La risposta
+> corretta non è "mai accettare nulla", ma **gestire la richiesta come una
+> change request** (la vedremo in 8.17): valutarla, e decidere insieme cosa
+> togliere o rimandare per farle spazio.
+
+Lo strumento principale del PMBOK per definire lo scope in modo preciso è
+la **WBS**, **Work Breakdown Structure** (struttura di scomposizione del
+lavoro): una scomposizione **gerarchica** del lavoro totale del progetto in
+parti sempre più piccole e gestibili, fino ad arrivare a "pacchetti di
+lavoro" (work package) stimabili e assegnabili.
+
+Un piccolo esempio di WBS per il progetto "modulo pagamenti" di ShopFacile:
+
+```
+1. Modulo pagamenti ShopFacile
+   1.1 Integrazione con il fornitore esterno
+       1.1.1 Configurazione ambiente di test del fornitore
+       1.1.2 Sviluppo del connettore di pagamento
+       1.1.3 Test di integrazione
+   1.2 Sicurezza
+       1.2.1 Test di sicurezza sui token di sessione
+       1.2.2 Revisione del team sicurezza interno
+   1.3 Interfaccia utente
+       1.3.1 Schermata di scelta del metodo di pagamento
+       1.3.2 Schermata di conferma pagamento
+   1.4 Rilascio
+       1.4.1 Deploy in ambiente di staging
+       1.4.2 Go-live in produzione
+       1.4.3 Monitoraggio post-rilascio
+```
+
+Una domanda che ti farai subito, arrivato a questo punto: **la WBS non è
+semplicemente il Product Backlog che ho già visto in Scrum?** Sono
+strumenti simili nello spirito (scomporre il lavoro), ma diversi per
+natura:
+
+| | WBS | Product Backlog |
+|---|---|---|
+| **Struttura** | Gerarchica, ad albero (scomposizione del *lavoro*) | Lista ordinata e piatta (elenco di *elementi* di valore) |
+| **Stabilità** | Tende a essere definita presto e a cambiare poco | Cambia continuamente, per definizione (è "vivo") |
+| **Unità di scomposizione** | Attività/pacchetti di lavoro (cosa va fatto) | User Story/elementi di valore (cosa vuole l'utente) |
+| **Ordinamento** | Non ha un ordine di priorità intrinseco | È ordinato per priorità (in cima le cose più importanti) |
+| **Chi lo definisce tipicamente** | Project Manager/team, in fase di pianificazione | Product Owner (Sara, per ShopFacile), in modo continuativo |
+
+Nella pratica di un progetto ibrido (che vedremo meglio in 8.20), è comune
+usare **entrambi**: una WBS di alto livello per capire i grandi blocchi di
+lavoro e stimare budget/tempi complessivi, e un Product Backlog per la
+gestione operativa e continua del lavoro sprint per sprint. Definito
+**cosa** c'è da fare, il passo successivo naturale è capire **quando**:
+è il territorio dello schedule e del percorso critico.
+
+---
+
+## 8.15 Tempi: schedule, dipendenze e critical path
+
+Una volta scomposto il lavoro (WBS), il **Schedule Management** (gestione
+dei tempi) si occupa di ordinarlo nel tempo: stimare la durata di ogni
+attività, individuare le **dipendenze** tra attività (quali devono
+finire prima che un'altra possa iniziare) e costruire un piano temporale.
+
+Lo strumento visivo più classico per rappresentare questo piano è il
+**diagramma di Gantt**: un grafico a barre orizzontali, una per attività,
+posizionate nel tempo, che mostra a colpo d'occhio quando inizia e finisce
+ciascuna attività e come si sovrappongono. È utile per avere una vista
+d'insieme su progetti con attività numerose e dipendenze complesse, ma ha
+un limite importante in contesto Agile: un Gantt dettagliato **presuppone
+di conoscere in anticipo** durate e dipendenze precise, cosa che in un
+progetto iterativo (dove backlog e priorità cambiano sprint dopo sprint)
+è spesso un'illusione di precisione più che un piano realistico.
+
+Il concetto più utile da portare a casa da questa sottosezione è quello di
+**percorso critico** (critical path): la **sequenza di attività
+dipendenti tra loro che determina la durata minima totale del progetto**.
+Se un'attività sul percorso critico slitta, **slitta tutto il progetto**;
+se un'attività fuori dal percorso critico slitta (fino a un certo limite),
+il progetto nel suo complesso non ne risente.
+
+Quel "limite" ha un nome: **float** (o **slack**), cioè quanto una singola
+attività può slittare senza spostare la data finale del progetto. Le
+attività sul percorso critico hanno float pari a zero, per definizione:
+non hanno margine.
+
+**Esempio semplice con ShopFacile**: immagina solo 4 attività necessarie
+prima del go-live del modulo pagamenti, con le loro durate stimate e
+dipendenze:
+
+| Attività | Durata stimata | Dipende da |
+|---|---|---|
+| A — Sviluppo del connettore di pagamento | 5 giorni | — |
+| B — Test di sicurezza | 3 giorni | A |
+| C — Preparazione materiale di comunicazione per gli utenti | 2 giorni | — |
+| D — Go-live in produzione | 1 giorno | B e C |
+
+```mermaid
+flowchart LR
+    A["A. Sviluppo connettore<br/>5 giorni"] --> B["B. Test di sicurezza<br/>3 giorni"]
+    C["C. Materiale comunicazione<br/>2 giorni"] --> D["D. Go-live<br/>1 giorno"]
+    B --> D
+```
+
+Il percorso A → B → D dura 5 + 3 + 1 = **9 giorni**. Il percorso C → D dura
+2 + 1 = **3 giorni**. Il percorso più lungo (quello che determina la durata
+minima del progetto) è **A → B → D, con 9 giorni**: questo è il percorso
+critico. L'attività C ha 6 giorni di float: può iniziare fino a 6 giorni
+più tardi (o richiedere 6 giorni in più del previsto) senza far slittare
+il go-live — mentre un solo giorno di ritardo su A o su B fa slittare
+l'intero progetto di un giorno.
+
+Quando ha senso questo tipo di analisi? Quando le attività sono poche,
+ben definite, con dipendenze chiare — tipicamente in progetti a scope
+fisso, con una data di consegna esterna vincolante (es. una normativa, un
+evento). In un contesto Agile continuo come lo sviluppo ordinario di
+ShopFacile, dove il lavoro è organizzato in backlog e sprint ricorrenti
+più che in un albero di attività con dipendenze rigide, il team **non
+calcola un percorso critico ogni sprint**: usa piuttosto la **velocity**
+(vista in 8.8) per stimare quanto lavoro completerà nei prossimi sprint.
+Il percorso critico resta utile soprattutto per **eventi puntuali con una
+scadenza esterna rigida** (un lancio in una data fissa, una scadenza
+legale), non per il flusso continuo di lavoro sprint dopo sprint.
+
+Sapere **quando** finirà un'attività, però, non dice ancora nulla su
+un'altra domanda altrettanto cruciale per uno sponsor: quanto sta
+costando, e se lo si sta facendo **al costo previsto**.
+
+---
+
+## 8.16 Costi e Earned Value Management (EVM)
+
+Dopo aver pianificato i tempi (8.15), la domanda naturale successiva è
+**quanto costa** e **se si sta rispettando il budget**: è il compito del
+**Cost Management** (gestione dei costi), che si occupa di stimare,
+allocare e controllare il budget del progetto. Il punto di partenza è la
+**baseline**: il piano di riferimento (quanto lavoro dovrebbe essere
+completato, a quale costo, a ogni punto nel tempo) rispetto al quale
+misurare poi lo scostamento reale.
+
+Il PMBOK propone una tecnica per misurare questo scostamento in modo
+integrato (non solo "quanto abbiamo speso", ma "quanto lavoro utile
+stiamo davvero producendo per quella spesa"): l'**Earned Value Management
+(EVM)**, gestione del valore realizzato. Si basa su tre misure di base,
+spiegate qui **senza formule complicate**, solo con il loro significato:
+
+- **PV — Planned Value** (valore pianificato): quanto lavoro **avremmo
+  dovuto** aver completato, a questo punto, secondo il piano originale —
+  espresso in valore economico (es. "a questo punto dovremmo aver
+  completato lavoro per 10.000 €").
+- **EV — Earned Value** (valore realizzato/guadagnato): quanto lavoro
+  **abbiamo davvero completato**, a questo punto, sempre espresso in
+  valore economico (non quanto abbiamo speso, ma quanto lavoro *utile* è
+  stato fatto).
+- **AC — Actual Cost** (costo reale): quanto **abbiamo davvero speso**,
+  a questo punto, per arrivare dove siamo.
+
+Da queste tre misure si ottengono due indicatori sintetici, con una
+formula semplice e un'interpretazione altrettanto semplice:
+
+- **SPI — Schedule Performance Index** = EV / PV → misura se siamo in
+  linea con i **tempi** pianificati.
+- **CPI — Cost Performance Index** = EV / AC → misura se siamo in linea
+  con i **costi** pianificati.
+
+In entrambi i casi: **un valore maggiore di 1 è positivo** (stiamo
+producendo più valore di quanto pianificato/speso), **un valore minore di
+1 è negativo** (siamo in ritardo o stiamo spendendo più del valore
+prodotto), **un valore vicino a 1 significa che siamo in linea col
+piano**.
+
+> 🛠️ **Esempio pratico numerico, con numeri tondi**: a metà del progetto
+> "modulo pagamenti" di ShopFacile, il piano prevedeva di aver completato
+> lavoro per un valore di **10.000 €** (PV = 10.000 €). Guardando cosa è
+> stato davvero consegnato (funzionalità completate e testate), il team
+> stima di aver prodotto un valore di **8.000 €** (EV = 8.000 €). I costi
+> effettivamente sostenuti finora (ore del team, costi del fornitore) sono
+> stati **9.000 €** (AC = 9.000 €).
+>
+> - **SPI = EV / PV = 8.000 / 10.000 = 0,8** → è **minore di 1**: il team
+>   è **in ritardo** rispetto al piano (ha completato meno lavoro di
+>   quanto previsto a questo punto).
+> - **CPI = EV / AC = 8.000 / 9.000 ≈ 0,89** → è **minore di 1**: il
+>   progetto sta **spendendo di più** del valore che sta producendo (per
+>   ogni euro speso, sta "tornando" meno di un euro di lavoro utile).
+>
+> Interpretazione in linguaggio semplice, quella che porteresti a Luca e
+> Sara: **il progetto è sia in ritardo sui tempi sia sopra budget rispetto
+> al valore prodotto** — un doppio segnale che richiede attenzione, non
+> necessariamente panico: può bastare capire *perché* (es. un imprevisto
+> tecnico) e decidere un'azione correttiva, come faresti con un rischio
+> nel RAID Log.
+
+Una nota di realismo, utile da avere chiara come futuro Junior PM: in
+**molti contesti Agile**, l'EVM completo (con tutte le formule e varianti
+del PMBOK) **non viene usato così com'è** — è pensato per progetti con una
+baseline dettagliata e stabile, che in Agile per definizione cambia sprint
+dopo sprint. Restano però **utilissimi i concetti sottostanti**: avere una
+baseline di riferimento (anche solo "quanti story point pensavamo di
+completare in questa release") e misurare regolarmente lo **scostamento**
+tra pianificato e reale è esattamente lo stesso principio che guida un
+burndown/burnup chart (8.7) — solo espresso in story point invece che in
+euro.
+
+---
+
+## 8.17 Il triplo vincolo e la gestione delle modifiche
+
+Fin qui abbiamo trattato scope (8.14), tempi (8.15) e costi (8.16) come
+tre variabili separate, ma in realtà sono profondamente collegate tra
+loro: è il concetto del **triplo vincolo** (triple constraint), uno dei
+concetti più citati del project management. **Ambito (scope), tempi e
+costi** sono legati tra loro come i lati di un triangolo — **non puoi
+cambiare uno senza che almeno un altro ne sia influenzato**, a parità di
+qualità del risultato (spesso rappresentata come un quarto elemento, al
+centro del triangolo, che tutti gli altri tre influenzano).
+
+> 💡 **Analogia**: pensa a una coperta di dimensioni fisse. Se la tiri
+> per coprire meglio le spalle (più scope), scoprirai i piedi (meno tempo
+> disponibile o più costo, oppure qualità più bassa se la tiri senza
+> aggiungere stoffa). Non esiste un modo di "tirare la coperta" che
+> allunghi tutti i lati contemporaneamente senza un costo da qualche
+> parte.
+
+Il comportamento del triangolo cambia in base a **cosa è fisso** nel tuo
+progetto:
+
+- **Progetto a scope fisso** (tipico di molti progetti PMP tradizionali,
+  es. una normativa da rispettare entro una data): lo scope non si
+  discute, quindi se emergono imprevisti si agisce su **tempi** o
+  **costi** (più persone, più tempo, o entrambi).
+- **Progetto a tempo fisso** (tipico di uno sprint Scrum): la data non si
+  discute (lo sprint dura quanto deciso), quindi se il lavoro non ci sta,
+  si agisce sullo **scope** — si riduce cosa entra nello sprint, non si
+  allunga lo sprint per farci stare tutto.
+
+Questo è esattamente il collegamento con Agile che vale la pena
+sottolineare: **in Scrum, lo scope è la variabile "elastica", mentre tempo
+(la durata dello sprint) e team sono fissi**. È l'esatto opposto
+dell'approccio "a scope fisso, tempi che si adattano" tipico di molta
+pianificazione tradizionale — ed è anche il motivo per cui lo scope creep
+(8.14) è un rischio particolarmente insidioso in Scrum: se qualcuno
+aggiunge scope senza togliere nulla, e il tempo non può allungarsi, l'unica
+variabile che cede silenziosamente è la qualità (corner cutting) o il
+carico di lavoro sostenibile del team.
+
+Quando una modifica a scope, tempi o costi viene proposta formalmente, il
+PMBOK la chiama **change request** (richiesta di modifica): non un
+cambiamento fatto "a braccio", ma una proposta che va **valutata prima di
+essere applicata**, guardando l'impatto su tutti i lati del triangolo. In
+progetti di dimensioni maggiori, questa valutazione passa da un **Change
+Control Board (CCB)**: un piccolo gruppo (spesso sponsor, PM, rappresentanti
+degli stakeholder principali) che approva o rifiuta le richieste di
+modifica più significative, in modo che non sia una sola persona a
+decidere unilateralmente di alterare l'ambito di un progetto già avviato.
+
+**Esempio pratico**: torna alla richiesta di Sara vista in 8.14 (aggiungere
+lo storico transazioni a metà sprint). In un progetto Agile ben gestito,
+questa richiesta non viene né accettata automaticamente né respinta
+seccamente: viene trattata come una piccola change request, discussa con
+il team (magari in una versione informale, senza un vero e proprio Change
+Control Board formale in un contesto così piccolo) — si valuta cosa
+togliere dallo sprint corrente per farle spazio, oppure si conferma che
+andrà nel prossimo Sprint Planning, aggiungendola al Product Backlog.
+Il principio del PMBOK (valutare prima di applicare) resta identico, anche
+se il "board" che decide, in ShopFacile, è semplicemente Luca e Sara
+insieme, non un comitato formale.
+
+Fin qui ambito, tempi e costi. Le altre knowledge area della tabella in
+8.12 — qualità, approvvigionamenti, comunicazione — meritano solo un
+completamento più breve, perché in gran parte le hai già incontrate altrove
+nel corso.
+
+---
+
+## 8.18 Qualità, approvvigionamenti e comunicazione secondo il PMBOK
+
+Tre aree di conoscenza del PMBOK che, a differenza di scope/tempi/costi,
+non richiedono un approfondimento lungo in questa sezione: le hai già
+viste (o le vedrai) altrove nel corso, e qui basta collegarle esplicitamente
+al vocabolario PMP.
+
+**Quality Management** (gestione della qualità) distingue due attività
+spesso confuse:
+
+- **Quality Assurance (QA)**: attività **preventive**, orientate al
+  processo — assicurarsi che il modo in cui si lavora produca qualità "per
+  costruzione" (es. standard di code review, test automatizzati previsti
+  dal processo).
+- **Quality Control (QC)**: attività **di verifica**, orientate al
+  prodotto — controllare che il singolo risultato concreto soddisfi i
+  requisiti (es. eseguire i test su una specifica funzionalità appena
+  sviluppata).
+
+In ShopFacile, questa distinzione ha un volto familiare: **Giulia**, nel
+suo ruolo di Developer/QA, incarna entrambe le attività — quando definisce
+insieme al team gli standard di test e code review sta facendo Quality
+Assurance; quando verifica concretamente che una funzionalità superi i
+test prima del rilascio sta facendo Quality Control. E i **quality gate**
+della pipeline CI/CD, che hai visto (o vedrai) nella sezione 11, sono
+proprio l'automazione del Quality Control: un controllo oggettivo e
+ripetibile, al posto di un giudizio manuale ogni volta.
+
+**Procurement Management** (gestione degli approvvigionamenti) riguarda i
+rapporti con **fornitori esterni**: contratti, criteri di scelta,
+gestione della relazione. Il caso più concreto in ShopFacile è il
+**fornitore esterno del servizio di pagamento**, già incontrato più volte
+in questa sezione (nel charter di 8.13, nella WBS di 8.14): non è parte
+del team ShopFacile, ma il progetto dipende dal suo servizio, dai suoi
+tempi di integrazione e dal contratto che regola cosa succede se qualcosa
+va storto (es. livelli di servizio garantiti, SLA — Service Level
+Agreement). Gestire bene questa
+relazione è project management, anche se non scrivi una riga di codice.
+
+**Communications Management** (gestione della comunicazione) è l'area che
+hai già visto in dettaglio in **8.9**: un piano di comunicazione — anche
+informale — dovrebbe chiarire, per ogni tipo di stakeholder, **cosa**
+comunicare, **con quale frequenza**, **con quale livello di dettaglio** e
+**attraverso quale canale**. Il PMBOK formalizza esattamente questo, sotto
+il nome di communication management plan.
+
+Con qualità, approvvigionamenti e comunicazione richiamati al loro posto
+nel vocabolario PMBOK, resta un'ultima fase del ciclo di vita del progetto
+da collegare a qualcosa che già conosci molto bene: la chiusura.
+
+---
+
+## 8.19 Chiusura del progetto e lessons learned
+
+Il process group di Chiusura (8.11) non è solo "il progetto è finito,
+si passa al prossimo": il PMBOK lo tratta come un momento formale, con
+attività precise:
+
+- **Accettazione del deliverable**: qualcuno con l'autorità per farlo (lo
+  sponsor, il cliente) verifica esplicitamente che il risultato consegnato
+  soddisfi i criteri di successo definiti nel charter (8.13) — senza questa
+  accettazione formale, un progetto rischia di restare in un limbo dove
+  "sembra finito" ma nessuno lo ha davvero confermato.
+- **Archiviazione**: documentazione, decisioni prese, contratti chiusi
+  vengono organizzati e conservati, così che chi lavorerà su un progetto
+  simile in futuro possa ritrovarli.
+- **Lessons learned** (lezioni apprese): un momento dedicato a chiedersi,
+  collettivamente, cosa ha funzionato e cosa no durante il progetto, per
+  fare meglio la prossima volta.
+
+Ed è qui che arriva il collegamento più diretto con tutto ciò che hai già
+imparato su Scrum (sezione 6): le **lessons learned del PMBOK e la Sprint
+Retrospective sono, nella sostanza, lo stesso principio**, applicato con
+una cadenza diversa. La Retrospective la fai alla fine di ogni sprint
+(ogni 1-4 settimane); le lessons learned del PMBOK si fanno tipicamente
+alla fine di un intero progetto (mesi). Non sono due tecniche diverse: è
+la stessa domanda — "cosa impariamo da questa esperienza per la prossima?"
+— fatta a due zoom diversi. Un team maturo, in un contesto ibrido, fa
+entrambe le cose: retrospettive frequenti per correggere la rotta sprint
+dopo sprint, e una revisione più ampia a fine progetto (o release) per
+cogliere pattern che si notano solo su un orizzonte più lungo.
+
+**Esempio pratico**: alla chiusura del progetto "modulo pagamenti" di
+ShopFacile, oltre alla retrospettiva dell'ultimo sprint (focalizzata sugli
+ultimi due settimane di lavoro), il team con Luca dedica un'ora a guardare
+l'intero progetto, dal charter iniziale al go-live: cosa ha funzionato
+bene (es. "coinvolgere il team sicurezza fin dall'inizio ha evitato
+ritardi"), cosa ha funzionato male (es. "abbiamo sottostimato il tempo
+di integrazione con il fornitore esterno di due settimane"), e cosa portare
+nel prossimo progetto simile (es. "la prossima volta, chiediamo una stima
+di integrazione al fornitore prima di fissare il budget nel charter").
+
+Con l'intero ciclo di vita del progetto — dal charter alla chiusura —
+ora collegato al vocabolario Agile che già conoscevi, resta una domanda di
+sintesi da affrontare esplicitamente: come convivono, davvero, nella
+pratica di un'azienda reale, PMP e Agile?
+
+---
+
+## 8.20 PMP e Agile: come convivono davvero
+
+Hai visto, sottosezione dopo sottosezione, che quasi ogni concetto del
+PMBOK ha un corrispettivo (o un parente stretto) nel vocabolario Agile già
+noto. Vale la pena riassumerlo in una tabella di "traduzione", utile da
+tenere a mente quando ti troverai in una riunione dove qualcuno usa termini
+PMP e qualcun altro termini Scrum per parlare, in fondo, delle stesse cose:
+
+| Termine PMP/PMBOK | Corrispettivo Agile/Scrum | Nota |
+|---|---|---|
+| Project Charter | Product Vision | Entrambi rispondono a "perché lo facciamo e cosa vogliamo ottenere" |
+| WBS (Work Breakdown Structure) | Product Backlog | Entrambi scompongono il lavoro, ma con struttura e stabilità diverse (8.14) |
+| Diagramma di Gantt | Roadmap / Release Plan | Entrambi mostrano una vista nel tempo, ma il Gantt è più rigido e dettagliato |
+| Project Manager | Scrum Master + Product Owner | Nel PMBOK tradizionale un solo ruolo copre "processo" e "priorità del business"; in Scrum sono due ruoli distinti |
+| Earned Value Management (SPI/CPI) | Velocity / Burndown-Burnup | Lo SPI ha un analogo ragionevole (scostamento sui tempi/quantità di lavoro); il CPI no — vedi nota sotto |
+| Change Control Board | Sprint Planning / Product Owner che ri-prioritizza il backlog | Entrambi sono il "filtro" che decide se una modifica entra nel lavoro pianificato |
+| Lessons Learned | Sprint Retrospective | Stesso principio, cadenza diversa (8.19) |
+
+> ⚠️ **Attenzione a non forzare l'equivalenza**: l'analogia EVM ↔
+> velocity/burndown funziona bene per lo **SPI**, perché sia lo SPI sia il
+> burndown/burnup misurano uno scostamento su tempi e quantità di lavoro.
+> Non funziona per il **CPI** (EV/AC): velocity e burndown non tracciano
+> alcun costo, perché in un team stabile il costo per sprint è
+> praticamente fisso indipendentemente dai punti completati. Il CPI, in
+> Agile, semplicemente non ha un vero corrispettivo.
+
+Va detto con chiarezza, perché è la sintesi più utile di tutta questa
+sezione: **nella pratica quotidiana di molte aziende reali, non esiste
+"o PMP o Agile"**. Esiste un **approccio ibrido**: si usa il linguaggio e
+alcuni strumenti PMBOK per parlare con il management e per governare
+budget, contratti con fornitori esterni e reportistica verso l'alto, e si
+lavora concretamente in sprint, con backlog e retrospettive, per la
+gestione quotidiana del team. Non è un compromesso "a metà" imperfetto: è
+semplicemente il riconoscimento che strumenti diversi servono bene a scopi
+diversi.
+
+Questo, non a caso, è anche la direzione presa dal PMI stesso con la
+**PMBOK Guide, 7th Edition** (2021): invece di imporre un solo set di
+processi, la guida più recente si basa su **12 principi** generali (es.
+"essere un guardiano diligente e rispettoso", "adattarsi in base al
+contesto") e **8 performance domain** (aree di prestazione, come
+stakeholder, pianificazione, incertezza), pensati per essere applicabili
+sia a progetti pianificati in anticipo sia a progetti gestiti in modo
+Agile/iterativo. È un segnale chiaro: anche il PMI riconosce che "un solo
+metodo per tutti i progetti" non è più un'idea sostenibile.
+
+Cosa conviene sapere, in concreto, a un Junior Project Manager (o Scrum
+Master) che lavora in un team DevOps come quello di ShopFacile?
+
+- Conoscere il **vocabolario PMP** ti permette di comunicare con manager,
+  clienti o fornitori che lo usano abitualmente, senza dover "tradurre"
+  ogni volta da zero.
+- Gli **strumenti pratici** (RAID Log, RACI, stakeholder mapping, piano di
+  comunicazione) sono utili **indipendentemente** dal metodo scelto per il
+  lavoro quotidiano del team.
+- Non è necessario (né sempre utile) applicare l'EVM completo o un Gantt
+  dettagliato in un team Agile maturo — ma è utile **sapere cosa sono**,
+  per riconoscerli quando un cliente o un altro reparto li richiede.
+- Il tuo valore, come Junior PM/Scrum Master, è nella capacità di
+  **muoverti tra i due mondi**: parlare "PMP" quando serve rassicurare lo
+  sponsor con numeri e milestone, parlare "Agile" quando serve coordinare
+  il lavoro quotidiano del team — sapendo che, sotto il vocabolario
+  diverso, il problema che stai risolvendo è quasi sempre lo stesso.
+
+---
+
+## 8.21 Riepilogo
 
 In questa sezione hai visto come i concetti di project management si
 inseriscano in un contesto Agile/DevOps, senza contraddire ciò che hai
@@ -606,6 +1303,38 @@ progetto nel suo insieme:
   con criterio;
 - la **reportistica** ti insegna che comunicare bene significa adattare il
   dettaglio a chi ascolta, non ripetere sempre lo stesso messaggio.
+
+Hai poi collegato tutto questo al vocabolario più formale e riconosciuto a
+livello internazionale del **PMI**, la **PMBOK Guide** e la certificazione
+**PMP**, scoprendo che non è un metodo alternativo e in conflitto con
+Agile, ma una cassetta degli attrezzi con cui parlare la stessa lingua di
+manager, clienti e fornitori:
+
+- i **5 process group** (Avvio, Pianificazione, Esecuzione, Monitoraggio e
+  Controllo, Chiusura) descrivono attività che si ripetono, non fasi
+  rigide — e si ritrovano, in piccolo, dentro ogni sprint;
+- le **10 knowledge area** del PMBOK 6 (Integrazione, Ambito, Tempi,
+  Costi, Qualità, Risorse, Comunicazione, Rischi, Approvvigionamenti,
+  Stakeholder) sono, di fatto, gli stessi temi già visti in questa
+  sezione, solo con un nome più formale;
+- il **project charter** è l'atto di nascita del progetto, la **WBS** ne
+  scompone il lavoro (in modo diverso da un Product Backlog), e insieme
+  raccontano il "cosa" e il "quanto" del progetto;
+- **schedule, percorso critico ed Earned Value Management** offrono un
+  modo per misurare tempi e costi in modo rigoroso, utile soprattutto per
+  scadenze esterne fisse, anche se in Agile il loro ruolo è spesso preso
+  dalla velocity e dal burndown;
+- il **triplo vincolo** (ambito, tempi, costi) e le **change request**
+  spiegano perché una modifica non è mai "gratis", e perché in Scrum è lo
+  scope — non il tempo — la variabile che si adatta;
+- **qualità, approvvigionamenti e comunicazione** completano la mappa,
+  collegandosi rispettivamente ai quality gate della pipeline, ai
+  fornitori esterni e alla reportistica già vista;
+- la **chiusura del progetto** e le **lessons learned** sono, in fondo,
+  la stessa idea della Sprint Retrospective, con una cadenza più ampia;
+- l'**approccio ibrido** — usare il vocabolario PMP per governare budget e
+  stakeholder, e il metodo Agile per il lavoro quotidiano del team — è la
+  realtà di gran parte delle aziende in cui lavorerai.
 
 Nelle prossime sezioni vedrai come molti di questi concetti si traducano in
 strumenti concreti: la cultura DevOps (sezione 9) e la piattaforma Azure
@@ -686,17 +1415,69 @@ strumento conta meno del ragionamento che ci metti dietro.
    deve essere un'azione concreta e verificabile (es. "richiedere conferma
    scritta entro una data", non "stare più attenti alle dipendenze").
 
+7. **Scrivi un mini project charter.** Scegli un progetto software
+   semplice (può essere lo stesso "app per prenotare turni in palestra"
+   usato nell'esercizio 1, o un progetto tuo) e compila le sei voci viste
+   nella sezione 8.13 (obiettivo, scope di alto livello, stakeholder
+   chiave, budget/tempi indicativi, sponsor, criteri di successo) in non
+   più di una pagina.
+   ✅ **Come verificare**: fai leggere solo la riga "criteri di successo" a
+   qualcuno che non conosce il progetto: deve capire, da quella riga sola,
+   come si misurerà se il progetto ha funzionato. Se non ci riesce, il
+   criterio è troppo vago (es. "andare bene" non è un criterio verificabile).
+
+8. **Disegna una WBS a 2 livelli.** Scegli una funzionalità software
+   di media complessità (es. "sistema di recensioni prodotto" per
+   ShopFacile) e scomponila in una struttura gerarchica di almeno 3 rami
+   principali, ciascuno con 2-3 sotto-attività, sul modello dell'esempio
+   della sezione 8.14.
+   ✅ **Come verificare**: ogni "foglia" della tua WBS (l'ultimo livello di
+   scomposizione) deve essere un'attività che una singola persona potrebbe
+   stimare in giorni, non settimane. Se non riesci a stimarla, scomponila
+   ancora.
+
+9. **Calcola SPI e CPI su dati forniti.** Un progetto ha una PV (Planned
+   Value) di 20.000 €, un EV (Earned Value) di 15.000 € e un AC (Actual
+   Cost) di 18.000 €. Calcola SPI e CPI e scrivi, in 2-3 righe, cosa
+   diresti a uno sponsor che ti chiede "come va il progetto?", usando
+   entrambi gli indicatori.
+   ✅ **Come verificare**: SPI = 15.000/20.000 = 0,75 (in ritardo sui tempi);
+   CPI = 15.000/18.000 ≈ 0,83 (sopra budget rispetto al valore prodotto).
+   Se la tua risposta allo sponsor cita solo uno dei due numeri, rileggi la
+   sezione 8.16: i due indicatori raccontano cose diverse (tempi vs costi)
+   e vanno letti insieme, come i KPI della sezione 8.8.
+
+10. **Traduci 5 termini tra vocabolario PMP e vocabolario Agile.** Usando
+    la tabella della sezione 8.20 come riferimento (ma senza guardarla
+    mentre rispondi), scrivi a memoria il corrispettivo Agile di: Project
+    Charter, WBS, Change Control Board, Earned Value Management, Lessons
+    Learned. Per ciascuna coppia, scrivi anche una riga su **cosa cambia**
+    tra i due (non solo il nome diverso).
+    ✅ **Come verificare**: controlla le tue risposte con la tabella della
+    sezione 8.20. Se per una coppia non riesci a scrivere "cosa cambia" (e
+    ti limiti a dire che sono "la stessa cosa con un altro nome"), rileggi
+    la sottosezione corrispondente: quasi sempre c'è una differenza
+    concreta (es. struttura, stabilità, chi decide).
+
 ---
 
 ## 🔗 Collegamenti
 
+- [5. Agile](../05-agile/README.md) — i principi che spiegano perché, in un contesto Agile, lo scope è la variabile che si adatta e non il tempo
+- [6. Scrum](../06-scrum/README.md) — i ruoli (Scrum Master, Product Owner) e la Sprint Retrospective che dialogano con Project Manager, sponsor e lessons learned del PMBOK
 - [9. DevOps](../09-devops/README.md) — la cultura e le pratiche che rendono possibile un monitoraggio continuo e KPI come deployment frequency e MTTR
 - [10. Azure DevOps](../10-azure-devops/README.md) — dove RACI, RAID Log, burndown chart e dashboard diventano strumenti concreti da usare ogni giorno
+- [11. CI/CD](../11-ci-cd/README.md) — i quality gate della pipeline come automazione concreta del Quality Control visto in 8.18
+- [16. Glossario](../16-glossario/README.md) — le definizioni sintetiche di RAID Log, RACI, milestone, change request e degli altri termini incontrati in questa sezione
 
 ## 📚 Risorse
 
 - [PMI — Project Management Institute](https://www.pmi.org/)
 - [PMBOK Guide — panoramica](https://www.pmi.org/pmbok-guide-standards)
+- PMBOK Guide, 7th Edition (2021) — l'edizione più recente, basata su 12 principi e 8 performance domain invece dei 5 process group/10 knowledge area della 6th Edition
+- PMI Standard for Project Management — lo standard incluso insieme alla PMBOK Guide 7th Edition, che ne definisce i principi generali
+- Certificazione PMP (Project Management Professional) — verifica sempre i requisiti aggiornati (ore di esperienza, formazione, esame) direttamente sul sito PMI, perché cambiano periodicamente
+- Certificazione PMI-ACP (Agile Certified Practitioner) — la certificazione del PMI dedicata specificamente all'Agile
 - [Atlassian — Guida ai KPI Agile](https://www.atlassian.com/agile/project-management/metrics)
 - [Atlassian — Cos'è un RACI Chart](https://www.atlassian.com/work-management/project-management/raci-chart)
 - [Atlassian — Stakeholder analysis](https://www.atlassian.com/work-management/project-management/stakeholder-analysis)

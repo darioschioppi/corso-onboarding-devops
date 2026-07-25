@@ -35,6 +35,9 @@ Tutto comincia dai **Requisiti (funzionali e non funzionali)** che descrivono co
 ### Come si organizza il lavoro
 Il **Manifesto Agile** e il **Mindset Agile** superano il **Waterfall** tradizionale con due framework operativi concreti. Nello Scrum, il **Product Owner** cura il **Product Backlog**, da cui il team seleziona in **Sprint Planning** le voci dello **Sprint Backlog** per ogni **Sprint**, sincronizzandosi nel **Daily Scrum** e chiudendo con la **Sprint Review** e la **Sprint Retrospective**; il risultato è un **Increment** che rispetta la **Definition of Done (DoD)** (ed è entrato in sprint solo se soddisfaceva la **Definition of Ready (DoR)**), mentre lo **Scrum Master** facilita tutto questo. Nel Kanban lo stesso lavoro scorre su una **Board Kanban** con il **WIP (Work In Progress)** limitato per colonna, misurato in **Lead Time** e **Cycle Time** (lo **Scrumban** mescola i due mondi); gli **Story Point** e la **Velocity** quantificano la capacità del team di Luca, mentre **KPI**, **Milestone**, **RACI**, **RAID Log**, il **Rischio** e gli **Stakeholder**, insieme a **Burndown Chart** e **Burnup Chart**, tengono sotto controllo l'andamento del progetto nel suo complesso.
 
+### Come si governa un progetto (il vocabolario PMP)
+Il **PMI (Project Management Institute)** raccoglie nel **PMBOK Guide** il vocabolario tradizionale del Project Management, alla base della certificazione **PMP (Project Management Professional)**: tutto parte dal **Project Charter**, il documento con cui lo **Sponsor** autorizza formalmente il progetto, da cui si scompone lo **Scope (ambito)** in una **WBS (Work Breakdown Structure)** per capire tutto il lavoro da fare. Da qui si costruisce la schedulazione, individuando il **Critical Path (percorso critico)** e rappresentandolo in un **Diagramma di Gantt**, mentre l'avanzamento viene controllato con l'**EVM (Earned Value Management)** attraverso gli indici **SPI (Schedule Performance Index)** e **CPI (Cost Performance Index)**, sempre nel rispetto del **Triplo vincolo (triple constraint)** tra tempo, costo e ambito. Ogni variazione passa da una **Change Request (richiesta di modifica)** formale, proprio per evitare lo **Scope Creep**; a fine progetto, le **Lessons Learned** chiudono il cerchio, raccogliendo cosa ha funzionato e cosa no. Questo vocabolario più formale — pensato originariamente per progetti pianificati per fasi — si sovrappone e convive con quello Agile visto sopra (**Product Backlog**, **Sprint Retrospective**, **Velocity**): nella pratica quotidiana di molti team, incluso quello di ShopFacile, i due mondi si combinano in un **Approccio ibrido (hybrid)**, usando gli strumenti PMP per la visione d'insieme e di lungo periodo e Scrum/Kanban per il lavoro operativo di ogni sprint.
+
 ### Come il codice arriva agli utenti
 Quando una Merge Request supera la Code Review ed entra nel branch principale, un **Trigger** avvia la **Pipeline**: build, test e poi il **Quality Gate**, il controllo automatico che blocca l'avanzamento se la qualità non basta. Se tutto va bene, la pipeline produce un **Artifact (build)** che viene promosso dall'**Ambiente di Sviluppo** all'**Ambiente di Test/QA**, poi allo **Staging** e infine alla **Produzione** tramite il **Deploy/Rilascio**; le pratiche di **CI (Continuous Integration)** e **Continuous Delivery**/**Continuous Deployment** sono ciò che rende questo percorso frequente e automatico invece che manuale e raro. Se qualcosa va storto dopo il rilascio, il **Rollback** riporta rapidamente alla versione precedente.
 
@@ -81,6 +84,9 @@ Un ambiente separato da quello di sviluppo, usato per verificare (Quality Assura
 ### API
 Sigla di Application Programming Interface: è un insieme di regole che permette a due programmi di "parlarsi" e scambiarsi informazioni, senza che uno debba conoscere i dettagli interni dell'altro. Pensala come un menu di un ristorante: tu scegli una voce (una richiesta) e la cucina (il sistema) ti restituisce il piatto (la risposta). → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### Approccio ibrido (hybrid)
+Un modo di gestire un progetto che unisce elementi del Project Management tradizionale (quello descritto da PMP e PMBOK Guide) con le pratiche Agile viste nelle sezioni precedenti, usando lo strumento più adatto a ogni situazione invece di seguire un solo metodo in modo rigido. → approfondito nella sezione 8 (Project Management). Si collega a: **PMBOK Guide** (il vocabolario tradizionale) e **Mindset Agile** (il vocabolario iterativo con cui qui convive).
+
 ### Artifact (build)
 Il "prodotto finito" generato da una pipeline dopo aver compilato e testato il codice: ad esempio un file eseguibile, un pacchetto installabile o un'immagine Docker pronta per essere distribuita. È diverso dagli Artifacts di Azure DevOps, che sono il servizio usato per conservarlo. → approfondito nella sezione 11 (CI/CD). Si collega a: **Pipeline** (che lo produce) e **Deploy/Rilascio** (che lo installa, identico, in ogni ambiente).
 
@@ -120,6 +126,9 @@ Un grafico simile al Burndown Chart, ma che mostra il lavoro **già completato**
 ### CALMS
 Un acronimo (Culture, Automation, Lean, Measurement, Sharing) che riassume i cinque pilastri della cultura DevOps: cultura collaborativa, automazione, approccio lean, misurazione dei risultati e condivisione della conoscenza. → approfondito nella sezione 9 (DevOps).
 
+### Change Request (richiesta di modifica)
+Una proposta formale di modificare qualcosa già deciso nel progetto — ambito, tempi, costi o requisiti — che va valutata e approvata prima di essere applicata, invece di lasciare che il progetto cambi rotta senza controllo. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope Creep** (il rischio che corre un progetto se le richieste di modifica non passano da qui).
+
 ### CI (Continuous Integration)
 La pratica di integrare frequentemente (più volte al giorno) il proprio codice con quello del resto del team, verificando automaticamente con dei test che tutto continui a funzionare insieme. → approfondito nella sezione 9 (DevOps) e nella sezione 11 (CI/CD). Si collega a: **Pipeline** (il meccanismo che la rende concreta) e **Quality Gate** (il controllo che ne verifica l'esito).
 
@@ -147,8 +156,14 @@ La pratica che assicura che il software, dopo aver superato tutti i test automat
 ### Continuous Deployment
 Un'evoluzione della Continuous Delivery in cui ogni modifica che supera i test viene rilasciata automaticamente in produzione, senza intervento manuale. → approfondito nella sezione 9 (DevOps). Si collega a: **Continuous Delivery** (di cui è l'evoluzione automatica) e **Deploy/Rilascio** (che qui avviene senza intervento umano).
 
+### CPI (Cost Performance Index)
+Un indice dell'Earned Value Management che misura quanto efficientemente il progetto sta spendendo il proprio budget: si calcola dividendo il valore del lavoro effettivamente completato (EV) per il costo reale sostenuto (AC). Un CPI sopra 1 significa che il progetto sta spendendo meno di quanto pianificato per il lavoro fatto, sotto 1 significa che sta spendendo di più. → approfondito nella sezione 8 (Project Management). Si collega a: **EVM (Earned Value Management)** (il sistema di cui fa parte) e **SPI (Schedule Performance Index)** (l'indice analogo sui tempi).
+
 ### CPU
 Sigla di Central Processing Unit, il "cervello" del computer: il componente che esegue materialmente le istruzioni dei programmi, facendo calcoli a velocità elevatissima. → approfondito nella sezione 2 (Fondamenti di informatica).
+
+### Critical Path (percorso critico)
+La sequenza di attività di un progetto che, messe una dopo l'altra, determinano la durata minima totale del progetto: se anche una sola di queste attività si ritarda, l'intero progetto si ritarda. Le attività non sul percorso critico hanno invece un margine di ritardo (la "slack") che non impatta la data finale. → approfondito nella sezione 8 (Project Management). Si collega a: **Diagramma di Gantt** (lo strumento visivo con cui si rappresenta) e **WBS (Work Breakdown Structure)** (da cui derivano le attività su cui si calcola).
 
 ### Cultura DevOps
 Un modo di lavorare che abbatte le barriere tra chi sviluppa il software (Dev) e chi lo gestisce in produzione (Ops), promuovendo collaborazione, responsabilità condivisa e automazione. → approfondito nella sezione 9 (DevOps).
@@ -180,6 +195,9 @@ La fusione tra "Development" (sviluppo) e "Operations" (gestione dei sistemi): u
 ### DevSecOps
 Un'estensione del DevOps che integra la sicurezza (Security) in ogni fase del ciclo di vita del software, invece di considerarla solo un controllo finale prima del rilascio. → approfondito nella sezione 14 (Sicurezza).
 
+### Diagramma di Gantt
+Un grafico a barre orizzontali che mostra le attività di un progetto lungo una linea del tempo, con inizio, fine e dipendenze reciproche visibili a colpo d'occhio. È lo strumento visivo classico della pianificazione "a cascata" (Waterfall), ma resta utile anche in un contesto Agile per comunicare scadenze e dipendenze a stakeholder che non seguono la board del team giorno per giorno. → approfondito nella sezione 8 (Project Management). Si collega a: **Critical Path** (il percorso che il diagramma rende visibile) e **WBS (Work Breakdown Structure)** (le attività che il diagramma colloca nel tempo).
+
 ### Disco
 Il componente del computer dove i dati vengono salvati in modo permanente (anche da spento), a differenza della RAM che perde i dati quando il computer si spegne. → approfondito nella sezione 2 (Fondamenti di informatica).
 
@@ -191,6 +209,9 @@ Lo strumento più diffuso per creare, eseguire e distribuire Container, cioè ap
 
 ### Epic
 Un'attività molto grande, che raggruppa più User Story o Work Item legati a un unico obiettivo di ampio respiro, troppo estesa per essere completata in un singolo Sprint. → approfondito nella sezione 10 (Azure DevOps).
+
+### EVM (Earned Value Management)
+Una tecnica di Project Management che confronta tre valori — quanto lavoro era pianificato (PV, Planned Value), quanto è stato effettivamente completato in termini di valore (EV, Earned Value) e quanto è realmente costato (AC, Actual Cost) — per capire in modo oggettivo se un progetto è in linea con tempi e budget, invece di basarsi solo su una sensazione. → approfondito nella sezione 8 (Project Management). Si collega a: **CPI (Cost Performance Index)** e **SPI (Schedule Performance Index)** (i due indici che questa tecnica calcola).
 
 ### Feature
 Una funzionalità del software: una caratteristica o capacità concreta che l'utente può usare (ad esempio "possibilità di esportare un report in PDF"). → approfondito nella sezione 3 (Come nasce un software).
@@ -228,6 +249,9 @@ Una "segnalazione" aperta in un repository (su GitLab o Azure DevOps) per tracci
 ### JSON
 Sigla di JavaScript Object Notation: un formato di testo semplice e leggibile usato moltissimo per scambiare dati tra programmi, ad esempio nelle risposte delle API. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### Knowledge Area (area di conoscenza)
+Nell'impostazione del PMBOK Guide 6ª edizione, una delle 10 categorie in cui viene organizzata la conoscenza necessaria a gestire un progetto (ad esempio i costi, i tempi, la qualità, le comunicazioni). Ogni area raggruppa i processi legati a quel tema specifico, indipendentemente dalla fase del progetto in cui si applicano. → approfondito nella sezione 8 (Project Management). Si collega a: **Process Group (gruppo di processi)** (l'altra dimensione, complementare, con cui il PMBOK 6 organizza gli stessi processi).
+
 ### KPI
 Sigla di Key Performance Indicator: un indicatore numerico che misura quanto bene un progetto o un'attività sta raggiungendo i propri obiettivi (ad esempio il tempo medio di risposta a un cliente). → approfondito nella sezione 8 (Project Management).
 
@@ -236,6 +260,9 @@ Uno strumento che gestisce automaticamente grandi quantità di Container in prod
 
 ### Lead Time
 Il tempo totale che intercorre dal momento in cui un'attività viene **richiesta** al momento in cui viene **consegnata**, includendo anche l'attesa prima che il lavoro inizi davvero. → approfondito nella sezione 7 (Kanban).
+
+### Lessons Learned
+La raccolta strutturata, alla chiusura di un progetto (o di una sua fase), di cosa ha funzionato bene e cosa no, così da non ripetere gli stessi errori nei progetti successivi. → approfondito nella sezione 8 (Project Management). Si collega a: **Sprint Retrospective** (l'equivalente Agile, ma ripetuto a ogni Sprint invece che solo a fine progetto).
 
 ### Logging
 La pratica di registrare in modo continuo gli eventi che accadono in un sistema (errori, richieste, azioni) in file o strumenti dedicati, utile per capire cosa è successo quando qualcosa va storto. → approfondito nella sezione 9 (DevOps).
@@ -291,8 +318,23 @@ La pratica di definire i passaggi di una pipeline in un file di testo versionato
 ### Pipelines (Azure DevOps)
 Il servizio di Azure DevOps che permette di creare pipeline di Continuous Integration e Continuous Delivery per compilare, testare e rilasciare automaticamente le applicazioni. → approfondito nella sezione 10 (Azure DevOps).
 
+### PMBOK Guide
+Sigla di Project Management Body of Knowledge: la guida pubblicata dal PMI che raccoglie le conoscenze, i processi e le pratiche di riferimento del Project Management. Attenzione: le edizioni non sono tutte uguali — la 6ª edizione è basata su 5 gruppi di processi e 10 aree di conoscenza, mentre la 7ª edizione (2021) ha cambiato impostazione, basandosi su 12 principi e 8 performance domain. Quando qualcuno cita "il PMBOK" senza specificare l'edizione, vale la pena chiedere a quale delle due si riferisce. → approfondito nella sezione 8 (Project Management). Si collega a: **PMI (Project Management Institute)** (l'organizzazione che la pubblica) e **PMP (Project Management Professional)** (la certificazione che su questa guida si basa).
+
+### PMI (Project Management Institute)
+L'organizzazione internazionale di riferimento per il Project Management: pubblica il PMBOK Guide, rilascia certificazioni professionali (come il PMP) e promuove standard e buone pratiche condivise nel settore. → approfondito nella sezione 8 (Project Management).
+
+### PMP (Project Management Professional)
+Una certificazione professionale rilasciata dal PMI, tra le più riconosciute al mondo per chi gestisce progetti: attesta la conoscenza dei processi e delle pratiche descritte nel PMBOK Guide e un certo numero di anni di esperienza sul campo. Per i requisiti aggiornati (esperienza richiesta, costi, modalità d'esame) fai sempre riferimento al sito ufficiale del PMI, perché cambiano nel tempo. → approfondito nella sezione 8 (Project Management).
+
+### Process Group (gruppo di processi)
+Nell'impostazione del PMBOK Guide 6ª edizione, una delle 5 macro-fasi in cui si organizzano i processi di un progetto: Avvio, Pianificazione, Esecuzione, Monitoraggio e Controllo, Chiusura. Non sono fasi rigidamente sequenziali quanto categorie di attività che possono anche sovrapporsi nel tempo. → approfondito nella sezione 8 (Project Management). Si collega a: **Knowledge Area (area di conoscenza)** (l'altra dimensione con cui il PMBOK 6 organizza gli stessi processi).
+
 ### Processo
 Un programma in esecuzione sul computer, con la propria area di memoria dedicata: quando apri un'applicazione, il sistema operativo crea un processo per farla funzionare. → approfondito nella sezione 2 (Fondamenti di informatica).
+
+### Procurement (approvvigionamenti)
+L'attività di project management che riguarda l'acquisto di beni o servizi esterni necessari al progetto (ad esempio un fornitore, una licenza software, una consulenza specialistica), inclusa la scelta del fornitore e la gestione del contratto. → approfondito nella sezione 8 (Project Management).
 
 ### Product Backlog
 L'elenco ordinato di tutto ciò che potrebbe essere fatto su un prodotto: funzionalità, correzioni, miglioramenti. È gestito dal Product Owner e cambia continuamente in base alle priorità. → approfondito nella sezione 6 (Scrum). Si collega a: **Product Owner** (che lo gestisce) e **Sprint Backlog** (il sottoinsieme selezionato per lo sprint corrente).
@@ -302,6 +344,9 @@ La persona responsabile di definire cosa deve essere costruito e in quale ordine
 
 ### Produzione
 L'ambiente "vero", quello effettivamente usato dagli utenti finali del software; è l'ultimo gradino dopo Sviluppo, Test/QA e Staging, e qui gli errori hanno un impatto reale. → approfondito nella sezione 15 (Ambienti di sviluppo).
+
+### Project Charter
+Il documento che autorizza formalmente l'esistenza di un progetto: definisce obiettivi, sponsor, vincoli principali e dà al project manager l'autorità per usare le risorse necessarie. È tipicamente uno dei primi documenti prodotti, nel gruppo di processi di Avvio. → approfondito nella sezione 8 (Project Management). Si collega a: **Sponsor** (chi lo firma e autorizza) e **Product Backlog** (l'equivalente Agile più operativo, che nasce dopo, una volta che il progetto è già autorizzato).
 
 ### Quality Gate
 Un controllo automatico inserito in una pipeline che blocca l'avanzamento del rilascio se certi criteri di qualità non sono soddisfatti (ad esempio troppi errori nei test o problemi di sicurezza rilevati). → approfondito nella sezione 11 (CI/CD). Si collega a: **CI (Continuous Integration)** (di cui è parte integrante) e **Artifact (build)** (che viene generato solo se il gate viene superato).
@@ -345,6 +390,12 @@ Sigla di Software as a Service: un modello cloud in cui usi direttamente un'appl
 ### Scalabilità verticale e orizzontale
 La capacità di un sistema di gestire più carico di lavoro: la scalabilità verticale significa potenziare la singola macchina (più CPU, più RAM), quella orizzontale significa aggiungere più macchine che si dividono il lavoro. → approfondito nella sezione 13 (Cloud).
 
+### Scope (ambito)
+L'insieme di tutto ciò che un progetto deve produrre (e, implicitamente, tutto ciò che invece resta fuori). Definire bene lo scope all'inizio, e proteggerlo con le Change Request, è uno dei compiti più importanti del project management tradizionale. → approfondito nella sezione 8 (Project Management). Si collega a: **WBS (Work Breakdown Structure)** (lo strumento con cui lo scope viene scomposto in attività) e **Scope Creep** (il rischio che corre se non viene controllato).
+
+### Scope Creep
+L'espansione incontrollata dell'ambito (scope) di un progetto, quando si aggiungono via via piccole richieste "non concordate ufficialmente" senza passare da una Change Request, finché il progetto finisce per fare molto più di quanto pianificato, con tempi e costi che ne risentono. → approfondito nella sezione 8 (Project Management). Si collega a: **Change Request (richiesta di modifica)** (il meccanismo che serve a prevenirlo) e **Scope (ambito)** (ciò che si espande).
+
 ### Scrum Master
 La persona che facilita l'applicazione di Scrum nel team, rimuove gli ostacoli che intralciano il lavoro e protegge il team da interferenze esterne, senza dare ordini diretti su cosa fare. → approfondito nella sezione 6 (Scrum).
 
@@ -359,6 +410,12 @@ Un modello cloud in cui scrivi solo il codice della funzione che ti serve e il f
 
 ### Sistema Operativo
 Il software di base che gestisce le risorse del computer (CPU, RAM, Disco) e permette a te e alle altre applicazioni di usarle, facendo da intermediario tra hardware e programmi. Esempi: Windows, macOS, Linux. → approfondito nella sezione 2 (Fondamenti di informatica).
+
+### SPI (Schedule Performance Index)
+Un indice dell'Earned Value Management che misura quanto il progetto è in linea con i tempi pianificati: si calcola dividendo il valore del lavoro effettivamente completato (EV) per il valore del lavoro che era pianificato a questo punto (PV). Un SPI sopra 1 significa che si è avanti rispetto al piano, sotto 1 significa che si è in ritardo. → approfondito nella sezione 8 (Project Management). Si collega a: **EVM (Earned Value Management)** (il sistema di cui fa parte) e **CPI (Cost Performance Index)** (l'indice analogo sui costi).
+
+### Sponsor
+La persona (o il ruolo) che finanzia il progetto e ne autorizza formalmente l'avvio, tipicamente firmando il Project Charter; è il principale punto di riferimento a cui il project manager rende conto sull'andamento generale. → approfondito nella sezione 8 (Project Management). Si collega a: **Project Charter** (il documento che firma) e **Stakeholder** (di cui è una figura specifica, con potere e interesse tipicamente molto alti).
 
 ### Sprint
 Un periodo di tempo fisso e breve (di solito 1-4 settimane) durante il quale il team Scrum lavora per completare un insieme di attività scelte dal Product Backlog, prodotto poi come Increment. → approfondito nella sezione 6 (Scrum). Si collega a: **Product Backlog** (da cui trae le attività) e **Increment** (il risultato concreto che produce).
@@ -402,6 +459,9 @@ Una "sotto-unità" di un Processo che può eseguire istruzioni in modo indipende
 ### Trigger
 L'evento che fa scattare automaticamente l'avvio di una Pipeline, ad esempio un nuovo Commit su un branch o l'apertura di una Merge Request. → approfondito nella sezione 11 (CI/CD).
 
+### Triplo vincolo (triple constraint)
+Il principio secondo cui un progetto è sempre limitato da tre fattori collegati tra loro — tempo, costo e ambito (scope), talvolta con la qualità come quarto vincolo aggiuntivo — e non si può cambiarne uno senza avere un effetto sugli altri: fare di più (scope) senza più tempo o più budget non è quasi mai possibile. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope (ambito)** (uno dei tre vertici del triangolo) e **Change Request (richiesta di modifica)** (lo strumento con cui si negozia consapevolmente uno spostamento tra i tre vincoli).
+
 ### Trunk Based Development
 Una pratica in cui tutti gli sviluppatori integrano il proprio codice molto frequentemente su un unico ramo principale (il "trunk"), evitando Branch di lunga durata e favorendo una forte automazione dei test. → approfondito nella sezione 4 (Git e GitLab).
 
@@ -419,6 +479,9 @@ Un "computer dentro il computer": un ambiente simulato dal software che si compo
 
 ### Waterfall
 Un approccio tradizionale alla gestione dei progetti in cui le fasi (analisi, progettazione, sviluppo, test, rilascio) si susseguono in modo lineare e sequenziale, una dopo l'altra, a differenza dell'iteratività di Agile. → approfondito nella sezione 5 (Agile).
+
+### WBS (Work Breakdown Structure)
+La scomposizione gerarchica di tutto il lavoro necessario a completare lo scope di un progetto, dai macro-obiettivi fino a singole attività gestibili e stimabili. È uno degli strumenti cardine della pianificazione tradizionale, e serve da base per stimare tempi e costi. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope (ambito)** (ciò che la WBS scompone) e **Product Backlog** (l'equivalente Agile, più flessibile e continuamente ri-prioritizzato invece che fissato all'inizio).
 
 ### WIP (Work In Progress)
 Il numero di attività che sono attualmente "in corso" in una Board Kanban; limitare il WIP (fissando un tetto massimo per colonna) aiuta il team a concentrarsi e a completare il lavoro più rapidamente invece di iniziarne troppo in parallelo. → approfondito nella sezione 7 (Kanban).

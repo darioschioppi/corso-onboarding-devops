@@ -4,7 +4,7 @@
 > 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/18-libri-consigliati.pdf)** — utile per la stampa o la lettura offline.
 
 
-Le sezioni da 1 a 17 di questo corso ti hanno già dato tutto ciò che ti serve per muovere i primi passi nel ruolo: i fondamenti tecnici, i framework Agile/Scrum, il Project Management e il mondo DevOps. Questa sezione è diversa dalle altre: non introduce concetti nuovi e obbligatori, ma raccoglie **12 libri di riferimento**, indicati direttamente dal responsabile del team, pensati per **approfondire con più calma e più profondità** ciò che nel corso hai visto in forma sintetica.
+Le sezioni da 1 a 17 di questo corso ti hanno già dato tutto ciò che ti serve per muovere i primi passi nel ruolo: i fondamenti tecnici, i framework Agile/Scrum, il Project Management (incluso il vocabolario PMP/PMBOK) e il mondo DevOps. Questa sezione è diversa dalle altre: non introduce concetti nuovi e obbligatori, ma raccoglie **15 libri e pubblicazioni di riferimento**, indicati direttamente dal responsabile del team, pensati per **approfondire con più calma e più profondità** ciò che nel corso hai visto in forma sintetica.
 
 ## La logica dei 5 livelli
 
@@ -100,6 +100,38 @@ Un libro sul project management che non segue la logica rigida del Waterfall uni
 - **Difficoltà**: Media.
 - **Tempo stimato**: 10-12 ore di lettura complessiva.
 
+### "A Guide to the Project Management Body of Knowledge (PMBOK Guide)" – Project Management Institute (PMI)
+
+La guida ufficiale del PMI, il testo normativo di riferimento dietro la certificazione PMP e dietro gran parte del vocabolario visto nelle sottosezioni PMP della sezione 8 (Project Charter, WBS, EVM, triplo vincolo...). Attenzione a un dettaglio importante: la 7ª edizione, quella attualmente in vigore, ha cambiato profondamente impostazione rispetto alla 6ª, basandosi su 12 principi e 8 performance domain invece che sui classici 5 gruppi di processi e le 10 aree di conoscenza — se trovi materiale (anche online) che parla ancora di questi ultimi, sappi che si riferisce alla 6ª edizione, tuttora molto citata nella pratica. Non è un libro da leggere in sequenza come un manuale narrativo: è pensato per la **consultazione**, un po' come un dizionario dei processi da cui pescare quando ti serve un dettaglio specifico.
+
+- **Quando leggerlo**: da consultare dopo le sottosezioni PMP della sezione 8 (Project Management), non da leggere in sequenza dall'inizio alla fine.
+- **Difficoltà**: Impegnativo (linguaggio normativo e denso, pensato per la consultazione più che per la lettura continua).
+- **Tempo stimato**: non è un tempo di lettura lineare — è un testo da tenere a portata di mano e consultare per argomento, secondo necessità.
+
+### "The Standard for Project Management" – Project Management Institute (PMI)
+
+Incluso nello stesso volume della 7ª edizione del PMBOK Guide, questo standard descrive in modo più conciso i principi generali su cui si basa la gestione di un progetto, indipendentemente dal settore o dalla metodologia adottata. È il punto di ingresso più leggero se vuoi farti un'idea dei principi alla base del PMP senza affrontare subito tutto il PMBOK Guide.
+
+- **Quando leggerlo**: consigliato come introduzione ai principi PMP, prima di un'eventuale consultazione più approfondita del PMBOK Guide.
+- **Difficoltà**: Media (più sintetico e meno tecnico del PMBOK Guide completo).
+- **Tempo stimato**: alcune ore per una prima lettura dei principi, ma resta soprattutto un testo a cui tornare quando serve.
+
+### "Agile Practice Guide" – Project Management Institute (PMI) e Agile Alliance
+
+Pubblicato dal PMI in collaborazione con Agile Alliance, questo testo affronta esattamente il tema dell'approccio ibrido visto a chiusura delle sottosezioni PMP della sezione 8: come far convivere il vocabolario tradizionale del Project Management con le pratiche Agile che hai già studiato nelle sezioni 5-7. È probabilmente il libro più utile di questo blocco per il tuo ruolo specifico, perché non chiede di scegliere tra i due mondi ma spiega concretamente come si integrano.
+
+- **Quando leggerlo**: consigliato subito dopo aver completato le sottosezioni PMP della sezione 8, per consolidare il collegamento con Agile/Scrum/Kanban.
+- **Difficoltà**: Media.
+- **Tempo stimato**: 6-8 ore di lettura complessiva.
+
+### "PMP Exam Prep" – Rita Mulcahy
+
+Uno dei manuali di preparazione all'esame PMP più diffusi e citati nel settore, pensato per chi vuole affrontare la certificazione in modo strutturato. Non è necessario per questo corso né per il tuo ruolo attuale, ma se in futuro valuterai la certificazione PMP (vedi i prossimi passi nella sezione 17) è uno dei testi più citati dalla community per prepararsi. Verifica sempre qual è l'edizione più recente disponibile: il PMI aggiorna periodicamente l'esame e i manuali di preparazione seguono questi aggiornamenti.
+
+- **Quando leggerlo**: solo se in futuro deciderai di intraprendere il percorso di certificazione PMP; non è collegato a una settimana specifica di questo piano di studio.
+- **Difficoltà**: Impegnativo (pensato per la preparazione a un esame professionale, non per una lettura divulgativa).
+- **Tempo stimato**: variabile in base all'edizione e al piano di studio personale per l'esame — non indicato qui per non riportare numeri non verificati.
+
 ### "The Phoenix Project" – Gene Kim, Kevin Behr, George Spafford
 
 Un romanzo aziendale (sì, è scritto come una storia, non come un manuale) che segue un IT manager alle prese con un progetto in crisi, mostrando in modo molto realistico le tensioni tra sviluppo, operations e business che la cultura DevOps cerca di risolvere. È probabilmente il libro più "riconoscibile" di questa lista per chi lavora nel team: molte delle dinamiche raccontate (rilasci in ritardo, colpe scaricate tra reparti, pressione degli stakeholder) sono facilmente riconducibili a episodi reali che osserverai. Fa da ponte naturale verso la sezione 9 (DevOps).
@@ -142,11 +174,15 @@ Un libro diverso dagli altri: qui la cultura DevOps non viene raccontata per ane
 | 6 | 2 – Agile | Scrum: The Art of Doing Twice the Work in Half the Time | Jeff Sutherland | Facile | 6-8 ore |
 | 7 | 2 – Agile | Essential Scrum | Kenneth Rubin | Media | 12-15 ore |
 | 8 | 3 – Project Management | Making Things Happen | Scott Berkun | Media | 10-12 ore |
-| 9 | 3 – Project Management | The Phoenix Project | Gene Kim, Kevin Behr, George Spafford | Facile | 8-10 ore |
-| 10 | 4 – DevOps | The DevOps Handbook | Gene Kim, Jez Humble, Patrick Debois, John Willis | Impegnativo | 15-18 ore |
-| 11 | 4 – DevOps | Accelerate | Nicole Forsgren, Jez Humble, Gene Kim | Impegnativo | 10-12 ore |
+| 9 | 3 – Project Management | A Guide to the Project Management Body of Knowledge (PMBOK Guide) | Project Management Institute (PMI) | Impegnativo | consultazione, non lettura lineare |
+| 10 | 3 – Project Management | The Standard for Project Management | Project Management Institute (PMI) | Media | alcune ore + consultazione |
+| 11 | 3 – Project Management | Agile Practice Guide | Project Management Institute (PMI) e Agile Alliance | Media | 6-8 ore |
+| 12 | 3 – Project Management | PMP Exam Prep | Rita Mulcahy | Impegnativo | variabile (preparazione esame) |
+| 13 | 3 – Project Management | The Phoenix Project | Gene Kim, Kevin Behr, George Spafford | Facile | 8-10 ore |
+| 14 | 4 – DevOps | The DevOps Handbook | Gene Kim, Jez Humble, Patrick Debois, John Willis | Impegnativo | 15-18 ore |
+| 15 | 4 – DevOps | Accelerate | Nicole Forsgren, Jez Humble, Gene Kim | Impegnativo | 10-12 ore |
 
-> 📌 **Nota importante**: questi 12 libri sono un **arricchimento facoltativo**, non un requisito per completare il corso o per essere operativo nel ruolo — ma sono **fortemente raccomandati** dal responsabile del team, perché offrono una profondità che nessun corso di onboarding può dare in poche settimane. Non c'è alcuna fretta: molti di questi libri richiedono decine di ore di lettura e hanno tutto il senso di essere letti **con calma, anche ben oltre le 8 settimane iniziali** del [Piano di studio](../17-piano-di-studio/README.md), magari uno al mese nei primi 6-12 mesi di lavoro. L'importante è tornare a questa lista ogni volta che un argomento del corso ti ha incuriosito e vuoi andare più a fondo.
+> 📌 **Nota importante**: questi 15 libri e pubblicazioni sono un **arricchimento facoltativo**, non un requisito per completare il corso o per essere operativo nel ruolo — ma sono **fortemente raccomandati** dal responsabile del team, perché offrono una profondità che nessun corso di onboarding può dare in poche settimane. Non c'è alcuna fretta: molti di questi libri richiedono decine di ore di lettura e hanno tutto il senso di essere letti **con calma, anche ben oltre le 8 settimane iniziali** del [Piano di studio](../17-piano-di-studio/README.md), magari uno al mese nei primi 6-12 mesi di lavoro. L'importante è tornare a questa lista ogni volta che un argomento del corso ti ha incuriosito e vuoi andare più a fondo. Le pubblicazioni ufficiali del PMI (PMBOK Guide e The Standard for Project Management) sono testi normativi di consultazione: non serve leggerli in sequenza come gli altri, ma tenerli a portata di mano quando serve un dettaglio preciso sul vocabolario PMP.
 
 ---
 

@@ -10,7 +10,7 @@ Il piano che segue copre **8 settimane**. Non è un vincolo rigido: è una tracc
 
 ## Come usare questo piano
 
-- **È un percorso, non una gara.** Le ore indicate per ogni settimana (in media 6-10 ore) sono una stima per un neolaureato senza background informatico che studia part-time, in parallelo all'affiancamento quotidiano sul progetto. Se una settimana ti serve più tempo — è normalissimo, soprattutto per le sezioni 2 e 9, che sono le più dense — **rallenta**. È molto meglio arrivare alla settimana 8 con basi solide che aver "letto tutto" senza averlo capito.
+- **È un percorso, non una gara.** Le ore indicate per ogni settimana (in media 6-12 ore) sono una stima per un neolaureato senza background informatico che studia part-time, in parallelo all'affiancamento quotidiano sul progetto. Se una settimana ti serve più tempo — è normalissimo, soprattutto per le sezioni 2 e 9, e per la sezione 8 dopo l'aggiunta del vocabolario PMP/PMBOK, che sono le più dense — **rallenta**. È molto meglio arrivare alla settimana 8 con basi solide che aver "letto tutto" senza averlo capito.
 - **Le settimane si possono spostare, non solo comprimere.** Se il progetto ti mette in un contesto reale prima del previsto (es. partecipi a un Sprint Planning già alla settimana 2), va benissimo anticipare la lettura della sezione corrispondente: il piano è una guida, il contesto reale è il miglior maestro che hai.
 - **Il check-in con la tua collega è la parte più importante del piano**, non un'aggiunta facoltativa. Ogni settimana prevede almeno un momento di confronto (15-30 minuti bastano) in cui le racconti cosa hai capito, le fai le domande che ti sono rimaste in sospeso e — soprattutto — collega la teoria che hai letto a un esempio concreto del progetto ("quello che ho letto sulle user story, corrisponde a come scriviamo le card sul backlog?"). Senza questo passaggio, il rischio è restare con una conoscenza da manuale che non si aggancia mai alla pratica quotidiana.
 - **Gli esercizi pratici non sono opzionali.** Leggere una sezione ti dà il vocabolario; l'esercizio è quello che lo trasforma in competenza. Se salti gli esercizi per fare prima, arriverai alla fine del percorso con parole difficili ma poca sicurezza nell'usarle.
@@ -144,7 +144,7 @@ Sai spiegare, senza guardare gli appunti, a cosa serve ciascuno dei cinque event
 | | |
 |---|---|
 | **Argomenti** | [Sezione 7 — Kanban](../07-kanban/README.md) · [Sezione 8 — Project Management](../08-project-management/README.md) |
-| **Tempo stimato** | 6-8 ore |
+| **Tempo stimato** | 10-12 ore (la sezione 8 è cresciuta molto: oltre a stakeholder, RAID log e RACI, copre anche il vocabolario PMP/PMBOK — charter, WBS, tempi e costi — quindi mettici più tempo del previsto, specialmente se l'ambito PMP è del tutto nuovo per te) |
 
 **Esercizi pratici**
 
@@ -152,6 +152,9 @@ Sai spiegare, senza guardare gli appunti, a cosa serve ciascuno dei cinque event
 2. Crea, anche solo su carta o con un tool gratuito online, una board Kanban di prova con 5 card immaginarie e sposta manualmente una card lungo le colonne, calcolando a mano un ipotetico lead time e cycle time.
 3. Costruisci una tabella RACI di esempio (anche minimale, 4-5 righe) per un piccolo progetto immaginario, assegnando ruoli Responsible, Accountable, Consulted, Informed.
 4. Chiedi alla tua collega di farti vedere un report o una dashboard reale del progetto (burndown, RAID log, o simili) e provate insieme a leggerla.
+5. Scrivi un Project Charter minimale (anche solo mezza pagina) per un piccolo progetto immaginario: obiettivo, sponsor, vincoli principali.
+6. Prova a scomporre lo stesso progetto immaginario in una WBS di 2 livelli (macro-attività e sotto-attività), poi individua a occhio quale sequenza di attività ne determina la durata minima (il critical path).
+7. Con numeri inventati e semplici (es. PV = 1000, EV = 800, AC = 900), calcola a mano SPI e CPI e interpreta il risultato: il progetto immaginario è in anticipo o in ritardo? Sta spendendo di più o di meno del previsto?
 
 **Obiettivi di apprendimento**
 
@@ -160,11 +163,16 @@ Al termine della settimana devi saper:
 - descrivere la struttura di una board Kanban e a cosa serve il limite di WIP;
 - distinguere lead time e cycle time;
 - spiegare cos'è un RAID log e a cosa serve una matrice RACI;
-- descrivere almeno due KPI tipici di un progetto software e leggere un report/dashboard di base.
+- descrivere almeno due KPI tipici di un progetto software e leggere un report/dashboard di base;
+- spiegare a cosa serve un Project Charter e chi lo autorizza;
+- scomporre l'ambito (scope) di un piccolo progetto in una WBS, e riconoscere cos'è il critical path in un Diagramma di Gantt;
+- spiegare cos'è l'Earned Value Management e leggere gli indici SPI e CPI;
+- spiegare il triplo vincolo (tempo, costo, ambito) e perché una change request serve a evitare lo scope creep;
+- confrontare a grandi linee l'approccio PMP/PMBOK con quello Agile, e capire cosa significa "approccio ibrido".
 
 **Verifica finale della settimana**
 
-Sai spiegare a parole tue la differenza tra Sprint (Scrum) e flusso continuo (Kanban)? In quale scenario useresti l'uno o l'altro?
+Sai spiegare a parole tue la differenza tra Sprint (Scrum) e flusso continuo (Kanban)? In quale scenario useresti l'uno o l'altro? E sai spiegare, con un esempio, cosa significherebbe per il progetto ShopFacile un "approccio ibrido" che combina Project Charter e WBS con Sprint e Product Backlog?
 
 ---
 
@@ -271,6 +279,7 @@ Sai spiegare, usando il progetto come esempio, perché il codice passa attravers
 3. Fissa un colloquio conclusivo di 45-60 minuti con la tua collega Scrum Master/PM in cui **tu** guidi la conversazione: racconta con parole tue come funziona il progetto, dal punto di vista di processo (Scrum/Kanban) e di piattaforma (Azure DevOps, pipeline, ambienti). Fatti correggere dove serve.
 4. Scegli, guardando la sezione 18, un libro che approfondirai nei mesi successivi (non serve leggerlo entro questa settimana: è un impegno per dopo).
 5. Salva nei preferiti 3-4 risorse online dalla sezione 19 che userai come riferimento rapido nel lavoro quotidiano.
+6. Se il vocabolario PMP/PMBOK visto nella sezione 8 ti ha incuriosito, dai una prima occhiata (senza impegno) alle pagine ufficiali delle certificazioni PMI legate al Project Management (PMP, PMI-ACP) e a quella di Scrum.org/Scrum Alliance per il Professional Scrum Master: sono percorsi che potresti valutare più avanti nella carriera, non un requisito di questo corso. Per requisiti di ammissione, costi e formato d'esame aggiornati, fai sempre riferimento ai siti ufficiali (pmi.org, scrum.org) invece che a fonti terze, perché cambiano nel tempo.
 
 **Obiettivi di apprendimento**
 
@@ -294,7 +303,7 @@ Se dovessi spiegare in 5 minuti a un/una nuovo/a collega, arrivato/a oggi, "come
 | 1 | [Introduzione](../01-introduzione/README.md) · [Fondamenti di informatica](../02-fondamenti-informatica/README.md) | 8-10 ore | Docker in locale, schema client/server/DB |
 | 2 | [Come nasce un software](../03-come-nasce-un-software/README.md) · [Git e GitLab](../04-git-e-gitlab/README.md) | 7-9 ore | Repository, branch e merge request fittizia su GitLab |
 | 3 | [Agile](../05-agile/README.md) · [Scrum](../06-scrum/README.md) | 8-10 ore | Osservazione Sprint Planning/Daily, scrittura di 3 user story |
-| 4 | [Kanban](../07-kanban/README.md) · [Project Management](../08-project-management/README.md) | 6-8 ore | Board Kanban di prova, tabella RACI di esempio |
+| 4 | [Kanban](../07-kanban/README.md) · [Project Management](../08-project-management/README.md) | 10-12 ore | Board Kanban di prova, tabella RACI, Project Charter e WBS di esempio, calcolo di SPI/CPI |
 | 5 | [DevOps](../09-devops/README.md) | 8-10 ore | Osservazione dashboard di monitoring, modello CALMS applicato al progetto |
 | 6 | [Azure DevOps](../10-azure-devops/README.md) · [CI/CD](../11-ci-cd/README.md) | 8-10 ore | Osservazione pipeline reale e disegno dello schema |
 | 7 | [Architetture software](../12-architetture-software/README.md) · [Cloud](../13-cloud/README.md) · [Sicurezza](../14-sicurezza/README.md) · [Ambienti di sviluppo](../15-ambienti-di-sviluppo/README.md) | 8-10 ore | Mappatura architettura, cloud provider e ambienti reali del progetto |

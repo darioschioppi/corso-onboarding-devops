@@ -1,7 +1,7 @@
 # 10. Azure DevOps
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/10-azure-devops.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/10-azure-devops.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nelle sezioni precedenti hai visto tanti concetti "in teoria": cos'è una

@@ -1,7 +1,7 @@
 # 15. Ambienti di sviluppo
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/15-ambienti-di-sviluppo.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/15-ambienti-di-sviluppo.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione [11. CI/CD](../11-ci-cd/README.md) hai già incontrato il

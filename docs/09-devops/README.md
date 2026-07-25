@@ -1,7 +1,7 @@
 # 9. DevOps
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/09-devops.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/09-devops.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nelle sezioni precedenti hai imparato **come un team organizza il lavoro**

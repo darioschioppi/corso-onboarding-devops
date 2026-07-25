@@ -1,7 +1,7 @@
 # 4. Git e GitHub
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/04-git-e-github.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/04-git-e-github.pdf)** — utile per la stampa o la lettura offline.
 
 
 Se hai mai lavorato su un documento Word con altre persone, probabilmente

@@ -1,7 +1,7 @@
 # 3. Come nasce un software
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/03-come-nasce-un-software.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/03-come-nasce-un-software.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione precedente hai imparato cosa sono hardware, software, reti e altri concetti di base dell'informatica. Ora facciamo un passo avanti: come nasce, concretamente, un software? Chi lo progetta? Chi lo scrive? Chi decide quando è pronto per essere usato dalle persone?

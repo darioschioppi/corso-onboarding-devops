@@ -1,7 +1,7 @@
 # 2. Fondamenti di informatica
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/02-fondamenti-informatica.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/02-fondamenti-informatica.pdf)** — utile per la stampa o la lettura offline.
 
 
 Questa è una delle sezioni più importanti di tutto il corso. Non preoccuparti

@@ -1,7 +1,7 @@
 # 11. CI/CD
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/11-ci-cd.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/11-ci-cd.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione DevOps hai già incontrato i concetti di **Continuous

@@ -1,7 +1,7 @@
 # 7. Kanban
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/07-kanban.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/07-kanban.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione precedente hai visto Scrum: sprint a tempo fisso, ruoli

@@ -1,7 +1,7 @@
 # 13. Cloud
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/13-cloud.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/13-cloud.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione precedente hai visto come è "fatto" un software: monolite o

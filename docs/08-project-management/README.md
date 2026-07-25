@@ -1,7 +1,7 @@
 # 8. Project Management
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/08-project-management.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/08-project-management.pdf)** — utile per la stampa o la lettura offline.
 
 
 Hai già visto Agile, Scrum e Kanban: sai quindi **come** un team organizza

@@ -1,7 +1,7 @@
 # 19. Risorse online
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/19-risorse-online.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/19-risorse-online.pdf)** — utile per la stampa o la lettura offline.
 
 
 ## Come usare questa sezione

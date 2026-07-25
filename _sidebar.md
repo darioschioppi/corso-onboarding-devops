@@ -1,5 +1,5 @@
 - [🏠 Home](/)
-- [📚 Scarica corso completo (PDF)](pdf/corso-completo.pdf)
+- [📚 Scarica corso completo (PDF)](https://darioschioppi.github.io/corso-onboarding-devops/pdf/corso-completo.pdf)
 
 - **Corso**
   - [1. Introduzione](docs/01-introduzione/README.md)

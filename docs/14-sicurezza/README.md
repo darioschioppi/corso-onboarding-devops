@@ -1,7 +1,7 @@
 # 14. Sicurezza
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/14-sicurezza.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/14-sicurezza.pdf)** — utile per la stampa o la lettura offline.
 
 
 Fin qui hai visto come il codice viene scritto, integrato, testato e

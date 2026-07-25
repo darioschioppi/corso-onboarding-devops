@@ -1,7 +1,7 @@
 # 6. Scrum
 
 
-> 📄 **[Scarica questa sezione in PDF](../../pdf/06-scrum.pdf)** — utile per la stampa o la lettura offline.
+> 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/06-scrum.pdf)** — utile per la stampa o la lettura offline.
 
 
 Nella sezione precedente hai scoperto l'Agile come **filosofia**: un insieme

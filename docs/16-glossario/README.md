@@ -41,7 +41,7 @@ Una lavagna (fisica o digitale) divisa in colonne — tipicamente "Da fare", "In
 Il servizio di Azure DevOps che offre board Kanban, backlog e strumenti per pianificare e monitorare il lavoro del team, gestendo gli Work Item. → approfondito nella sezione 10 (Azure DevOps).
 
 ### Branch
-Una "linea di sviluppo" separata all'interno di un repository Git, che permette di lavorare su una modifica senza toccare il codice principale finché non è pronta. → approfondito nella sezione 4 (Git e GitHub).
+Una "linea di sviluppo" separata all'interno di un repository Git, che permette di lavorare su una modifica senza toccare il codice principale finché non è pronta. → approfondito nella sezione 4 (Git e GitLab).
 
 ### Branching
 La pratica di creare e gestire più Branch per isolare il lavoro su funzionalità diverse, permettendo a più persone di lavorare in parallelo senza intralciarsi. → approfondito nella sezione 3 (Come nasce un software).
@@ -71,7 +71,7 @@ Un modello architetturale in cui un programma "client" (ad esempio il tuo browse
 La pratica di far leggere e commentare il proprio codice a un collega prima di unirlo al progetto principale, per individuare errori, migliorare la qualità e condividere conoscenza nel team. → approfondito nella sezione 3 (Come nasce un software).
 
 ### Commit
-Uno "scatto fotografico" delle modifiche fatte al codice in un preciso momento, salvato nella storia del repository con un messaggio che ne descrive il contenuto. → approfondito nella sezione 4 (Git e GitHub).
+Uno "scatto fotografico" delle modifiche fatte al codice in un preciso momento, salvato nella storia del repository con un messaggio che ne descrive il contenuto. → approfondito nella sezione 4 (Git e GitLab).
 
 ### Computer
 Una macchina capace di eseguire istruzioni (programmi) per elaborare dati: è composta da componenti hardware (come CPU e RAM) che collaborano seguendo le indicazioni del software. → approfondito nella sezione 2 (Fondamenti di informatica).
@@ -143,7 +143,7 @@ La parte di un'applicazione con cui l'utente interagisce direttamente: l'interfa
 Il Regolamento Generale sulla Protezione dei Dati (General Data Protection Regulation), la legge europea che stabilisce come le aziende devono raccogliere, trattare e proteggere i dati personali delle persone. → approfondito nella sezione 14 (Sicurezza).
 
 ### Git Flow
-Un modello ben definito di organizzazione dei Branch in Git, con rami dedicati per lo sviluppo, le funzionalità, i rilasci e le correzioni urgenti, utile in progetti con rilasci pianificati e meno frequenti. → approfondito nella sezione 4 (Git e GitHub).
+Un modello ben definito di organizzazione dei Branch in Git, con rami dedicati per lo sviluppo, le funzionalità, i rilasci e le correzioni urgenti, utile in progetti con rilasci pianificati e meno frequenti. → approfondito nella sezione 4 (Git e GitLab).
 
 ### HTTP
 Sigla di HyperText Transfer Protocol: il linguaggio con cui il browser e i siti web si scambiano informazioni su internet, ad esempio quando richiedi una pagina web. → approfondito nella sezione 2 (Fondamenti di informatica).
@@ -161,7 +161,7 @@ La pratica di descrivere l'infrastruttura informatica (server, reti, configurazi
 Il risultato concreto e utilizzabile prodotto durante uno Sprint: la somma di tutte le User Story completate, che si aggiunge a quanto già costruito nei Sprint precedenti. → approfondito nella sezione 6 (Scrum).
 
 ### Issue
-Una "segnalazione" aperta in un repository (su GitHub o Azure DevOps) per tracciare un bug, una richiesta di funzionalità o qualsiasi attività da discutere e risolvere. → approfondito nella sezione 4 (Git e GitHub).
+Una "segnalazione" aperta in un repository (su GitLab o Azure DevOps) per tracciare un bug, una richiesta di funzionalità o qualsiasi attività da discutere e risolvere. → approfondito nella sezione 4 (Git e GitLab).
 
 ### JSON
 Sigla di JavaScript Object Notation: un formato di testo semplice e leggibile usato moltissimo per scambiare dati tra programmi, ad esempio nelle risposte delle API. → approfondito nella sezione 2 (Fondamenti di informatica).
@@ -183,6 +183,9 @@ Il documento pubblicato nel 2001 da un gruppo di sviluppatori che definisce i va
 
 ### Merge
 L'operazione con cui le modifiche fatte su un Branch vengono riunite (unite) al codice principale o a un altro branch. → approfondito nella sezione 3 (Come nasce un software).
+
+### Merge Request
+Una richiesta formale di unire le proprie modifiche di codice (spesso su un Branch) al codice principale, che di solito viene prima discussa e revisionata dal team (Code Review) prima di essere accettata. Su Azure DevOps lo stesso concetto si chiama "Pull Request" (abbreviata PR). → approfondito nella sezione 3 (Come nasce un software).
 
 ### Message Queue
 Un sistema che permette a diverse parti di un'applicazione di scambiarsi messaggi senza dover comunicare direttamente e nello stesso istante: un componente "deposita" un messaggio in una coda e un altro lo legge quando è pronto. → approfondito nella sezione 12 (Architetture software).
@@ -238,9 +241,6 @@ La persona responsabile di definire cosa deve essere costruito e in quale ordine
 ### Produzione
 L'ambiente "vero", quello effettivamente usato dagli utenti finali del software; è l'ultimo gradino dopo Sviluppo, Test/QA e Staging, e qui gli errori hanno un impatto reale. → approfondito nella sezione 15 (Ambienti di sviluppo).
 
-### Pull Request
-Una richiesta formale di unire le proprie modifiche di codice (spesso su un Branch) al codice principale, che di solito viene prima discussa e revisionata dal team (Code Review) prima di essere accettata. → approfondito nella sezione 3 (Come nasce un software).
-
 ### Quality Gate
 Un controllo automatico inserito in una pipeline che blocca l'avanzamento del rilascio se certi criteri di qualità non sono soddisfatti (ad esempio troppi errori nei test o problemi di sicurezza rilevati). → approfondito nella sezione 11 (CI/CD).
 
@@ -254,13 +254,13 @@ Un registro che il project manager tiene per tracciare Risks (rischi), Assumptio
 Sigla di Random Access Memory: la memoria "di lavoro" del computer, veloce ma temporanea, che perde i dati quando il computer viene spento — a differenza del Disco. → approfondito nella sezione 2 (Fondamenti di informatica).
 
 ### Release
-Una versione del software resa disponibile agli utenti, spesso accompagnata da un elenco delle novità e delle correzioni incluse rispetto alla versione precedente. → approfondito nella sezione 4 (Git e GitHub).
+Una versione del software resa disponibile agli utenti, spesso accompagnata da un elenco delle novità e delle correzioni incluse rispetto alla versione precedente. → approfondito nella sezione 4 (Git e GitLab).
 
 ### Repos (Azure DevOps)
-Il servizio di Azure DevOps che ospita i repository Git del progetto, permettendo al team di gestire il codice, i Branch e le Pull Request. → approfondito nella sezione 10 (Azure DevOps).
+Il servizio di Azure DevOps che ospita i repository Git del progetto, permettendo al team di gestire il codice, i Branch e le Pull Request (l'equivalente della Merge Request di GitLab). → approfondito nella sezione 10 (Azure DevOps).
 
 ### Repository
-Lo "spazio" (cartella speciale) dove Git conserva tutto il codice di un progetto insieme alla sua intera storia di modifiche (Commit). → approfondito nella sezione 4 (Git e GitHub).
+Lo "spazio" (cartella speciale) dove Git conserva tutto il codice di un progetto insieme alla sua intera storia di modifiche (Commit). → approfondito nella sezione 4 (Git e GitLab).
 
 ### Requisiti (funzionali e non funzionali)
 Le caratteristiche che un software deve avere: i requisiti funzionali descrivono **cosa** il sistema deve fare (es. "l'utente può resettare la password"), quelli non funzionali descrivono **come** deve farlo (es. velocità, sicurezza, disponibilità). → approfondito nella sezione 3 (Come nasce un software).
@@ -326,7 +326,7 @@ Qualsiasi persona o gruppo che ha un interesse nel progetto o ne è influenzato:
 Un'unità di misura relativa (non temporale) usata per stimare quanto sia complessa una User Story rispetto alle altre, tenendo conto di difficoltà, incertezza e quantità di lavoro. → approfondito nella sezione 6 (Scrum).
 
 ### Tag
-Un'etichetta che Git può assegnare a un Commit specifico, tipicamente per marcare un punto importante come una Release (es. "v2.4.1"). → approfondito nella sezione 4 (Git e GitHub).
+Un'etichetta che Git può assegnare a un Commit specifico, tipicamente per marcare un punto importante come una Release (es. "v2.4.1"). → approfondito nella sezione 4 (Git e GitLab).
 
 ### TCP/IP
 La famiglia di regole (protocolli) che permette ai computer di tutto il mondo di scambiarsi dati su internet in modo ordinato e affidabile, anche passando per reti diverse. → approfondito nella sezione 2 (Fondamenti di informatica).
@@ -338,10 +338,10 @@ Il servizio di Azure DevOps dedicato a pianificare, organizzare ed eseguire i te
 Una "sotto-unità" di un Processo che può eseguire istruzioni in modo indipendente; più thread nello stesso processo permettono a un programma di fare più cose contemporaneamente in modo più efficiente. → approfondito nella sezione 2 (Fondamenti di informatica).
 
 ### Trigger
-L'evento che fa scattare automaticamente l'avvio di una Pipeline, ad esempio un nuovo Commit su un branch o l'apertura di una Pull Request. → approfondito nella sezione 11 (CI/CD).
+L'evento che fa scattare automaticamente l'avvio di una Pipeline, ad esempio un nuovo Commit su un branch o l'apertura di una Merge Request. → approfondito nella sezione 11 (CI/CD).
 
 ### Trunk Based Development
-Una pratica in cui tutti gli sviluppatori integrano il proprio codice molto frequentemente su un unico ramo principale (il "trunk"), evitando Branch di lunga durata e favorendo una forte automazione dei test. → approfondito nella sezione 4 (Git e GitHub).
+Una pratica in cui tutti gli sviluppatori integrano il proprio codice molto frequentemente su un unico ramo principale (il "trunk"), evitando Branch di lunga durata e favorendo una forte automazione dei test. → approfondito nella sezione 4 (Git e GitLab).
 
 ### User Story
 Una breve descrizione di una funzionalità scritta dal punto di vista dell'utente, spesso nel formato "Come [ruolo], voglio [obiettivo], per [beneficio]", usata per catturare i requisiti in modo semplice e centrato sulle persone. → approfondito nella sezione 6 (Scrum).

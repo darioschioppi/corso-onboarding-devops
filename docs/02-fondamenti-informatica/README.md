@@ -1124,7 +1124,7 @@ ai colleghi.
 4. **Leggi e "traduci" un JSON reale.** Chiedi a un developer del team di
    mostrarti un piccolo esempio di risposta JSON restituita da un'API del
    progetto (o, in alternativa, apri in un browser un endpoint pubblico
-   come `https://api.github.com/users/octocat`). Prova a identificare le
+   come `https://gitlab.com/api/v4/users?username=gitlab-org`). Prova a identificare le
    coppie chiave-valore principali.
    ✅ **Come verificare**: sapresti riscrivere a voce, in una frase in
    italiano, cosa dice quel JSON, come abbiamo fatto con l'esempio
@@ -1151,7 +1151,7 @@ ai colleghi.
 ## 🔗 Collegamenti
 
 - Prossima sezione: [3. Come nasce un software](../03-come-nasce-un-software/README.md)
-- [4. Git e GitHub](../04-git-e-github/README.md) — vedrai come i concetti di file e cartelle si applicano al codice
+- [4. Git e GitLab](../04-git-e-gitlab/README.md) — vedrai come i concetti di file e cartelle si applicano al codice
 - [9. DevOps](../09-devops/README.md) — dove Docker e Kubernetes tornano centrali
 - [12. Architetture software](../12-architetture-software/README.md) — dove API e REST vengono approfonditi
 - [13. Cloud](../13-cloud/README.md) — dove VM e container vengono usati concretamente su Azure/AWS

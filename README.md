@@ -11,9 +11,9 @@ piattaforma DevOps a supporto dello sviluppo software.
 Non è richiesta alcuna conoscenza tecnica di partenza: ogni argomento è
 spiegato dalle basi, con analogie semplici, esempi concreti e diagrammi.
 
-> 📖 Puoi leggere tutto direttamente su GitHub navigando le cartelle in
+> 📖 Puoi leggere tutto direttamente su GitLab navigando le cartelle in
 > `docs/`, oppure sfogliare la versione "sito web" pubblicata con
-> GitHub Pages: **https://darioschioppi.github.io/corso-onboarding-devops/**
+> GitLab Pages: **https://darioschioppi.github.io/corso-onboarding-devops/**
 >
 > 📄 Preferisci la carta? Ogni sezione è scaricabile in PDF (link in cima a
 > ciascuna pagina), oppure scarica **[il corso completo in un unico PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/corso-completo.pdf)**
@@ -40,7 +40,7 @@ spiegato dalle basi, con analogie semplici, esempi concreti e diagrammi.
 | 1 | [Introduzione](docs/01-introduzione/README.md) | Come è organizzato il corso, il team, il tuo ruolo | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/01-introduzione.pdf) |
 | 2 | [Fondamenti di informatica](docs/02-fondamenti-informatica/README.md) | Computer, CPU, RAM, rete, database, container... | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/02-fondamenti-informatica.pdf) |
 | 3 | [Come nasce un software](docs/03-come-nasce-un-software/README.md) | Ciclo di vita, requisiti, testing, rilascio | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/03-come-nasce-un-software.pdf) |
-| 4 | [Git e GitHub](docs/04-git-e-github/README.md) | Versionamento, branch, pull request, Git Flow | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/04-git-e-github.pdf) |
+| 4 | [Git e GitLab](docs/04-git-e-gitlab/README.md) | Versionamento, branch, merge request, Git Flow | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/04-git-e-gitlab.pdf) |
 | 5 | [Agile](docs/05-agile/README.md) | Manifesto, principi, mindset | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/05-agile.pdf) |
 | 6 | [Scrum](docs/06-scrum/README.md) | Ruoli, eventi, artefatti Scrum | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/06-scrum.pdf) |
 | 7 | [Kanban](docs/07-kanban/README.md) | Board, WIP, Lead Time, Cycle Time | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/07-kanban.pdf) |

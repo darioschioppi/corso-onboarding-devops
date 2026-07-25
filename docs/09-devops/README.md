@@ -443,7 +443,7 @@ proprio a CI/CD):
 molto frequentemente** (più volte al giorno, tipicamente), invece di
 lavorare separati per settimane e unire tutto solo alla fine.
 
-Ricorda cosa hai visto nella sezione su Git e GitHub: quando più persone
+Ricorda cosa hai visto nella sezione su Git e GitLab: quando più persone
 lavorano sullo stesso codice in branch diversi, unire i cambiamenti (il
 *merge*) può generare conflitti. Più tempo passa tra un'integrazione e la
 successiva, più il codice dei diversi sviluppatori si allontana l'uno
@@ -452,7 +452,7 @@ grandi, complicati da risolvere e rischiosi.
 
 CI risolve questo problema imponendo una disciplina precisa: **ogni volta
 che uno sviluppatore propone un cambiamento (tipicamente con un commit o
-una Pull Request), un sistema automatico esegue immediatamente la build del
+una Merge Request), un sistema automatico esegue immediatamente la build del
 progetto e i test automatici**, per verificare che quel cambiamento si
 integri correttamente con tutto il resto del codice, senza romperlo.
 
@@ -470,7 +470,7 @@ Il ciclo tipico di CI, ogni volta che qualcuno propone un cambiamento:
 
 ```mermaid
 flowchart LR
-    A["👨‍💻 Sviluppatore<br/>propone un cambiamento<br/>(commit / Pull Request)"] --> B["🔨 Build automatica<br/>il codice compila?"]
+    A["👨‍💻 Sviluppatore<br/>propone un cambiamento<br/>(commit / Merge Request)"] --> B["🔨 Build automatica<br/>il codice compila?"]
     B -->|sì| C["🧪 Test automatici<br/>tutto funziona ancora?"]
     B -->|no| E["❌ Feedback immediato<br/>allo sviluppatore"]
     C -->|passano| D["✅ Codice integrato<br/>nel ramo principale"]
@@ -478,7 +478,7 @@ flowchart LR
     E -.->|correzione rapida| A
 ```
 
-> 🛠️ **Esempio pratico**: uno sviluppatore apre una Pull Request che modifica
+> 🛠️ **Esempio pratico**: uno sviluppatore apre una Merge Request che modifica
 > la funzione di calcolo dello sconto su un ordine. Ecco cosa succede,
 > passo per passo, in una pipeline di CI tipica (li vedrai nel dettaglio
 > nella sezione 11):

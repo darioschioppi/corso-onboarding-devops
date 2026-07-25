@@ -24,7 +24,7 @@ Il corso è diviso in **19 sezioni numerate**, pensate per essere seguite **in o
 
 Le sezioni si possono raggruppare in quattro grandi blocchi:
 
-1. **Fondamenta tecniche** (sezioni 2-4): cosa è un computer, come "nasce" un software, cos'è Git/GitHub. Ti servono per capire il linguaggio di base che sviluppatori e tecnici usano ogni giorno.
+1. **Fondamenta tecniche** (sezioni 2-4): cosa è un computer, come "nasce" un software, cos'è Git/GitLab. Ti servono per capire il linguaggio di base che sviluppatori e tecnici usano ogni giorno.
 2. **Metodologie di lavoro** (sezioni 5-8): Agile, Scrum, Kanban e Project Management. Sono i "metodi di organizzazione del lavoro" — qui il tuo background gestionale ti aiuterà moltissimo, perché sono concetti di organizzazione applicati al software.
 3. **Mondo DevOps** (sezioni 9-14): DevOps, Azure DevOps, CI/CD, architetture software, cloud e sicurezza. È il cuore tecnico del corso, quello più legato al ruolo che andrai a occupare.
 4. **Strumenti di supporto e consultazione** (sezioni 15-19): ambienti di sviluppo, glossario, piano di studio, libri e risorse online. Non sono da "studiare" una volta e basta: sono pensate per essere consultate spesso, come un dizionario o un'agenda.
@@ -107,7 +107,7 @@ flowchart TD
     S1["1. Introduzione"] --> BLOCCO1
 
     subgraph BLOCCO1["Blocco A - Fondamenta tecniche"]
-        S2["2. Fondamenti di informatica"] --> S3["3. Come nasce un software"] --> S4["4. Git e GitHub"]
+        S2["2. Fondamenti di informatica"] --> S3["3. Come nasce un software"] --> S4["4. Git e GitLab"]
     end
 
     BLOCCO1 --> BLOCCO2
@@ -179,6 +179,6 @@ Prima di passare alla sezione 2, prova questi esercizi: non richiedono ancora co
 ## 📚 Risorse
 
 - [Atlassian – Agile Coach: cos'è un team Agile](https://www.atlassian.com/agile) — introduzione generale al mindset Agile, utile come primo assaggio prima delle sezioni 5-7
-- [GitHub Docs – Introduzione a Git e GitHub](https://docs.github.com/it/get-started/quickstart) — guida ufficiale per chi non ha mai usato Git, utile in anticipo sulla sezione 4
+- [GitLab Docs – Get started with Git](https://docs.gitlab.com/topics/git/) — guida ufficiale per chi non ha mai usato Git, utile in anticipo sulla sezione 4
 - [Microsoft Learn – Cos'è DevOps](https://learn.microsoft.com/it-it/devops/what-is-devops) — panoramica ufficiale Microsoft sul concetto di DevOps, come anteprima della sezione 9
 - [Project Management Institute – What is Project Management](https://www.pmi.org/about/learn-about-pmi/what-is-project-management) — visione generale del ruolo di Project Manager, come richiamo al tuo percorso di studi

@@ -6,7 +6,7 @@
 
 Nelle sezioni precedenti hai visto tanti concetti "in teoria": cos'è una
 board Kanban, come funziona uno sprint Scrum, cosa sono un repository, un
-commit, una Pull Request, e cos'è la cultura DevOps. Tutti questi concetti,
+commit, una Merge Request, e cos'è la cultura DevOps. Tutti questi concetti,
 nel lavoro reale, non restano sulla lavagna: vivono dentro uno **strumento**
 che il team usa ogni giorno per pianificare, scrivere codice, testare e
 rilasciare.
@@ -192,38 +192,38 @@ flowchart LR
 ## 10.3 Repos: il codice sorgente
 
 **Repos** è il modulo che ospita i **repository Git** del progetto — se hai
-letto la sezione 4 su Git e GitHub, qui il concetto ti sarà già familiare:
+letto la sezione 4 su Git e GitLab, qui il concetto ti sarà già familiare:
 Azure DevOps Repos è, dal punto di vista di Git, praticamente equivalente a
-GitHub. Sotto il cofano c'è sempre lo stesso motore (Git), cambia solo la
+GitLab. Sotto il cofano c'è sempre lo stesso motore (Git), cambia solo la
 "concessionaria" che lo ospita.
 
 Tutto quello che hai imparato su Git resta identico:
 
 - si lavora con **branch**, **commit**, **merge**;
 - la collaborazione passa per una richiesta di unione, che in Azure DevOps
-  si chiama **Pull Request** (esattamente come su GitHub, stesso nome,
-  stesso concetto);
+  si chiama **Pull Request** — un nome diverso da quello usato su GitLab
+  (**Merge Request**), ma esattamente lo stesso concetto;
 - si possono collegare i commit e le Pull Request ai work item di Boards
   (es. scrivendo `Fixes #123` in un commit, la User Story numero 123 si
   aggiorna automaticamente).
 
-Le differenze pratiche rispetto a GitHub sono minime e soprattutto di
+Le differenze pratiche rispetto a GitLab sono minime e soprattutto di
 **interfaccia** e di **integrazione**:
 
-| | GitHub | Azure DevOps Repos |
+| | GitLab | Azure DevOps Repos |
 |---|---|---|
 | **Motore** | Git | Git |
-| **Pull Request** | Sì | Sì (stesso concetto) |
+| **Merge/Pull Request** | Sì (si chiama Merge Request) | Sì (si chiama Pull Request — stesso concetto) |
 | **Issue** | Sì (modulo Issues) | Sostituito dai work item di Boards |
-| **Pipeline collegata** | GitHub Actions | Azure Pipelines |
-| **Punto di forza** | Community open source enorme, molto diffuso | Integrazione nativa con Boards, Pipelines, Test Plans nello stesso prodotto |
+| **Pipeline collegata** | GitLab CI/CD | Azure Pipelines |
+| **Punto di forza** | Molto diffusa anche self-hosted, forte integrazione CI/CD nativa | Integrazione nativa con Boards, Pipelines, Test Plans nello stesso prodotto |
 
 > 💡 **Esempio pratico**: in Azure DevOps, quando apri una Pull Request per
 > unire il branch `feature/reset-password` dentro `main`, puoi collegarla
 > direttamente alla User Story "Recupero password": chi guarda quella User
 > Story su Boards vede subito il link alla Pull Request corrispondente, e
 > quando la PR viene completata, lo stato della User Story può aggiornarsi
-> automaticamente. È la stessa idea del "Closes #42" di GitHub che hai
+> automaticamente. È la stessa idea del "Closes #42" di GitLab che hai
 > visto nella sezione 4, ma ancora più integrata perché Boards e Repos
 > vivono nello stesso prodotto.
 
@@ -279,7 +279,7 @@ non vive in una configurazione grafica separata e "invisibile", ma è un
 > scritto**, numerato, che chiunque può leggere, modificare, versionare e
 > ripetere esattamente allo stesso modo (pipeline YAML): il libretto stesso
 > diventa un documento che puoi salvare, confrontare tra versioni diverse,
-> e su cui puoi anche fare una Pull Request se vuoi cambiarlo.
+> e su cui puoi anche aprire una Pull Request se vuoi cambiarlo.
 
 Un piccolo esempio illustrativo di come appare un file YAML di pipeline
 (non serve che tu sappia scriverlo, solo che tu lo riconosca se lo vedi):
@@ -511,10 +511,10 @@ nelle sezioni precedenti. Ecco una mappa riassuntiva:
 | Boards → Backlog, Sprint Board | Product Backlog, Sprint Backlog | 6. Scrum |
 | Boards → Board Kanban, limiti di WIP | Board Kanban, WIP | 7. Kanban |
 | Work item (Epic/Feature/User Story/Task/Bug) | User Story, task, backlog item | 6. Scrum |
-| Repos → repository, branch, commit, merge | Repository, branch, commit, merge | 4. Git e GitHub |
-| Repos → Pull Request | Pull Request | 4. Git e GitHub |
+| Repos → repository, branch, commit, merge | Repository, branch, commit, merge | 4. Git e GitLab |
+| Repos → Pull Request | Merge Request | 4. Git e GitLab |
 | Pipelines | CI/CD, integrazione e distribuzione continua | 9. DevOps, 11. CI/CD |
-| Pipeline YAML ("pipeline as code") | Trunk Based Development, automazione | 4. Git e GitHub, 9. DevOps |
+| Pipeline YAML ("pipeline as code") | Trunk Based Development, automazione | 4. Git e GitLab, 9. DevOps |
 | Test Plans | Qualità e collaudo nel ciclo di vita del software | 3. Come nasce un software |
 | Artifacts | Gestione delle dipendenze/librerie di un progetto | 3. Come nasce un software |
 | Dashboard → burndown | Metriche di flusso e avanzamento | 8. Project Management |
@@ -533,7 +533,8 @@ trova, nello strumento, ciò che già conosci.
 - **Boards** gestisce il lavoro (backlog, sprint, board Kanban) attraverso
   i work item: Epic, Feature, User Story, Task, Bug.
 - **Repos** ospita i repository Git del progetto, con lo stesso motore
-  Git e lo stesso concetto di Pull Request visti su GitHub.
+  Git e lo stesso concetto di Pull Request (chiamato Merge Request su
+  GitLab) visto nella sezione 4.
 - **Pipelines** automatizza build e rilascio (CI/CD); la modalità YAML
   applica il principio di "pipeline as code", cioè la pipeline stessa
   versionata come un file di testo nel repository.

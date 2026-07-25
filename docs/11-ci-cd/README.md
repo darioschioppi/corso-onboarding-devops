@@ -37,7 +37,9 @@ Alla fine di questa sezione saprai:
 - leggere un semplice file YAML che definisce una pipeline;
 - capire cos'è un **quality gate** e come blocca un rilascio problematico;
 - descrivere cosa succede — e cosa dovrebbe succedere — quando un deploy
-  va male (**rollback**).
+  va male (**rollback**);
+- riconoscere alcuni **strumenti concreti** che implementano queste fasi
+  nella realtà (Jenkins, Docker, SonarQube, Dynatrace, Jira Software).
 
 ---
 
@@ -82,7 +84,7 @@ Le fasi (in inglese *stage*) più comuni, nell'ordine in cui compaiono
 quasi sempre:
 
 1. **Checkout del codice**: la pipeline scarica dal repository Git
-   (GitHub, Azure DevOps Repos...) esattamente la versione di codice che
+   (GitLab, Azure DevOps Repos...) esattamente la versione di codice che
    ha fatto scattare la pipeline — un commit specifico, un branch
    specifico.
 2. **Build / Compilazione**: il codice sorgente viene trasformato in
@@ -155,7 +157,7 @@ sequenza, ciascuna con la possibilità di fermare tutto se qualcosa non va
 bene**.
 
 > 🛠️ **Esempio pratico**: una developer del team, chiamiamola Giulia,
-> apre alle 10:03 una Pull Request con una modifica al calcolo di uno
+> apre alle 10:03 una Merge Request con una modifica al calcolo di uno
 > sconto. Alle 10:04 la pipeline parte da sola: il checkout del codice
 > impiega 5 secondi, la build 40 secondi. Al minuto 2 la fase di test
 > automatici fallisce, perché uno dei test esistenti si aspettava un
@@ -164,7 +166,7 @@ bene**.
 > analisi di sicurezza né, ovviamente, al deploy. Giulia riceve una
 > notifica automatica (email o messaggio nella chat del team) con il
 > link al log del test fallito, corregge il codice, fa un nuovo commit
-> sulla stessa PR e la pipeline riparte da capo, dal checkout.
+> sulla stessa MR e la pipeline riparte da capo, dal checkout.
 
 ---
 
@@ -176,11 +178,11 @@ specifico, chiamato **trigger**. I trigger più comuni sono:
 - **Push su un branch**: ogni volta che qualcuno invia (push) nuovi
   commit su un branch (tipicamente `main`, o un branch di feature), la
   pipeline di CI parte automaticamente per validare quel codice.
-- **Apertura (o aggiornamento) di una Pull Request**: quando si apre una
-  PR per proporre l'unione di un branch in un altro, la pipeline gira sul
-  codice della PR *prima* che venga approvata e unita — è uno dei modi
+- **Apertura (o aggiornamento) di una Merge Request**: quando si apre una
+  MR per proporre l'unione di un branch in un altro, la pipeline gira sul
+  codice della MR *prima* che venga approvata e unita — è uno dei modi
   più efficaci per impedire che codice difettoso entri nel branch
-  principale. Se aggiungi altri commit alla PR, la pipeline riparte.
+  principale. Se aggiungi altri commit alla MR, la pipeline riparte.
 - **Pianificazione a orario (schedule)**: la pipeline parte a intervalli
   regolari indipendentemente da modifiche al codice — ad esempio ogni
   notte alle 2:00, per eseguire una suite di test più lunga e completa
@@ -188,21 +190,21 @@ specifico, chiamato **trigger**. I trigger più comuni sono:
   tutto continui a funzionare anche senza modifiche (es. dopo un
   aggiornamento di una libreria esterna).
 - **Trigger manuale**: una persona avvia la pipeline a mano, cliccando un
-  bottone "Run pipeline" nell'interfaccia (es. Azure DevOps, GitHub
-  Actions). È tipico per il deploy in produzione, dove spesso si preferisce
+  bottone "Run pipeline" nell'interfaccia (es. Azure DevOps, GitLab
+  CI/CD). È tipico per il deploy in produzione, dove spesso si preferisce
   un'azione deliberata di una persona autorizzata, invece che un
   automatismo completo.
 
 ```mermaid
 flowchart LR
     T1[📤 Push su branch] --> P[Pipeline]
-    T2[🔀 Pull Request<br/>aperta/aggiornata] --> P
+    T2[🔀 Merge Request<br/>aperta/aggiornata] --> P
     T3[⏰ Schedule<br/>es. ogni notte] --> P
     T4[👆 Trigger manuale] --> P
 ```
 
 **Esempio pratico**: nel progetto, la pipeline di CI (build + test) parte
-automaticamente a ogni push e a ogni aggiornamento di una Pull Request,
+automaticamente a ogni push e a ogni aggiornamento di una Merge Request,
 per dare un feedback rapido allo sviluppatore. Il deploy in produzione,
 invece, ha un trigger manuale: anche se tutte le fasi precedenti sono
 andate a buon fine, è una persona (tipicamente il Tech Lead o un ruolo di
@@ -316,7 +318,7 @@ ma aveva problemi seri:
   Git per il codice, visto nella sezione 4);
 - **non era riutilizzabile**: replicare la stessa pipeline su un altro
   progetto significava ricliccare tutto daccapo;
-- **non era rivedibile in Pull Request**: un collega non poteva fare code
+- **non era rivedibile in Merge Request**: un collega non poteva fare code
   review di una configurazione grafica come farebbe su del codice.
 
 La soluzione, oggi lo standard del settore, si chiama **Pipeline as
@@ -328,7 +330,7 @@ I vantaggi pratici di questo approccio:
 
 - la pipeline ha una **cronologia di modifiche** come qualsiasi altro
   file di codice (chi, quando, perché);
-- le modifiche alla pipeline passano per **Pull Request e code review**,
+- le modifiche alla pipeline passano per **Merge Request e code review**,
   come qualsiasi altra modifica importante;
 - la pipeline può essere **copiata e riutilizzata** facilmente su altri
   progetti simili;
@@ -343,8 +345,8 @@ I vantaggi pratici di questo approccio:
 Ecco un esempio semplificato (pseudo-YAML leggibile, non legato a uno
 strumento specifico) di come potrebbe apparire il file che definisce una
 pipeline con le fasi principali viste sopra. In Azure DevOps un file di
-questo tipo si chiama in genere `azure-pipelines.yml`; in GitHub Actions,
-un file dentro `.github/workflows/`.
+questo tipo si chiama in genere `azure-pipelines.yml`; in GitLab CI/CD si
+chiama invece `.gitlab-ci.yml` e vive nella radice del repository.
 
 ```yaml
 # azure-pipelines.yml (esempio semplificato)
@@ -534,7 +536,117 @@ storto (e prima o poi succede), non ha un piano B pronto.
 
 ---
 
-## 11.10 Riepilogo
+## 11.10 Strumenti concreti della pipeline
+
+Finora abbiamo parlato di fasi, trigger, ambienti e quality gate in modo
+concettuale, senza legarci a un prodotto specifico. Nella pratica, ogni
+fase della pipeline è quasi sempre implementata da uno strumento reale, e
+sentirai questi nomi citati costantemente nelle conversazioni tecniche del
+team. Vediamone cinque tra i più diffusi.
+
+### Jenkins: l'orchestratore storico della pipeline
+
+**Jenkins** è un motore di automazione CI/CD **open source**, tra i più
+storici e diffusi al mondo: orchestra l'esecuzione delle varie fasi della
+pipeline (build, test, packaging, deploy) tramite **job configurabili**,
+spesso definiti in un file chiamato `Jenkinsfile` — lo stesso principio di
+"Pipeline as Code" visto al paragrafo 11.6, applicato a Jenkins.
+
+È un'alternativa **self-hosted** a strumenti di CI/CD nativi come GitLab
+CI/CD o Azure Pipelines: molte aziende lo scelgono quando vogliono
+mantenere il pieno controllo sull'infrastruttura di automazione, o quando
+hanno esigenze di integrazione con strumenti legacy che uno strumento
+nativo non copre.
+
+> 💡 **Analogia**: se GitLab CI/CD è la catena di montaggio già integrata
+> nella fabbrica (lo stesso edificio che ospita anche il magazzino del
+> codice), Jenkins è un impianto di automazione **indipendente**, che puoi
+> installare dove vuoi e collegare a qualsiasi "magazzino" di codice
+> (GitLab, ma anche altri), con la massima flessibilità di configurazione.
+
+### Docker: il packaging portatile
+
+Abbiamo già incontrato **Docker** al paragrafo 11.5, parlando di artifact:
+è la tecnologia di **containerizzazione** più diffusa, che permette di
+"impacchettare" un'applicazione con tutte le sue dipendenze in
+un'**immagine** eseguibile identica ovunque venga avviata. Nella pipeline,
+Docker interviene tipicamente nella fase di **packaging**: il codice
+compilato e testato viene trasformato in un'immagine versionata (es.
+`app:1.4.2`), pronta per essere distribuita e avviata identica in Test,
+Staging e Produzione — lo stesso principio "build once, deploy many" già
+visto.
+
+### SonarQube: il quality gate concreto
+
+**SonarQube** è uno strumento di **analisi statica del codice** (*static
+analysis*): esamina il codice sorgente senza eseguirlo, misurando
+copertura dei test (coverage), complessità, duplicazioni e vulnerabilità
+di sicurezza note. È, in pratica, **l'implementazione concreta del quality
+gate** descritto al paragrafo 11.8: se il codice non supera le soglie
+configurate (es. coverage minima, zero vulnerabilità critiche), SonarQube
+segnala il fallimento e la pipeline si ferma, esattamente come
+nell'esempio della coverage all'80% visto in quel paragrafo.
+
+### Dynatrace: il monitoraggio che informa il rollback
+
+**Dynatrace** è una piattaforma di **observability e monitoring**: tiene
+sotto controllo l'applicazione **dopo** il deploy, in tempo reale,
+rilevando anomalie di performance, errori e comportamenti sospetti in
+produzione. È esattamente il tipo di "monitoraggio post-deploy" citato al
+paragrafo 11.9 sul rollback: quando Dynatrace rileva un tasso di errore
+anomalo dopo un rilascio, quel segnale è spesso l'innesco che porta il
+team a decidere un rollback, prima ancora che arrivino segnalazioni dagli
+utenti.
+
+### Jira Software: il tracking del lavoro, collegato alla pipeline
+
+**Jira Software** è uno strumento di **work e project tracking**,
+concettualmente equivalente al modulo **Boards** di Azure DevOps visto
+nella sezione 10 (Epic, Story, Task che avanzano su una board). Molti team
+che usano GitLab per il codice continuano a usare Jira, invece delle
+Issue native di GitLab, per gestire il backlog: in questi casi è comune
+integrare i due strumenti, referenziando l'ID del ticket Jira (es.
+`PROJ-123`) nel nome del branch o nel messaggio di commit, così che Jira
+mostri automaticamente il collegamento alla Merge Request GitLab
+corrispondente, e chi guarda il ticket veda subito a che punto è il
+lavoro tecnico collegato.
+
+### Come si incastrano nella pipeline
+
+```mermaid
+flowchart LR
+    C[👨‍💻 Commit] --> J["⚙️ Jenkins<br/>orchestra build e test"]
+    J --> D["📦 Docker<br/>crea l'immagine<br/>(artifact)"]
+    D --> S{"🔍 SonarQube<br/>quality gate"}
+    S -->|soglie non superate| FAIL[❌ Pipeline bloccata]
+    S -->|ok| DEP["🚀 Deploy"]
+    DEP --> DY["📊 Dynatrace<br/>monitoraggio post-deploy"]
+    DY -->|anomalie| RB[⏪ Decisione di rollback]
+    C -.riferimento ticket.-> JI["📋 Jira Software<br/>tracking Epic/Story/Task"]
+    DEP -.aggiorna stato.-> JI
+
+    style FAIL fill:#f8d7da
+    style RB fill:#fff3cd
+```
+
+| Tool | A cosa serve | Fase della pipeline |
+|---|---|---|
+| **Jenkins** | Motore di automazione CI/CD, orchestra l'intera pipeline tramite job/Jenkinsfile | Orchestrazione end-to-end |
+| **Docker** | Containerizzazione: impacchetta l'app e le dipendenze in un'immagine portatile | Packaging / artifact |
+| **SonarQube** | Analisi statica del codice: coverage, complessità, vulnerabilità | Quality gate |
+| **Dynatrace** | Observability/monitoring in tempo reale dell'applicazione in produzione | Monitoraggio post-deploy / rollback |
+| **Jira Software** | Work e project tracking (Epic/Story/Task), integrato con MR e commit | Trasversale, collegato al codice |
+
+Non serve che tu sappia configurare nessuno di questi strumenti: quello
+che conta, nel tuo ruolo, è riconoscerli quando li senti nominare e sapere
+a quale fase della pipeline (o del lavoro del team) corrispondono, per
+seguire con consapevolezza le conversazioni tecniche e capire, ad esempio,
+perché "il rilascio è bloccato dal quality gate di SonarQube" o "Dynatrace
+ha segnalato un'anomalia, stiamo valutando il rollback".
+
+---
+
+## 11.11 Riepilogo
 
 In questa sezione hai visto, con più dettaglio pratico rispetto alla
 sezione DevOps, come funziona davvero una pipeline di CI/CD:
@@ -543,7 +655,7 @@ sezione DevOps, come funziona davvero una pipeline di CI/CD:
   qualità/sicurezza, packaging, deploy in test, test di accettazione,
   deploy in produzione), ciascuna in grado di fermare tutto se qualcosa
   non va;
-- scatta grazie a **trigger** diversi: push, Pull Request, pianificazione
+- scatta grazie a **trigger** diversi: push, Merge Request, pianificazione
   a orario, o avvio manuale;
 - il codice si muove attraverso **ambienti** (Dev, Test/QA, Staging,
   Produzione) tramite un processo di **promozione**, senza essere
@@ -556,7 +668,10 @@ sezione DevOps, come funziona davvero una pipeline di CI/CD:
 - i **quality gate** trasformano il controllo di qualità da giudizio
   soggettivo a regola automatica e oggettiva;
 - il **rollback** è il piano B necessario quando, nonostante tutti i
-  controlli, qualcosa va comunque storto in produzione.
+  controlli, qualcosa va comunque storto in produzione;
+- strumenti concreti come **Jenkins**, **Docker**, **SonarQube**,
+  **Dynatrace** e **Jira Software** sono le implementazioni reali di
+  queste fasi che incontrerai nel lavoro quotidiano del team.
 
 Nelle prossime sezioni vedrai come questi concetti si intreccino con le
 scelte di **architettura software** (sezione 12) e con l'infrastruttura
@@ -582,7 +697,7 @@ in questa sezione, non ancora configurare strumenti in autonomia.
    risposta è "esatto", hai capito la struttura.
 2. **Trova i trigger reali del progetto.** Fatti mostrare (o trova da
    solo, se hai accesso) il file YAML della pipeline principale e
-   individua il blocco che definisce i trigger (push, PR, schedule,
+   individua il blocco che definisce i trigger (push, MR, schedule,
    manuale). Scrivi in una riga, con parole tue, quando scatta la
    pipeline di CI e quando invece scatta il deploy in produzione.
    ✅ **Come verificare**: chiedi a un collega di confermare che la tua
@@ -624,6 +739,16 @@ in questa sezione, non ancora configurare strumenti in autonomia.
    conferma la tua collega Scrum Master/PM o un Tech Lead — se coincide,
    hai capito la differenza pratica tra i due concetti, non solo la
    definizione teorica.
+7. **Riconosci gli strumenti concreti del progetto.** Chiedi a un
+   developer o al Tech Lead quali strumenti concreti, tra quelli visti al
+   paragrafo 11.10 (o eventuali equivalenti), usa davvero il progetto per
+   orchestrare la pipeline, fare code quality e monitorare la produzione.
+   Per ciascuno che ti viene citato, scrivi a quale fase della pipeline
+   corrisponde.
+   ✅ **Come verificare**: confronta il tuo elenco con la tabella del
+   paragrafo 11.10 — se hai assegnato correttamente ogni strumento
+   citato alla fase giusta, hai capito il collegamento tra teoria e
+   strumenti reali.
 
 ---
 
@@ -631,14 +756,20 @@ in questa sezione, non ancora configurare strumenti in autonomia.
 
 - [12. Architetture software](../12-architetture-software/README.md) — come è organizzato il software che la pipeline compila, testa e rilascia
 - [13. Cloud](../13-cloud/README.md) — dove "vivono" fisicamente gli ambienti di Dev, Test, Staging e Produzione su cui la pipeline effettua il deploy
+- [10. Azure DevOps](../10-azure-devops/README.md) — Boards, l'equivalente concettuale di Jira Software visto al paragrafo 11.10
 
 ## 📚 Risorse
 
 - [Microsoft Learn — Continuous integration e continuous delivery](https://learn.microsoft.com/it-it/devops/deliver/what-is-continuous-delivery)
 - [Microsoft Learn — Azure Pipelines, key concepts](https://learn.microsoft.com/it-it/azure/devops/pipelines/get-started/key-pipelines-concepts)
 - [Microsoft Learn — YAML schema reference per Azure Pipelines](https://learn.microsoft.com/it-it/azure/devops/pipelines/yaml-schema/pipeline)
-- [GitHub Docs — Understanding GitHub Actions](https://docs.github.com/actions/learn-github-actions/understanding-github-actions)
-- [GitHub Docs — Workflow syntax for GitHub Actions](https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions)
+- [Jenkins — Documentazione ufficiale](https://www.jenkins.io/doc/)
+- [Docker Docs — What is a container image](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)
+- [SonarQube — Documentazione ufficiale](https://docs.sonarsource.com/sonarqube-server/)
+- [Dynatrace — Cos'è l'observability](https://www.dynatrace.com/platform/observability/)
+- [Atlassian — Jira Software, panoramica](https://www.atlassian.com/software/jira)
+- [GitLab Docs — CI/CD YAML syntax reference](https://docs.gitlab.com/ci/yaml/)
+- [GitLab Docs — Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
 - [Atlassian — Continuous integration vs continuous delivery vs continuous deployment](https://www.atlassian.com/continuous-delivery/principles/continuous-integration-vs-delivery-vs-deployment)
 - [Martin Fowler — Continuous Delivery](https://martinfowler.com/bliki/ContinuousDelivery.html)
 - [Docker Docs — What is a container image](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)

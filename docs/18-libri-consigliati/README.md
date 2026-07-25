@@ -11,7 +11,7 @@ Le sezioni da 1 a 17 di questo corso ti hanno già dato tutto ciò che ti serve 
 I libri sono organizzati in **5 livelli di lettura progressiva**, costruiti seguendo la stessa logica "a mattoncini" con cui è organizzato il resto del corso (lo ricordi dalla sezione 1: non puoi costruire il tetto se non hai ancora le fondamenta):
 
 - **Livello 0 – Fondamenti di informatica**: rafforza la sezione 2. Utile soprattutto se, arrivando da un percorso gestionale, senti ancora un po' di terreno instabile sotto i piedi quando si parla di computer, reti o architetture di base.
-- **Livello 1 – Sviluppo software**: rafforza la sezione 3 (Come nasce un software) e la sezione 4 (Git e GitHub). Ti aiuta a capire **come lavorano davvero gli sviluppatori** che gestirai e con cui parlerai ogni giorno — non per scrivere codice tu stesso, ma per capire le loro priorità, i loro vincoli e il loro linguaggio.
+- **Livello 1 – Sviluppo software**: rafforza la sezione 3 (Come nasce un software) e la sezione 4 (Git e GitLab). Ti aiuta a capire **come lavorano davvero gli sviluppatori** che gestirai e con cui parlerai ogni giorno — non per scrivere codice tu stesso, ma per capire le loro priorità, i loro vincoli e il loro linguaggio.
 - **Livello 2 – Agile**: rafforza le sezioni 5 (Agile), 6 (Scrum) e 7 (Kanban). È il livello più direttamente collegato al ruolo che andrai a occupare: Scrum Master.
 - **Livello 3 – Project Management**: rafforza la sezione 8 (Project Management) e fa da ponte verso la sezione 9 (DevOps), mostrando cosa succede quando i metodi "leggeri" di Agile incontrano progetti complessi, reali, con tutte le loro frizioni.
 - **Livello 4 – DevOps**: rafforza le sezioni 9-14 (il Blocco C del corso, quello più tecnico), con un'attenzione particolare a **perché** le pratiche DevOps funzionano, supportata da dati e ricerca, non solo da intuizione.
@@ -56,7 +56,7 @@ Questo è il manuale universitario di riferimento per le reti informatiche: non 
 
 Non diventerai uno sviluppatore, ma capire **cosa rende il codice "buono" o "scadente"** agli occhi di chi lo scrive ti aiuta moltissimo a comprendere discussioni di code review, stime più lunghe del previsto per "ripulire" una parte di codice (il cosiddetto debito tecnico) o perché il team insiste su determinate pratiche. Questo libro, uno dei più citati nel mondo dello sviluppo software, ti dà il vocabolario e la sensibilità per capire quelle conversazioni dall'interno, collegandosi direttamente a quanto visto nella sezione 3 sul ciclo di vita del software e sulla code review.
 
-- **Quando leggerlo**: consigliato durante la settimana 3, dopo aver completato la sezione 3 (Come nasce un software) e la sezione 4 (Git e GitHub).
+- **Quando leggerlo**: consigliato durante la settimana 3, dopo aver completato la sezione 3 (Come nasce un software) e la sezione 4 (Git e GitLab).
 - **Difficoltà**: Media (alcuni esempi di codice, ma i concetti generali sono comprensibili anche senza saperlo scrivere).
 - **Tempo stimato**: 10-12 ore di lettura complessiva.
 

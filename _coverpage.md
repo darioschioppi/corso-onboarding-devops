@@ -8,7 +8,7 @@
 > il mondo Agile e le piattaforme DevOps — anche partendo da zero.
 
 [Inizia il corso](#corso-di-onboarding-junior-project-manager--scrum-master)
-[Vai su GitHub](https://github.com/darioschioppi/corso-onboarding-devops)
+[Vai su GitLab](https://gitlab.com/darioschioppi/corso-onboarding-devops)
 
 <!-- background color -->
 ![color](#f0f4f8)

@@ -449,7 +449,7 @@ e realizzabili).
 > Start/Stop/Continue:
 >
 > - **Start** (iniziare a fare): scrivere una breve nota nella descrizione
->   di ogni Pull Request per spiegare "perché", non solo "cosa" cambia.
+>   di ogni Merge Request per spiegare "perché", non solo "cosa" cambia.
 > - **Stop** (smettere di fare): accettare nuove richieste urgenti a metà
 >   sprint senza discuterne prima con il Product Owner.
 > - **Continue** (continuare a fare): il pairing tra un developer senior e
@@ -792,7 +792,7 @@ Esempi tipici di criteri di Definition of Done (di nuovo, variano da team
 a team e spesso si arricchiscono nel tempo):
 
 - il codice è stato scritto e sottoposto a code review (vedi la sezione
-  su Git e GitHub — spesso corrisponde a una Pull Request approvata);
+  su Git e GitLab — spesso corrisponde a una Merge Request approvata);
 - i test automatici sono stati scritti e passano;
 - la funzionalità è stata verificata manualmente secondo i criteri di
   accettazione della User Story;
@@ -803,7 +803,7 @@ a team e spesso si arricchiscono nel tempo):
 > 📌 **Esempio pratico** — la Definition of Done applicata alla User Story
 > "Come cliente, voglio salvare più indirizzi di spedizione":
 >
-> - [x] Codice scritto e Pull Request approvata da almeno un altro
+> - [x] Codice scritto e Merge Request approvata da almeno un altro
 >   developer
 > - [x] Test automatici scritti e superati con successo
 > - [x] Funzionalità verificata manualmente rispetto ai criteri di

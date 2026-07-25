@@ -438,7 +438,7 @@ diverso, nel meccanismo, da un test funzionale che fallisce.
 
 ```mermaid
 flowchart LR
-    C[Commit / Pull Request] --> SAST[🔍 SAST<br/>analisi codice sorgente]
+    C[Commit / Merge Request] --> SAST[🔍 SAST<br/>analisi codice sorgente]
     SAST --> SCA[📦 SCA<br/>analisi librerie/dipendenze]
     SCA --> DAST[🎯 DAST<br/>analisi app in esecuzione]
     DAST --> GATE{Quality Gate<br/>sicurezza}

@@ -106,7 +106,7 @@ un problema per nessuno fuori dal team di sviluppo.
 > stessa modifica viene automaticamente distribuita anche nell'**ambiente
 > Dev condiviso** in cloud, dove i colleghi possono verificare che
 > funzioni insieme al resto dell'applicazione, ancora prima che Marco
-> apra la Pull Request.
+> apra la Merge Request.
 
 ---
 
@@ -524,5 +524,5 @@ incontrato nella sezione CI/CD:
 - [Atlassian — What is a staging environment](https://www.atlassian.com/continuous-delivery/software-testing/what-is-staging-environment)
 - [Martin Fowler — Bliki: DeploymentEnvironment](https://martinfowler.com/bliki/DeploymentEnvironment.html)
 - [OWASP — Data Protection e ambienti non di produzione](https://owasp.org/www-project-top-ten/)
-- [GitHub Docs — Managing environments for deployment](https://docs.github.com/actions/deployment/targeting-different-environments/using-environments-for-deployment)
+- [GitLab Docs — Manage deployment environments](https://docs.gitlab.com/ci/environments/)
 - [12 Factor App — Config](https://12factor.net/config)

@@ -29,7 +29,7 @@ gantt
 
     section Fondamenta
     Introduzione + Fondamenti informatica :s1, 0, 1w
-    Come nasce un software + Git/GitHub   :s2, after s1, 1w
+    Come nasce un software + Git/GitLab   :s2, after s1, 1w
 
     section Modo di lavorare del team
     Agile + Scrum                          :s3, after s2, 1w
@@ -83,15 +83,15 @@ Sai spiegare a un amico non tecnico, in meno di due minuti, la differenza tra un
 
 | | |
 |---|---|
-| **Argomenti** | [Sezione 3 — Come nasce un software](../03-come-nasce-un-software/README.md) · [Sezione 4 — Git e GitHub](../04-git-e-github/README.md) |
+| **Argomenti** | [Sezione 3 — Come nasce un software](../03-come-nasce-un-software/README.md) · [Sezione 4 — Git e GitLab](../04-git-e-gitlab/README.md) |
 | **Tempo stimato** | 7-9 ore (la sezione 4 richiede pratica al computer, non solo lettura) |
 
 **Esercizi pratici**
 
-1. Crea un account GitHub (se non lo hai già) e crea un repository di prova personale, anche vuoto.
+1. Crea un account GitLab (se non lo hai già) e crea un repository di prova personale, anche vuoto.
 2. Clona un repository di esempio (puoi usare uno dei tuoi o uno pubblico semplice) sul tuo computer con `git clone`.
-3. Crea un nuovo branch, modifica un file (anche solo il README), fai un commit e apri una **pull request fittizia** verso il branch principale del tuo repository di prova.
-4. Chiedi a un developer del team di farti vedere, sullo schermo, una vera pull request aperta sul progetto: osserva come è strutturata la descrizione, chi la revisiona, quali commenti riceve.
+3. Crea un nuovo branch, modifica un file (anche solo il README), fai un commit e apri una **merge request fittizia** verso il branch principale del tuo repository di prova.
+4. Chiedi a un developer del team di farti vedere, sullo schermo, una vera merge request aperta sul progetto: osserva come è strutturata la descrizione, chi la revisiona, quali commenti riceve.
 5. Prova a spiegare a voce, senza guardare gli appunti, cosa succede "dietro le quinte" quando fai un commit.
 
 **Obiettivi di apprendimento**
@@ -100,12 +100,12 @@ Al termine della settimana devi saper:
 
 - descrivere le fasi principali del ciclo di vita di un software (analisi, progettazione, sviluppo, test, rilascio, manutenzione);
 - distinguere un bug da una richiesta di nuova funzionalità;
-- spiegare cosa sono repository, commit, branch e pull request;
+- spiegare cosa sono repository, commit, branch e merge request;
 - distinguere concettualmente Git Flow e Trunk Based Development (anche solo a grandi linee, senza padroneggiarli).
 
 **Verifica finale della settimana**
 
-Sai disegnare su un foglio il percorso di una modifica al codice, dal branch alla pull request fino al merge sul branch principale, spiegando ogni passaggio?
+Sai disegnare su un foglio il percorso di una modifica al codice, dal branch alla merge request fino al merge sul branch principale, spiegando ogni passaggio?
 
 ---
 
@@ -292,7 +292,7 @@ Se dovessi spiegare in 5 minuti a un/una nuovo/a collega, arrivato/a oggi, "come
 | Settimana | Argomenti | Tempo stimato | Focus dell'esercizio pratico |
 |---|---|---|---|
 | 1 | [Introduzione](../01-introduzione/README.md) · [Fondamenti di informatica](../02-fondamenti-informatica/README.md) | 8-10 ore | Docker in locale, schema client/server/DB |
-| 2 | [Come nasce un software](../03-come-nasce-un-software/README.md) · [Git e GitHub](../04-git-e-github/README.md) | 7-9 ore | Repository, branch e pull request fittizia su GitHub |
+| 2 | [Come nasce un software](../03-come-nasce-un-software/README.md) · [Git e GitLab](../04-git-e-gitlab/README.md) | 7-9 ore | Repository, branch e merge request fittizia su GitLab |
 | 3 | [Agile](../05-agile/README.md) · [Scrum](../06-scrum/README.md) | 8-10 ore | Osservazione Sprint Planning/Daily, scrittura di 3 user story |
 | 4 | [Kanban](../07-kanban/README.md) · [Project Management](../08-project-management/README.md) | 6-8 ore | Board Kanban di prova, tabella RACI di esempio |
 | 5 | [DevOps](../09-devops/README.md) | 8-10 ore | Osservazione dashboard di monitoring, modello CALMS applicato al progetto |

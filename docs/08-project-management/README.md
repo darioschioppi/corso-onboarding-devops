@@ -406,7 +406,7 @@ Gli strumenti principali di monitoraggio in un contesto Agile:
   burndown da solo può confondere un aumento di scope con un rallentamento
   del team).
 - **Dashboard**: pannelli visuali (spesso in Azure DevOps, Jira, o simili)
-  che aggregano lo stato del backlog, delle Pull Request aperte, dei
+  che aggregano lo stato del backlog, delle Merge Request aperte, dei
   risultati delle pipeline di CI/CD, in un colpo d'occhio.
 
 Un burndown chart "sano" tende ad avvicinarsi a una linea diagonale che
@@ -510,7 +510,7 @@ Due macro-categorie di report, con caratteristiche molto diverse:
 | **Frequenza tipica** | Settimanale o mensile | Quotidiana o per sprint |
 | **Livello di dettaglio** | Alto livello: stato generale, rischi principali, milestone raggiunte o a rischio | Dettagliato: singoli task, blocchi tecnici, chi sta facendo cosa |
 | **Linguaggio** | Orientato al business, senza gergo tecnico | Tecnico, con riferimenti diretti a task, PR, ambienti |
-| **Contenuto tipico** | Avanzamento % rispetto alla roadmap, KPI di sintesi, rischi da RAID Log con impatto su tempi/costi | Burndown/burnup dello sprint, stato delle Pull Request, esito delle pipeline CI/CD |
+| **Contenuto tipico** | Avanzamento % rispetto alla roadmap, KPI di sintesi, rischi da RAID Log con impatto su tempi/costi | Burndown/burnup dello sprint, stato delle Merge Request, esito delle pipeline CI/CD |
 | **Obiettivo** | Dare fiducia e visibilità decisionale a chi non segue i dettagli ogni giorno | Coordinare il lavoro quotidiano e risolvere blocchi in tempo reale |
 
 **Esempio pratico**: la stessa informazione — "il rilascio della nuova
@@ -524,7 +524,7 @@ sicurezza emerso nei test" — viene comunicata in due modi molto diversi:
 - **Al team, in stand-up o nella dashboard operativa**: "Il test di
   sicurezza automatizzato ha rilevato una vulnerabilità nella gestione dei
   token di sessione nel modulo di pagamento (vedi issue #128); serve un
-  fix nel branch `fix/token-sicurezza` prima di riaprire la Pull Request
+  fix nel branch `fix/token-sicurezza` prima di riaprire la Merge Request
   e far ripartire la pipeline."
 
 Stessa realtà, due livelli di risoluzione informativa. Un errore comune dei

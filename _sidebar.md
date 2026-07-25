@@ -5,7 +5,7 @@
   - [1. Introduzione](docs/01-introduzione/README.md)
   - [2. Fondamenti di informatica](docs/02-fondamenti-informatica/README.md)
   - [3. Come nasce un software](docs/03-come-nasce-un-software/README.md)
-  - [4. Git e GitHub](docs/04-git-e-github/README.md)
+  - [4. Git e GitLab](docs/04-git-e-gitlab/README.md)
   - [5. Agile](docs/05-agile/README.md)
   - [6. Scrum](docs/06-scrum/README.md)
   - [7. Kanban](docs/07-kanban/README.md)

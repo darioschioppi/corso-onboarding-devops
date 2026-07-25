@@ -1,0 +1,310 @@
+# 3. Come nasce un software
+
+Nella sezione precedente hai imparato cosa sono hardware, software, reti e altri concetti di base dell'informatica. Ora facciamo un passo avanti: come nasce, concretamente, un software? Chi lo progetta? Chi lo scrive? Chi decide quando è pronto per essere usato dalle persone?
+
+Capire questo processo è fondamentale per te, futuro Junior Project Manager, perché il tuo lavoro consisterà proprio nel coordinare le persone e le attività che compongono questo processo. Non dovrai scrivere codice, ma dovrai capire di cosa parlano gli sviluppatori, cosa significa "abbiamo trovato un bug in produzione" o "la pull request è ancora in review", e come si inserisce ogni attività nel percorso complessivo di un progetto software.
+
+Pensa a questa sezione come alla mappa di un territorio che esplorerai per tutta la tua carriera: oggi impari i nomi delle vie principali, poi con l'esperienza scoprirai i dettagli di ogni singolo quartiere.
+
+## 🎯 Obiettivi della sezione
+
+Alla fine di questa sezione saprai:
+
+- Descrivere le fasi del ciclo di vita di un software e cosa succede in ciascuna
+- Distinguere un requisito funzionale da un requisito non funzionale
+- Spiegare la differenza tra bug e feature
+- Capire perché il software viene "numerato" con le versioni
+- Comprendere, a livello concettuale, cosa sono branch, pull request, code review e merge
+
+## 🔄 Il ciclo di vita del software
+
+Immagina di dover costruire una casa. Non inizi comprando mattoni a caso: prima parli con la famiglia che ci vivrà per capire quante stanze servono (requisiti), poi un architetto disegna la piantina (analisi), poi gli operai costruiscono davvero la casa (sviluppo), poi un ingegnere controlla che tutto sia sicuro e a norma (testing), poi la famiglia ci si trasferisce (rilascio), e infine, anno dopo anno, la casa avrà bisogno di manutenzione: una caldaia da sostituire, un tetto da riparare (manutenzione).
+
+Il software funziona esattamente allo stesso modo. Questo percorso si chiama **ciclo di vita del software** (in inglese *Software Development Life Cycle*, o **SDLC**), ed è composto da fasi che si ripetono in ogni progetto, grande o piccolo.
+
+```mermaid
+flowchart LR
+    A[📋 Requisiti] --> B[🔍 Analisi]
+    B --> C[💻 Sviluppo]
+    C --> D[🧪 Testing]
+    D --> E[🚀 Rilascio]
+    E --> F[🔧 Manutenzione]
+    F -.->|nuove esigenze,<br/>correzioni, migliorie| A
+
+    style A fill:#e3f2fd
+    style B fill:#e8f5e9
+    style C fill:#fff3e0
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+    style F fill:#ede7f6
+```
+
+Nota la freccia tratteggiata che torna da "Manutenzione" a "Requisiti": il ciclo di vita non è quasi mai un percorso lineare che finisce una volta per tutte. È più simile a una spirale: ogni volta che il software viene usato nel mondo reale, emergono nuove esigenze, si scoprono difetti, arrivano richieste di nuove funzionalità, e il ciclo riparte. Nei prossimi capitoli (in particolare nella sezione sull'Agile) vedrai che i team moderni ripetono questo ciclo molte volte, anche ogni due settimane, invece di farlo una sola volta in anni.
+
+Vediamo ora ogni fase nel dettaglio.
+
+### 1. Requisiti: cosa deve fare il software
+
+È la fase in cui si stabilisce **cosa** deve fare il software, senza ancora preoccuparsi di **come** lo farà tecnicamente. È come quando parli con un architetto e gli dici "vogliamo tre camere, una cucina abitabile e un balcone": stai descrivendo un bisogno, non stai disegnando la pianta.
+
+In questa fase il project manager, il cliente e gli analisti si incontrano per capire cosa serve davvero. Il risultato è un documento (o una lista di elementi in uno strumento come Jira o Azure DevOps, che vedremo più avanti) che elenca i **requisiti**.
+
+Approfondiamo questo concetto nella prossima sezione perché è cruciale.
+
+### 2. Analisi: dai requisiti alla soluzione
+
+Una volta chiaro **cosa** serve, bisogna capire **come** realizzarlo. È il lavoro dell'architetto che trasforma "vogliamo tre camere" in una piantina con misure precise, posizione dei muri portanti, degli impianti elettrici e idraulici.
+
+Nel software, questa fase si chiama **analisi** (o analisi tecnica/progettazione). Chi si occupa di analisi — spesso un architetto software o un tech lead — decide:
+
+- Come sarà strutturato il software (quali "pezzi" lo compongono e come comunicano tra loro — ne parleremo nella sezione sulle architetture software)
+- Quali tecnologie usare (linguaggi di programmazione, database, strumenti)
+- Come i dati saranno organizzati e salvati
+- Quali rischi tecnici ci sono e come affrontarli
+
+**Esempio pratico**: il requisito è "l'utente deve poter recuperare la password se la dimentica". L'analisi stabilisce come: si invierà un'email con un link temporaneo, quel link scadrà dopo 30 minuti, i dati della password saranno salvati in un certo modo per motivi di sicurezza. È il passaggio dall'idea al progetto tecnico.
+
+### 3. Sviluppo: si scrive il codice
+
+Questa è la fase che tutti immaginano quando pensano all'informatica: gli sviluppatori "scrivono codice". Ma cosa significa davvero?
+
+**Scrivere codice** significa dare istruzioni precise e dettagliate al computer, usando un linguaggio di programmazione (Python, Java, C#, JavaScript, e tanti altri). Il computer non capisce l'italiano o l'inglese naturale: capisce solo istruzioni scritte in un modo molto rigido e specifico, un po' come una ricetta di cucina scritta per una persona che esegue esattamente e solo quello che è scritto, senza improvvisare nulla.
+
+Un'analogia utile: se dici a un amico "fammi un caffè", lui capisce dal contesto cosa fare. Se dovessi scrivere le istruzioni per un robot che non ha mai visto un caffè, dovresti specificare ogni singolo passaggio: "apri lo sportello della macchina, prendi la capsula dal contenitore in alto a destra, inseriscila nell'apposito slot, chiudi lo sportello, premi il tasto con la scritta ESPRESSO, attendi che il led diventi verde...". Scrivere codice è simile: bisogna essere estremamente precisi, perché il computer esegue letteralmente quello che gli viene scritto, senza intuire le intenzioni.
+
+Lo sviluppatore prende i documenti di analisi e li traduce in queste istruzioni dettagliate, organizzate in file di testo (i "file di codice") che insieme compongono il software. Il codice viene poi salvato e condiviso con il resto del team usando strumenti come Git (che vedremo nella prossima sezione).
+
+### 4. Testing: si verifica che funzioni
+
+Immaginiamo che gli operai abbiano finito di costruire la casa. Prima di far entrare la famiglia, un ingegnere collaudatore verifica che gli impianti funzionino, che le porte si aprano bene, che non ci siano crepe nei muri. Non basta che la casa "sembri" pronta: bisogna testarla.
+
+Nel software questa fase si chiama **testing** (o test, o collaudo). Consiste nel verificare, in modo sistematico, che il software faccia esattamente quello che deve fare, senza comportamenti indesiderati.
+
+Esistono diversi tipi di test, con diversi livelli di dettaglio:
+
+- **Test unitari**: verificano un singolo "pezzettino" di codice isolato, ad esempio una funzione che calcola uno sconto. È come testare una singola presa elettrica prima di collegare l'intero impianto.
+- **Test di integrazione**: verificano che più pezzi di codice funzionino bene insieme, ad esempio che il sistema di pagamento comunichi correttamente con il catalogo prodotti. È come verificare che l'impianto elettrico e quello idraulico non entrino in conflitto.
+- **Test manuali**: una persona (spesso chiamata tester o QA, *Quality Assurance*) usa il software come farebbe un utente reale, cliccando in giro, provando casi limite, cercando di "romperlo". È come far vivere qualcuno nella casa per un weekend di prova prima del trasferimento definitivo.
+
+Perché si testa? Perché è molto più economico e veloce trovare un errore prima che il software arrivi agli utenti, piuttosto che scoprirlo quando migliaia di persone lo stanno già usando (e magari perdendo dati o soldi a causa di quell'errore).
+
+### 5. Rilascio (Deploy): si va "in produzione"
+
+Quando il software ha superato i test, è pronto per essere usato davvero dagli utenti finali. Questo passaggio si chiama **rilascio** o, con il termine tecnico che sentirai usare moltissimo, **deploy**.
+
+"Mettere il software in produzione" significa renderlo disponibile e funzionante nell'ambiente reale, quello usato dai clienti veri — a differenza degli ambienti di test o sviluppo, che sono come delle "copie di prova" usate solo internamente dal team (ne parleremo nella sezione sugli ambienti di sviluppo).
+
+Un'analogia: è il giorno del trasferimento nella casa nuova. Tutto quello che è stato progettato, costruito e verificato diventa finalmente reale e utilizzabile dalla famiglia.
+
+Il deploy può essere un'operazione delicata: si tratta di installare la nuova versione del software sui sistemi che gli utenti usano davvero, a volte senza nemmeno interrompere il servizio (pensa a un aggiornamento di un'app che non ti fa nemmeno notare che è cambiato qualcosa). Nella sezione dedicata al DevOps e alla CI/CD scoprirai come oggi questo processo venga spesso automatizzato per essere più rapido e sicuro.
+
+### 6. Manutenzione: la cura continua
+
+Una casa, una volta costruita, non resta perfetta per sempre: la caldaia si guasta, il tetto va rifatto, magari dopo qualche anno si decide di ristrutturare la cucina. Lo stesso vale per il software.
+
+La **manutenzione** comprende tutte le attività che avvengono dopo il rilascio:
+
+- Correggere errori che emergono durante l'uso reale (i famosi **bug**, che vedremo tra poco)
+- Aggiornare il software per farlo funzionare con nuove versioni di sistemi operativi o browser
+- Migliorare le prestazioni
+- Aggiungere piccole modifiche richieste dagli utenti
+
+Un progetto software di successo può restare "in manutenzione" per anni, anche decenni. È una fase spesso sottovalutata da chi è alle prime armi, ma in realtà occupa una parte enorme del tempo e del budget di un progetto informatico nel lungo periodo.
+
+## 📋 Requisiti: funzionali e non funzionali
+
+Torniamo sui requisiti, perché è un concetto che userai costantemente nel tuo ruolo di Project Manager.
+
+Un **requisito** è una descrizione di qualcosa che il software deve fare o di come deve comportarsi. Si dividono in due grandi categorie.
+
+### Requisiti funzionali
+
+Descrivono **cosa** il software deve fare, cioè le sue funzionalità concrete. Rispondono alla domanda: "quali azioni deve poter compiere l'utente (o il sistema)?"
+
+**Esempi:**
+
+- "L'app deve permettere all'utente di effettuare il login con email e password"
+- "Il sistema deve permettere di aggiungere un prodotto al carrello"
+- "L'utente deve poter scaricare la fattura in formato PDF"
+
+Sono requisiti facili da immaginare, perché descrivono azioni concrete e visibili, un po' come l'elenco delle stanze di una casa: "vogliamo una cucina, due camere, un bagno".
+
+### Requisiti non funzionali
+
+Descrivono **come** il software deve comportarsi, cioè la qualità con cui svolge le sue funzioni. Non riguardano una singola azione specifica, ma una caratteristica generale del sistema. Rispondono alla domanda: "quanto bene, quanto velocemente, quanto in sicurezza deve funzionare?"
+
+**Esempi:**
+
+- "L'app deve rispondere in meno di 2 secondi a ogni richiesta"
+- "Il sistema deve poter gestire fino a 10.000 utenti collegati contemporaneamente"
+- "I dati personali degli utenti devono essere cifrati"
+- "L'applicazione deve essere disponibile (funzionante) almeno il 99,9% del tempo in un anno"
+
+Tornando all'analogia della casa: se il requisito funzionale è "vogliamo una cucina", il requisito non funzionale è "la cucina deve essere isolata acusticamente e avere abbastanza corrente per usare più elettrodomestici insieme senza far scattare il salvavita". Non è una stanza in più, è una qualità che tutte le stanze devono avere.
+
+| Aspetto | Requisito funzionale | Requisito non funzionale |
+|---|---|---|
+| Domanda a cui risponde | Cosa fa? | Quanto bene lo fa? |
+| Esempio | "Login con email e password" | "Login in meno di 2 secondi" |
+| Facile da vedere? | Sì, si nota subito se manca | No, spesso si nota solo quando manca (es. sistema lento) |
+| Chi lo richiede spesso | Cliente, utenti | Team tecnico, esigenze di business (sicurezza, scalabilità) |
+
+Un errore comune di chi inizia in questo settore è concentrarsi solo sui requisiti funzionali, perché sono i più "visibili" e i clienti li richiedono esplicitamente. Ma un buon Project Manager sa che i requisiti non funzionali (velocità, sicurezza, affidabilità) sono altrettanto critici: un'app che fa tutto quello che deve, ma è lentissima o insicura, è comunque un fallimento.
+
+## 🐛 Bug: quando qualcosa va storto
+
+Un **bug** è un difetto nel software: un comportamento non corretto, non previsto o non voluto. Il termine in inglese significa letteralmente "insetto", e c'è una storia (in parte leggendaria, ma bellissima) dietro questo nome.
+
+> **Curiosità storica**: si racconta che nel 1947, mentre lavorava su uno dei primi grandi calcolatori (il Harvard Mark II), la programmatrice e informatica Grace Hopper e il suo team trovarono una falena vera e propria incastrata tra i contatti di un relè elettromeccanico, che causava un malfunzionamento. Il team incollò l'insetto su un foglio del registro di laboratorio con la scritta "First actual case of bug being found" (primo caso reale di un bug trovato). Da allora, "bug" è diventato il termine universale per indicare un errore nel software (anche se il termine era già usato in ambito ingegneristico prima di quell'episodio).
+
+**Esempio concreto di bug**: un e-commerce dove, se metti nel carrello più di 99 pezzi dello stesso prodotto, il prezzo totale diventa negativo per un errore nel calcolo. L'utente potrebbe finire per "guadagnare" acquistando, invece di pagare! Questo è esattamente il tipo di comportamento inatteso che un bug produce: qualcosa che nessuno ha previsto o voluto, che si scopre spesso solo quando il software viene usato in modi che gli sviluppatori non avevano immaginato.
+
+I bug possono essere piccoli e quasi invisibili (un testo scritto con il colore sbagliato) o gravissimi (un sistema bancario che addebita importi errati). Parte del lavoro di un Project Manager è proprio aiutare a **classificare** i bug per gravità e priorità, per decidere quali vanno risolti immediatamente e quali possono aspettare.
+
+## ✨ Feature: una nuova funzionalità
+
+Una **feature** è, al contrario del bug, qualcosa di voluto: una nuova funzionalità che si aggiunge al software per offrire più valore agli utenti.
+
+**Esempio**: aggiungere la possibilità di pagare con Apple Pay in un'app che finora accettava solo carta di credito è una feature. È una scelta, una decisione di business, non la correzione di un errore.
+
+La differenza tra bug fix (correzione di un bug) e feature è quindi:
+
+| | Bug fix | Feature |
+|---|---|---|
+| Perché si fa | Qualcosa non funziona come dovrebbe | Si vuole aggiungere qualcosa di nuovo |
+| È previsto dai requisiti originali? | Sì, il comportamento corretto era già previsto ma non funzionava | No, è un'aggiunta rispetto a quanto già esisteva |
+| Urgenza tipica | Spesso alta, soprattutto se blocca l'uso del software | Variabile, spesso pianificata per una versione futura |
+| Esempio | "Il bottone 'Acquista' non risponde al click su alcuni telefoni" | "Aggiungere la possibilità di salvare i prodotti preferiti" |
+
+Questa distinzione è fondamentale perché, come Project Manager, dovrai spesso gestire un elenco (detto **backlog**, termine che approfondiremo nella sezione sull'Agile) contenente sia bug da correggere che feature da sviluppare, e aiutare il team a decidere le priorità.
+
+## 🔢 Versioning: perché numeriamo il software
+
+Hai mai notato che le app sul telefono si aggiornano e mostrano numeri come "2.4.1" o "10.0.3"? Questo si chiama **versioning** (o numerazione delle versioni).
+
+Perché è importante? Immagina di dover parlare con un collega di un problema e dire semplicemente "l'app fa una cosa strana". Quale app? In che momento? Con quali funzionalità presenti? Senza un numero di versione preciso, sarebbe come descrivere un'auto senza dire il modello o l'anno: informazioni troppo vaghe per essere utili.
+
+Il numero di versione permette di:
+
+- Sapere esattamente quale "fotografia" del software si sta usando o discutendo
+- Capire se un problema è già stato risolto in una versione più recente
+- Comunicare chiaramente ai clienti cosa cambia da una versione all'altra
+
+Un sistema molto diffuso si chiama **Semantic Versioning** (versionamento semantico), che usa tre numeri nel formato **MAJOR.MINOR.PATCH** (ad esempio **1.2.3**):
+
+- **MAJOR** (il primo numero, "1"): cambia quando si introducono modifiche importanti, che potrebbero non essere compatibili con le versioni precedenti. Ad esempio, se cambia completamente il modo in cui l'app comunica con altri sistemi.
+- **MINOR** (il secondo numero, "2"): cambia quando si aggiungono nuove feature, ma tutto quello che c'era prima continua a funzionare come prima.
+- **PATCH** (il terzo numero, "3"): cambia quando si correggono bug, senza aggiungere nuove funzionalità.
+
+**Esempio pratico**: se il software è alla versione 1.2.3 e il team:
+
+- corregge un bug → diventa 1.2.**4**
+- aggiunge una nuova feature (es. il pagamento con Apple Pay) → diventa 1.**3**.0
+- cambia qualcosa in modo così profondo da rompere la compatibilità con l'esterno → diventa **2**.0.0
+
+Questo sistema è uno standard molto diffuso nel mondo dello sviluppo software, adottato da moltissime librerie e applicazioni.
+
+## 🌿 Branching: lavorare in parallelo
+
+Immagina un team di 5 sviluppatori che lavorano tutti insieme, contemporaneamente, sullo stesso identico file di codice. Cosa potrebbe succedere? Molto probabilmente, un disastro: le modifiche di uno cancellerebbero quelle di un altro, e sarebbe impossibile capire chi ha cambiato cosa.
+
+Per questo esiste il concetto di **branch** (in italiano "ramo"). Un branch è come una copia parallela e temporanea del progetto, su cui una persona (o un piccolo gruppo) può lavorare in isolamento, senza disturbare il lavoro degli altri, per poi ricongiungere le modifiche al progetto principale quando sono pronte.
+
+L'analogia migliore è quella dell'albero: il tronco principale rappresenta la versione "ufficiale" e stabile del software (spesso chiamata branch `main` o `master`). Ogni volta che uno sviluppatore deve lavorare su qualcosa — una nuova feature, la correzione di un bug — crea un ramo che si distacca dal tronco, ci lavora in tranquillità, e alla fine quel ramo viene "ricongiunto" al tronco principale.
+
+```mermaid
+gitGraph
+    commit id: "versione stabile"
+    branch feature-login
+    checkout feature-login
+    commit id: "aggiunta form di login"
+    commit id: "aggiunta validazione"
+    checkout main
+    commit id: "fix urgente"
+    checkout feature-login
+    commit id: "test e rifiniture"
+    checkout main
+    merge feature-login id: "unione al ramo principale"
+```
+
+Questo concetto sarà spiegato con molti più dettagli pratici (comandi, strumenti, esempi passo-passo) nella prossima sezione dedicata a Git e GitHub. Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi.
+
+## 🔁 Dal branch al merge: pull request e code review
+
+Una volta che uno sviluppatore ha finito di lavorare sul proprio ramo (ad esempio ha completato la feature "login con email"), non può semplicemente "ricongiungere" le sue modifiche al tronco principale senza controlli. Sarebbe rischioso: e se il suo codice avesse errori? E se rompesse qualcosa che già funzionava?
+
+Per questo, prima di unire le modifiche, si passa attraverso due passaggi fondamentali: la **pull request** e la **code review**.
+
+### Pull Request: "propongo questa modifica"
+
+Una **pull request** (spesso abbreviata **PR**) è, in parole semplici, una richiesta formale: "ho finito di lavorare su questo ramo, per favore controllate il mio lavoro e, se va bene, unitelo al progetto principale".
+
+È come quando, dopo aver scritto una relazione di lavoro, non la invii direttamente al cliente, ma la mandi prima al tuo responsabile per un controllo. La pull request è esattamente quella richiesta di controllo, applicata al codice.
+
+### Code Review: il controllo dei colleghi
+
+La **code review** è il momento in cui uno o più colleghi (spesso sviluppatori più esperti, o semplicemente altri membri del team) leggono il codice scritto e verificano che:
+
+- Faccia davvero quello che deve fare
+- Sia scritto in modo chiaro e mantenibile (cioè che altre persone, in futuro, possano capirlo e modificarlo facilmente)
+- Non introduca bug o problemi di sicurezza
+- Segua le convenzioni e gli standard adottati dal team
+
+Perché è importante che sia qualcun altro a controllare, e non solo chi ha scritto il codice? Per lo stesso motivo per cui è utile far leggere una mail importante a un collega prima di inviarla: chi scrive tende a non vedere i propri errori, mentre un occhio esterno nota cose che altrimenti sfuggirebbero. La code review, inoltre, aiuta a diffondere la conoscenza del progetto tra i membri del team, così che non ci sia una sola persona che "sa tutto" e nessun altro capisce quel pezzo di codice.
+
+Se durante la code review emergono problemi, chi ha scritto il codice apporta le correzioni richieste, e il processo si ripete finché tutti sono soddisfatti.
+
+### Merge: l'unione finale
+
+Quando la pull request è stata approvata dai colleghi durante la code review, si procede al **merge**: l'unione definitiva delle modifiche del ramo (branch) al progetto principale. A questo punto, quella nuova funzionalità o correzione diventa parte ufficiale del software, pronta per le fasi successive (ulteriori test, e infine il rilascio).
+
+```mermaid
+flowchart LR
+    A[🌿 Creazione del branch] --> B[💻 Sviluppo della modifica<br/>sul branch]
+    B --> C[📨 Apertura Pull Request]
+    C --> D[👀 Code Review<br/>da parte dei colleghi]
+    D -->|Richieste modifiche| B
+    D -->|Approvato ✅| E[🔀 Merge nel branch principale]
+    E --> F[🚀 Pronto per test e rilascio]
+
+    style A fill:#e8f5e9
+    style B fill:#fff3e0
+    style C fill:#e3f2fd
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+    style F fill:#ede7f6
+```
+
+Questo flusso — branch, pull request, code review, merge — è oggi lo standard adottato dalla stragrande maggioranza dei team di sviluppo professionali nel mondo, e lo ritroverai costantemente nel tuo lavoro quotidiano come Project Manager, anche solo per monitorare lo stato di avanzamento delle attività del team.
+
+## 🧩 Come si collegano tutti questi concetti
+
+Facciamo un piccolo riepilogo con un esempio end-to-end, per vedere come tutti i concetti di questa sezione si incastrano insieme in un caso reale (semplificato):
+
+1. Il cliente chiede una nuova funzionalità: "vogliamo che gli utenti possano recuperare la password" → è un **requisito funzionale**, che finisce nel backlog come **feature**.
+2. Il team tecnico fa l'**analisi**: decide di implementarla con un'email contenente un link temporaneo.
+3. Uno sviluppatore crea un **branch** dedicato e inizia lo **sviluppo**, scrivendo il codice necessario.
+4. Durante lo sviluppo scopre e corregge anche un piccolo **bug** preesistente in una funzione che invia le email.
+5. Finito il lavoro, apre una **pull request**.
+6. Un collega esegue la **code review**, chiede una piccola modifica per rispettare un **requisito non funzionale** (il link deve scadere dopo 30 minuti per motivi di sicurezza).
+7. Lo sviluppatore corregge, il collega approva, si fa il **merge**.
+8. Il team esegue il **testing** (unitario, di integrazione e manuale) sulla nuova funzionalità.
+9. Tutto ok: si prepara il **rilascio** e si assegna un nuovo numero di **versione**, ad esempio da 2.3.1 a 2.4.0 (è una nuova feature, quindi cambia il numero MINOR).
+10. Il software va in **produzione**. Da qui in avanti, entra nella fase di **manutenzione**: se emergono nuovi bug legati a questa funzionalità, il ciclo ripartirà da capo su un nuovo branch.
+
+Come vedi, tutti questi termini che oggi possono sembrare astratti sono in realtà i mattoni con cui è costruito il lavoro quotidiano di qualsiasi team software. Nelle prossime sezioni approfondirai molti di questi concetti con strumenti e pratiche concrete.
+
+## 🔗 Collegamenti
+
+- [4. Git e GitHub](../04-git-e-github/README.md) — per capire in pratica, con comandi ed esempi, come funzionano davvero branch, commit, pull request e merge
+- [5. Agile](../05-agile/README.md) — per scoprire come i team moderni organizzano il ciclo di vita del software in iterazioni brevi e continue
+- [9. DevOps](../09-devops/README.md) — per approfondire come le fasi di sviluppo, testing e rilascio vengono oggi collegate e automatizzate
+- [11. CI/CD](../11-ci-cd/README.md) — per capire come build, test e deploy possono essere automatizzati end-to-end
+
+## 📚 Risorse
+
+- [Atlassian — What is SDLC? Software Development Life Cycle Explained](https://www.atlassian.com/agile/software-development/sdlc) — panoramica chiara sul ciclo di vita del software
+- [Semantic Versioning 2.0.0](https://semver.org/) — la specifica ufficiale del versionamento semantico (in inglese, ma con esempi semplici)
+- [GitHub Docs — About pull requests](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests) — documentazione ufficiale su cosa sono e come funzionano le pull request
+- [Atlassian — Code Review Best Practices](https://www.atlassian.com/agile/software-development/code-reviews) — guida pratica sul perché e come si fa code review
+- [Wikipedia — Software bug (storia del termine, inclusa la storia della falena di Grace Hopper)](https://en.wikipedia.org/wiki/Software_bug) — approfondimento storico e tecnico sull'origine del termine "bug"

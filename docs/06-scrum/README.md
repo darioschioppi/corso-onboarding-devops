@@ -910,8 +910,8 @@ insieme in un ciclo che si ripete sprint dopo sprint:
 
 ```mermaid
 flowchart TD
-    A["Product Backlog<br/>(gestito dal Product Owner)"] -->|Sprint Planning:<br/>selezione voci pronte<br/>(Definition of Ready)| B["Sprint Backlog<br/>+ Sprint Goal"]
-    B -->|il team lavora<br/>sprint (Daily Scrum ogni giorno)| C["Lavoro in corso"]
+    A["Product Backlog<br/>(gestito dal Product Owner)"] -->|"Sprint Planning:<br/>selezione voci pronte<br/>(Definition of Ready)"| B["Sprint Backlog<br/>+ Sprint Goal"]
+    B -->|"il team lavora<br/>sprint (Daily Scrum ogni giorno)"| C["Lavoro in corso"]
     C -->|verifica rispetto a<br/>Definition of Done| D["Increment<br/>completato e utilizzabile"]
     D -->|Sprint Review:<br/>demo e feedback stakeholder| E["Feedback e nuove priorità"]
     E -->|aggiorna| A

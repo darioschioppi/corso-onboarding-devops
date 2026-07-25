@@ -238,7 +238,7 @@ I due framework più diffusi nel mondo dello sviluppo software — e quelli che 
 
 ```mermaid
 flowchart TB
-    M[🧭 Agile<br/>valori e principi - il "mindset"] --> S[📅 Scrum<br/>framework a sprint, ruoli e riti definiti]
+    M["🧭 Agile<br/>valori e principi - il mindset"] --> S[📅 Scrum<br/>framework a sprint, ruoli e riti definiti]
     M --> K[📊 Kanban<br/>framework a flusso continuo, board visuale]
     M --> O[... altri framework<br/>es. Extreme Programming, Lean, SAFe]
 

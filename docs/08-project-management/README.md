@@ -99,12 +99,12 @@ quadrantChart
     quadrant-2 Coinvolgere attivamente
     quadrant-3 Monitorare
     quadrant-4 Informare periodicamente
-    Cliente (sponsor): [0.85, 0.9]
-    Management interno: [0.6, 0.85]
-    Utenti finali: [0.8, 0.35]
-    Team di sviluppo: [0.7, 0.4]
-    Team infrastruttura: [0.4, 0.55]
-    Ufficio legale: [0.2, 0.6]
+    "Cliente (sponsor)": [0.85, 0.9]
+    "Management interno": [0.6, 0.85]
+    "Utenti finali": [0.8, 0.35]
+    "Team di sviluppo": [0.7, 0.4]
+    "Team infrastruttura": [0.4, 0.55]
+    "Ufficio legale": [0.2, 0.6]
 ```
 
 **Esempio pratico**: nel progetto ShopFacile per una nuova funzionalità di
@@ -340,10 +340,10 @@ quadrantChart
     quadrant-2 Priorità massima
     quadrant-3 Accettare
     quadrant-4 Piano di mitigazione pronto
-    Ritardo team esterno: [0.7, 0.75]
-    Bug critico in produzione: [0.85, 0.3]
-    Turnover di uno sviluppatore chiave: [0.6, 0.4]
-    Piccolo ritardo fornitore hosting: [0.3, 0.5]
+    "Ritardo team esterno": [0.7, 0.75]
+    "Bug critico in produzione": [0.85, 0.3]
+    "Turnover di uno sviluppatore chiave": [0.6, 0.4]
+    "Piccolo ritardo fornitore hosting": [0.3, 0.5]
 ```
 
 **Esempio concreto**: "rischio di ritardo per dipendenza da un altro team" —

@@ -601,7 +601,7 @@ In termini informatici:
 
 ```mermaid
 graph LR
-    A[App Meteo<br/>client] -->|Richiesta API:<br/>"che tempo fa a Milano?"| B[Servizio Meteo<br/>server/API]
+    A[App Meteo<br/>client] -->|"Richiesta API:<br/>che tempo fa a Milano?"| B[Servizio Meteo<br/>server/API]
     B -->|Risposta:<br/>22°C, sereno| A
 ```
 

@@ -80,6 +80,15 @@ un "optional" che si aggiunge se resta tempo a fine sprint. Un PM che tratta
 la sicurezza come priorità fin dalla pianificazione fa risparmiare
 tempo, denaro e problemi seri più avanti.
 
+**Esempio pratico**: durante la pianificazione di una nuova funzionalità
+che permette agli utenti di caricare documenti, il team si accorge che
+serve anche configurare i permessi di accesso a quei file e cifrare il
+canale di upload. Se il PM inserisce questo lavoro nella stima dello sprint
+fin dall'inizio (come farebbe con qualsiasi altro requisito), il rilascio
+resta nei tempi. Se invece la sicurezza viene "ricordata" solo a fine
+sprint, il rilascio slitta e il team lavora sotto pressione per rimettersi
+in pari — lo stesso lavoro, fatto più tardi, costa di più.
+
 ---
 
 ## 14.2 Autenticazione vs Autorizzazione
@@ -185,6 +194,17 @@ DevOps, ambiente cloud, VPN aziendale) richieda l'MFA per policy aziendale:
 se ti viene chiesto di installare un'app di autenticazione sul telefono per
 lavoro, ora sai perché.
 
+**Esempio pratico**: immagina che la password di un membro del team venga
+scoperta perché usata anche su un altro servizio online violato in passato
+(è più comune di quanto sembri: succede quando la stessa password viene
+riusata su più siti). Chi ha ottenuto quella password prova ad accedere ad
+Azure DevOps con quelle credenziali. Senza MFA, entrerebbe subito. Con
+l'MFA attivo, il sistema chiede anche il codice generato dall'app sul
+telefono di quella persona: l'attaccante non lo ha, e l'accesso viene
+bloccato. Questo è esattamente il motivo per cui, dopo un data breach di
+un servizio terzo, la prima raccomandazione è sempre "cambia la password e
+verifica che l'MFA sia attivo", non solo la prima.
+
 ---
 
 ## 14.4 HTTPS e crittografia: un richiamo veloce
@@ -228,6 +248,19 @@ Non avrai bisogno di implementare crittografia, ma è utile sapere che
 quando un cliente chiede "i nostri dati sono cifrati?", la risposta
 completa riguarda **sia** il transito (HTTPS) **sia** il salvataggio (a
 riposo).
+
+**Esempio pratico**: un utente compila un modulo con i propri dati
+personali su un sito web e li invia. Se il sito usa HTTPS, quei dati
+viaggiano cifrati dal browser dell'utente al server — anche se qualcuno
+intercettasse il traffico di rete (ad esempio su un Wi-Fi pubblico non
+sicuro), leggerebbe solo una sequenza illeggibile. Una volta arrivati al
+server, quei dati vengono salvati in un database: se anche il database è
+configurato per cifrare i dati "a riposo", chi eventualmente accedesse
+senza autorizzazione al disco fisico del server (un furto, una copia
+illegittima del backup) troverebbe comunque dati illeggibili senza la
+chiave giusta. Le due protezioni sono indipendenti: un sito può avere
+HTTPS ma un database non cifrato, o viceversa — un cliente attento chiede
+entrambe.
 
 ---
 
@@ -306,6 +339,18 @@ Sapere che questo standard esiste ti permette di seguire una conversazione
 tecnica sulla sicurezza senza perderti, e di capire perché in una gara
 d'appalto o in un capitolato può comparire esplicitamente il riferimento a
 OWASP.
+
+**Esempio pratico**: il cliente di un progetto chiede, in fase di
+capitolato, che prima del rilascio in produzione venga eseguito un
+"penetration test basato sulla OWASP Top 10". In pratica, un team di
+sicurezza (interno o esterno) prova a verificare, categoria per categoria
+di quella lista, se l'applicazione presenta debolezze note — ad esempio,
+controlla se è vulnerabile a SQL Injection o XSS (visti sopra), se gestisce
+correttamente l'autenticazione, se espone informazioni che non dovrebbe.
+Il risultato è un report con eventuali criticità trovate, classificate per
+gravità: è esattamente il tipo di documento che un PM può dover presentare
+al cliente come prova che il software è stato verificato secondo uno
+standard riconosciuto, non "a occhio".
 
 ---
 
@@ -446,6 +491,19 @@ progetto **tocca dati personali**, per sapere che in quei casi il tema
 sicurezza/privacy va coinvolto fin dalla pianificazione, non aggiunto a
 posteriori.
 
+**Esempio pratico**: il team riceve una richiesta di funzionalità che
+prevede di salvare, per ogni utente, anche il numero di telefono e la
+posizione geografica approssimativa. Sono entrambi dati personali secondo
+il GDPR. Un PM attento, in fase di pianificazione, si pone (e pone al
+team) alcune domande prima di stimare lo sprint: "questo dato è davvero
+necessario per la funzionalità, o stiamo raccogliendo più del dovuto?",
+"chi avrà accesso a questo dato una volta salvato?", "per quanto tempo lo
+conserviamo?". Se invece la funzionalità viene sviluppata e rilasciata
+senza porsi queste domande, e in seguito si scopre un accesso non
+autorizzato a quei dati, il progetto si trova davanti a un data breach da
+notificare formalmente, con tempi stretti e conseguenze reali — non un
+semplice bug da correggere alla prossima release.
+
 ---
 
 ## 14.10 Backup e disaster recovery: il piano B quando qualcosa va storto
@@ -487,6 +545,17 @@ importante: un cliente che chiede "in quanto tempo torniamo operativi se
 tutto si ferma?" sta facendo una domanda di business legittima, a cui il
 team tecnico deve poter rispondere con numeri concreti (gli RTO/RPO
 concordati), non con un generico "dovremmo farcela".
+
+**Esempio pratico**: il database di produzione di un progetto subisce un
+guasto e diventa inaccessibile alle 14:00 di un giorno lavorativo. Se il
+progetto ha concordato un RTO di 2 ore, il team ha l'obiettivo di
+ripristinare il servizio entro le 16:00. Se l'RPO concordato è di 1 ora, e
+l'ultimo backup automatico risale alle 13:30, il team sa già, prima
+ancora di iniziare il ripristino, che andranno persi al massimo 30 minuti
+di dati recenti — un'informazione che il PM può comunicare subito al
+cliente, invece di scoprirlo a ripristino concluso. Senza questi numeri
+concordati in anticipo, la stessa situazione genera solo incertezza e
+domande a cui nessuno sa rispondere con precisione.
 
 ---
 
@@ -542,6 +611,68 @@ voce, o scrivendo due righe) a queste domande:
 - Sai spiegare perché il GDPR riguarda anche le scelte di un PM, non solo
   i legali?
 - Sai spiegare la differenza tra backup e disaster recovery?
+
+---
+
+## 📝 Esercizi pratici
+
+1. **Mappa autenticazione/autorizzazione sul progetto**: chiedi a un
+   collega developer come funziona il login nell'applicazione del progetto
+   e quali ruoli/permessi esistono (es. "utente base", "amministratore").
+   Disegna uno schema semplice (anche a mano) con almeno due ruoli diversi
+   e cosa ciascuno può o non può fare.
+   ✅ **Come verificare**: sei in grado di indicare almeno un'azione che un
+   ruolo può fare e un altro no, usando esempi reali del progetto (non
+   inventati) e senza confondere "chi è" con "cosa può fare".
+
+2. **Controlla l'MFA sui tuoi strumenti di lavoro**: verifica se hai
+   l'autenticazione a più fattori attiva su tutti gli strumenti che usi per
+   lavoro (email aziendale, Azure DevOps, VPN). Se manca su qualcuno,
+   attivala (o chiedi all'IT come fare).
+   ✅ **Come verificare**: puoi elencare, per ogni strumento di lavoro che
+   usi, se l'MFA è attiva sì/no, e sai spiegare a un collega perché è
+   importante che lo sia anche se la password è "forte".
+
+3. **Riconosci una vulnerabilità in un caso pratico**: leggi la
+   descrizione di una vulnerabilità reale (puoi cercarne una recente sul
+   sito OWASP o in una news di settore, senza bisogno di capirne i
+   dettagli tecnici) e prova a classificarla: assomiglia più a una SQL
+   Injection, a una XSS, o a un'altra categoria? Scrivi due righe su cosa
+   avrebbe potuto fare un attaccante se quella vulnerabilità non fosse
+   stata corretta.
+   ✅ **Come verificare**: sai spiegare, con parole tue e senza gergo
+   tecnico eccessivo, cosa rischiava di succedere e perché "testare anche
+   per la sicurezza" avrebbe potuto prevenirlo.
+
+4. **Trova gli scan di sicurezza nella pipeline reale**: chiedi a un
+   collega (developer o DevOps engineer) di farti vedere, nella pipeline
+   CI/CD del progetto, dove sono configurati gli scan di sicurezza (SAST,
+   SCA, o eventualmente DAST) e cosa succede quando trovano una
+   vulnerabilità critica.
+   ✅ **Come verificare**: sai indicare in quale fase della pipeline si
+   trova ciascun tipo di scan, e sai descrivere concretamente cosa vede il
+   team quando un quality gate di sicurezza blocca un rilascio (una
+   notifica? un'email? il rilascio che semplicemente non parte?).
+
+5. **Simula una richiesta del cliente sul GDPR**: immagina che il cliente
+   chieda "per quanto tempo conservate i dati personali degli utenti dopo
+   che chiudono l'account, e chi può accedervi?". Prova a scrivere, in 5-6
+   righe, come struttureresti la risposta (anche senza conoscere i dettagli
+   tecnici esatti del progetto — l'obiettivo è la struttura del
+   ragionamento, non il dato preciso).
+   ✅ **Come verificare**: la tua risposta tocca sia l'aspetto tecnico
+   (dove e come sono protetti i dati) sia l'aspetto di processo (chi
+   decide i tempi di conservazione, chi ha accesso), e non promette nulla
+   che non puoi verificare con il team.
+
+6. **Chiedi RTO e RPO reali del progetto**: chiedi alla tua collega
+   Scrum Master/PM o a un membro del team operations quali sono, se
+   definiti, l'RTO e l'RPO concordati per l'ambiente di produzione del
+   progetto (anche se la risposta è "non sono ancora stati definiti
+   formalmente" — è comunque un'informazione utile).
+   ✅ **Come verificare**: sai riportare a un collega, con le tue parole,
+   cosa significano quei due numeri specifici (non la definizione
+   generica del libro) applicati al contesto reale del progetto.
 
 ---
 

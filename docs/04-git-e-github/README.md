@@ -148,6 +148,16 @@ git clone https://github.com/nome-organizzazione/nome-progetto.git
 Dopo un `git clone`, avrai sul tuo computer una copia completa del
 progetto, compresa tutta la sua storia — pronta per essere modificata.
 
+> 🧪 **Esempio pratico**: immagina che il team ti mandi il link a un
+> repository GitHub del progetto, ad esempio
+> `https://github.com/nome-progetto/backend-api`. Aprendolo nel browser
+> vedrai: una lista di cartelle e file (il codice), un pulsante verde
+> "Code" per clonarlo, il numero di branch attivi, e un tab "Commits" con
+> la cronologia di tutte le modifiche fatte finora. Se lo clonassi sul tuo
+> computer con `git clone https://github.com/nome-progetto/backend-api.git`,
+> ti ritroveresti in una cartella `backend-api` con dentro tutti quei file,
+> pronti per essere letti — anche se non li modifichi mai.
+
 ---
 
 ## 4.4 Commit: uno scatto fotografico delle modifiche
@@ -192,6 +202,19 @@ Ogni commit ha un **identificativo univoco** (un codice esadecimale, es.
 qualsiasi momento futuro — utile per capire, ad esempio, "in quale commit
 è stato introdotto questo bug?".
 
+> 🧪 **Esempio pratico**: dopo tre commit, se lanci `git log --oneline`
+> vedresti qualcosa così:
+> ```
+> a1b2c3d Aggiunge la validazione del campo email nel form di registrazione
+> 9f8e7d6 Aggiunge il form di registrazione utente
+> 3c4d5e6 Setup iniziale del progetto
+> ```
+> Ogni riga è un commit: il codice a sinistra (es. `a1b2c3d`) è
+> l'identificativo univoco, il testo a destra è il messaggio. Se un giorno
+> qualcuno nota un bug nella validazione email, un developer potrà usare
+> `git log` per capire esattamente in quale commit — e quindi in che
+> momento — è stata introdotta quella modifica.
+
 ---
 
 ## 4.5 Branch: un ramo di lavoro parallelo
@@ -231,6 +254,18 @@ vedi nelle Pull Request):
 Lavorare su branch separati è ciò che permette a più persone del team di
 lavorare **in parallelo sullo stesso progetto** senza pestarsi i piedi.
 
+> 🧪 **Esempio pratico**: il team deve sviluppare due cose in parallelo: una
+> nuova pagina di login e la correzione di un bug nel checkout. Due
+> developer diversi lanceranno:
+> ```bash
+> git checkout -b feature/login-utente        # developer A
+> git checkout -b fix/checkout-prezzo-errato  # developer B
+> ```
+> Da questo momento lavorano su due "cantieri" separati: i commit di A non
+> toccano i file su cui lavora B (a meno che non modifichino esattamente
+> gli stessi file), e nessuno dei due tocca `main`, che resta stabile per
+> tutti gli altri.
+
 ---
 
 ## 4.6 Merge: unire due rami
@@ -257,6 +292,21 @@ in modo diverso, Git non sa quale versione tenere: si genera un
 **conflitto di merge**, che va risolto manualmente decidendo quale
 modifica (o quale combinazione) mantenere. Non preoccuparti: è un evento
 normalissimo nel lavoro quotidiano, non un errore grave.
+
+> 🧪 **Esempio pratico**: supponiamo che il branch `feature/login-utente`
+> sia pronto. Da `main` lanci:
+> ```bash
+> git checkout main
+> git merge feature/login-utente
+> ```
+> Se nessuno ha toccato le stesse righe su `main` nel frattempo, Git
+> risponde con qualcosa come `Fast-forward` o
+> `Merge made by the 'ort' strategy` e il lavoro è unito automaticamente.
+> Se invece un altro developer aveva modificato lo stesso file nello stesso
+> punto, Git si ferma e restituisce un messaggio come
+> `CONFLICT (content): Merge conflict in login.js` — a quel punto tocca
+> aprire il file, decidere quale versione tenere (o combinarle), e
+> completare il merge con `git add` + `git commit`.
 
 Ecco un diagramma che riassume l'intero ciclo di vita di un branch di
 feature, dalla creazione al merge:
@@ -338,6 +388,24 @@ avanzamento** del lavoro: quante PR sono aperte, quante sono in attesa di
 revisione, quanto tempo restano aperte prima di essere unite (un indicatore
 utile di quanto è fluido il processo del team).
 
+> 🧪 **Esempio pratico**: un developer ha finito la feature login. I
+> passaggi concreti su GitHub sarebbero:
+> 1. Push del branch: `git push origin feature/login-utente`.
+> 2. Su GitHub compare un banner "Compare & pull request": clicca, scrivi
+>    un titolo (es. "Aggiunge login utente con validazione email") e una
+>    descrizione di cosa cambia e perché.
+> 3. Assegna uno o due colleghi come reviewer.
+> 4. I colleghi lasciano commenti tipo "Perché qui usiamo `==` invece di
+>    `===`?" — il developer risponde o corregge con un nuovo commit sullo
+>    stesso branch, che aggiorna automaticamente la PR.
+> 5. Quando i commenti sono risolti e i check automatici (CI/CD) sono
+>    verdi, un reviewer clicca "Approve", poi qualcuno clicca
+>    "Merge pull request".
+>
+> Da Project Manager, vedresti questa PR nella tab "Pull requests" del
+> repository con un'etichetta verde "Open" che diventa viola "Merged" a
+> fine processo.
+
 ---
 
 ## 4.8 Issue: tracciare bug e richieste
@@ -366,6 +434,20 @@ Molti team di progetto (incluso probabilmente il tuo) usano le Issue di
 GitHub — o l'equivalente "Work Item" in Azure DevOps — come base per la
 gestione del backlog che vedremo nelle sezioni su Agile, Scrum e Kanban.
 
+> 🧪 **Esempio pratico**: un utente segnala che il pulsante "Conferma
+> ordine" non funziona su un certo browser. Sul repository del progetto,
+> qualcuno apre una Issue così:
+> - **Titolo**: "Il pulsante Conferma ordine non risponde su Safari"
+> - **Descrizione**: passi per riprodurlo, screenshot, browser e versione
+>   usati
+> - **Label**: `bug`, `priorità-alta`
+> - **Assegnatario**: il developer che se ne occuperà
+>
+> Il developer apre un branch `fix/conferma-ordine-safari`, risolve il
+> problema, e nella descrizione della Pull Request scrive "Closes #57"
+> (dove 57 è il numero della Issue): una volta unita la PR, GitHub chiude
+> automaticamente la Issue numero 57.
+
 ---
 
 ## 4.9 Release: una versione pubblicata ufficialmente
@@ -393,6 +475,19 @@ rilascio** (release notes): un elenco leggibile di cosa è cambiato,
 utilissimo anche per un Project Manager che deve comunicare al cliente o
 agli stakeholder cosa contiene la nuova versione.
 
+> 🧪 **Esempio pratico**: il team rilascia la versione `2.3.0` del
+> prodotto. Sulla pagina "Releases" di GitHub troveresti una voce con:
+> - tag `v2.3.0`;
+> - titolo "Versione 2.3.0 — Gestione utenti";
+> - note di rilascio tipo: "✨ Nuove funzionalità: gestione ruoli utente.
+>   🐛 Fix: corretto un bug nel checkout. ⚠️ Nota: richiede un
+>   aggiornamento del database.";
+> - eventuali file scaricabili (es. un installer).
+>
+> Un Project Manager potrebbe riprendere direttamente queste note di
+> rilascio — magari semplificandole — in una comunicazione al cliente o in
+> un aggiornamento agli stakeholder.
+
 ---
 
 ## 4.10 Tag: etichettare un punto preciso della storia
@@ -417,6 +512,22 @@ Differenza pratica tra Tag e Release: il **tag** è un concetto di Git
 (un puntatore a un commit), mentre la **Release** è un concetto di GitHub
 costruito sopra un tag, con in più note descrittive, file scaricabili
 (binari, installer) e visibilità nella pagina del progetto.
+
+> 🧪 **Esempio pratico**: dopo aver taggato e pubblicato la versione
+> `v2.3.0`, se sei sul repository e lanci `git tag`, vedresti l'elenco di
+> tutti i tag creati nel tempo:
+> ```
+> v1.0.0
+> v1.1.0
+> v2.0.0
+> v2.1.0
+> v2.2.0
+> v2.3.0
+> ```
+> Se un giorno serve tornare esattamente alla versione rilasciata qualche
+> mese prima, basta fare `git checkout v2.1.0` (se quello era il tag di
+> quella release) per vedere il progetto esattamente come era in quel
+> momento, senza dover cercare "a occhio" nella cronologia dei commit.
 
 ---
 
@@ -483,6 +594,20 @@ approvazione/rilascio è complesso e richiede una fase di stabilizzazione
 prima di ogni release. Lo svantaggio è che è un processo più pesante, con
 più branch da gestire e più passaggi di merge.
 
+> 🧪 **Esempio pratico**: il progetto rilascia una nuova versione ogni
+> mese. Lo scenario tipico con Git Flow:
+> - i developer lavorano tutto il mese su vari branch `feature/...` che
+>   partono da `develop` e ci tornano quando pronti;
+> - una settimana prima del rilascio si crea `release/1.4.0` da
+>   `develop`: qui si fanno solo piccoli fix e test finali, niente nuove
+>   funzionalità;
+> - quando è tutto stabile, `release/1.4.0` viene unito sia in `main` (con
+>   tag `v1.4.0`, che diventa la produzione) sia di nuovo in `develop`;
+> - se due giorni dopo il rilascio emerge un bug critico in produzione, si
+>   crea `hotfix/bug-pagamenti` direttamente da `main`, si corregge, si
+>   unisce in `main` (nuovo tag `v1.4.1`) e anche in `develop`, così il fix
+>   non si perde nel prossimo rilascio.
+
 ---
 
 ## 4.12 Trunk Based Development: il workflow semplificato
@@ -529,6 +654,21 @@ vedremo più avanti nel corso. Lo svantaggio è che richiede molta disciplina
 e automazione: senza test solidi, integrare spesso su un unico branch
 diventa rischioso.
 
+> 🧪 **Esempio pratico**: il team lavora con Trunk Based Development e una
+> pipeline CI/CD solida. Una developer deve aggiungere un nuovo filtro di
+> ricerca:
+> - crea un branch `feature/filtro-ricerca` la mattina;
+> - fa 2-3 commit piccoli nel corso della giornata, ciascuno verificato
+>   automaticamente dalla pipeline;
+> - il filtro non è ancora pronto per tutti gli utenti, quindi lo nasconde
+>   dietro un feature flag chiamato `nuovo_filtro_ricerca_attivo`
+>   (inizialmente spento);
+> - entro sera apre una PR piccola e veloce da revisionare, e la unisce in
+>   `main`;
+> - il codice è ora in produzione ma invisibile agli utenti (flag spento);
+>   quando il team è pronto, attiva il flag per tutti (o per un gruppo di
+>   test) senza dover rilasciare nulla di nuovo.
+
 ### Confronto rapido
 
 | | Git Flow | Trunk Based Development |
@@ -567,6 +707,77 @@ che conta, nel tuo ruolo, è capire **cosa rappresentano concettualmente**
 (uno scatto, un ramo, un'unione) per poter seguire con consapevolezza le
 conversazioni tecniche del team, leggere lo stato di una Pull Request, e
 capire perché il team ha scelto un certo workflow.
+
+---
+
+## 📝 Esercizi pratici
+
+Gli esercizi che seguono ti servono a consolidare i concetti visti in
+questa sezione con le mani sulla tastiera. Non serve nessun progetto reale:
+puoi farli tutti con un account GitHub gratuito e un repository di prova
+che poi puoi anche eliminare.
+
+1. **Crea un repository e fai il tuo primo commit.**
+   Crea un repository di prova su GitHub (pubblico o privato, non
+   importa), clonalo sul tuo computer con `git clone`, crea un file
+   `note.txt` con dentro una riga di testo a piacere, poi lancia
+   `git add note.txt` e `git commit -m "Primo commit di prova"`.
+   ✅ **Come verificare**: lanciando `git log`, deve apparire il tuo
+   commit con il messaggio che hai scritto e un identificativo
+   esadecimale univoco.
+
+2. **Crea un branch, modificalo e uniscilo.**
+   Nel repository di prova, crea un branch con
+   `git checkout -b feature/prova`, modifica `note.txt` aggiungendo una
+   seconda riga, fai un commit, poi torna su `main` con
+   `git checkout main` e lancia `git merge feature/prova`.
+   ✅ **Come verificare**: dopo il merge, `note.txt` su `main` deve
+   contenere anche la riga che hai aggiunto sul branch, e `git log`
+   deve mostrare il commit del branch unito nella storia di `main`.
+
+3. **Genera un conflitto di merge e risolvilo.**
+   Sempre su `main`, modifica la prima riga di `note.txt` e fai un
+   commit. Poi crea un nuovo branch da un punto *precedente* a quella
+   modifica (o modifica la stessa riga su un secondo branch prima del
+   merge) e prova a fare il merge: dovresti ottenere un
+   `CONFLICT (content)`. Apri il file, scegli quale testo mantenere,
+   rimuovi i marcatori `<<<<<<<`, `=======`, `>>>>>>>` che Git inserisce, e
+   completa il merge con `git add note.txt` e `git commit`.
+   ✅ **Come verificare**: `git status` non deve più segnalare conflitti,
+   e `note.txt` deve contenere solo il testo finale che hai scelto, senza
+   marcatori residui.
+
+4. **Apri una Pull Request fittizia su GitHub.**
+   Fai il push del branch `feature/prova` (o uno nuovo) con
+   `git push origin feature/prova`, poi su GitHub apri una Pull Request
+   verso `main`, scrivendo un titolo e una breve descrizione di cosa
+   cambia. Se hai un amico o un collega disponibile, chiedigli di
+   lasciarti un commento; altrimenti lasciatelo da solo per vedere come
+   funziona l'interfaccia.
+   ✅ **Come verificare**: la Pull Request compare nella tab
+   "Pull requests" del repository con stato "Open", e mostra
+   correttamente i file modificati nel tab "Files changed".
+
+5. **Crea un tag e una Release.**
+   Sul repository di prova, crea un tag annotato con
+   `git tag -a v0.1.0 -m "Prima versione di prova"`, invialo con
+   `git push origin v0.1.0`, poi su GitHub vai nella sezione "Releases" e
+   pubblica una Release basata su quel tag, con qualche nota di rilascio
+   scritta da te.
+   ✅ **Come verificare**: il tag `v0.1.0` compare lanciando `git tag`, e
+   la Release compare nella pagina "Releases" del repository con le note
+   che hai scritto.
+
+6. **Disegna il workflow del tuo progetto reale.**
+   Chiedi a un collega developer quale workflow (Git Flow, Trunk Based
+   Development, o una via di mezzo) usa il progetto su cui sei inserito/a,
+   e provate insieme a disegnare — anche su un foglio — la sequenza di
+   branch che si crea per una feature "tipica" del progetto, dalla
+   creazione del branch fino al rilascio in produzione.
+   ✅ **Come verificare**: sai indicare, senza guardare gli appunti, se il
+   progetto usa (o si avvicina a) Git Flow o a Trunk Based Development, e
+   sai spiegare perché quella scelta si adatta al ritmo di rilascio del
+   progetto.
 
 ---
 

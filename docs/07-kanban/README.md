@@ -110,6 +110,27 @@ Le board Kanban possono essere fisiche (un muro con post-it) o digitali
 vedrai come si costruisce concretamente una board Kanban dentro
 Azure DevOps.
 
+> 💡 **Esempio pratico**: immagina la board di un piccolo team di
+> manutenzione, con 4 colonne — **To Do**, **In Sviluppo**, **In Test**,
+> **Done** — e in un dato lunedì mattina la situazione è questa:
+>
+> - **To Do** (6 card): richieste appena arrivate, non ancora prese in
+>   carico — es. "Aggiungere validazione campo email", "Bug: pagina
+>   lenta su mobile".
+> - **In Sviluppo** (2 card): "Fix errore export PDF" (assegnata a
+>   Marco), "Aggiornare libreria di logging" (assegnata a Giulia).
+> - **In Test** (1 card): "Nuovo filtro ricerca prodotti", in verifica
+>   dal tester.
+> - **Done** (3 card, completate questa settimana): "Fix bottone
+>   disabilitato", "Aggiornamento pagina contatti", "Correzione
+>   traduzione IT".
+>
+> Guardando solo questa riga di numeri (6 / 2 / 1 / 3), un Project
+> Manager può già farsi una prima idea del flusso: c'è più lavoro in
+> attesa (6) di quanto il team ne stia lavorando attivamente (2+1=3) —
+> non è necessariamente un problema, ma è un segnale da tenere
+> d'occhio se il numero in "To Do" continua solo a crescere.
+
 ---
 
 ## 7.3 WIP: il lavoro "in corso" e i suoi limiti
@@ -165,6 +186,17 @@ sintomo concreto di un **collo di bottiglia** nel flusso di lavoro del
 team, su cui vale la pena indagare (manca una competenza? una fase
 richiede un'approvazione lenta? c'è troppa dipendenza da una sola
 persona?).
+
+> 💡 **Esempio pratico**: il team fissa il limite di WIP della colonna
+> "In Sviluppo" a **3**. Martedì la colonna ha già 3 card (A, B, C) e
+> uno sviluppatore che ha appena finito un task vorrebbe iniziarne uno
+> nuovo, la card D. Con il limite di WIP attivo, **non può farlo**:
+> deve prima aiutare a completare A, B o C (magari facendo code review
+> a un collega, o testando manualmente una delle tre) e farla avanzare
+> in "In Test". Solo quando una delle tre card lascia la colonna, si
+> "libera uno slot" e la card D può entrare. Il risultato pratico è che
+> lo sviluppatore, invece di aprire un quarto fronte, spinge a chiudere
+> qualcosa che è già a metà — ed è esattamente l'effetto voluto.
 
 ---
 
@@ -238,6 +270,24 @@ flowchart TB
 > migliorando l'efficienza del team, il secondo migliorando come si
 > priorizza e si smista il lavoro in arrivo).
 
+> 💡 **Esempio pratico**: confrontiamo due card diverse della stessa
+> settimana.
+>
+> - Card "Bug critico: pagamento non va a buon fine" — entra in To Do
+>   **martedì 4** alle 9:00, un developer la prende in carico **subito**
+>   (martedì 4, 9:30) perché è urgente, ed è completata **mercoledì 5**.
+>   Lead Time ≈ Cycle Time ≈ **1 giorno**: nessuna attesa in coda.
+> - Card "Migliorare testo pagina 'Chi siamo'" — entra in To Do
+>   **martedì 4**, ma essendo bassa priorità resta in coda per
+>   **12 giorni**; qualcuno la prende in carico **giovedì 16** e la
+>   completa lo stesso giorno in 2 ore. Lead Time = **12 giorni**,
+>   Cycle Time = **meno di 1 giorno**.
+>
+> Stesso team, stessa efficienza di esecuzione (Cycle Time basso in
+> entrambi i casi) — ma un Lead Time completamente diverso, perché
+> dipende da **quanto la card ha aspettato in coda**, non da quanto ci
+> ha messo il team a farla una volta iniziata.
+
 ---
 
 ## 7.5 Kanban vs Scrum: quando usare cosa
@@ -309,6 +359,66 @@ flowchart LR
 - Scrum lavora a **sprint**, Kanban lavora a **flusso continuo**: la
   scelta dipende dal tipo di lavoro del team, e i due approcci si possono
   anche combinare (**Scrumban**).
+
+---
+
+## 📝 Esercizi pratici
+
+1. **Disegna una board a 4 colonne.** Su carta o con un tool gratuito
+   online, crea una board con le colonne **To Do → In Sviluppo → In
+   Test → Done** e inventa 6 card realistiche per un progetto a tua
+   scelta (anche immaginario, es. un sito di prenotazioni). Distribuisci
+   le card nelle colonne come faresti se fossi tu a gestire il flusso in
+   questo momento.
+   ✅ **Come verificare**: se riesci a spiegare a voce, per ciascuna
+   card, "perché è in quella colonna e non in un'altra", l'esercizio è
+   fatto bene.
+
+2. **Applica un limite di WIP e osserva l'effetto.** Riprendi la board
+   dell'esercizio 1 e imposta un limite di WIP di 2 sulla colonna "In
+   Sviluppo". Se hai messo più di 2 card in quella colonna, decidi quali
+   spostare (indietro in To Do, o avanti se sono davvero pronte) per
+   rispettare il limite.
+   ✅ **Come verificare**: alla fine, la colonna "In Sviluppo" deve
+   contenere esattamente 2 card (o meno), e devi saper indicare quale
+   card verrebbe "sbloccata" per prima quando una delle due card attuali
+   viene completata.
+
+3. **Calcola Lead Time e Cycle Time con date a tua scelta.** Inventa una
+   card con tre date: quando entra in "To Do", quando qualcuno la prende
+   in carico ("In Sviluppo"), quando viene completata ("Done"). Calcola
+   a mano Lead Time e Cycle Time, ed evidenzia quanti giorni sono di
+   "attesa in coda".
+   ✅ **Come verificare**: Lead Time deve sempre essere **maggiore o
+   uguale** al Cycle Time (mai il contrario) — se il tuo calcolo dà un
+   Cycle Time più alto del Lead Time, hai invertito una data.
+
+4. **Osserva la board reale del team.** Chiedi a un collega di farti
+   vedere la board Kanban (o Scrum) usata realmente nel progetto:
+   annota quante colonne ha, se ci sono limiti di WIP visibili e su
+   quali colonne, e quante card ci sono in ciascuna colonna in questo
+   momento.
+   ✅ **Come verificare**: sei in grado di riportare, senza guardare di
+   nuovo la board, il nome esatto di tutte le colonne e almeno un
+   esempio di card per ciascuna.
+
+5. **Individua un possibile collo di bottiglia.** Guardando la stessa
+   board reale (o quella dell'esercizio 1), individua se c'è una
+   colonna con più card delle altre, e formula un'ipotesi sul perché
+   (manca una competenza? un'approvazione lenta? una sola persona
+   sovraccarica?).
+   ✅ **Come verificare**: prova la tua ipotesi con un collega o con la
+   tua collega Scrum Master/PM — se conferma (anche parzialmente) la
+   tua lettura, hai capito il concetto.
+
+6. **Confronta Scrum e Kanban su un caso reale.** Pensa a un tipo di
+   richiesta che arriva spesso nel progetto (es. un bug urgente in
+   produzione, oppure una nuova feature pianificata) e scrivi 2-3 righe
+   su quale dei due approcci (Scrum a sprint, o Kanban a flusso
+   continuo) si adatterebbe meglio a gestirla, e perché.
+   ✅ **Come verificare**: la tua risposta deve citare almeno uno dei
+   criteri visti nella tabella della sezione 7.5 (es. prevedibilità del
+   lavoro, necessità di "saltare la fila", cadenza di consegna).
 
 ---
 

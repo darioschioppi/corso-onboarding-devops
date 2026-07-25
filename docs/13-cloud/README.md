@@ -101,6 +101,16 @@ Chi usa IaaS: chi ha bisogno di massimo controllo e flessibilità, o deve
 migrare software esistente pensato per girare su server "tradizionali" senza
 riscriverlo.
 
+> **Esempio pratico**: il team deve spostare un vecchio applicativo
+> gestionale, pensato per girare su un server Windows in ufficio, senza
+> riscriverlo. La soluzione è creare una macchina virtuale IaaS: si installa
+> lo stesso sistema operativo, si copiano gli stessi file, si configurano le
+> stesse porte di rete. Non cambia una riga di codice. Il vantaggio non è
+> "meno lavoro da fare" ma "niente hardware da comprare e mantenere": se la
+> macchina virtuale si rivela sottodimensionata, in pochi minuti il team ne
+> aumenta la potenza (CPU, RAM) dal pannello di controllo del provider,
+> invece di aspettare settimane per un nuovo server fisico.
+
 ### 13.2.2 PaaS — Platform as Service
 
 **PaaS** significa "piattaforma come servizio". Il provider ti affitta anche
@@ -123,6 +133,18 @@ già, pronto all'uso, e il provider si occupa di backup, patch e affidabilità.
 Chi usa PaaS: la maggior parte dei team che sviluppano applicazioni moderne,
 perché permette di concentrarsi sul codice senza perdere tempo a gestire
 server e sistemi operativi.
+
+> **Esempio pratico**: un developer del team finisce di scrivere una nuova
+> funzionalità per l'applicazione web del progetto. Con un servizio PaaS,
+> pubblica il codice (spesso con un comando o con la pipeline vista nella
+> sezione 11) e in pochi minuti la nuova versione è online, raggiungibile via
+> browser, senza che nessuno debba configurare un sistema operativo, aprire
+> porte di rete o installare un runtime a mano. In parallelo, i dati
+> dell'applicazione vivono in un database gestito: nessuno del team deve
+> occuparsi di installare il motore del database, programmare i backup
+> notturni o applicare le patch di sicurezza — il provider lo fa in
+> automatico, e se qualcosa va storto è possibile ripristinare un backup
+> recente con pochi clic.
 
 ### 13.2.3 SaaS — Software as Service
 
@@ -147,6 +169,15 @@ gestire nulla.
 Chi usa SaaS: chiunque abbia bisogno di una funzionalità (email, CRM,
 gestione progetti) senza voler sviluppare o mantenere il software che la
 fornisce.
+
+> **Esempio pratico**: il team ha bisogno di gestire il backlog, le pipeline
+> e i repository del progetto. Nessuno "installa" Azure DevOps su un server:
+> ci si registra, si apre il browser, si accede con le proprie credenziali e
+> il servizio è già lì, pronto all'uso e aggiornato dal provider senza che il
+> team debba fare nulla. Lo stesso vale per la posta elettronica aziendale o
+> per lo strumento di videochiamata usato nei daily: sono tutti software
+> "già finiti", usati così come sono, senza che qualcuno in azienda ne debba
+> gestire l'infrastruttura sottostante.
 
 ---
 
@@ -390,6 +421,61 @@ di interruzioni del servizio.
 - Sai spiegare cosa significa "pay-as-you-go" con un esempio concreto?
 - Sai spiegare perché avere più regioni/data center aiuta l'alta
   disponibilità?
+
+---
+
+## 📝 Esercizi pratici
+
+1. **Mappa il progetto sul modello IaaS/PaaS/SaaS.** Chiedi a un collega
+   developer o operations quali servizi cloud usa il progetto e prova a
+   classificarli come IaaS, PaaS o SaaS (es. "usiamo una macchina virtuale
+   per X" è IaaS, "il sito web gira su un servizio di hosting gestito" è
+   PaaS). Scrivi la lista su un foglio o in un documento.
+   ✅ **Come verificare**: mostra la tua classificazione alla tua collega
+   Scrum Master/PM o al developer che hai intervistato e fatti confermare se
+   hai classificato correttamente almeno 3 servizi su 4.
+
+2. **Costruisci la tua "torta delle responsabilità".** Senza guardare la
+   tabella della sezione 13.3, ridisegna a mano su un foglio le righe
+   Applicazioni/Dati/Runtime/Sistema operativo/Server e prova a compilare le
+   colonne On-Premise, IaaS, PaaS, SaaS indicando chi gestisce cosa.
+   ✅ **Come verificare**: confronta il tuo schema con la tabella originale
+   nella sezione 13.3; se hai più di due celle diverse, rileggi la sezione
+   13.2 prima di andare avanti.
+
+3. **Traduci Azure in AWS (e viceversa).** Prendi 4 servizi Azure a caso tra
+   quelli citati nella sezione 13.4 (es. Virtual Machines, App Service, Blob
+   Storage, AKS) e scrivi a memoria il loro equivalente AWS, senza guardare
+   la tabella della sezione 13.5. Poi controlla.
+   ✅ **Come verificare**: hai indovinato almeno 3 corrispondenze su 4 senza
+   guardare la tabella.
+
+4. **Scalabilità verticale o orizzontale?** Pensa a tre scenari reali (es.
+   "il sito del progetto ha un picco di traffico durante una campagna
+   marketing", "un singolo processo di calcolo è troppo lento", "un servizio
+   deve restare disponibile anche se una macchina si guasta") e per ciascuno
+   decidi se serve scalabilità verticale, orizzontale, o entrambe,
+   motivando la scelta a voce alta o per scritto.
+   ✅ **Come verificare**: chiedi a un collega tecnico di ascoltare/leggere
+   le tue tre risposte e dirti se il ragionamento (non necessariamente la
+   soluzione tecnica esatta) è sensato.
+
+5. **Calcola un pay-as-you-go semplificato.** Immagina una macchina virtuale
+   che costa 0,10 € all'ora. Calcola quanto costerebbe tenerla attiva 24
+   ore su 24 per un mese, e quanto costerebbe invece tenerla attiva solo 8
+   ore al giorno nei giorni lavorativi. Confronta i due numeri.
+   ✅ **Come verificare**: il secondo scenario deve costare meno di un terzo
+   del primo; se il conto non torna, rileggi la sezione 13.7 sul concetto di
+   pagamento a consumo.
+
+6. **Individua le regioni del progetto reale.** Chiedi a un collega
+   developer o a chi si occupa dell'infrastruttura in quale regione (o
+   regioni) cloud gira il progetto, e se è previsto un meccanismo di
+   ripristino in caso di guasto di un data center (anche solo "sappiamo che
+   esiste un piano B" è una risposta valida a questo livello).
+   ✅ **Come verificare**: sai rispondere, in una frase, alla domanda "cosa
+   succederebbe se il data center principale del progetto avesse un
+   problema per un giorno?" basandoti su quello che hai scoperto.
 
 ---
 

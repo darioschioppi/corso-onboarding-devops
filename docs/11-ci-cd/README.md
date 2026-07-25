@@ -154,6 +154,18 @@ digitale del pacchetto). Il principio, però, resta lo stesso: **fasi in
 sequenza, ciascuna con la possibilità di fermare tutto se qualcosa non va
 bene**.
 
+> 🛠️ **Esempio pratico**: una developer del team, chiamiamola Giulia,
+> apre alle 10:03 una Pull Request con una modifica al calcolo di uno
+> sconto. Alle 10:04 la pipeline parte da sola: il checkout del codice
+> impiega 5 secondi, la build 40 secondi. Al minuto 2 la fase di test
+> automatici fallisce, perché uno dei test esistenti si aspettava un
+> risultato diverso da quello prodotto dalla modifica di Giulia. La
+> pipeline si ferma **esattamente lì**: non arriva né alla fase di
+> analisi di sicurezza né, ovviamente, al deploy. Giulia riceve una
+> notifica automatica (email o messaggio nella chat del team) con il
+> link al log del test fallito, corregge il codice, fa un nuovo commit
+> sulla stessa PR e la pipeline riparte da capo, dal checkout.
+
 ---
 
 ## 11.3 Trigger: cosa fa scattare una pipeline
@@ -439,6 +451,18 @@ Esempi tipici di quality gate:
 | **Vulnerabilità di sicurezza** | Nessuna vulnerabilità di livello "alto" o "critico" nelle dipendenze usate | Il rilascio viene bloccato finché la libreria vulnerabile non viene aggiornata o sostituita |
 | **Qualità del codice** | Es. nessun nuovo problema critico introdotto (complessità eccessiva, duplicazioni) | Il rilascio viene bloccato o segnalato per revisione, secondo le regole del progetto |
 
+> 🛠️ **Esempio pratico**: nel progetto, il quality gate sulla coverage è
+> impostato all'80%. Un developer aggiunge una nuova funzionalità di 120
+> righe ma scrive test solo per 60 di quelle righe: la coverage
+> complessiva del progetto scende sotto la soglia, e la pipeline si
+> ferma con un messaggio tipo `Quality gate failed: coverage 76% (soglia
+> 80%)`. Il developer non può "convincere" la pipeline con una buona
+> motivazione: deve aggiungere altri test finché la percentuale non
+> torna sopra soglia, oppure — solo se davvero giustificato e con
+> l'approvazione di un ruolo autorizzato — il team decide consapevolmente
+> di alzare temporaneamente l'eccezione per quel singolo commit,
+> lasciando comunque una traccia scritta del perché.
+
 > 💡 **Analogia**: un quality gate funziona come i controlli di sicurezza
 > in aeroporto. Non importa quanta fretta hai di prendere il volo (di
 > rilasciare in produzione): se il metal detector suona (un test fallisce,
@@ -538,6 +562,68 @@ Nelle prossime sezioni vedrai come questi concetti si intreccino con le
 scelte di **architettura software** (sezione 12) e con l'infrastruttura
 **cloud** (sezione 13) su cui le pipeline effettivamente rilasciano il
 codice.
+
+---
+
+## 📝 Esercizi pratici
+
+Gli esercizi che segui qui sotto ti chiedono di **osservare, leggere e
+provare a ragionare** su una pipeline reale, non di scriverne una da
+zero: l'obiettivo di questa fase è riconoscere sul campo i concetti visti
+in questa sezione, non ancora configurare strumenti in autonomia.
+
+1. **Disegna lo schema di una pipeline reale.** Chiedi a un developer o
+   al Tech Lead di mostrarti (anche solo a schermo) l'ultima esecuzione
+   di una pipeline nel progetto. Disegna su un foglio le fasi che vedi
+   davvero (non quelle "da manuale"): quali ci sono, quali non ci sono,
+   in che ordine.
+   ✅ **Come verificare**: mostra il tuo schizzo a chi te l'ha fatta
+   vedere e chiedi "manca qualcosa o ho capito bene l'ordine?" — se la
+   risposta è "esatto", hai capito la struttura.
+2. **Trova i trigger reali del progetto.** Fatti mostrare (o trova da
+   solo, se hai accesso) il file YAML della pipeline principale e
+   individua il blocco che definisce i trigger (push, PR, schedule,
+   manuale). Scrivi in una riga, con parole tue, quando scatta la
+   pipeline di CI e quando invece scatta il deploy in produzione.
+   ✅ **Come verificare**: chiedi a un collega di confermare che la tua
+   descrizione corrisponde al comportamento reale che ha osservato lui
+   nei giorni scorsi.
+3. **Leggi un file YAML di pipeline senza aiuto.** Prendi l'esempio YAML
+   del paragrafo 11.7 (o, meglio, un estratto reale e semplice del
+   progetto, se riesci a farti mostrare i primi 20-30 righe di un file di
+   pipeline) e, senza guardare le spiegazioni, prova a rispondere a
+   voce alta: "quanti stage ci sono? qual è la dipendenza tra il primo e
+   il secondo? cosa fa scattare l'intera pipeline?".
+   ✅ **Come verificare**: rileggi la tua risposta confrontandola con il
+   file — se hai individuato correttamente `trigger`/`pr`, il numero di
+   `stage` e almeno un `dependsOn`, hai capito la struttura di base.
+4. **Simula un quality gate che blocca un rilascio.** Immagina (per
+   iscritto, in 4-5 righe) uno scenario concreto — diverso da quelli già
+   visti in questa sezione — in cui un quality gate blocca una pipeline:
+   scegli tu il controllo (test falliti, coverage, vulnerabilità, qualità
+   del codice), descrivi cosa succede e chi dovrebbe essere avvisato.
+   ✅ **Come verificare**: fai leggere il tuo scenario a un collega
+   developer o QA e chiedigli se, secondo la sua esperienza, è realistico
+   e se la pipeline nel progetto reagirebbe davvero così.
+5. **Ricostruisci un rollback a parole.** Chiedi a un collega se
+   nel progetto è mai capitato un rollback (anche piccolo) e fatti
+   raccontare cosa è successo: cosa ha fatto scattare l'allarme, quanto
+   tempo è passato tra il deploy e l'accorgersi del problema, come si è
+   tornati alla versione precedente. Scrivi la sequenza in 4-6 passaggi.
+   ✅ **Come verificare**: la tua sequenza deve contenere almeno un
+   momento di "rilevazione del problema" e un momento di "ripristino
+   della versione precedente" — se manca uno dei due, richiedi il
+   dettaglio mancante e completa lo schema.
+6. **Distingui Delivery da Deployment nel progetto.** Osservando (o
+   chiedendo) come funziona davvero il rilascio in produzione nel
+   progetto, stabilisci se si tratta di Continuous Delivery (con
+   approvazione manuale finale) o Continuous Deployment (automatico fino
+   in produzione), e spiega in 2-3 righe **perché**, secondo te, il team
+   ha scelto quell'approccio per quell'ambiente specifico.
+   ✅ **Come verificare**: confronta la tua conclusione con quanto ti
+   conferma la tua collega Scrum Master/PM o un Tech Lead — se coincide,
+   hai capito la differenza pratica tra i due concetti, non solo la
+   definizione teorica.
 
 ---
 

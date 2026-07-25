@@ -98,6 +98,16 @@ prima di essere pronta. Non c'è alcun tipo di garanzia di stabilità:
 l'ambiente Dev può "rompersi" più volte al giorno senza che questo sia
 un problema per nessuno fuori dal team di sviluppo.
 
+> 🛠️ **Esempio pratico**: Marco, uno sviluppatore del team, deve
+> implementare una nuova validazione sul modulo di richiesta ferie.
+> Scrive il codice e lo prova prima **in locale**, sul suo computer, con
+> dati completamente inventati (es. "Mario Test", una email fittizia).
+> Quando è abbastanza sicuro del risultato, pusha il proprio branch: la
+> stessa modifica viene automaticamente distribuita anche nell'**ambiente
+> Dev condiviso** in cloud, dove i colleghi possono verificare che
+> funzioni insieme al resto dell'applicazione, ancora prima che Marco
+> apra la Pull Request.
+
 ---
 
 ## 15.3 Ambiente di Test / QA
@@ -124,6 +134,16 @@ demo interna.
 problemi funzionali, **prima** che possano avvicinarsi anche solo
 lontanamente agli utenti reali. Se qualcosa non funziona, il codice
 **non viene promosso** oltre: torna in Sviluppo per essere corretto.
+
+> 🛠️ **Esempio pratico**: la modifica di Marco al modulo ferie supera la
+> build e i test automatici della pipeline, e viene promossa in Test/QA.
+> Qui una tester del team prova deliberatamente a "romperla": inserisce
+> una data di fine ferie precedente alla data di inizio, prova a
+> richiedere ferie con zero giorni disponibili, clicca due volte di
+> fila sul bottone "Invia richiesta". Scopre che il doppio click genera
+> due richieste identiche invece di una: apre una segnalazione, e il
+> codice **torna** in Sviluppo per la correzione, prima di poter
+> proseguire oltre.
 
 ---
 
@@ -158,6 +178,16 @@ separato dal Test/QA: nei progetti più piccoli le due cose a volte
 coincidono, ma nei progetti maturi restano due tappe distinte, con scopi
 diversi.
 
+> 🛠️ **Esempio pratico**: la correzione al modulo ferie, dopo aver
+> superato il Test/QA, viene promossa in Staging. Qui il volume di dati
+> è paragonabile a quello reale (migliaia di richieste storiche
+> anonimizzate, non le tre righe di prova usate in Test), e
+> l'infrastruttura è configurata esattamente come in produzione. Il
+> Project Manager, insieme a un referente del progetto che aveva
+> richiesto la funzionalità, prova il flusso completo end-to-end prima
+> di dare l'ultima validazione. Solo a questo punto il rilascio in
+> produzione può essere pianificato.
+
 ---
 
 ## 15.5 Ambiente di Produzione
@@ -183,6 +213,31 @@ paragrafo 15.9.
 
 **Cosa succede qui**: ogni errore ha un impatto reale su persone vere.
 Non è più "lavoro in corso": è il prodotto finito, in uso.
+
+> 🛠️ **Esempio pratico — il percorso completo di una modifica**: seguiamo
+> l'intero viaggio della correzione al modulo ferie, dal commit alla
+> produzione:
+>
+> 1. **Dev**: Marco corregge il bug del doppio click e lo prova in
+>    locale, poi pusha il branch: la pipeline fa build e unit test con
+>    esito positivo.
+> 2. **Test/QA**: la modifica viene promossa automaticamente. La tester
+>    riprova esattamente lo scenario del doppio click, più altri casi
+>    limite: questa volta tutto funziona come previsto. Promozione
+>    approvata.
+> 3. **Staging**: la stessa modifica (lo stesso identico pacchetto, non
+>    una ricompilazione) viene distribuita in un ambiente identico alla
+>    produzione. Il Project Manager verifica il flusso end-to-end con
+>    dati realistici e dà l'ultima validazione.
+> 4. **Produzione**: dopo un'approvazione manuale del Release Manager, la
+>    pipeline distribuisce la modifica agli utenti reali, fuori
+>    dall'orario di punta. Nei minuti successivi, il team monitora le
+>    metriche di errore: se qualcosa andasse storto, è pronto un piano di
+>    rollback.
+>
+> Da notare: è **lo stesso pacchetto** che attraversa tutte le tappe,
+> non una versione "ricostruita" ambiente per ambiente — esattamente il
+> principio "build once, deploy many" che vedrai nel paragrafo 15.7.
 
 ---
 
@@ -258,6 +313,17 @@ Più gli ambienti sono simili, meno sorprese si trovano man mano che si
 avanza nella catena — ed è per questo che lo Staging, in particolare, è
 tenuto quanto più possibile identico alla Produzione.
 
+> 🛠️ **Esempio pratico**: nel progetto, ogni volta che una modifica passa
+> la fase di build in pipeline, viene generato un **unico** artifact
+> (es. un'immagine container con un numero di versione, tipo
+> `app:1.42.0`). Quello stesso artifact — non uno ricostruito da capo —
+> viene distribuito in Test/QA, poi in Staging, poi in Produzione. Se in
+> Staging l'immagine `app:1.42.0` funziona correttamente, il team sa che
+> in Produzione girerà **esattamente lo stesso codice, con le stesse
+> dipendenze**: non resta da chiedersi "avranno usato la stessa versione
+> di libreria X?", perché la domanda non ha nemmeno senso — è
+> letteralmente lo stesso file.
+
 ---
 
 ## 15.8 Dati di test vs dati reali
@@ -321,6 +387,17 @@ configurazioni non vengono mai scritte nel codice: sono gestite tramite
 strumenti dedicati (es. un "vault" di segreti), collegandosi ancora al
 tema della sicurezza approfondito nella sezione dedicata.
 
+> 🛠️ **Esempio pratico**: l'applicazione del progetto deve inviare
+> un'email di conferma quando una richiesta di ferie viene approvata. In
+> Test/QA, la variabile di configurazione `EMAIL_SERVICE_URL` punta a un
+> servizio "finto" che si limita a registrare in un log "avrei inviato
+> questa email", senza spedire nulla per davvero — utile per verificare
+> che il codice tenti l'invio, senza intasare le caselle di posta di
+> nessuno con email di test. In Produzione, la stessa identica variabile
+> punta invece al servizio email reale. Il codice che gestisce l'invio
+> non cambia di una riga tra i due ambienti: cambia solo il valore di
+> quella variabile.
+
 ---
 
 ## 15.10 Chi ha accesso a quali ambienti
@@ -372,6 +449,67 @@ incontrato nella sezione CI/CD:
   a **variabili di configurazione**, non a modifiche del codice stesso;
 - l'accesso agli ambienti è tanto più restrittivo quanto più ci si
   avvicina alla produzione.
+
+---
+
+## 📝 Esercizi pratici
+
+1. **Mappa gli ambienti del progetto.** Con l'aiuto di un collega
+   developer o del Tech Lead, scopri quanti e quali ambienti esistono
+   davvero nel progetto (Dev, Test, Staging, Prod, o eventuali nomi
+   diversi usati internamente) e scrivili in ordine, con una riga di
+   descrizione per ciascuno.
+   ✅ **Come verificare**: sai disegnare, senza guardare gli appunti, la
+   sequenza di ambienti del progetto con una freccia di "promozione" tra
+   l'uno e l'altro, proprio come nei diagrammi di questa sezione.
+
+2. **Segui una modifica reale attraverso gli ambienti.** Chiedi a uno
+   sviluppatore di mostrarti (anche solo a schermo, senza dover
+   intervenire) l'ultima modifica che ha promosso da Dev fino a
+   Produzione: in quale ambiente si trova adesso, cosa ha superato per
+   arrivare lì, cosa manca prima della produzione (se non è già
+   arrivata).
+   ✅ **Come verificare**: sai raccontare a voce, in meno di due minuti,
+   il percorso di quella specifica modifica citando ogni ambiente
+   attraversato e cosa è stato verificato in ciascuno.
+
+3. **Trova le variabili di configurazione per ambiente.** Chiedi a un
+   developer di farti vedere (anche solo a schermo) dove sono definite
+   le variabili di configurazione che cambiano tra un ambiente e l'altro
+   nel progetto (es. l'indirizzo del database, l'URL di un servizio
+   esterno). Non serve capire ogni dettaglio tecnico: l'obiettivo è
+   vedere con i tuoi occhi che esistono e dove vivono.
+   ✅ **Come verificare**: sai indicare almeno due valori di
+   configurazione che cambiano tra Test/QA e Produzione nel progetto,
+   senza però conoscere (né dover conoscere) le password o i segreti
+   veri.
+
+4. **Distingui i dati usati nei diversi ambienti.** Chiedi al team se e
+   come vengono generati o anonimizzati i dati usati in Test/QA e in
+   Staging nel progetto (dati sintetici generati da uno script? dati
+   reali anonimizzati? un mix?).
+   ✅ **Come verificare**: sai spiegare a un collega non tecnico perché
+   non si può semplicemente "copiare" il database di produzione dentro
+   l'ambiente di Test così com'è, citando almeno un rischio concreto.
+
+5. **Osserva chi può fare cosa, dove.** Confronta la tabella di accesso
+   agli ambienti vista nel paragrafo 15.10 con la situazione reale del
+   progetto: chi ha accesso diretto a Dev? Chi può promuovere codice in
+   Staging? Chi (o cosa, es. solo la pipeline) può rilasciare in
+   Produzione?
+   ✅ **Come verificare**: sai indicare, per ciascuno dei quattro
+   ambienti, almeno un ruolo del progetto che vi ha accesso e uno che
+   invece **non** ce l'ha, spiegando perché.
+
+6. **Simula un rollback.** Chiedi a un collega operations o Tech Lead di
+   raccontarti (anche solo a parole, con un esempio ipotetico o reale se
+   ce n'è uno) cosa succederebbe se, subito dopo un rilascio in
+   Produzione, le metriche di errore iniziassero a salire in modo
+   anomalo: chi se ne accorge, chi decide il rollback, quanto tempo
+   richiede tipicamente tornare alla versione precedente.
+   ✅ **Come verificare**: sai descrivere, passo per passo, la sequenza
+   di azioni tra "qualcosa va storto in produzione" e "il sistema torna
+   stabile", indicando almeno un ruolo coinvolto in ogni passo.
 
 ---
 

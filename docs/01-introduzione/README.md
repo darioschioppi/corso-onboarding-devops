@@ -29,6 +29,8 @@ Le sezioni si possono raggruppare in quattro grandi blocchi:
 3. **Mondo DevOps** (sezioni 9-14): DevOps, Azure DevOps, CI/CD, architetture software, cloud e sicurezza. È il cuore tecnico del corso, quello più legato al ruolo che andrai a occupare.
 4. **Strumenti di supporto e consultazione** (sezioni 15-19): ambienti di sviluppo, glossario, piano di studio, libri e risorse online. Non sono da "studiare" una volta e basta: sono pensate per essere consultate spesso, come un dizionario o un'agenda.
 
+> 🎯 **Esempio pratico**: se in una riunione senti dire "la pipeline è rossa, il rilascio è bloccato", non serve che tu capisca subito cosa significhi nel dettaglio. Ti basta pensare "questo è un argomento del Blocco C, probabilmente della sezione 11 sul CI/CD" e prendere nota mentale per approfondirlo quando arrivi lì, invece di sentirti perso/a o di dover fingere di aver capito.
+
 Oltre alle 19 sezioni, trovi due strumenti trasversali che ti accompagneranno per tutto il percorso:
 
 - **Il [Glossario](../16-glossario/README.md)** (sezione 16): ogni volta che incontri un termine che non ricordi — sia in questo corso, sia durante una riunione di lavoro — puoi cercarlo lì. Non c'è nulla di male nel non ricordare a memoria cosa significa "backlog" la terza volta che lo senti: è normale, ci vuole ripetizione.
@@ -53,6 +55,8 @@ Una **piattaforma DevOps** è l'insieme di strumenti e processi che permettono a
 
 Non preoccuparti se questa descrizione ti sembra ancora vaga: è voluto. Da qui in avanti, sezione dopo sezione, ogni singolo "ingrediente" di questa cucina (Git, Scrum, Kanban, CI/CD, Cloud, Sicurezza...) verrà spiegato nel dettaglio, con esempi concreti tratti dal lavoro quotidiano del team.
 
+> **Esempio pratico**: uno sviluppatore del team completa una nuova funzionalità (es. un nuovo filtro di ricerca nell'applicazione) e la carica su Git (il "quaderno delle ricette", lo vedremo nella sezione 4). Da quel momento, in automatico, una serie di controlli (i "controlli qualità" della pipeline) verificano che il codice non rompa nulla di esistente. Se tutto va bene, la funzionalità arriva prima in un ambiente di test, poi — dopo l'ok del team — in produzione, cioè visibile agli utenti reali della piattaforma. Il tuo ruolo, in questo flusso, non è scrivere codice: è assicurarti che tutti sappiano cosa sta succedendo, che eventuali blocchi (un test che fallisce, un ambiente non disponibile) vengano comunicati subito, e che il cliente sia aggiornato su quando la funzionalità sarà disponibile.
+
 ---
 
 ## Il tuo percorso: da Junior Project Manager a Scrum Master
@@ -75,6 +79,8 @@ flowchart LR
 
 Questo non è un percorso "accademico" fine a se stesso: è un percorso pensato per portarti, passo dopo passo, a **sostituire operativamente** una persona con un ruolo di responsabilità. Per questo è fondamentale che, oltre a leggere le sezioni, tu **osservi il lavoro reale del team** e faccia domande — tante domande — alla tua collega e al resto del team.
 
+> **Esempio pratico**: nella Fase 1, durante una Daily Scrum, ti limiti ad ascoltare e prendere appunti su chi dice cosa. Nella Fase 2, è la tua collega a chiederti: "oggi la conduci tu, io resto in ascolto e ti do feedback alla fine" — magari dovrai gestire un membro del team che si dilunga troppo su un problema tecnico, riportando la discussione sui binari giusti. Nella Fase 3, sei tu a organizzare la Daily Scrum in autonomia, e la tua collega interviene solo se le chiedi aiuto su un caso particolare (ad esempio, come gestire un conflitto tra due membri del team sulle priorità).
+
 ---
 
 ## Come affrontare lo studio: qualche consiglio pratico
@@ -87,6 +93,8 @@ Prima di iniziare, qualche indicazione su come vivere questo percorso senza scor
 4. **Prova gli esempi, non limitarti a leggerli.** Dove il corso propone un esempio pratico (una board Kanban, un comando Git, un diagramma di pipeline), se possibile provalo tu stesso/a in un ambiente di prova. Capire leggendo è utile, ma capire "con le mani" resta molto più solido.
 5. **Usa il piano di studio come bussola, non come gabbia.** Il [Piano di studio](../17-piano-di-studio/README.md) a 8 settimane è una guida, non un obbligo rigido: se una settimana hai bisogno di più tempo su un argomento (capita spessissimo con i fondamenti di informatica, sezione 2), prenditelo. È molto meglio capire bene una sezione in più tempo che correre e arrivare in fondo con basi fragili.
 6. **A fine settimana, fai un check-in con la tua collega o il tuo mentor.** Un breve confronto settimanale ti permette di validare cosa hai capito, chiarire dubbi rimasti in sospeso e ricevere indicazioni su cosa osservare la settimana successiva nel lavoro reale del team.
+
+> **Esempio pratico**: leggi nella sezione 7 cos'è un limite di WIP (Work In Progress) su una board Kanban. Il giorno dopo, durante una riunione, senti la tua collega dire "non possiamo prendere in carico un'altra card, siamo già al limite in 'In Corso'". Invece di lasciarlo passare, collegalo subito a quanto letto e magari chiedi: "è questo il limite di WIP di cui si parlava nella sezione 7?". Questo piccolo gesto — collegare una lettura a una frase sentita dal vivo — è esattamente il "doppio binario" di cui si parla al punto 3.
 
 ---
 
@@ -141,6 +149,25 @@ In sintesi: prima impari **il linguaggio di base** del software (Blocco A), poi 
 Nella prossima sezione, [2. Fondamenti di informatica](../02-fondamenti-informatica/README.md), partiremo dalle basi più elementari: cosa è un computer, come funziona una rete, cosa sono un server e un database. Sono i mattoncini su cui si costruirà tutto il resto del corso, quindi prenditi il tempo che serve.
 
 Buon percorso!
+
+## 📝 Esercizi pratici
+
+Prima di passare alla sezione 2, prova questi esercizi: non richiedono ancora conoscenze tecniche, servono solo a farti "digerire" la mappa del corso e il contesto in cui lavorerai.
+
+1. **Disegna la mappa del corso a modo tuo.** Su un foglio o in un documento, riscrivi con parole tue (senza copiare) i quattro blocchi (Fondamenta tecniche, Metodologie di lavoro, Mondo DevOps, Strumenti di supporto) e per ciascuno annota una sola parola chiave che ti aiuti a ricordarlo.
+   ✅ **Come verificare**: se riesci a spiegare a voce alta, in meno di 90 secondi e senza guardare il foglio, "di cosa parla ciascuno dei quattro blocchi", l'esercizio è riuscito.
+
+2. **Racconta l'analogia della cucina a qualcuno.** Prova a spiegare a un amico o familiare (anche non del settore) l'analogia della cucina del ristorante usata in questa sezione, sostituendo i termini tecnici con quelli che hai appena imparato (cuochi = sviluppatori, pipeline = linea di produzione, ecc.).
+   ✅ **Come verificare**: se la persona a cui lo racconti riesce a ripeterti, con parole sue, cosa fa un Project Manager/Scrum Master in questa analogia, hai comunicato bene il concetto.
+
+3. **Individua le tue tre fasi nel calendario.** Segna sul tuo calendario (anche approssimativamente) le date di inizio previste delle tre fasi del tuo percorso (Osservazione, Affiancamento attivo, Autonomia guidata) in base a quando sei stato/a assunto/a.
+   ✅ **Come verificare**: mostra il calendario alla tua collega Scrum Master/PM e chiedile se le date che hai stimato sono realistiche rispetto al carico di lavoro reale del team in quel periodo.
+
+4. **Fai una prima esplorazione del Glossario.** Apri il [Glossario](../16-glossario/README.md) e scorrilo per 5 minuti senza l'ansia di memorizzare nulla: individua 3 termini che hai già sentito nominare in azienda (anche di striscio, in corridoio o in chat) ma che non sapevi spiegare con precisione.
+   ✅ **Come verificare**: scrivi i 3 termini scelti e una definizione con parole tue in una nota; a fine settimana 1 del piano di studio, riguardala e controlla se la tua definizione è ancora corretta o va corretta.
+
+5. **Identifica chi è chi nel tuo contesto di lavoro.** Chiedi alla tua collega o a un membro del team di aiutarti a fare un elenco veloce (basta un elenco a punti, non serve un documento formale) di chi sono, nel progetto reale su cui lavorerai, gli "sviluppatori/cuochi", chi si occupa di "operations" e chi è il referente lato cliente.
+   ✅ **Come verificare**: se dopo questo esercizio sai dire, senza esitare, a chi rivolgerti per un problema tecnico e a chi per una domanda del cliente, l'esercizio ha funzionato.
 
 ## 🔗 Collegamenti
 

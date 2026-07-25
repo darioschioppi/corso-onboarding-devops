@@ -116,6 +116,14 @@ graph TB
 - **Difficile far crescere tanti team in parallelo** senza che si "pestino i
   piedi" a vicenda sullo stesso codice.
 
+**Esempio pratico**: immagina un gestionale interno per l'ufficio commerciale,
+scritto come un unico progetto: la gestione dei clienti, la generazione dei
+preventivi, la fatturazione e l'invio delle email di notifica vivono tutti
+nello stesso codice e vengono compilati in un unico eseguibile. Se un
+developer deve correggere un piccolo bug nella generazione dei preventivi,
+deve comunque ricompilare, testare e rilasciare **l'intera applicazione**,
+comprese le parti (fatturazione, email) che non ha nemmeno toccato.
+
 ---
 
 ## 12.3 Architettura a Microservizi
@@ -191,6 +199,13 @@ graph LR
 - **Richiede un team più maturo** su temi come CI/CD, containerizzazione e
   monitoraggio, perché la complessità operativa cresce parecchio.
 
+**Esempio pratico**: nello stesso gestionale, in versione a microservizi, la
+generazione dei preventivi diventa un servizio separato, con il suo
+repository e la sua pipeline di rilascio. Se il team vuole aggiungere un
+nuovo tipo di sconto nei preventivi, rilascia **solo quel servizio**: la
+fatturazione e l'invio delle email continuano a funzionare esattamente come
+prima, senza bisogno di essere ritestati o rilasciati di nuovo.
+
 ### Quando ha senso passare da monolite a microservizi
 
 Non è vero che i microservizi sono "sempre meglio". Anzi: molti progetti,
@@ -244,6 +259,31 @@ Questo funziona benissimo per molti casi ("dammi i dati di questo cliente",
 "verifica se questo pagamento è andato a buon fine"), ma ha un limite: se il
 servizio che deve rispondere è lento o irraggiungibile, chi ha fatto la
 richiesta resta bloccato ad aspettare.
+
+**Esempio pratico**: il frontend di un'applicazione vuole mostrare i dettagli
+di un ordine. Fa una richiesta HTTP di tipo GET a un'API REST del backend, e
+resta in attesa della risposta:
+
+Richiesta:
+
+```
+GET /api/ordini/42
+```
+
+Risposta (dopo pochi millisecondi):
+
+```json
+{
+  "id": 42,
+  "cliente": "ACME S.r.l.",
+  "stato": "in consegna",
+  "totale": 129.90
+}
+```
+
+Finché il backend non risponde, il frontend resta "in attesa" — esattamente
+come nell'analogia della telefonata — prima di poter mostrare questi dati a
+schermo.
 
 ### Comunicazione asincrona: le code di messaggi
 
@@ -342,6 +382,15 @@ graph LR
     LOGIC -->|Risposta API| UI
 ```
 
+**Esempio pratico**: quando clicchi il pulsante "Conferma ordine" su un sito
+di e-commerce, il **frontend** (il bottone che hai cliccato) invia una
+richiesta al **backend** con i dati del carrello; il backend verifica che i
+prodotti siano disponibili, calcola il totale applicando eventuali sconti,
+salva l'ordine nel database e restituisce al frontend una risposta ("ordine
+confermato, numero 42"), che il frontend traduce in un messaggio di conferma
+a schermo. Tu, da utente, vedi solo l'ultimo passaggio: tutto il resto
+avviene "in cucina".
+
 Nel team sentirai spesso parlare di "sviluppatori frontend" e "sviluppatori
 backend" (o "full-stack", chi lavora su entrambi): sono specializzazioni
 diverse, con linguaggi e strumenti spesso diversi, anche se lavorano sullo
@@ -362,6 +411,14 @@ client, il backend che gira su un server (fisico, virtuale, o un container
 in cloud) è il server. Non è una regola matematica assoluta — esistono
 architetture più sofisticate — ma per il 90% dei casi che incontrerai
 questa corrispondenza è un buon punto di partenza mentale.
+
+**Esempio pratico**: quando apri l'app di home banking sul telefono, l'app
+stessa (che gira sul tuo telefono) è il **client**: fa una richiesta ("dammi
+il saldo del mio conto") a un **server** remoto della banca, che elabora la
+richiesta e restituisce il dato. Se spegni il telefono, il server della
+banca continua a funzionare tranquillamente per tutti gli altri clienti: il
+client è "usa e getta", il server resta sempre lì, pronto a rispondere a
+nuove richieste.
 
 ---
 
@@ -419,6 +476,15 @@ Questo schema a 3 livelli è alla base di moltissime applicazioni aziendali
 puoi ritrovarlo sia dentro un monolite (i tre livelli vivono nello stesso
 blocco di codice) sia distribuito su più microservizi (ogni servizio ha
 comunque, internamente, una sua piccola struttura a livelli).
+
+**Esempio pratico**: in un gestionale che applica uno sconto del 10% agli
+ordini superiori a 100€, il livello di presentazione mostra semplicemente il
+totale finale nel carrello; il livello di logica di business è quello che
+**decide** se lo sconto si applica o no, facendo il calcolo; il livello dati
+è quello che, a fine ordine, salva il totale scontato nel database. Se un
+giorno la regola cambia (es. lo sconto diventa 15%), basta modificare il
+livello di logica di business: la presentazione e il database non vengono
+toccati.
 
 ---
 
@@ -499,6 +565,65 @@ conversazione e fare le domande giuste.
 - Sai descrivere i tre livelli dell'architettura a 3 livelli?
 - Sai spiegare, a grandi linee, cos'è il serverless e quando può essere
   utile?
+
+---
+
+## 📝 Esercizi pratici
+
+1. **Disegna l'architettura di un'app che usi tutti i giorni.** Scegli
+   un'app che conosci bene (es. un'app di food delivery, di messaggistica o
+   di home banking) e disegna a mano uno schema con frontend, backend e
+   database, provando a immaginare se sia più vicina a un monolite o a un
+   sistema a microservizi.
+   ✅ **Come verificare**: se riesci a indicare almeno tre "pezzi" separati
+   (es. "app sul telefono", "server che elabora i pagamenti", "database
+   degli utenti") e a spiegare a voce come comunicano tra loro, hai centrato
+   l'esercizio.
+
+2. **Scrivi una richiesta e una risposta API "a mano".** Scegli una
+   funzionalità semplice (es. "ottieni il profilo di un utente") e scrivi tu
+   stesso, come nell'esempio pratico di questa sezione, una richiesta
+   GET/POST semplificata e la relativa risposta in formato JSON, con almeno
+   3-4 campi.
+   ✅ **Come verificare**: fai leggere quello che hai scritto a un developer
+   del team e chiedi se il formato "assomiglia" a una vera richiesta/risposta
+   API che usano nel progetto.
+
+3. **Trasforma un'operazione sincrona in asincrona.** Pensa a un'operazione
+   che oggi, nella tua esperienza quotidiana (non necessariamente software),
+   richiede un'attesa "in linea" (es. una telefonata al call center) e
+   descrivi come diventerebbe se fosse gestita con una coda di messaggi
+   (es. lasciare un messaggio in segreteria che verrà richiamato quando c'è
+   disponibilità).
+   ✅ **Come verificare**: la tua descrizione deve contenere chiaramente chi
+   "scrive" il messaggio, dove viene "depositato" e chi lo "legge" più
+   tardi, senza che nessuno resti bloccato ad aspettare.
+
+4. **Intervista un developer sull'architettura del progetto.** Chiedi a un
+   collega developer se il progetto su cui lavori è organizzato come
+   monolite, come microservizi, o come una via di mezzo, e fatti indicare un
+   esempio concreto di comunicazione tra due componenti (API o coda di
+   messaggi).
+   ✅ **Come verificare**: dopo la chiacchierata, sapresti riassumere in 3-4
+   frasi, senza guardare appunti, "come è fatto" il software del progetto e
+   quali pezzi lo compongono.
+
+5. **Compila la tabella di confronto con un esempio reale.** Riprendi la
+   tabella "Monolite vs Microservizi" della sezione 12.3 e, per ogni riga,
+   scrivi a fianco un esempio concreto (reale o immaginario) legato al
+   contesto del tuo progetto.
+   ✅ **Come verificare**: condividi la tabella compilata con la tua collega
+   Scrum Master/PM e chiedile se gli esempi che hai scelto sono plausibili
+   per un progetto reale.
+
+6. **Individua un caso d'uso serverless.** Pensa a una funzionalità che, nel
+   progetto o in un'app che usi, viene eseguita "una tantum" e su richiesta
+   (es. generazione di un PDF, invio di una notifica, ridimensionamento di
+   un'immagine) e spiega perché potrebbe essere un buon candidato per il
+   modello serverless, oppure perché no.
+   ✅ **Come verificare**: la tua spiegazione deve menzionare esplicitamente
+   il criterio "si attiva solo quando serve, poi si spegne" e collegarlo al
+   caso d'uso scelto.
 
 ---
 

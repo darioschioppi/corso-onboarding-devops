@@ -132,6 +132,15 @@ Le responsabilità principali del Product Owner:
 - accetta o rifiuta il lavoro completato a fine sprint, verificando che
   soddisfi quanto richiesto.
 
+> 📌 **Esempio pratico**: il Product Owner ha in cima al Product Backlog tre
+> voci: "Aggiungere il pagamento con carta di credito", "Correggere un bug
+> che blocca il login su mobile" e "Aggiungere un filtro di ricerca
+> avanzata". Nella prossima Sprint Planning decide di dare priorità massima
+> al bug di login (blocca utenti reali ogni giorno), poi al pagamento con
+> carta (richiesto da molti clienti), lasciando il filtro di ricerca più in
+> basso: non è meno utile, ma nessun cliente lo ha ancora richiesto con
+> urgenza.
+
 Un errore comune da evitare: il Product Owner **non è un manager che dà
 ordini al team** su come lavorare, e non decide **come** tecnicamente
 realizzare qualcosa — quella è una responsabilità del team di sviluppo. Il
@@ -194,6 +203,14 @@ rimuoverli**, anche quando la soluzione non dipende direttamente da lui/lei
 (in quel caso, il compito diventa "scalare" il problema alla persona giusta
 e seguirne la risoluzione).
 
+> 📌 **Esempio pratico**: durante il Daily Scrum, uno sviluppatore dice "sono
+> bloccato da due giorni: aspetto le credenziali di accesso a un ambiente di
+> test". Lo Scrum Master annota l'impedimento, non lo discute lì (per non
+> allungare il daily), e subito dopo scrive al responsabile IT per
+> sollecitare l'accesso, aggiornando il team il giorno seguente. Non risolve
+> lui stesso il problema tecnico: si assicura che chi può risolverlo lo
+> faccia in tempi rapidi.
+
 ### 6.2.3 Team di sviluppo: chi realizza il prodotto
 
 Il **Team di sviluppo** (in inglese *Developers*, termine che nella Scrum
@@ -222,6 +239,14 @@ Caratteristiche chiave del team di sviluppo in Scrum:
 - è collettivamente responsabile della qualità del lavoro consegnato — non
   esiste "il problema è di quel singolo sviluppatore", esiste "il problema
   è del team".
+
+> 📌 **Esempio pratico**: lo Sprint Backlog contiene una User Story che
+> richiede sia lavoro di back-end che di front-end. Nessuno assegna i task
+> dall'esterno: durante lo Sprint Planning i due sviluppatori competenti si
+> dividono spontaneamente il lavoro ("io mi occupo dell'API, tu del
+> componente grafico") e si aggiornano a vicenda nei Daily Scrum successivi,
+> senza bisogno che il Product Owner o lo Scrum Master decidano chi fa
+> cosa.
 
 ---
 
@@ -299,6 +324,15 @@ questo sprint, spesso scomposte in task più piccoli e operativi.
 > tattica di gioco per la partita di questa settimana — non per tutto il
 > campionato, solo per la prossima partita.
 
+> 📌 **Esempio pratico**: il team ha una Velocity media di 25 punti. In
+> Sprint Planning, il Product Owner presenta le prime 6 voci del Product
+> Backlog (che valgono, in totale, 34 punti). Dopo discussione, il team si
+> accorge che l'ultima voce (8 punti) è troppo rischiosa da completare
+> insieme alle altre e la rimanda al prossimo sprint, portando l'impegno
+> totale a 26 punti — vicino alla propria Velocity storica. Lo Sprint Goal
+> che ne esce è: "Permettere ai clienti di completare un ordine dall'inizio
+> alla fine, incluso il pagamento".
+
 ### 6.3.3 Daily Scrum: il check-in quotidiano
 
 Il **Daily Scrum** (spesso chiamato semplicemente "il daily" o "lo
@@ -323,6 +357,19 @@ soluzione durante il daily** (per non farlo diventare una riunione lunga):
 si segna, e se ne parla subito dopo, in un incontro più ristretto — spesso
 è esattamente qui che entra in gioco lo Scrum Master, per farsi carico di
 seguire e risolvere quell'ostacolo.
+
+> 📌 **Esempio pratico** — un mini Daily Scrum:
+>
+> - **Marco**: "Ieri ho finito l'endpoint di login. Oggi lavoro sui test
+>   automatici. Nessun blocco."
+> - **Giulia**: "Ieri ho lavorato sulla pagina del profilo utente. Oggi
+>   continuo, ma sono bloccata: aspetto l'accesso all'ambiente di test da
+>   ieri."
+> - **Ahmed**: "Ieri ho aiutato Giulia a capire un errore di
+>   configurazione. Oggi riprendo la User Story sul carrello."
+>
+> Tutto il daily dura meno di 10 minuti. Il blocco di Giulia viene segnato
+> dallo Scrum Master, che se ne occupa subito dopo, fuori dal daily.
 
 > 💡 **Analogia**: è come il **check-in veloce dello spogliatoio a metà
 > allenamento**: non si riprogetta la tattica da zero ogni giorno, ci si
@@ -354,6 +401,14 @@ di tutto questo per aggiornare il Product Backlog.
 > tavolo dei giudici (gli stakeholder), che lo assaggiano, commentano, e
 > magari chiedono "la prossima volta, un po' meno piccante" — feedback che
 > entra direttamente nel menù (Product Backlog) della prossima settimana.
+
+> 📌 **Esempio pratico**: il team mostra dal vivo, sull'ambiente di test, il
+> nuovo flusso di checkout appena completato: uno sviluppatore inserisce un
+> ordine di prova davanti a tutti, mostrando ogni passaggio fino alla
+> conferma. Uno stakeholder nota che manca un messaggio di errore chiaro se
+> la carta di credito viene rifiutata: il Product Owner annota la richiesta
+> e la aggiunge, come nuova voce, al Product Backlog per una prossima
+> Sprint Planning.
 
 Un errore comune da evitare come Scrum Master: la Sprint Review **non è
 una presentazione formale con slide** preparata a parte. È una demo pratica
@@ -390,6 +445,21 @@ e realizzabili).
 > corretto per la partita successiva. È il momento in cui una squadra
 > migliora davvero nel tempo, partita dopo partita.
 
+> 📌 **Esempio pratico** — risultato di una retrospettiva con il formato
+> Start/Stop/Continue:
+>
+> - **Start** (iniziare a fare): scrivere una breve nota nella descrizione
+>   di ogni Pull Request per spiegare "perché", non solo "cosa" cambia.
+> - **Stop** (smettere di fare): accettare nuove richieste urgenti a metà
+>   sprint senza discuterne prima con il Product Owner.
+> - **Continue** (continuare a fare): il pairing tra un developer senior e
+>   uno junior sulle User Story più complesse, che ha ridotto gli errori
+>   nell'ultimo sprint.
+>
+> Il team vota le idee più sentite e sceglie una sola azione concreta da
+> provare nel prossimo sprint: introdurre la nota "perché" nelle Pull
+> Request.
+
 Facilitare bene la Retrospective è una delle competenze più importanti di
 uno Scrum Master: è il principale motore del **miglioramento continuo**
 del team, uno dei pilastri di Scrum e dell'Agile in generale.
@@ -425,6 +495,15 @@ responsabilità del **Product Owner**.
 > ma sai cosa ti serve, in ordine di urgenza (il latte è finito, serve
 > subito; le tovagliette nuove possono aspettare).
 
+> 📌 **Esempio pratico**: il Product Backlog di un progetto e-commerce
+> potrebbe contenere, tra le tante voci: "Come cliente, voglio salvare più
+> indirizzi di spedizione" (priorità alta, già stimata), "Come cliente,
+> voglio ricevere una notifica quando il mio ordine è spedito" (priorità
+> media), "Come amministratore, voglio esportare un report vendite
+> mensile" (priorità bassa, ancora da approfondire). Le prime sono in cima
+> e ben dettagliate, l'ultima è più in basso e resta volutamente vaga per
+> ora.
+
 Caratteristiche importanti del Product Backlog:
 
 - è **vivo e mai completamente finito**: si aggiornano ed evolve
@@ -453,6 +532,22 @@ Goal.
 > cosa comprare in questo giro, in base a quanto tempo e quanti soldi hai
 > disponibili adesso.
 
+> 📌 **Esempio pratico** — uno Sprint Backlog reale potrebbe contenere:
+>
+> 1. Come cliente, voglio salvare più indirizzi di spedizione nel mio
+>    profilo (5 punti) — task: creare tabella database, endpoint API,
+>    interfaccia utente.
+> 2. Come cliente, voglio ricevere una email di conferma dopo l'acquisto
+>    (3 punti) — task: template email, integrazione con servizio di invio.
+> 3. Correggere il bug che duplica il prodotto nel carrello in alcuni casi
+>    (2 punti) — task: riprodurre il bug, correggere, scrivere test di
+>    regressione.
+> 4. Come amministratore, voglio poter disattivare temporaneamente un
+>    prodotto dal catalogo (3 punti) — task: nuovo campo nel database,
+>    pulsante in interfaccia admin.
+>
+> Totale: 13 punti, coerente con la Velocity del team in quello sprint.
+
 Di proprietà del **team di sviluppo** (non del Product Owner): è il team
 che decide come organizzare il lavoro dentro lo sprint, ed è il team che
 può aggiornarlo giorno per giorno (ad esempio aggiungendo un task che si
@@ -469,6 +564,14 @@ alla Definition of Done** del team (ne parliamo tra poco).
 > stanza completamente finita e abitabile — non un muro a metà con i cavi
 > elettrici scoperti. Ogni stanza che si aggiunge deve poter essere già
 > vissuta, anche se la casa nel complesso non è ancora finita.
+
+> 📌 **Esempio pratico**: a fine sprint, la funzionalità "salvataggio di più
+> indirizzi di spedizione" è conforme alla Definition of Done: codice
+> scritto e revisionato, test automatici che passano, verificata
+> manualmente, distribuita in ambiente di test. Questo pezzo di prodotto è
+> l'Increment di quello sprint — anche se il Product Owner decide di non
+> rilasciarlo subito agli utenti finali, aspettando di raggrupparlo con
+> altre due funzionalità nella prossima release.
 
 Ogni Increment si somma a tutti quelli realizzati negli sprint precedenti,
 costruendo progressivamente il prodotto completo. Un punto fondamentale:
@@ -655,6 +758,14 @@ ma un insieme comune potrebbe essere):
 - è sufficientemente piccola da poter essere completata in un singolo
   sprint.
 
+> 📌 **Esempio pratico**: la User Story "Come cliente, voglio pagare con
+> carta di credito" arriva in Sprint Planning ma il team si accorge che non
+> ha ancora criteri di accettazione chiari (cosa succede se la carta viene
+> rifiutata? quali carte sono supportate?) né una stima. Non soddisfa la
+> Definition of Ready: resta nel Product Backlog, il Product Owner la
+> raffina con il team in una sessione di refinement, e potrà entrare in uno
+> sprint successivo, quando sarà davvero "pronta".
+
 Perché la Definition of Ready è utile: evita che il team scopra, a metà
 sprint, che una storia era troppo ambigua per essere realizzata bene,
 causando ritardi, rilavorazioni o discussioni infinite proprio quando
@@ -688,6 +799,22 @@ a team e spesso si arricchiscono nel tempo):
 - la documentazione (se necessaria) è stata aggiornata;
 - il codice è stato distribuito almeno in un ambiente di test/staging;
 - non introduce bug noti bloccanti.
+
+> 📌 **Esempio pratico** — la Definition of Done applicata alla User Story
+> "Come cliente, voglio salvare più indirizzi di spedizione":
+>
+> - [x] Codice scritto e Pull Request approvata da almeno un altro
+>   developer
+> - [x] Test automatici scritti e superati con successo
+> - [x] Funzionalità verificata manualmente rispetto ai criteri di
+>   accettazione (salvare fino a 5 indirizzi, selezionarne uno al
+>   checkout)
+> - [x] Distribuita con successo in ambiente di test
+> - [ ] Nessun bug bloccante noto
+>
+> Se anche un solo punto non è spuntato, la storia **non** può essere
+> considerata completata: resta "in corso" fino a che tutti i controlli
+> non sono superati.
 
 Perché la Definition of Done è cruciale, e perché sarà una delle tue
 responsabilità quotidiane più importanti come Scrum Master: senza una DoD
@@ -781,6 +908,82 @@ cosa, quali riunioni funzionano e quali sono percepite come inutili, dove
 nascono davvero gli impedimenti) e solo dopo iniziare a proporre piccoli
 miglioramenti, uno alla volta — esattamente come farebbe il team stesso in
 una Retrospective ben condotta.
+
+---
+
+## 📝 Esercizi pratici
+
+Gli esercizi seguenti servono a consolidare quanto visto in questa sezione
+con qualcosa che puoi davvero fare, non solo leggere. Non serve un progetto
+reale per farli: puoi usare scenari immaginari, e diversi da quelli
+già proposti nel piano di studio (sezione 17) — qui l'obiettivo è
+approfondire con più dettaglio, proprio perché questa è la sezione più
+importante del corso per il tuo ruolo.
+
+1. **Scrivi 3 User Story** per un'ipotetica app di noleggio di biciclette
+   in condivisione (bike sharing), seguendo il formato Come/Voglio/Per, e
+   aggiungi almeno un criterio di accettazione per ciascuna.
+   ✅ **Come verificare**: ogni storia indica chiaramente un tipo di
+   utente (non "come utente" generico, ma es. "come cliente che deve
+   sbloccare una bici"), un beneficio concreto (non solo un'azione
+   tecnica), e almeno un criterio di accettazione scritto in modo
+   specifico e verificabile (non "deve funzionare bene").
+
+2. **Simula una sessione di Planning Poker** con 2-3 colleghi, amici o
+   familiari (non serve che siano tecnici): scegli 5 attività quotidiane
+   non lavorative (es. "cucinare la cena per 6 persone", "organizzare una
+   festa a sorpresa", "traslocare in una nuova casa") e stimale con la
+   sequenza di Fibonacci (1, 2, 3, 5, 8, 13, 21), scoprendo le carte
+   insieme e discutendo le differenze.
+   ✅ **Come verificare**: hai almeno un caso in cui le stime iniziali
+   erano molto diverse tra loro (es. 2 contro 13) e la discussione
+   successiva ha fatto emergere un motivo concreto della differenza (non
+   solo "abbiamo scelto un numero a caso").
+
+3. **Costruisci uno Sprint Backlog di esempio**: immagina un team con
+   Velocity media di 20 punti e uno sprint di 2 settimane. Scegli 4-5 User
+   Story (puoi riusare quelle scritte nell'esercizio 1 o inventarne altre),
+   assegna a ciascuna una stima in punti, e scrivi anche uno Sprint Goal in
+   una sola frase.
+   ✅ **Come verificare**: il totale dei punti scelti è vicino alla
+   Velocity indicata (né troppo sopra né troppo sotto, es. tra 17 e 22
+   punti), e lo Sprint Goal riassume in una frase il "tema" comune delle
+   storie scelte, non un semplice elenco.
+
+4. **Calcola una Velocity media**: un team fittizio ha completato, negli
+   ultimi 5 sprint, rispettivamente 18, 22, 19, 24 e 21 Story Point. Usa
+   questo numero per stimare quanti sprint servirebbero per completare un
+   Product Backlog residuo di 150 punti.
+   ✅ **Come verificare**: la Velocity media calcolata è 20,8 punti
+   (arrotondabile a 21), e la stima è di circa 150/21 ≈ 7 sprint.
+
+5. **Conduci una mini-retrospettiva** di circa 20 minuti con colleghi,
+   amici o familiari su un'attività di gruppo recente qualsiasi (non
+   lavorativa: un viaggio organizzato insieme, un progetto universitario di
+   gruppo, l'organizzazione di un evento), usando il formato Start / Stop /
+   Continue, e scegli una sola azione di miglioramento concreta da provare
+   la prossima volta.
+   ✅ **Come verificare**: alla fine hai una sola azione scritta, concreta
+   e verificabile (non "comunicare meglio", ma qualcosa come "condividere
+   l'itinerario su un documento condiviso almeno 3 giorni prima").
+
+6. **Scrivi una Definition of Done di 5 punti** per un'attività non
+   informatica (es. "organizzare una cena per 10 persone" o "preparare la
+   presentazione per il primo giorno di lavoro"), poi verifica a fine
+   attività quali punti hai davvero rispettato.
+   ✅ **Come verificare**: la tua DoD ha esattamente 5 criteri verificabili
+   con un sì/no (non vaghi come "tutto ok"), e a lavoro concluso sei in
+   grado di dire con certezza quali hai soddisfatto e quali no.
+
+7. **Ricostruisci un impedimento reale**: chiedi alla tua collega Scrum
+   Master/PM di raccontarti un impedimento gestito di recente nel progetto
+   (chi lo ha segnalato, in quale evento è emerso, chi lo ha risolto e in
+   quanto tempo). Poi scrivi in 5 righe come ti saresti comportato tu, da
+   Scrum Master, in quella stessa situazione.
+   ✅ **Come verificare**: la tua ricostruzione indica chiaramente in
+   quale evento Scrum è emerso l'impedimento (quasi sempre il Daily Scrum)
+   e chi, concretamente, ha agito per rimuoverlo — non solo "il problema
+   si è risolto da sé".
 
 ---
 

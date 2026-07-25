@@ -77,6 +77,15 @@ graph TD
 Nelle prossime sezioni vediamo nel dettaglio i pezzi principali dell'hardware
 (CPU, RAM, disco) e poi il software che li coordina (il sistema operativo).
 
+> **💡 Esempio pratico**
+>
+> Il tuo laptop di lavoro è hardware (schermo, tastiera, CPU, RAM). Su di
+> esso girano software come il sistema operativo, il browser e il client
+> per collegarti in VPN al progetto. Allo stesso modo, un server che ospita
+> l'applicazione del team è hardware (fisico o virtuale, in cloud) su cui
+> girano software come il sistema operativo Linux, il motore container e
+> l'applicazione stessa.
+
 ---
 
 ## 2.2 La CPU: il cervello che calcola
@@ -106,6 +115,15 @@ Perché ti interessa? Perché quando in futuro sentirai parlare di "server con
 8 core" o "la CPU è sotto stress", saprai che si parla della capacità di
 calcolo della macchina.
 
+> **💡 Esempio pratico**
+>
+> Durante un picco di traffico sulla piattaforma, il team nota su una
+> dashboard di monitoring che la CPU di un server è al 95% di utilizzo per
+> diversi minuti. Questo è un segnale che la macchina fa fatica a gestire
+> tutte le richieste in arrivo, e il team decide di aggiungere un altro
+> container (ne parleremo più avanti) per distribuire il carico su più
+> "persone alla scrivania".
+
 ---
 
 ## 2.3 La RAM: la memoria di lavoro temporanea
@@ -133,6 +151,14 @@ perché lavorarci da lì è molto più rapido.
 Se hai "troppe cose aperte" e il computer diventa lento, spesso è perché la
 RAM è piena: non c'è più spazio sulla scrivania.
 
+> **💡 Esempio pratico**
+>
+> Un'applicazione del progetto va in errore con un messaggio del tipo "out
+> of memory" (memoria esaurita) perché il container in cui gira ha un
+> limite di RAM troppo basso per il carico di lavoro reale. Il team
+> operativo interviene aumentando il limite di memoria assegnato al
+> container nella configurazione, e il problema si risolve.
+
 ---
 
 ## 2.4 Il disco: la memoria permanente
@@ -159,6 +185,14 @@ vai a dormire.
 Questa distinzione RAM/disco tornerà utile più avanti nel corso, ad esempio
 quando parleremo di database (dati salvati su disco) o di cache (dati tenuti
 in RAM per velocità).
+
+> **💡 Esempio pratico**
+>
+> Il team riceve un alert automatico perché il disco del server che ospita
+> il database è occupato all'85%. Se non si interviene (ad esempio
+> archiviando o cancellando log vecchi, oppure aumentando lo spazio
+> disponibile), il database rischia di non poter più scrivere nuovi dati
+> quando il disco si riempie completamente.
 
 ### CPU, RAM e Disco insieme
 
@@ -213,6 +247,14 @@ Il sistema operativo si occupa, tra le altre cose, di:
 Nel mondo di cui ti occuperai come Project Manager su una piattaforma
 DevOps, sentirai parlare spesso di server **Linux**, perché è il sistema
 operativo più usato per far funzionare applicazioni web e infrastrutture.
+
+> **💡 Esempio pratico**
+>
+> Il team pianifica una finestra di manutenzione notturna per applicare un
+> aggiornamento di sicurezza al sistema operativo Linux dei server di
+> produzione, perché l'aggiornamento richiede il riavvio delle macchine: si
+> sceglie un orario a basso traffico per minimizzare l'impatto sugli
+> utenti.
 
 ---
 
@@ -309,6 +351,15 @@ Capire i path ti servirà moltissimo più avanti, ad esempio quando vedremo
 **Git** (sezione 4): i progetti software sono organizzati esattamente come
 cartelle e file su un file system.
 
+> **💡 Esempio pratico**
+>
+> Un developer ti scrive in chat: "il file di configurazione è in
+> `/app/config/produzione.json`". Grazie a quello che hai appena imparato,
+> sai leggere quel percorso: parti dalla radice (`/`), entri nella cartella
+> `app`, poi in `config`, e lì trovi il file `produzione.json`. Non serve
+> saperlo modificare, ma saperlo "leggere" ti permette di seguire la
+> conversazione senza sentirti perso.
+
 ---
 
 ## 2.8 La rete: cos'è una rete di computer
@@ -330,6 +381,14 @@ fino a raggiungere il destinatario giusto, indipendentemente da dove si
 trovi. Anche i computer hanno un "indirizzo" (si chiama **indirizzo IP**) e
 le informazioni viaggiano in "pacchetti" (come lettere) attraverso una serie
 di dispositivi intermedi (router) finché non arrivano a destinazione.
+
+> **💡 Esempio pratico**
+>
+> Gli utenti segnalano che l'applicazione del progetto "non si carica più".
+> Il team di infrastruttura scopre che il problema non è nell'applicazione
+> stessa, ma in un guasto di rete tra due data center che impedisce ai
+> server di raggiungersi: un classico problema "di rete", da distinguere da
+> un bug nel codice.
 
 ---
 
@@ -369,6 +428,14 @@ Immagina di dover spedire un grosso pacco a un amico in un'altra città:
 Non hai bisogno di sapere i dettagli tecnici di TCP/IP per il tuo lavoro da
 PM, ma è utile sapere che **è il livello base** su cui si costruiscono
 protocolli più "di alto livello" che userai spesso a parole, come HTTP.
+
+> **💡 Esempio pratico**
+>
+> In un ticket di supporto si legge: "il server non risponde sulla porta
+> 443". Il collega di infrastruttura controlla che quella porta TCP (usata
+> per HTTPS) sia effettivamente aperta sul firewall del server: se è
+> chiusa o bloccata, nessuna richiesta può arrivare a destinazione, anche
+> se il server è acceso e funzionante.
 
 ---
 
@@ -413,6 +480,14 @@ Per questo, oggi, praticamente tutti i siti seri usano HTTPS: quando navighi
 e vedi il lucchetto 🔒 nella barra degli indirizzi del browser, significa che
 la connessione è protetta con HTTPS.
 
+> **💡 Esempio pratico**
+>
+> Durante un test di sicurezza sulla piattaforma, viene segnalato che una
+> vecchia pagina interna è ancora raggiungibile in HTTP (senza cifratura).
+> Il team la corregge configurando un redirect automatico verso la versione
+> HTTPS, così chi provasse ad accedere alla versione non sicura viene
+> reindirizzato automaticamente a quella protetta.
+
 ---
 
 ## 2.11 DNS: la rubrica telefonica di internet
@@ -446,6 +521,14 @@ sequenceDiagram
 
 Senza il DNS dovremmo ricordare a memoria stringhe di numeri per ogni sito
 che vogliamo visitare: praticamente impossibile.
+
+> **💡 Esempio pratico**
+>
+> Dopo aver spostato l'applicazione su un nuovo server, il team aggiorna il
+> record DNS del progetto perché punti al nuovo indirizzo IP. Per alcune
+> ore, però, alcuni utenti continuano a raggiungere il vecchio server: è un
+> fenomeno normale, chiamato "propagazione DNS", perché la modifica impiega
+> un po' di tempo a diffondersi su tutti i server DNS del mondo.
 
 ---
 
@@ -486,6 +569,15 @@ graph LR
 Le API sono uno dei concetti più importanti che incontrerai lavorando su una
 piattaforma software: praticamente tutte le applicazioni moderne sono fatte
 di tanti "pezzi" (servizi) che comunicano tra loro tramite API.
+
+> **💡 Esempio pratico**
+>
+> Il team deve aggiungere l'invio di notifiche via SMS agli utenti della
+> piattaforma. Invece di costruire da zero un intero sistema per inviare
+> SMS (server, connessioni con gli operatori telefonici, ecc.), il team
+> integra le API REST di un servizio esterno specializzato: basta inviare
+> una richiesta con numero e testo del messaggio, e il servizio esterno si
+> occupa di tutto il resto.
 
 ---
 
@@ -748,6 +840,15 @@ graph TD
     HV --> VM3[VM 3<br/>Sistema Operativo A<br/>+ App 3]
 ```
 
+> **💡 Esempio pratico**
+>
+> Il team di infrastruttura deve testare un aggiornamento importante prima
+> di applicarlo ai server di produzione. Crea una nuova VM di test partendo
+> da un'immagine standard identica a quella di produzione, prova
+> l'aggiornamento lì sopra senza alcun rischio per gli utenti reali, e solo
+> dopo aver verificato che tutto funziona procede con l'aggiornamento vero
+> e proprio.
+
 ---
 
 ## 2.18 Container: più leggeri di una VM
@@ -809,6 +910,15 @@ avviare (secondi, invece di minuti) e più efficienti in termini di risorse.
 | Tempo di avvio | Minuti | Secondi |
 | Isolamento | Molto forte (OS separato) | Buono, ma leggermente meno forte della VM |
 
+> **💡 Esempio pratico**
+>
+> Un utente segnala un bug sull'applicazione in produzione. Lo sviluppatore,
+> invece di provare a indovinare cosa non funzioni, lancia in locale sul
+> proprio computer lo stesso identico container usato in produzione (stesse
+> librerie, stessa versione del linguaggio, stessa configurazione) e
+> riesce a riprodurre il problema in pochi minuti, con la certezza di
+> lavorare in un ambiente identico a quello reale.
+
 ---
 
 ## 2.19 Docker: lo strumento più diffuso per i container
@@ -843,6 +953,16 @@ Concetti chiave da conoscere (senza bisogno di saperli usare tecnicamente):
 Nel team con cui lavorerai, sentirai spesso frasi come "buildiamo
 l'immagine", "il container è andato in crash", "pushiamo l'immagine sul
 registry": ora sai cosa significano a grandi linee.
+
+> **💡 Esempio pratico**
+>
+> Il team scrive un Dockerfile che parte da un'immagine base con il
+> linguaggio di programmazione già installato, copia il codice
+> dell'applicazione e installa le librerie necessarie. La pipeline di
+> CI/CD (ne parleremo più avanti nel corso) usa questo Dockerfile per
+> costruire automaticamente una nuova immagine ogni volta che il codice
+> cambia, e la pubblica su un registry privato del progetto, pronta per
+> essere distribuita.
 
 ---
 
@@ -904,6 +1024,15 @@ progetto e dei tempi di rilascio: sapere cosa fa a grandi linee ti aiuterà a
 capire meglio le conversazioni tecniche del team e a stimare meglio la
 complessità di certe attività.
 
+> **💡 Esempio pratico**
+>
+> Durante un evento con un picco di utenti sulla piattaforma (ad esempio una
+> promozione con molto traffico), Kubernetes rileva l'aumento del carico e
+> scala automaticamente da 3 a 10 container della stessa applicazione, per
+> distribuire meglio le richieste. Passato il picco, riduce di nuovo il
+> numero di container a 3, risparmiando risorse — tutto senza che nessuno
+> del team debba intervenire manualmente nel cuore della notte.
+
 ---
 
 ## 2.21 Riepilogo: come si incastrano tutti questi pezzi
@@ -955,6 +1084,67 @@ difficoltà, torna a rileggere il paragrafo corrispondente:
 - Sai spiegare la differenza tra database relazionale e NoSQL?
 - Sai spiegare la differenza tra una VM e un container?
 - Sai spiegare a cosa serve Kubernetes, a grandi linee?
+
+---
+
+## 📝 Esercizi pratici
+
+Gli esercizi che seguono ti aiutano a trasformare il vocabolario di questa
+sezione in comprensione reale. Non serve saper scrivere codice per farli:
+servono soprattutto occhi curiosi e la disponibilità a fare qualche domanda
+ai colleghi.
+
+1. **Guarda "sotto il cofano" del tuo computer.** Apri il Task Manager
+   (Windows) o il Monitoraggio Attività (macOS) e osserva per un paio di
+   minuti quanta CPU e quanta RAM stanno usando le applicazioni aperte.
+   Prova ad aprire molte schede del browser insieme e osserva come cambiano
+   i numeri.
+   ✅ **Come verificare**: sai indicare quale processo, in quel momento,
+   sta consumando più CPU e quale più RAM, e sai spiegare la differenza tra
+   le due cose usando le analogie di questa sezione (scrivania vs persona
+   che calcola)?
+
+2. **Traccia il percorso di una richiesta web.** Apri gli strumenti di
+   sviluppo del browser (F12 o tasto destro → "Ispeziona"), vai sulla scheda
+   "Network"/"Rete", visita un sito qualsiasi e osserva la prima richiesta
+   HTTP che parte: nota il metodo (`GET`), il codice di risposta (es. `200`)
+   e se il protocollo usato è HTTP o HTTPS.
+   ✅ **Come verificare**: sai indicare, guardando la schermata, se la
+   connessione era protetta (HTTPS) e sai spiegare cosa significa il codice
+   di risposta che hai visto?
+
+3. **Interroga un DNS a mano.** Da riga di comando (terminale su Mac/Linux,
+   Prompt dei comandi o PowerShell su Windows), esegui il comando
+   `nslookup www.google.com` (o `ping www.google.com`) e osserva l'indirizzo
+   IP che viene restituito.
+   ✅ **Come verificare**: sai spiegare a parole tue cosa ha fatto il
+   comando, collegandolo all'analogia della "rubrica telefonica" vista
+   in questa sezione?
+
+4. **Leggi e "traduci" un JSON reale.** Chiedi a un developer del team di
+   mostrarti un piccolo esempio di risposta JSON restituita da un'API del
+   progetto (o, in alternativa, apri in un browser un endpoint pubblico
+   come `https://api.github.com/users/octocat`). Prova a identificare le
+   coppie chiave-valore principali.
+   ✅ **Come verificare**: sapresti riscrivere a voce, in una frase in
+   italiano, cosa dice quel JSON, come abbiamo fatto con l'esempio
+   dell'ordine in questa sezione?
+
+5. **Confronta VM e container con parole tue.** Senza guardare il testo,
+   scrivi in 3-4 righe la differenza tra una macchina virtuale e un
+   container, e almeno un motivo per cui un team potrebbe preferire il
+   secondo per distribuire un'applicazione.
+   ✅ **Come verificare**: fai leggere quello che hai scritto a un collega
+   tecnico (o confrontalo con la tabella di questa sezione): la tua
+   spiegazione coglie sia la differenza di "peso" che quella di isolamento?
+
+6. **Disegna lo schema di una richiesta completa.** Su un foglio (anche a
+   mano), disegna il percorso di una richiesta utente che visita una pagina
+   della piattaforma: browser → DNS → server/container → database → e
+   ritorno, etichettando ogni passaggio con il termine giusto (IP, HTTP/S,
+   API, JSON, SQL...), ispirandoti al diagramma della sezione 2.21.
+   ✅ **Come verificare**: riesci a spiegare il tuo disegno a un collega non
+   tecnico in meno di 3 minuti, senza dover consultare gli appunti?
 
 ---
 

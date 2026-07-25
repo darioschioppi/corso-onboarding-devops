@@ -166,6 +166,25 @@ flowchart LR
     D[Dependency<br/>esterna al team] -.->|se in ritardo, genera| R
 ```
 
+**Esempio pratico**: un estratto reale (semplificato) di RAID Log a metà
+dello Sprint 6 di un progetto di e-commerce, così come potrebbe apparire
+in una board condivisa con il team:
+
+| ID | Categoria | Descrizione | Responsabile | Impatto (1-5) | Stato | Aperto il |
+|---|---|---|---|---|---|---|
+| R-12 | Risk | Il fornitore di hosting ha comunicato una finestra di manutenzione non pianificata nella settimana del rilascio | Tech Lead | 4 | Aperto | 03/06 |
+| R-13 | Risk | Se non testiamo il carico prima del Black Friday, rischio di rallentamenti sotto picco di traffico | QA Lead | 5 | In mitigazione | 05/06 |
+| A-07 | Assumption | Stiamo assumendo che l'ambiente di staging resti disponibile fino a fine mese | Project Manager | 3 | Da verificare | 01/06 |
+| A-08 | Assumption | Assumiamo che il cliente fornisca il feedback sul design entro 3 giorni lavorativi | Project Manager | 2 | Da verificare | 04/06 |
+| I-04 | Issue | Il servizio di invio SMS di terze parti restituisce errori 500 dal 06/06 | Sviluppatore backend | 4 | In corso | 06/06 |
+| D-05 | Dependency | Il rilascio del modulo pagamenti dipende dall'approvazione del team sicurezza, prevista per il 12/06 | Tech Lead | 5 | In attesa | 02/06 |
+
+Con soli 6 righe, un Project Manager junior può già farsi una domanda
+utile: **quali elementi con impatto alto (4-5) non hanno ancora un'azione
+di mitigazione chiara?** In questo estratto sono tre (R-13, I-04, D-05):
+sono i primi tre di cui parlare nel prossimo check-in con il cliente,
+prima che diventino la causa di uno slittamento non comunicato per tempo.
+
 ---
 
 ## 8.3 RACI: chi fa cosa (e chi deve solo saperlo)
@@ -447,6 +466,28 @@ comparabile tra persone o addirittura tra team diversi). Usato male, un KPI
 distrugge la fiducia del team; usato bene, aiuta tutti a vedere dove
 migliorare.
 
+**Esempio pratico**: confronto tra due sprint consecutivi dello stesso
+team, con alcuni KPI di sintesi:
+
+| KPI | Sprint 8 | Sprint 9 | Cosa può significare |
+|---|---|---|---|
+| Velocity | 32 story point | 24 story point | Da solo non basta a dire se è un problema: va guardato insieme agli altri KPI |
+| Lead time medio | 6 giorni | 9 giorni | Le richieste restano più tempo "in coda" prima di essere completate |
+| Defect rate | 2 bug su 15 elementi consegnati | 5 bug su 11 elementi consegnati | Segnale di qualità in calo, non solo di velocità |
+| Deployment frequency | 4 rilasci in produzione | 1 rilascio in produzione | Il processo di rilascio ha subito un rallentamento |
+| Sprint goal success rate | Raggiunto | Non raggiunto | Conferma che qualcosa, nello sprint, non ha funzionato come previsto |
+
+Guardando la sola velocity, si potrebbe pensare "il team ha lavorato di
+meno". Ma leggendo la riga del defect rate e quella della deployment
+frequency insieme, l'ipotesi più plausibile è diversa: il team ha
+probabilmente **rallentato per gestire un numero maggiore di bug**,
+riducendo sia la velocity che la frequenza dei rilasci. Un Project
+Manager che si fermasse al primo numero (velocity in calo = "il team
+lavora peggio") trarrebbe la conclusione sbagliata; guardare i KPI **come
+insieme coerente**, non uno per uno isolato, è quello che permette di
+fare la domanda giusta in retrospettiva: "cosa ha causato l'aumento dei
+bug nello Sprint 9?", invece di "perché avete lavorato di meno?".
+
 ---
 
 ## 8.9 Reportistica: cosa riportare, a chi, e con quale livello di dettaglio
@@ -525,6 +566,78 @@ DevOps (sezione 10) offrono board, dashboard, work item e pipeline che
 mettono in pratica esattamente ciò che hai visto qui — RAID Log, RACI,
 burndown chart e KPI diventano funzionalità cliccabili in uno strumento
 reale.
+
+---
+
+## 📝 Esercizi pratici
+
+Gli esercizi che seguono ti aiutano a passare dal "ho capito il concetto
+leggendolo" al "saprei applicarlo su un progetto reale". Puoi farli con
+carta e penna, un foglio di calcolo, o uno strumento online gratuito: lo
+strumento conta meno del ragionamento che ci metti dietro.
+
+1. **Mappa gli stakeholder di un progetto immaginario.** Scegli un
+   progetto software semplice (es. "un'app per prenotare turni in
+   palestra") ed elenca almeno 6 stakeholder diversi. Per ciascuno,
+   assegna una posizione sulla matrice potere/interesse (come quella
+   della sezione 8.1) e scrivi in una riga **come** li terresti
+   aggiornati (es. "email mensile", "invito al Sprint Review",
+   "coinvolgimento diretto nelle decisioni").
+   ✅ **Come verificare**: se per almeno uno stakeholder non sai dire
+   "cosa vuole" e "come lo tieni informato" in una frase, la mappatura
+   non è ancora abbastanza concreta — torna a rileggere la sezione 8.1.
+
+2. **Costruisci un RAID Log di 8 righe per un progetto reale o
+   immaginario.** Deve contenere almeno 2 rischi, 2 assunzioni, 2 issue e
+   2 dipendenze, ciascuna con una stima di impatto (scala 1-5) e un
+   responsabile assegnato.
+   ✅ **Come verificare**: prova a ordinare le righe per impatto
+   decrescente. Se le prime tre righe della lista non hanno ancora
+   un'azione di mitigazione scritta, il RAID Log è incompleto — un RAID
+   Log senza azioni è solo un elenco di preoccupazioni, non uno strumento
+   di gestione.
+
+3. **Disegna una matrice RACI per un'attività che conosci.** Scegli
+   un'attività diversa da quella già usata come esempio nella sezione 8.3
+   (ad esempio: "pianificazione di uno sprint", "gestione di un incidente
+   in produzione", "onboarding di un nuovo membro del team") e costruisci
+   una tabella RACI con almeno 5 righe/attività e almeno 4 ruoli.
+   ✅ **Come verificare**: conta le "A" in ogni riga. Se una riga ha zero
+   A o più di una A, correggila: è l'errore più comune di chi costruisce
+   una RACI per la prima volta.
+
+4. **Calcola e interpreta due KPI su dati inventati.** Immagina un team
+   che, in 4 sprint consecutivi, completa rispettivamente 28, 25, 30 e 18
+   story point, con 1, 2, 1 e 6 bug rilevati in produzione nello stesso
+   periodo. Calcola la velocity media dei primi tre sprint e confrontala
+   con il quarto; scrivi in 3-4 righe quale ipotesi formuleresti su cosa è
+   successo nel quarto sprint, motivando la risposta con i dati (non solo
+   con un'impressione).
+   ✅ **Come verificare**: la tua ipotesi deve citare **entrambi** i KPI
+   (velocity e defect rate) insieme, non uno isolato — se la tua
+   conclusione si basa solo sul calo della velocity, rileggi
+   l'avvertimento sui KPI della sezione 8.8.
+
+5. **Scrivi due versioni dello stesso aggiornamento di stato.** Pensa a
+   un contrattempo plausibile in un progetto software (un bug bloccante
+   trovato tardi, un ritardo di un fornitore, un test di sicurezza
+   fallito) e scrivi due comunicazioni brevi (massimo 3-4 righe ciascuna):
+   una per il cliente/management, una per il team in stand-up.
+   ✅ **Come verificare**: fai leggere la versione "per il cliente" a
+   qualcuno senza background tecnico (anche un amico non del settore): se
+   non capisce cosa sta succedendo e cosa aspettarsi, è ancora troppo
+   tecnica.
+
+6. **Simula una retrospettiva sui rischi di un progetto concluso (anche
+   immaginario).** Elenca 3 rischi che, con il senno di poi, si sono
+   effettivamente concretizzati in issue, e per ciascuno scrivi: come lo
+   avresti potuto identificare prima, e quale delle quattro strategie di
+   mitigazione (evitare, ridurre, trasferire, accettare) avrebbe avuto più
+   senso applicare in anticipo.
+   ✅ **Come verificare**: per ogni rischio, la strategia di mitigazione
+   che scegli deve essere diversa da un generico "fare più attenzione" —
+   deve essere un'azione concreta e verificabile (es. "richiedere conferma
+   scritta entro una data", non "stare più attenti alle dipendenze").
 
 ---
 

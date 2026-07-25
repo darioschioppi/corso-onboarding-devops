@@ -53,6 +53,8 @@ Vediamo ora ogni fase nel dettaglio.
 
 In questa fase il project manager, il cliente e gli analisti si incontrano per capire cosa serve davvero. Il risultato è un documento (o una lista di elementi in uno strumento come Jira o Azure DevOps, che vedremo più avanti) che elenca i **requisiti**.
 
+**Esempio pratico**: durante una riunione, il cliente dice "vogliamo che i nostri utenti possano cercare i prodotti nel catalogo per nome o categoria". Il Project Manager trascrive questa richiesta in una card del backlog, magari titolata "Ricerca prodotti nel catalogo", senza ancora sapere se si useranno filtri, una barra di ricerca testuale o entrambe le cose: quella scelta arriverà nella fase successiva.
+
 Approfondiamo questo concetto nella prossima sezione perché è cruciale.
 
 ### 2. Analisi: dai requisiti alla soluzione
@@ -78,6 +80,8 @@ Un'analogia utile: se dici a un amico "fammi un caffè", lui capisce dal contest
 
 Lo sviluppatore prende i documenti di analisi e li traduce in queste istruzioni dettagliate, organizzate in file di testo (i "file di codice") che insieme compongono il software. Il codice viene poi salvato e condiviso con il resto del team usando strumenti come Git (che vedremo nella prossima sezione).
 
+**Esempio pratico**: l'analisi ha stabilito che serve una funzione che calcoli lo sconto finale su un carrello. Lo sviluppatore scrive, in un linguaggio come Python o Java, una serie di istruzioni tipo "prendi il totale del carrello, verifica se esiste un codice sconto valido, se sì calcola la percentuale da sottrarre, altrimenti restituisci il totale invariato". Ogni singolo caso (carrello vuoto, codice sconto scaduto, sconto superiore al totale) deve essere previsto esplicitamente: il computer non "capisce" cosa intendevi, esegue solo quello che hai scritto.
+
 ### 4. Testing: si verifica che funzioni
 
 Immaginiamo che gli operai abbiano finito di costruire la casa. Prima di far entrare la famiglia, un ingegnere collaudatore verifica che gli impianti funzionino, che le porte si aprano bene, che non ci siano crepe nei muri. Non basta che la casa "sembri" pronta: bisogna testarla.
@@ -92,6 +96,8 @@ Esistono diversi tipi di test, con diversi livelli di dettaglio:
 
 Perché si testa? Perché è molto più economico e veloce trovare un errore prima che il software arrivi agli utenti, piuttosto che scoprirlo quando migliaia di persone lo stanno già usando (e magari perdendo dati o soldi a causa di quell'errore).
 
+**Esempio pratico**: per la nuova funzionalità di ricerca prodotti, il team scrive un test unitario che verifica che la funzione di ricerca restituisca risultati corretti con un solo prodotto nel catalogo; un test di integrazione che verifica che la ricerca funzioni correttamente insieme al filtro dei prezzi; e infine un tester QA prova a digitare caratteri strani (accenti, emoji, campo vuoto) nella barra di ricerca per vedere se qualcosa si rompe. Solo dopo che tutti e tre i livelli di test danno esito positivo, la funzionalità viene considerata pronta per il passo successivo.
+
 ### 5. Rilascio (Deploy): si va "in produzione"
 
 Quando il software ha superato i test, è pronto per essere usato davvero dagli utenti finali. Questo passaggio si chiama **rilascio** o, con il termine tecnico che sentirai usare moltissimo, **deploy**.
@@ -101,6 +107,8 @@ Quando il software ha superato i test, è pronto per essere usato davvero dagli 
 Un'analogia: è il giorno del trasferimento nella casa nuova. Tutto quello che è stato progettato, costruito e verificato diventa finalmente reale e utilizzabile dalla famiglia.
 
 Il deploy può essere un'operazione delicata: si tratta di installare la nuova versione del software sui sistemi che gli utenti usano davvero, a volte senza nemmeno interrompere il servizio (pensa a un aggiornamento di un'app che non ti fa nemmeno notare che è cambiato qualcosa). Nella sezione dedicata al DevOps e alla CI/CD scoprirai come oggi questo processo venga spesso automatizzato per essere più rapido e sicuro.
+
+**Esempio pratico**: il team decide di rilasciare la nuova funzionalità di ricerca prodotti di notte, in una fascia orario con pochissimi utenti collegati, per limitare l'impatto nel caso qualcosa vada storto. Il deploy viene fatto prima solo su una piccola parte dei server (un cosiddetto "rilascio graduale"): se dopo un'ora tutto funziona bene, la nuova versione viene estesa a tutti gli utenti; se emergono problemi, si può tornare rapidamente alla versione precedente (un'operazione chiamata *rollback*).
 
 ### 6. Manutenzione: la cura continua
 
@@ -114,6 +122,8 @@ La **manutenzione** comprende tutte le attività che avvengono dopo il rilascio:
 - Aggiungere piccole modifiche richieste dagli utenti
 
 Un progetto software di successo può restare "in manutenzione" per anni, anche decenni. È una fase spesso sottovalutata da chi è alle prime armi, ma in realtà occupa una parte enorme del tempo e del budget di un progetto informatico nel lungo periodo.
+
+**Esempio pratico**: sei mesi dopo il rilascio, la funzionalità di ricerca prodotti inizia a rispondere sempre più lentamente perché il catalogo è cresciuto da 500 a 50.000 prodotti. Nessun requisito iniziale parlava di questo scenario: è un'attività di manutenzione, in cui il team introduce un meccanismo di **caching** (una sorta di "memoria veloce" che conserva i risultati delle ricerche più frequenti) per riportare i tempi di risposta a livelli accettabili.
 
 ## 📋 Requisiti: funzionali e non funzionali
 
@@ -233,6 +243,8 @@ gitGraph
 
 Questo concetto sarà spiegato con molti più dettagli pratici (comandi, strumenti, esempi passo-passo) nella prossima sezione dedicata a Git e GitHub. Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi.
 
+**Esempio pratico**: mentre uno sviluppatore lavora sul branch `feature-ricerca-prodotti` per aggiungere la barra di ricerca, un'altra sviluppatrice lavora in parallelo sul branch `fix-carrello` per correggere il bug del prezzo negativo visto prima. Nessuno dei due deve aspettare che l'altro finisca: lavorano entrambi sul proprio ramo, isolati, e uniranno le modifiche al tronco principale quando saranno pronti, ciascuno con i suoi tempi.
+
 ## 🔁 Dal branch al merge: pull request e code review
 
 Una volta che uno sviluppatore ha finito di lavorare sul proprio ramo (ad esempio ha completato la feature "login con email"), non può semplicemente "ricongiungere" le sue modifiche al tronco principale senza controlli. Sarebbe rischioso: e se il suo codice avesse errori? E se rompesse qualcosa che già funzionava?
@@ -244,6 +256,8 @@ Per questo, prima di unire le modifiche, si passa attraverso due passaggi fondam
 Una **pull request** (spesso abbreviata **PR**) è, in parole semplici, una richiesta formale: "ho finito di lavorare su questo ramo, per favore controllate il mio lavoro e, se va bene, unitelo al progetto principale".
 
 È come quando, dopo aver scritto una relazione di lavoro, non la invii direttamente al cliente, ma la mandi prima al tuo responsabile per un controllo. La pull request è esattamente quella richiesta di controllo, applicata al codice.
+
+**Esempio pratico**: lo sviluppatore che ha finito la barra di ricerca prodotti apre una pull request con un titolo come "Aggiunta ricerca prodotti per nome e categoria" e una descrizione che spiega cosa cambia, come è stato testato e magari uno screenshot del risultato. A quel punto la pull request compare in una lista visibile a tutto il team (su GitHub, GitLab o Azure DevOps), pronta per essere revisionata.
 
 ### Code Review: il controllo dei colleghi
 
@@ -258,9 +272,13 @@ Perché è importante che sia qualcun altro a controllare, e non solo chi ha scr
 
 Se durante la code review emergono problemi, chi ha scritto il codice apporta le correzioni richieste, e il processo si ripete finché tutti sono soddisfatti.
 
+**Esempio pratico**: un collega, revisionando la pull request della ricerca prodotti, lascia un commento del tipo "qui la ricerca fa distinzione tra maiuscole e minuscole, un utente che scrive 'scarpe' con la S minuscola non troverebbe 'Scarpe' scritto con la maiuscola: puoi correggerlo?". Lo sviluppatore corregge il codice, aggiorna la pull request, e il collega la approva.
+
 ### Merge: l'unione finale
 
 Quando la pull request è stata approvata dai colleghi durante la code review, si procede al **merge**: l'unione definitiva delle modifiche del ramo (branch) al progetto principale. A questo punto, quella nuova funzionalità o correzione diventa parte ufficiale del software, pronta per le fasi successive (ulteriori test, e infine il rilascio).
+
+**Esempio pratico**: dopo l'approvazione, lo sviluppatore (o un collega con i permessi adeguati) clicca sul bottone "Merge" nello strumento usato dal team. Da quel momento, il codice della barra di ricerca fa parte del branch principale `main`, insieme al lavoro di tutti gli altri membri del team, e sarà incluso nel prossimo rilascio pianificato.
 
 ```mermaid
 flowchart LR
@@ -297,6 +315,25 @@ Facciamo un piccolo riepilogo con un esempio end-to-end, per vedere come tutti i
 10. Il software va in **produzione**. Da qui in avanti, entra nella fase di **manutenzione**: se emergono nuovi bug legati a questa funzionalità, il ciclo ripartirà da capo su un nuovo branch.
 
 Come vedi, tutti questi termini che oggi possono sembrare astratti sono in realtà i mattoni con cui è costruito il lavoro quotidiano di qualsiasi team software. Nelle prossime sezioni approfondirai molti di questi concetti con strumenti e pratiche concrete.
+
+## 📝 Esercizi pratici
+
+Questi esercizi ti aiutano a consolidare i concetti di questa sezione prima di passare a Git e GitHub. Non servono strumenti particolari: bastano carta, penna e, dove indicato, una breve chiacchierata con un collega.
+
+1. **Mappa il ciclo di vita su un caso reale.** Pensa a una funzionalità che sai essere stata rilasciata di recente nel progetto (chiedi a un collega se non ne conosci una) e scrivi, riga per riga, come pensi si siano svolte le sei fasi del ciclo di vita (requisiti, analisi, sviluppo, testing, rilascio, manutenzione) per quel caso specifico. Non preoccuparti di essere preciso al 100%: l'obiettivo è esercitarti a "vedere" le fasi in un esempio concreto.
+   ✅ **Come verificare**: mostra la tua mappa a un collega del team e chiedigli di correggere i punti in cui hai sbagliato o semplificato troppo.
+
+2. **Classifica 5 requisiti.** Scrivi 5 frasi che potrebbero essere requisiti di un software (puoi inventarle o prenderle da una card reale del backlog del progetto) e per ciascuna indica se è un requisito funzionale o non funzionale, motivando la scelta in una riga.
+   ✅ **Come verificare**: rileggi ogni frase chiedendoti "risponde a *cosa fa*?" (funzionale) o a "*quanto bene lo fa*?" (non funzionale); se la risposta non è immediata, probabilmente la frase è scritta in modo ambiguo — provala a riformulare.
+
+3. **Distingui bug da feature su casi reali.** Chiedi a un developer o al tuo referente di mostrarti 3-4 elementi del backlog del progetto (o della board del team) e, prima che te lo dicano loro, provaci a indovinare quali sono bug e quali sono feature, spiegando il perché della tua scelta.
+   ✅ **Come verificare**: confronta le tue risposte con la classificazione reale usata dal team; se hai sbagliato qualcosa, capisci perché (spesso la differenza sta nel fatto che un bug viola un comportamento già previsto, mentre la feature è un'aggiunta nuova).
+
+4. **Simula un versioning.** Immagina che il software del progetto sia alla versione 3.4.2. Elenca 4 eventi ipotetici (2 bug fix, 1 nuova feature, 1 cambiamento che rompe la compatibilità) e scrivi, in ordine, come cambierebbe il numero di versione dopo ciascun evento.
+   ✅ **Come verificare**: rileggi le regole MAJOR.MINOR.PATCH di questa sezione e verifica che ogni tuo passaggio le rispetti (ad esempio, un nuovo MAJOR deve riportare MINOR e PATCH a zero).
+
+5. **Disegna il flusso branch → merge con un esempio del progetto.** Su un foglio (anche a mano), disegna il flowchart "branch, sviluppo, pull request, code review, merge" visto in questa sezione, ma sostituendo le etichette generiche con un esempio verosimile del progetto (es. "branch fix-notifiche-email" invece di "creazione del branch"). Poi racconta il disegno a voce alta, come se lo spiegassi a un collega nuovo arrivato.
+   ✅ **Come verificare**: se riesci a raccontare il disegno senza guardare gli appunti e senza incepparti su nessun passaggio, hai interiorizzato bene il flusso.
 
 ## 🔗 Collegamenti
 

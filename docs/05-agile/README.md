@@ -173,6 +173,8 @@ Cosa significa davvero avere un mindset agile, in pratica?
 
 > 💡 **Analogia**: pensa alla differenza tra seguire una ricetta di cucina alla lettera, ignorando che gli ospiti sono arrivati con un'ora di ritardo e i tempi di cottura non funzionano più, oppure adattarsi in corsa — magari cambiando l'ordine dei piatti — mantenendo l'obiettivo (una cena buona e godibile) più importante del rispetto rigido della procedura scritta. Il mindset agile è proprio questo: l'obiettivo (valore per il cliente) conta più della fedeltà al piano originale.
 
+**Esempio pratico**: due team lavorano entrambi con "sprint di 2 settimane" e "daily standup" — le stesse pratiche, sulla carta identiche. Nel primo, quando a metà sprint emerge un problema imprevisto, il Product Owner e il team si fermano, ne discutono e ridefiniscono insieme le priorità. Nel secondo, il piano dello sprint resta "intoccabile" fino alla fine, anche quando è ormai chiaro che non porterà valore reale: si segue il rituale alla lettera, ma si è perso il mindset. Solo il primo dei due sta davvero applicando l'Agile — il secondo fa solo "teatro Agile".
+
 Un errore comune, anche in aziende che si definiscono "agili", è applicare le **pratiche** (i daily standup, le board Kanban, gli sprint) senza davvero adottare il **mindset** sottostante. Il risultato è quello che nel settore si chiama scherzosamente "fare Agile senza essere agili": si seguono i rituali nella forma, ma le decisioni continuano a essere prese come in un progetto rigido e tradizionale. Il tuo compito, da futuro Project Manager, sarà anche capire questa differenza e favorire davvero il mindset, non solo il rituale.
 
 ---
@@ -244,7 +246,33 @@ flowchart TB
 
 Non sono in competizione tra loro in modo netto: molti team, in realtà, usano versioni ibride (a volte chiamate "Scrumban") che mescolano elementi di entrambi. Ciò che conta è che **entrambi nascono per applicare gli stessi valori Agile** che hai visto in questa sezione: consegnare valore frequentemente, adattarsi al cambiamento, collaborare in modo trasparente, migliorare continuamente.
 
+**Esempio pratico**: un team che sviluppa un nuovo prodotto da zero, con requisiti che cambiano spesso e la necessità di pianificare con un certo anticipo il lavoro delle prossime due settimane, troverà probabilmente più utile Scrum, con la sua cadenza regolare a sprint. Un team che si occupa soprattutto di supporto e correzione di problemi — richieste che arrivano in modo imprevedibile, una alla volta, senza un ritmo fisso — troverà invece più naturale Kanban, che non impone di pianificare in blocco cosa fare nelle prossime due settimane.
+
 Nelle prossime due sezioni vedrai nel dettaglio come funzionano davvero, con ruoli, artefatti, riti e strumenti concreti che userai (o osserverai) nel tuo lavoro quotidiano da Junior Project Manager.
+
+---
+
+## 📝 Esercizi pratici
+
+Gli esercizi che seguono ti aiutano a consolidare i concetti *teorici* di questa sezione (valori, principi, mindset, Waterfall vs Agile, scelta del framework) prima di passare alla pratica operativa di Scrum e Kanban, che approfondirai nelle prossime due sezioni.
+
+1. **Riscrivi i 4 valori del Manifesto con un esempio tuo.** Per ciascuno dei 4 valori (5.2), scrivi un esempio concreto diverso da quelli di questa pagina — puoi prenderlo dal progetto che osservi, dalla vita universitaria o anche da un'esperienza personale (es. organizzare un evento con altre persone).
+   ✅ **Come verificare**: fatti leggere i tuoi 4 esempi da un collega o dalla tua collega Scrum Master/PM e chiedi se colgono davvero il "preferiamo A rispetto a B, ma B resta importante" — non un aut-aut assoluto.
+
+2. **Scegli 3 principi su 12 e trova un esempio "sul campo".** Tra i 6 temi visti in 5.3, scegline 3 e osserva (o chiedi a un collega di raccontarti) un episodio reale, anche piccolo, del progetto che li illustra — diverso dagli esempi di questa pagina.
+   ✅ **Come verificare**: riesci a raccontare a voce, in meno di un minuto per principio e senza guardare gli appunti, sia il principio che l'esempio reale collegato?
+
+3. **Costruisci la tua tabella Waterfall vs Agile su un caso non software.** Prendi un progetto qualsiasi che conosci bene, anche non informatico (organizzare un trasferimento, pianificare un evento, scrivere una tesi) e compila una mini-tabella con almeno 3 righe della tabella di 5.5, valutando se in quel caso specifico converrebbe un approccio più Waterfall o più Agile.
+   ✅ **Come verificare**: per ogni riga hai scritto un motivo concreto (non solo "è più veloce" o "è più moderno") che giustifica la scelta in quel contesto specifico?
+
+4. **Riconosci il "teatro Agile".** Scrivi 3-4 righe che descrivono una situazione (immaginaria o osservata) in cui un team segue le pratiche agili (sprint, daily, board) ma non il mindset — ispirandoti all'esempio pratico di 5.4 ma con un caso tuo.
+   ✅ **Come verificare**: la tua descrizione indica chiaramente sia *quale pratica* viene seguita sia *quale decisione concreta* rivela che il mindset agile in realtà manca.
+
+5. **Scrum o Kanban? Decidi per due scenari diversi.** Immagina due contesti di lavoro molto diversi tra loro (ad esempio: un team che costruisce da zero una nuova funzionalità complessa vs un team che gestisce solo richieste di supporto che arrivano senza un ritmo prevedibile) e per ciascuno indica se propenderesti più per Scrum o per Kanban, motivando con almeno 2 argomenti presi da 5.6.
+   ✅ **Come verificare**: la tua motivazione fa riferimento esplicito alle caratteristiche di Scrum e Kanban descritte in questa sezione (cadenza fissa vs flusso continuo, pianificazione a blocchi vs limite di WIP), non solo a una preferenza personale.
+
+6. **Prepara un "elevator pitch" dell'Agile.** Scrivi (o registra a voce) una spiegazione di massimo 5 frasi dell'Agile per una persona che non ha mai sentito questo termine, senza usare la parola "framework" e senza elencare i 12 principi uno per uno.
+   ✅ **Come verificare**: fatti ascoltare da qualcuno non tecnico (un amico, un familiare, un collega di un altro reparto) — se in meno di 2 minuti capisce la differenza principale rispetto al "fare tutto e consegnare solo alla fine", il pitch funziona.
 
 ---
 

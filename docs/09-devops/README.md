@@ -351,6 +351,24 @@ DevOps è l'acronimo **CALMS**:
 | **M** | **Measurement** (Misurazione) | Misurare tutto ciò che conta con dati oggettivi: quanto spesso si rilascia, quanto tempo serve per riparare un guasto, quanti errori arrivano in produzione (i KPI DevOps visti nella sezione 8, come deployment frequency e MTTR) |
 | **S** | **Sharing** (Condivisione) | Condividere conoscenza, strumenti, successi e insuccessi tra i team, per non ripetere gli stessi errori e non "reinventare la ruota" |
 
+> 🛠️ **Esempio pratico**: immagina un team che rilascia ancora manualmente,
+> una volta al mese, seguendo una checklist su carta, senza sapere quanto
+> tempo richieda in media risolvere un guasto. Applicando CALMS:
+>
+> - **Culture**: dev e operations iniziano a partecipare alla stessa
+>   retrospettiva, invece di due riunioni separate che non si parlano.
+> - **Automation**: la checklist manuale viene trasformata in una pipeline
+>   che esegue build, test e deploy in automatico, riducendo gli errori.
+> - **Lean**: il team si rende conto che 3 dei 12 passaggi della vecchia
+>   checklist non servivano più a nulla, ed erano solo un'abitudine mai
+>   rimessa in discussione.
+> - **Measurement**: il team inizia a misurare la *deployment frequency*
+>   (quante volte si rilascia) e l'*MTTR* (quanto tempo serve per risolvere
+>   un guasto), passando da decisioni "a sensazione" a decisioni basate su
+>   dati concreti.
+> - **Sharing**: la pipeline creata per un progetto viene documentata e
+>   riutilizzata da un altro team, invece di essere reinventata da zero.
+
 Vale la pena notare che **la Cultura è la prima lettera, non l'ultima**: non
 è un caso. Molte aziende provano a "fare DevOps" partendo dall'automazione
 o dagli strumenti, saltando il lavoro culturale — e spesso falliscono,
@@ -460,6 +478,24 @@ flowchart LR
     E -.->|correzione rapida| A
 ```
 
+> 🛠️ **Esempio pratico**: uno sviluppatore apre una Pull Request che modifica
+> la funzione di calcolo dello sconto su un ordine. Ecco cosa succede,
+> passo per passo, in una pipeline di CI tipica (li vedrai nel dettaglio
+> nella sezione 11):
+>
+> 1. Il codice modificato viene "caricato" (push) sul repository condiviso.
+> 2. La pipeline si attiva automaticamente (il cosiddetto *trigger*), senza
+>    che nessuno debba lanciarla a mano.
+> 3. Viene eseguita la **build**: il codice viene compilato/assemblato. Se
+>    c'è un errore di sintassi, la pipeline si ferma già qui.
+> 4. Vengono eseguiti i **test automatici**: ad esempio, un test verifica
+>    che "uno sconto del 10% su un ordine da 100€ dia esattamente 90€".
+> 5. Se un test fallisce (magari lo sviluppatore ha sbagliato un calcolo),
+>    la pipeline segnala l'errore in pochi minuti, direttamente nella Pull
+>    Request, prima che il codice venga integrato.
+> 6. Solo se build e test passano, il codice viene integrato nel ramo
+>    principale — pronto per le fasi successive (Delivery o Deployment).
+
 Il beneficio più importante di CI è il **feedback rapido**: se qualcosa non
 funziona, lo sviluppatore lo scopre in pochi minuti, mentre ha ancora ben
 in mente cosa ha appena scritto — non settimane dopo, quando ha già
@@ -517,6 +553,23 @@ controllo ("via libera al decollo") prima che parta davvero. Con
 Continuous Deployment, non appena tutti i controlli pre-volo automatici
 sono superati, l'aereo decolla da solo, senza aspettare quel comando
 umano.
+
+> 🛠️ **Esempio pratico**: immagina che una nuova funzionalità ("aggiungi un
+> filtro di ricerca per data") abbia appena superato build e test
+> automatici.
+>
+> - Con **Continuous Delivery**, il pacchetto pronto resta "in attesa" e un
+>   Product Owner (o un responsabile del rilascio) apre la pipeline, guarda
+>   che tutto sia verde, e clicca manualmente su "Deploy in produzione" —
+>   magari aspettando il momento di minor traffico sul sito.
+> - Con **Continuous Deployment**, non appena i test automatici passano, la
+>   stessa funzionalità viene installata in produzione da sola, nel giro di
+>   pochi minuti dal commit originale, senza che nessuno clicchi nulla.
+>
+> La differenza pratica che noterai osservando una pipeline reale (lo farai
+> nella sezione 11): nel primo caso c'è uno step chiamato tipicamente
+> "Approvazione" o "Gate" che aspetta un umano; nel secondo caso quello
+> step semplicemente non esiste.
 
 ### Perché questa distinzione conta davvero
 
@@ -611,6 +664,35 @@ descritto.
 > stato costruito, di modificarlo in modo controllato, e di ricostruirlo da
 > zero in caso di disastro, senza dover "ricordare a memoria" cosa era
 > stato fatto.
+
+> 🛠️ **Esempio pratico**: ecco un estratto semplificato (sintassi
+> approssimativa, solo per farti capire l'idea, non un file da eseguire
+> davvero) di come potrebbe apparire un file IaC che descrive un server
+> web e il relativo database:
+>
+> ```
+> resource "server_web" {
+>   nome          = "server-app-produzione"
+>   dimensione    = "media" # 2 CPU, 4 GB RAM
+>   sistema       = "Linux"
+>   porta_aperta  = 443      # HTTPS
+> }
+>
+> resource "database" {
+>   nome          = "db-ordini-produzione"
+>   tipo          = "PostgreSQL"
+>   backup_auto   = true
+>   accesso       = "solo da server_web"
+> }
+> ```
+>
+> Questo file descrive **cosa deve esistere**, non i singoli comandi per
+> crearlo. Uno strumento IaC (es. Terraform) legge questo file e si occupa
+> lui di creare davvero il server e il database nel cloud, con quelle
+> caratteristiche esatte. Se domani serve un secondo ambiente identico per
+> il collaudo, basta eseguire lo stesso file puntandolo a un ambiente
+> diverso: niente configurazione manuale ripetuta a mano, niente rischio di
+> "dimenticare un dettaglio" rispetto all'ambiente di produzione.
 
 I vantaggi concreti di questo approccio:
 
@@ -793,6 +875,32 @@ subito dopo anche l'invio email ha iniziato a fallire — indizi che
 potrebbero indicare un problema di rete o di un servizio esterno condiviso,
 non necessariamente un bug nel codice dell'applicazione stessa.
 
+> 🛠️ **Esempio pratico: monitoring, observability e logging insieme in un
+> incidente reale**. Per capire davvero come questi tre concetti lavorano
+> insieme (e non sono tre cose scollegate), segui questo scenario passo per
+> passo:
+>
+> 1. **Monitoring** (il "cosa"): alle 09:16 un **alert** automatico avvisa
+>    il team su Slack/Teams: "tempo di risposta medio del sito superiore a
+>    3 secondi". La dashboard mostra una linea che sale bruscamente. Il
+>    team sa *che* qualcosa non va, ma non ancora *perché*.
+> 2. **Observability** (il "perché"): un ingegnere guarda le **tracce**
+>    delle richieste più lente e nota che il ritardo si concentra sempre
+>    nello stesso punto della catena: la chiamata dal servizio ordini verso
+>    un servizio esterno di pagamento. Le **metriche** confermano che è
+>    proprio quel servizio esterno ad avere un tempo di risposta anomalo,
+>    non il database o il resto dell'applicazione.
+> 3. **Logging** (il dettaglio esatto): l'ingegnere apre i **log** dello
+>    stesso intervallo di tempo — proprio quelli visti sopra — e trova la
+>    riga `[ERROR] Pagamento fallito per ordine #98213: timeout verso il
+>    servizio esterno`, che confirma con precisione l'orario, l'ordine
+>    coinvolto e la causa tecnica esatta (un timeout).
+>
+> Risultato: in pochi minuti il team capisce non solo che c'era un
+> problema (monitoring), ma anche dove si trovava nel sistema (observability)
+> e qual era il dettaglio preciso da riportare a chi gestisce quel servizio
+> esterno (logging) — senza dover indovinare nulla.
+
 Perché il logging è così importante nel contesto DevOps:
 
 - **Diagnosi post-incidente**: quando qualcosa va storto (collegandoci
@@ -854,6 +962,98 @@ Nella prossima sezione vedrai come tutti questi concetti — pipeline CI/CD,
 board di lavoro, dashboard di monitoraggio — si traducano in funzionalità
 concrete e cliccabili all'interno di **Azure DevOps**, la piattaforma che
 il team usa ogni giorno per metterli in pratica.
+
+---
+
+## 📝 Esercizi pratici
+
+Questa è una delle sezioni più dense del corso: la teoria da sola non
+basta a fissarla davvero. Prova a completare questi esercizi con calma,
+magari uno al giorno, prendendoti il tempo per collegarli a esempi reali
+del progetto ogni volta che puoi.
+
+1. **Racconta il "muro della confusione" con parole tue.** Scrivi (o
+   registra a voce, se preferisci) una spiegazione di 5-6 righe di cosa
+   fosse il "muro della confusione" tra Dev e Ops, come se dovessi
+   spiegarlo a un amico che non ha mai lavorato in ambito tecnico, usando
+   un esempio diverso da quello del ristorante già visto in questa
+   sezione (puoi ispirarti a qualsiasi altro contesto: un ufficio postale,
+   una catena di montaggio, uno studio medico).
+   ✅ **Come verificare**: fatti ascoltare/leggere la spiegazione da un
+   collega non tecnico (o da un familiare): se la capisce senza fare
+   domande di chiarimento, hai centrato il punto.
+
+2. **Applica CALMS al progetto reale.** Per ciascuna delle 5 lettere di
+   CALMS (Culture, Automation, Lean, Measurement, Sharing), trova un
+   esempio concreto nel progetto su cui lavori — anche piccolo — che
+   dimostri quel pilastro in azione. Se per una lettera non trovi nessun
+   esempio, annotalo: potrebbe essere un'area di miglioramento da discutere
+   con la tua collega.
+   ✅ **Come verificare**: hai scritto 5 esempi (uno per lettera), ciascuno
+   con un fatto specifico del progetto, non una definizione generica presa
+   dal libro.
+
+3. **Ricostruisci una pipeline CI su carta.** Prendi carta e penna e
+   disegna, passo per passo (come nel diagramma della sezione 9.6), cosa
+   succede da quando uno sviluppatore propone un cambiamento a quando il
+   codice viene integrato nel ramo principale. Poi aggiungi, con un colore
+   diverso, cosa cambierebbe se il team usasse Continuous Delivery invece
+   che Continuous Deployment nello step finale.
+   ✅ **Come verificare**: nel tuo schema devi avere almeno 5 step distinti
+   (proposta del cambiamento, build, test, integrazione, e lo step finale
+   di rilascio) e riuscire a indicare con precisione dove si trova
+   "l'ultimo bottone" premuto da un umano nel caso di Continuous Delivery.
+
+4. **Trova (o fatti mostrare) un file di Infrastructure as Code reale.**
+   Chiedi a un collega developer o operations se il progetto usa IaC (ad
+   esempio Terraform, Bicep o ARM Template) e fatti mostrare un file reale,
+   anche solo per pochi minuti sullo schermo. Non serve capire ogni riga:
+   cerca di individuare almeno una "risorsa" descritta nel file (un server,
+   una rete, un database) e confrontala con l'esempio semplificato visto
+   nella sezione 9.8.
+   ✅ **Come verificare**: sai indicare a voce, guardando il file reale,
+   almeno un pezzo di infrastruttura che descrive e a cosa serve nel
+   progetto — anche con parole semplici e imprecise dal punto di vista
+   tecnico.
+
+5. **Scrivi tre righe di log realistiche.** Immagina una funzionalità
+   qualsiasi del progetto (ad esempio "un utente carica un documento") e
+   scrivi tre righe di log plausibili che quella funzionalità potrebbe
+   generare: una di livello `INFO` per il caso normale, una di livello
+   `WARN` per un caso limite (es. file grande, connessione lenta), e una di
+   livello `ERROR` per un caso di fallimento. Segui il formato visto nella
+   sezione 9.11 (timestamp, livello, messaggio).
+   ✅ **Come verificare**: le tue tre righe hanno timestamp, livello di
+   gravità corretto rispetto alla situazione descritta, e un messaggio che
+   un collega — leggendolo senza altro contesto — capirebbe cosa è
+   successo.
+
+6. **Distingui monitoring da observability su un caso reale.** Chiedi a un
+   collega di raccontarti un incidente reale (anche piccolo) capitato sul
+   progetto. Per quell'episodio, identifica separatamente: cosa ha fatto
+   scattare l'allarme iniziale (monitoring — la spia che si è accesa) e
+   cosa ha permesso di capire la causa reale (observability — metriche,
+   log o tracce usate per indagare). Se il collega non ricorda una
+   distinzione così netta, va benissimo: è normale, e ti dà comunque
+   materiale utile.
+   ✅ **Come verificare**: riesci a scrivere due frasi separate — una che
+   inizia con "il team si è accorto del problema perché..." (monitoring) e
+   una che inizia con "il team ha capito la causa guardando..."
+   (observability) — riferite allo stesso episodio reale.
+
+7. **Simula un mini post-mortem blameless.** Pensa a un piccolo errore che
+   hai fatto tu stesso di recente, anche non legato al lavoro (es. hai
+   dimenticato un appuntamento, hai fatto un acquisto sbagliato online).
+   Scrivi un breve "post-mortem" in stile blameless culture: cosa è
+   successo (fatti, senza giudizi), quale causa reale ha portato
+   all'errore (una procedura poco chiara? un'informazione mancante?), e
+   un'azione concreta per evitare che si ripeta. Evita ogni frase del tipo
+   "ho sbagliato perché sono stato distratto": cerca la causa nel
+   "sistema" (promemoria assenti, processo poco chiaro), non solo nella
+   persona.
+   ✅ **Come verificare**: il tuo testo non contiene nessuna frase
+   colpevolizzante verso te stesso o altri, e termina con un'azione
+   concreta e verificabile (non un generico "starò più attento").
 
 ---
 

@@ -137,6 +137,18 @@ flowchart TB
 > un errore di stampa scoperto dopo la pubblicazione, da correggere in una
 > ristampa.
 
+> 💡 **Esempio pratico**: immagina che il cliente chieda "vogliamo
+> permettere agli utenti di scaricare la fattura in PDF". Il Product Owner
+> crea una User Story con titolo "Come utente, voglio scaricare la fattura
+> in PDF, così da poterla archiviare", ID `#341`, stato `New` e una stima
+> di 5 Story Point. Durante lo Sprint Planning il team aggiunge due Task
+> collegati: `#342 Creare l'endpoint di generazione PDF` e `#343 Aggiungere
+> il bottone "Scarica fattura" nell'interfaccia`. Se durante il test
+> qualcuno nota che il PDF esce senza il logo, si apre un nuovo Bug `#350`,
+> collegato alla User Story `#341`: il collegamento tra i work item
+> permette di ricostruire in ogni momento "da dove nasce" quella
+> correzione, senza doverlo chiedere a voce a chi l'ha scritta.
+
 ### Backlog, Sprint Board e board Kanban
 
 Boards offre diverse **viste** sullo stesso lavoro, a seconda di cosa ti
@@ -291,6 +303,20 @@ esattamente come per qualsiasi altra modifica al codice — puoi capire chi
 ha cambiato cosa e quando, e volendo tornare indietro a una versione
 precedente.
 
+> 💡 **Esempio pratico**: un developer fa il push di un commit sul branch
+> `main` del progetto. In automatico, la pipeline si attiva (trigger) ed
+> esegue in sequenza: installazione delle dipendenze, esecuzione dei test
+> automatici, compilazione. Se un test fallisce, la pipeline si ferma e
+> risulta "rossa" (failed): il developer riceve una notifica, corregge il
+> problema e fa un nuovo commit, che fa ripartire tutta la sequenza da
+> capo. Se invece tutti i passaggi vanno a buon fine, la pipeline è
+> "verde" (succeeded) e il pacchetto compilato passa alla fase di Release:
+> prima viene distribuito automaticamente nell'ambiente di Test, poi resta
+> in attesa dell'approvazione di un responsabile prima di passare in
+> Staging, e infine in Produzione — con un'ulteriore approvazione, perché
+> il rilascio in Produzione è quasi sempre un passaggio "manuale per
+> scelta", anche se la build è completamente automatica.
+
 ---
 
 ## 10.5 Test Plans: qualità e collaudo
@@ -381,6 +407,19 @@ NuGet.org? Alcuni motivi molto concreti:
 - avere un unico posto dove tracciare **quali pacchetti e quali versioni**
   sono effettivamente in uso nel progetto.
 
+> 💡 **Esempio pratico**: il team del progetto scrive una libreria interna
+> che gestisce la formattazione degli importi in euro secondo le regole
+> del cliente (es. "1.234,56 €"), usata sia dal sito web sia dall'app
+> mobile. Invece di copiare e incollare lo stesso codice in due repository
+> diversi (con il rischio che, dopo una correzione, uno dei due resti
+> "vecchio"), il team pubblica la libreria come pacchetto su Artifacts con
+> nome `progetto-formattazione-valuta`, versione `1.0.0`. Sia il sito che
+> l'app la scaricano da lì come dipendenza. Quando viene corretto un bug
+> di arrotondamento, il team pubblica la versione `1.0.1`: ogni progetto
+> che dipende dalla libreria può aggiornarsi a quella versione quando è
+> pronto, senza che nessuno debba "andare a modificare a mano" il codice
+> in più posti.
+
 ```mermaid
 flowchart LR
     Dev[Sviluppatore scrive<br/>una libreria condivisa] --> Publish["📤 Pubblica su Artifacts"]
@@ -421,6 +460,18 @@ per questo motivo: puoi costruire (o farti costruire) una Dashboard
 riassuntiva da mostrare in una riunione con il cliente, senza dover
 spiegare ogni singolo dettaglio tecnico — i numeri e i grafici parlano da
 soli.
+
+> 💡 **Esempio pratico**: è lunedì mattina e devi preparare in 5 minuti un
+> aggiornamento rapido per il cliente. Apri la Dashboard del progetto e
+> vedi: il burndown dello sprint mostra che il team è leggermente indietro
+> rispetto alla linea ideale; ci sono 3 Pull Request aperte in attesa di
+> revisione da più di un giorno; l'ultima pipeline eseguita è verde
+> (passata); ci sono 2 Bug attivi con priorità alta. Da questi soli quattro
+> numeri, senza aprire Boards, Repos o Pipelines singolarmente, puoi già
+> dire al cliente: "siamo leggermente in ritardo sullo sprint, probabilmente
+> per le revisioni di codice in coda, ma la qualità del rilascio è sotto
+> controllo e stiamo lavorando su due bug prioritari" — una sintesi
+> corretta costruita in pochi secondi.
 
 ---
 
@@ -495,6 +546,68 @@ trova, nello strumento, ciò che già conosci.
 - I cinque moduli sono collegati tra loro in una catena continua, dalla
   User Story sul Backlog fino al rilascio in produzione e all'aggiornamento
   della Dashboard.
+
+---
+
+## 📝 Esercizi pratici
+
+1. **Mappa un work item reale.** Chiedi a un collega di mostrarti sullo
+   schermo una User Story reale del progetto su Boards: annota il suo ID,
+   il tipo (Epic/Feature/User Story/Task/Bug), i suoi Task collegati e il
+   suo stato attuale. Poi disegna a mano la gerarchia completa (Epic →
+   Feature → User Story → Task) a cui appartiene.
+   ✅ **Come verificare**: se riesci a ridisegnare la gerarchia su un
+   foglio senza guardare lo schermo, e a spiegare a voce cosa cambierebbe
+   se quella User Story venisse spostata da "In Progress" a "Done", hai
+   capito il concetto.
+
+2. **Segui una Pull Request dall'apertura al collegamento.** Osserva (o
+   fatti raccontare) una Pull Request reale del progetto: qual è il branch
+   di origine e quello di destinazione, quale User Story o Task referenzia,
+   chi la sta revisionando, quanti commenti ha ricevuto prima di essere
+   completata.
+   ✅ **Come verificare**: sai indicare, senza guardare gli appunti, dove
+   su Boards si vede il collegamento a quella Pull Request e cosa succede
+   allo stato della User Story quando la PR viene completata.
+
+3. **Leggi un file YAML di pipeline reale.** Fatti mostrare (o trova tu
+   stesso, se hai accesso) un file YAML di pipeline del progetto. Senza
+   preoccuparti di capire ogni riga, individua: cosa fa scattare la
+   pipeline (trigger), quali sono gli step principali, e se c'è un passaggio
+   di test prima della build finale.
+   ✅ **Come verificare**: riesci a indicare a un collega, puntando col
+   dito sullo schermo, dove nel file YAML si trova il trigger e dove si
+   trova lo step che esegue i test — senza dover chiedere aiuto.
+
+4. **Ricostruisci il flusso end-to-end con un esempio a tua scelta.**
+   Scegli (o inventa) una piccola funzionalità (es. "aggiungere un filtro
+   di ricerca") e scrivi, passo per passo, come attraverserebbe i cinque
+   moduli di Azure DevOps: da quando viene creata la User Story su Boards,
+   fino a quando la Dashboard mostra lo sprint aggiornato a rilascio
+   avvenuto. Usa come riferimento il diagramma della sezione 10.8.
+   ✅ **Come verificare**: confronta il tuo schema con quello della sezione
+   10.8 — se hai nominato tutti i moduli nell'ordine corretto e sai
+   spiegare perché ogni passaggio avviene dopo il precedente, l'esercizio
+   è riuscito.
+
+5. **Costruisci una Dashboard "immaginaria".** Su un foglio (o con un tool
+   gratuito di disegno), disegna una Dashboard con 4 widget a tua scelta
+   che vorresti mostrare in una riunione settimanale con il cliente (es.
+   burndown, PR aperte, stato pipeline, bug attivi). Per ciascun widget,
+   scrivi una frase che useresti per commentarlo a voce.
+   ✅ **Come verificare**: fatti guardare lo schizzo da un collega o dalla
+   tua tutor e chiedi se i 4 widget scelti sarebbero davvero utili in una
+   riunione reale con il cliente, oppure se ne manca uno importante (es.
+   lo stato dei rischi).
+
+6. **Compila la tabella dei collegamenti a memoria.** Senza guardare la
+   tabella della sezione 10.9, prova a scrivere su un foglio, per ognuno
+   dei cinque moduli (Boards, Repos, Pipelines, Test Plans, Artifacts), il
+   concetto già visto nelle sezioni precedenti a cui corrisponde.
+   ✅ **Come verificare**: confronta il tuo elenco con la tabella della
+   sezione 10.9 — se hai indovinato almeno 4 collegamenti su 5 senza
+   guardare, la mappa concettuale è solida; altrimenti, ripassa i
+   collegamenti mancanti prima di andare avanti.
 
 ---
 

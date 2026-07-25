@@ -11,7 +11,10 @@ computer di uno sviluppatore agli utenti finali, ma attraversa diverse
 traguardo. In questa sezione ci fermiamo su ciascuna di queste tappe,
 una per una, per capire **cosa succede davvero dentro ognuna di esse**,
 chi ci lavora, che dati si usano e perché la disciplina attorno a questo
-tema è tutt'altro che un dettaglio tecnico secondario.
+tema è tutt'altro che un dettaglio tecnico secondario. Seguiremo, tappa
+per tappa, un unico bug reale del carrello di ShopFacile: vedrai lo stesso
+identico problema attraversare le quattro tappe, dalla scrivania di
+Marco fino alla produzione.
 
 ## 🎯 Obiettivi della sezione
 
@@ -98,10 +101,12 @@ prima di essere pronta. Non c'è alcun tipo di garanzia di stabilità:
 l'ambiente Dev può "rompersi" più volte al giorno senza che questo sia
 un problema per nessuno fuori dal team di sviluppo.
 
-> 🛠️ **Esempio pratico**: Marco, uno sviluppatore del team, deve
-> implementare una nuova validazione sul modulo di richiesta ferie.
-> Scrive il codice e lo prova prima **in locale**, sul suo computer, con
-> dati completamente inventati (es. "Mario Test", una email fittizia).
+> 🛠️ **Esempio pratico**: Marco deve correggere un bug del carrello di
+> ShopFacile: quando un cliente applica un codice sconto, il totale
+> mostrato a video non tiene conto dell'IVA ricalcolata, e risulta più
+> basso di quanto dovrebbe. Scrive il codice della correzione e lo prova
+> prima **in locale**, sul suo computer, con dati completamente inventati
+> (un carrello finto con prodotti fittizi e un codice sconto di prova).
 > Quando è abbastanza sicuro del risultato, pusha il proprio branch: la
 > stessa modifica viene automaticamente distribuita anche nell'**ambiente
 > Dev condiviso** in cloud, dove i colleghi possono verificare che
@@ -112,10 +117,10 @@ un problema per nessuno fuori dal team di sviluppo.
 
 ## 15.3 Ambiente di Test / QA
 
-Una volta che una modifica supera i controlli automatici della pipeline
-(build, unit test, analisi di qualità — visti nella sezione CI/CD), viene
-**promossa** nell'ambiente di **Test/QA** (Quality Assurance, ovvero
-"garanzia di qualità").
+Una volta che la correzione di Marco supera i controlli automatici della
+pipeline (build, unit test, analisi di qualità — visti nella sezione
+CI/CD), viene **promossa** nell'ambiente di **Test/QA** (Quality
+Assurance, ovvero "garanzia di qualità").
 
 Qui il software viene verificato in modo più realistico:
 
@@ -135,21 +140,24 @@ problemi funzionali, **prima** che possano avvicinarsi anche solo
 lontanamente agli utenti reali. Se qualcosa non funziona, il codice
 **non viene promosso** oltre: torna in Sviluppo per essere corretto.
 
-> 🛠️ **Esempio pratico**: la modifica di Marco al modulo ferie supera la
-> build e i test automatici della pipeline, e viene promossa in Test/QA.
-> Qui una tester del team prova deliberatamente a "romperla": inserisce
-> una data di fine ferie precedente alla data di inizio, prova a
-> richiedere ferie con zero giorni disponibili, clicca due volte di
-> fila sul bottone "Invia richiesta". Scopre che il doppio click genera
-> due richieste identiche invece di una: apre una segnalazione, e il
-> codice **torna** in Sviluppo per la correzione, prima di poter
-> proseguire oltre.
+> 🛠️ **Esempio pratico**: la correzione di Marco al totale del carrello
+> supera la build e i test automatici della pipeline, e viene promossa in
+> Test/QA. Qui Giulia prova deliberatamente a "romperla": applica due
+> codici sconto diversi allo stesso carrello, prova uno sconto su un
+> prodotto già scontato di suo, svuota il carrello a metà del ricalcolo.
+> Scopre che, combinando due sconti insieme, il totale torna a essere
+> sbagliato in un modo nuovo: apre una segnalazione, e il codice
+> **torna** in Sviluppo per la correzione, prima di poter proseguire
+> oltre.
 
 ---
 
 ## 15.4 Ambiente di Staging (Pre-produzione)
 
-Lo **Staging** (a volte chiamato Pre-produzione) è l'ambiente pensato
+Superato anche il secondo giro di test, la correzione del carrello è
+pronta per un controllo ancora più realistico, in un ambiente che assomiglia
+quanto più possibile alla produzione vera. Lo **Staging** (a volte
+chiamato Pre-produzione) è l'ambiente pensato
 per essere **quanto più fedele possibile alla produzione**: stessa
 configurazione di infrastruttura, stesso tipo di database, volumi di
 dati paragonabili, stesse integrazioni con sistemi esterni (per quanto
@@ -178,21 +186,25 @@ separato dal Test/QA: nei progetti più piccoli le due cose a volte
 coincidono, ma nei progetti maturi restano due tappe distinte, con scopi
 diversi.
 
-> 🛠️ **Esempio pratico**: la correzione al modulo ferie, dopo aver
+> 🛠️ **Esempio pratico**: la correzione al totale del carrello, dopo aver
 > superato il Test/QA, viene promossa in Staging. Qui il volume di dati
-> è paragonabile a quello reale (migliaia di richieste storiche
-> anonimizzate, non le tre righe di prova usate in Test), e
-> l'infrastruttura è configurata esattamente come in produzione. Il
-> Project Manager, insieme a un referente del progetto che aveva
-> richiesto la funzionalità, prova il flusso completo end-to-end prima
-> di dare l'ultima validazione. Solo a questo punto il rilascio in
-> produzione può essere pianificato.
+> è paragonabile a quello reale (migliaia di ordini storici anonimizzati,
+> non le tre righe di prova usate in Test), e l'infrastruttura è
+> configurata esattamente come in produzione. Sara, come Product Owner
+> che aveva segnalato il problema arrivato dai clienti, prova il flusso
+> completo end-to-end — carrello, sconto, checkout — prima di dare
+> l'ultima validazione. Ahmed segue il test insieme a lei: è il primo bug
+> che vede attraversare tutte le tappe fino a qui, ed è un buon modo per
+> imparare cosa cambia da un ambiente all'altro. Solo a questo punto il
+> rilascio in produzione può essere pianificato.
 
 ---
 
 ## 15.5 Ambiente di Produzione
 
-La **Produzione** è l'ambiente reale, quello che usano davvero gli
+Dopo Dev, Test/QA e Staging, resta un'ultima tappa, quella in cui il bug
+del carrello incontra finalmente i clienti veri di ShopFacile. La
+**Produzione** è l'ambiente reale, quello che usano davvero gli
 utenti finali — che siano dipendenti del cliente, clienti finali di un
 servizio, o cittadini che usano un servizio pubblico. È la "prima"
 davanti al pubblico pagante.
@@ -209,28 +221,28 @@ Qui la parola d'ordine è **massima cautela**:
 **Chi ci accede**: un numero molto ristretto di persone, quasi sempre
 solo tramite strumenti e processi automatizzati (la pipeline stessa),
 raramente con accesso manuale diretto — approfondiremo il perché nel
-paragrafo 15.9.
+paragrafo 15.10.
 
 **Cosa succede qui**: ogni errore ha un impatto reale su persone vere.
 Non è più "lavoro in corso": è il prodotto finito, in uso.
 
 > 🛠️ **Esempio pratico — il percorso completo di una modifica**: seguiamo
-> l'intero viaggio della correzione al modulo ferie, dal commit alla
-> produzione:
+> l'intero viaggio della correzione al totale del carrello, dal commit
+> alla produzione:
 >
-> 1. **Dev**: Marco corregge il bug del doppio click e lo prova in
->    locale, poi pusha il branch: la pipeline fa build e unit test con
->    esito positivo.
-> 2. **Test/QA**: la modifica viene promossa automaticamente. La tester
->    riprova esattamente lo scenario del doppio click, più altri casi
->    limite: questa volta tutto funziona come previsto. Promozione
+> 1. **Dev**: Marco corregge il calcolo dell'IVA con lo sconto applicato e
+>    lo prova in locale, poi pusha il branch: la pipeline fa build e unit
+>    test con esito positivo.
+> 2. **Test/QA**: la modifica viene promossa automaticamente. Giulia
+>    riprova esattamente lo scenario dei due sconti combinati, più altri
+>    casi limite: questa volta tutto funziona come previsto. Promozione
 >    approvata.
 > 3. **Staging**: la stessa modifica (lo stesso identico pacchetto, non
 >    una ricompilazione) viene distribuita in un ambiente identico alla
->    produzione. Il Project Manager verifica il flusso end-to-end con
->    dati realistici e dà l'ultima validazione.
+>    produzione. Sara verifica il flusso end-to-end con dati realistici e
+>    dà l'ultima validazione.
 > 4. **Produzione**: dopo un'approvazione manuale del Release Manager, la
->    pipeline distribuisce la modifica agli utenti reali, fuori
+>    pipeline distribuisce la modifica ai clienti reali, fuori
 >    dall'orario di punta. Nei minuti successivi, il team monitora le
 >    metriche di errore: se qualcosa andasse storto, è pronto un piano di
 >    rollback.
@@ -243,7 +255,10 @@ Non è più "lavoro in corso": è il prodotto finito, in uso.
 
 ## 15.6 I quattro ambienti, fase per fase
 
-Il diagramma seguente riprende e amplia quello già visto nella sezione
+Il viaggio della correzione al carrello, visto passo per passo nel box
+precedente, si può anche osservare "da fermo", guardando in un unico
+schema chi lavora in ciascuna tappa e cosa cambia tra l'una e l'altra. Il
+diagramma seguente riprende e amplia quello già visto nella sezione
 CI/CD, aggiungendo per ciascun ambiente **chi vi accede** e **cosa
 succede concretamente**.
 
@@ -287,7 +302,11 @@ flowchart TD
 
 ## 15.7 "Funziona sul mio computer": perché gli ambienti devono somigliarsi
 
-Hai forse già sentito la battuta "funziona sul mio computer" — è la
+Il percorso della correzione al carrello ha funzionato senza sorprese
+proprio perché Dev, Test/QA, Staging e Produzione si somigliano il più
+possibile. Vediamo perché questa somiglianza non è un dettaglio, ma il
+punto centrale di tutta la catena. Hai forse già sentito la battuta
+"funziona sul mio computer" — è la
 scusa (semi-seria) di uno sviluppatore quando qualcosa non funziona in
 un altro ambiente. Il problema reale dietro la battuta è che **se gli
 ambienti sono troppo diversi tra loro**, un test superato in uno di essi
@@ -313,22 +332,25 @@ Più gli ambienti sono simili, meno sorprese si trovano man mano che si
 avanza nella catena — ed è per questo che lo Staging, in particolare, è
 tenuto quanto più possibile identico alla Produzione.
 
-> 🛠️ **Esempio pratico**: nel progetto, ogni volta che una modifica passa
+> 🛠️ **Esempio pratico**: in ShopFacile, ogni volta che una modifica passa
 > la fase di build in pipeline, viene generato un **unico** artifact
 > (es. un'immagine container con un numero di versione, tipo
-> `app:1.42.0`). Quello stesso artifact — non uno ricostruito da capo —
-> viene distribuito in Test/QA, poi in Staging, poi in Produzione. Se in
-> Staging l'immagine `app:1.42.0` funziona correttamente, il team sa che
-> in Produzione girerà **esattamente lo stesso codice, con le stesse
-> dipendenze**: non resta da chiedersi "avranno usato la stessa versione
-> di libreria X?", perché la domanda non ha nemmeno senso — è
+> `shopfacile-carrello:1.42.0`). Quello stesso artifact — non uno
+> ricostruito da capo — viene distribuito in Test/QA, poi in Staging, poi
+> in Produzione. Se in Staging l'immagine `1.42.0` funziona correttamente,
+> il team sa che in Produzione girerà **esattamente lo stesso codice, con
+> le stesse dipendenze**: non resta da chiedersi "avranno usato la stessa
+> versione di libreria X?", perché la domanda non ha nemmeno senso — è
 > letteralmente lo stesso file.
 
 ---
 
 ## 15.8 Dati di test vs dati reali
 
-Un punto spesso sottovalutato da chi arriva da fuori dal settore: **gli
+Sapere che l'artifact è sempre lo stesso risolve il problema del codice,
+ma resta un'altra domanda: se il codice è identico, i dati che usa devono
+esserlo altrettanto? Qui la risposta cambia radicalmente. Un punto spesso
+sottovalutato da chi arriva da fuori dal settore: **gli
 ambienti di Sviluppo e Test/QA non usano mai dati reali degli utenti**.
 
 Perché? Perché i dati reali possono contenere informazioni sensibili:
@@ -356,7 +378,10 @@ ma anche di "dove questi dati non devono mai nemmeno arrivare".
 
 ## 15.9 Configurazioni per ambiente
 
-Lo stesso identico artifact (lo stesso pacchetto di codice) deve
+Dati diversi non bastano da soli: se lo stesso artifact deve girare su
+dati e infrastrutture diverse in ogni ambiente, deve anche sapere in
+quale ambiente si trova in un dato momento. Lo stesso identico artifact
+(lo stesso pacchetto di codice) deve
 comportarsi in modo leggermente diverso a seconda dell'ambiente in cui
 gira: in Test deve collegarsi al database di test, in Produzione al
 database di produzione; in Test può usare un servizio di invio email
@@ -387,22 +412,26 @@ configurazioni non vengono mai scritte nel codice: sono gestite tramite
 strumenti dedicati (es. un "vault" di segreti), collegandosi ancora al
 tema della sicurezza approfondito nella sezione dedicata.
 
-> 🛠️ **Esempio pratico**: l'applicazione del progetto deve inviare
-> un'email di conferma quando una richiesta di ferie viene approvata. In
-> Test/QA, la variabile di configurazione `EMAIL_SERVICE_URL` punta a un
-> servizio "finto" che si limita a registrare in un log "avrei inviato
-> questa email", senza spedire nulla per davvero — utile per verificare
-> che il codice tenti l'invio, senza intasare le caselle di posta di
-> nessuno con email di test. In Produzione, la stessa identica variabile
-> punta invece al servizio email reale. Il codice che gestisce l'invio
-> non cambia di una riga tra i due ambienti: cambia solo il valore di
-> quella variabile.
+> 🛠️ **Esempio pratico**: ShopFacile deve inviare un'email di conferma
+> quando un ordine viene completato. In Test/QA, la variabile di
+> configurazione `EMAIL_SERVICE_URL` punta a un servizio "finto" che si
+> limita a registrare in un log "avrei inviato questa email", senza
+> spedire nulla per davvero — utile per verificare che il codice tenti
+> l'invio, senza intasare le caselle di posta di nessuno con conferme
+> d'ordine finte. In Produzione, la stessa identica variabile punta
+> invece al servizio email reale, quello che avvisa davvero il cliente.
+> Il codice che gestisce l'invio non cambia di una riga tra i due
+> ambienti: cambia solo il valore di quella variabile.
 
 ---
 
 ## 15.10 Chi ha accesso a quali ambienti
 
-L'accesso agli ambienti segue un principio semplice: **più un ambiente è
+Hai visto chi lavora in ciascun ambiente lungo il percorso del bug del
+carrello: Marco in Dev, Giulia in Test/QA, Sara e Ahmed in Staging, un
+numero ristretto di persone in Produzione. Questo schema non è casuale,
+ma segue una regola precisa. L'accesso agli ambienti segue un principio
+semplice: **più un ambiente è
 vicino agli utenti reali, più l'accesso è restrittivo**. Non è
 burocrazia fine a se stessa: è la stessa logica per cui non chiunque può
 entrare backstage la sera della prima, mentre durante le prove chiunque
@@ -432,7 +461,9 @@ del cast può girare liberamente per il teatro.
 
 ## 15.11 Riepilogo
 
-In questa sezione hai approfondito il concetto di ambiente già
+Il bug del carrello di ShopFacile ci ha accompagnato da Marco in Dev fino
+al rilascio in Produzione: riassumiamo i concetti principali visti lungo
+il percorso. In questa sezione hai approfondito il concetto di ambiente già
 incontrato nella sezione CI/CD:
 
 - non si testa mai direttamente in produzione: si passa attraverso

@@ -23,6 +23,13 @@ ciò che hai già imparato: non sono concetti nuovi da zero, sono le stesse
 idee (backlog, board, repository, pipeline) che ora vedrai **incarnate in
 un prodotto specifico**.
 
+Per rendere tutto concreto, seguiremo lo stesso progetto già incontrato
+nella sezione DevOps: **ShopFacile**, la piattaforma e-commerce del team.
+In questa sezione la vedremo gestita proprio dentro Azure DevOps: **Sara**
+(Product Owner) inserisce requisiti e work item su Azure Boards, mentre
+**Marco**, **Giulia** e **Ahmed** (i tre developer del team) li
+implementano usando Repos, Pipelines e Test Plans.
+
 ## 🎯 Obiettivi della sezione
 
 Alla fine di questa sezione saprai:
@@ -78,7 +85,13 @@ accessibile da un menu laterale all'interno di un progetto:
 | **Artifacts** | Conservare e distribuire pacchetti software |
 
 Nei prossimi paragrafi vediamo ciascuno di questi moduli, uno per uno,
-sempre collegandoli a concetti che hai già incontrato nel corso.
+sempre collegandoli a concetti che hai già incontrato nel corso — e sempre
+seguendo lo stesso progetto ShopFacile, per vedere come si muove
+concretamente da un modulo all'altro.
+
+Cominciamo dal punto da cui parte sempre il lavoro, prima ancora che
+qualcuno scriva una riga di codice: **cosa c'è da fare**. È il modulo
+Boards, dove Sara inserisce le richieste del cliente.
 
 ---
 
@@ -137,16 +150,18 @@ flowchart TB
 > un errore di stampa scoperto dopo la pubblicazione, da correggere in una
 > ristampa.
 
-> 💡 **Esempio pratico**: immagina che il cliente chieda "vogliamo
-> permettere agli utenti di scaricare la fattura in PDF". Il Product Owner
-> crea una User Story con titolo "Come utente, voglio scaricare la fattura
-> in PDF, così da poterla archiviare", ID `#341`, stato `New` e una stima
-> di 5 Story Point. Durante lo Sprint Planning il team aggiunge due Task
-> collegati: `#342 Creare l'endpoint di generazione PDF` e `#343 Aggiungere
-> il bottone "Scarica fattura" nell'interfaccia`. Se durante il test
-> qualcuno nota che il PDF esce senza il logo, si apre un nuovo Bug `#350`,
-> collegato alla User Story `#341`: il collegamento tra i work item
-> permette di ricostruire in ogni momento "da dove nasce" quella
+> 💡 **Esempio pratico**: immagina che **Sara**, la Product Owner di
+> ShopFacile, riceva dal cliente la richiesta "vogliamo permettere ai
+> clienti di scaricare la fattura del proprio ordine in PDF". Sara crea una
+> User Story con titolo "Come cliente di ShopFacile, voglio scaricare la
+> fattura del mio ordine in PDF, così da poterla archiviare", ID `#341`,
+> stato `New` e una stima di 5 Story Point. Durante lo Sprint Planning il
+> team aggiunge due Task collegati: `#342 Creare l'endpoint di generazione
+> PDF`, assegnato a **Marco**, e `#343 Aggiungere il bottone "Scarica
+> fattura" nell'interfaccia`, assegnato ad **Ahmed**. Se durante il test
+> **Giulia** nota che il PDF esce senza il logo di ShopFacile, apre un nuovo
+> Bug `#350`, collegato alla User Story `#341`: il collegamento tra i work
+> item permette di ricostruire in ogni momento "da dove nasce" quella
 > correzione, senza doverlo chiedere a voce a chi l'ha scritta.
 
 ### Backlog, Sprint Board e board Kanban
@@ -181,11 +196,17 @@ flowchart LR
 ```
 
 > 💡 **Esempio pratico**: durante lo Sprint Planning (visto nella sezione
-> Scrum), il team seleziona alcune User Story dal Backlog e le "porta"
-> nello sprint. Da quel momento, quelle stesse User Story appaiono sulla
-> Sprint Board, e ogni Task collegato può essere spostato di colonna man
-> mano che avanza — esattamente il movimento delle card che hai visto nel
-> capitolo su Kanban, solo che qui avviene con un drag-and-drop del mouse.
+> Scrum), il team di ShopFacile seleziona alcune User Story dal Backlog —
+> tra cui la `#341` sulla fattura PDF — e le "porta" nello sprint. Da quel
+> momento, quelle stesse User Story appaiono sulla Sprint Board, e ogni
+> Task collegato può essere spostato di colonna man mano che avanza —
+> esattamente il movimento delle card che hai visto nel capitolo su Kanban,
+> solo che qui avviene con un drag-and-drop del mouse.
+
+Una volta che la User Story `#341` è entrata nello sprint, qualcuno deve
+effettivamente scrivere il codice che la implementa. È il momento in cui
+Marco e Ahmed passano dal guardare la board ad aprire il modulo successivo:
+Repos.
 
 ---
 
@@ -218,14 +239,20 @@ Le differenze pratiche rispetto a GitLab sono minime e soprattutto di
 | **Pipeline collegata** | GitLab CI/CD | Azure Pipelines |
 | **Punto di forza** | Molto diffusa anche self-hosted, forte integrazione CI/CD nativa | Integrazione nativa con Boards, Pipelines, Test Plans nello stesso prodotto |
 
-> 💡 **Esempio pratico**: in Azure DevOps, quando apri una Pull Request per
-> unire il branch `feature/reset-password` dentro `main`, puoi collegarla
-> direttamente alla User Story "Recupero password": chi guarda quella User
-> Story su Boards vede subito il link alla Pull Request corrispondente, e
-> quando la PR viene completata, lo stato della User Story può aggiornarsi
+> 💡 **Esempio pratico**: in Azure DevOps, quando **Marco** apre una Pull
+> Request per unire il branch `feature/fattura-pdf` dentro `main`, la
+> collega direttamente alla User Story `#341` "Fattura PDF" di ShopFacile:
+> chi guarda quella User Story su Boards vede subito il link alla Pull
+> Request corrispondente, e quando **Giulia** completa la revisione e la PR
+> viene completata, lo stato della User Story può aggiornarsi
 > automaticamente. È la stessa idea del "Closes #42" di GitLab che hai
 > visto nella sezione 4, ma ancora più integrata perché Boards e Repos
 > vivono nello stesso prodotto.
+
+Il codice di Marco è ora unito nel branch principale — ma unito non
+significa ancora "pronto per gli utenti". Perché quel codice diventi
+davvero parte di ShopFacile in produzione, deve prima passare per build e
+test automatici: è il modulo Pipelines, il prossimo che vediamo.
 
 ---
 
@@ -303,19 +330,25 @@ esattamente come per qualsiasi altra modifica al codice — puoi capire chi
 ha cambiato cosa e quando, e volendo tornare indietro a una versione
 precedente.
 
-> 💡 **Esempio pratico**: un developer fa il push di un commit sul branch
-> `main` del progetto. In automatico, la pipeline si attiva (trigger) ed
-> esegue in sequenza: installazione delle dipendenze, esecuzione dei test
-> automatici, compilazione. Se un test fallisce, la pipeline si ferma e
-> risulta "rossa" (failed): il developer riceve una notifica, corregge il
-> problema e fa un nuovo commit, che fa ripartire tutta la sequenza da
-> capo. Se invece tutti i passaggi vanno a buon fine, la pipeline è
-> "verde" (succeeded) e il pacchetto compilato passa alla fase di Release:
-> prima viene distribuito automaticamente nell'ambiente di Test, poi resta
-> in attesa dell'approvazione di un responsabile prima di passare in
-> Staging, e infine in Produzione — con un'ulteriore approvazione, perché
-> il rilascio in Produzione è quasi sempre un passaggio "manuale per
-> scelta", anche se la build è completamente automatica.
+> 💡 **Esempio pratico**: **Marco** fa il push del commit con la sua modifica
+> sul branch `main` di ShopFacile. In automatico, la pipeline si attiva
+> (trigger) ed esegue in sequenza: installazione delle dipendenze,
+> esecuzione dei test automatici, compilazione. Se un test fallisce, la
+> pipeline si ferma e risulta "rossa" (failed): Marco riceve una notifica,
+> corregge il problema e fa un nuovo commit, che fa ripartire tutta la
+> sequenza da capo. Se invece tutti i passaggi vanno a buon fine, la
+> pipeline è "verde" (succeeded) e il pacchetto compilato passa alla fase
+> di Release: prima viene distribuito automaticamente nell'ambiente di
+> Test, poi resta in attesa dell'approvazione di un responsabile prima di
+> passare in Staging, e infine in Produzione — con un'ulteriore
+> approvazione, perché il rilascio in Produzione è quasi sempre un
+> passaggio "manuale per scelta", anche se la build è completamente
+> automatica.
+
+Prima che il pacchetto arrivi davvero in Produzione, però, c'è ancora un
+controllo da fare, distinto da quello automatico appena visto: verificare
+che la fattura PDF si comporti bene anche agli occhi di una persona che la
+prova manualmente. È il compito del modulo Test Plans.
 
 ---
 
@@ -337,20 +370,22 @@ I concetti chiave sono:
 - **Test Case**: il singolo test, con **passaggi precisi** da seguire e il
   **risultato atteso** di ognuno.
 
-> 💡 **Esempio pratico**: un Test Case per la User Story "Recupero
-> password" potrebbe essere:
-> 1. Vai alla pagina di login e clicca "Password dimenticata".
->    **Risultato atteso**: si apre un form per inserire l'email.
-> 2. Inserisci un'email valida registrata e invia.
->    **Risultato atteso**: arriva un'email con un link di reset valido
->    per 24 ore.
-> 3. Clicca il link e imposta una nuova password.
->    **Risultato atteso**: il login funziona con la nuova password.
+> 💡 **Esempio pratico**: un Test Case per la User Story `#341` "Fattura PDF"
+> di ShopFacile potrebbe essere:
+> 1. Vai alla pagina "I miei ordini" e clicca "Scarica fattura".
+>    **Risultato atteso**: si scarica un file PDF.
+> 2. Apri il PDF scaricato.
+>    **Risultato atteso**: il PDF contiene il logo di ShopFacile, i dati
+>    dell'ordine e il totale corretto.
+> 3. Prova a scaricare la fattura di un ordine di un altro cliente
+>    modificando l'URL a mano.
+>    **Risultato atteso**: l'accesso viene negato.
 >
-> Chi esegue il test segue questi passaggi uno per uno, e per ciascuno
-> segna se il risultato osservato corrisponde a quello atteso (**Passed**)
-> o no (**Failed** — che tipicamente genera automaticamente un nuovo work
-> item di tipo Bug, collegato al test fallito).
+> **Giulia**, che in questo esempio esegue il test, segue questi passaggi
+> uno per uno, e per ciascuno segna se il risultato osservato corrisponde a
+> quello atteso (**Passed**) o no (**Failed** — che tipicamente genera
+> automaticamente un nuovo work item di tipo Bug, collegato al test
+> fallito, come il Bug `#350` visto al paragrafo 10.2).
 
 > 💡 **Analogia**: pensa a un Test Plan come alla **checklist di collaudo**
 > di un'automobile prima che esca dalla fabbrica: freni, luci, climatizzatore,
@@ -367,6 +402,11 @@ sicurezza a domande fondamentali per un Project Manager, come: "questa
 funzionalità è stata testata prima del rilascio?", "quali test sono
 falliti nell'ultima release?", "quanta copertura di test abbiamo su questa
 Feature?".
+
+Il codice della fattura PDF, ormai compilato e testato, non nasce dal
+nulla: come qualsiasi altra funzionalità di ShopFacile, si appoggia a
+librerie esterne e, a sua volta, può diventare una libreria riutilizzabile
+da altre parti del progetto. È qui che entra in gioco il modulo Artifacts.
 
 ---
 
@@ -407,18 +447,18 @@ NuGet.org? Alcuni motivi molto concreti:
 - avere un unico posto dove tracciare **quali pacchetti e quali versioni**
   sono effettivamente in uso nel progetto.
 
-> 💡 **Esempio pratico**: il team del progetto scrive una libreria interna
-> che gestisce la formattazione degli importi in euro secondo le regole
-> del cliente (es. "1.234,56 €"), usata sia dal sito web sia dall'app
-> mobile. Invece di copiare e incollare lo stesso codice in due repository
-> diversi (con il rischio che, dopo una correzione, uno dei due resti
-> "vecchio"), il team pubblica la libreria come pacchetto su Artifacts con
-> nome `progetto-formattazione-valuta`, versione `1.0.0`. Sia il sito che
-> l'app la scaricano da lì come dipendenza. Quando viene corretto un bug
-> di arrotondamento, il team pubblica la versione `1.0.1`: ogni progetto
-> che dipende dalla libreria può aggiornarsi a quella versione quando è
-> pronto, senza che nessuno debba "andare a modificare a mano" il codice
-> in più posti.
+> 💡 **Esempio pratico**: il team di ShopFacile scrive una libreria interna
+> che gestisce la formattazione degli importi in euro secondo le regole del
+> cliente (es. "1.234,56 €"), usata sia dal sito web sia dall'app mobile.
+> Invece di copiare e incollare lo stesso codice in due repository diversi
+> (con il rischio che, dopo una correzione, uno dei due resti "vecchio"),
+> **Marco** pubblica la libreria come pacchetto su Artifacts con nome
+> `shopfacile-formattazione-valuta`, versione `1.0.0`. Sia il sito che
+> l'app la scaricano da lì come dipendenza. Quando **Ahmed** corregge un
+> bug di arrotondamento, pubblica la versione `1.0.1`: ogni progetto che
+> dipende dalla libreria può aggiornarsi a quella versione quando è pronto,
+> senza che nessuno debba "andare a modificare a mano" il codice in più
+> posti.
 
 ```mermaid
 flowchart LR
@@ -428,6 +468,12 @@ flowchart LR
     Feed --> Proj2[Progetto B<br/>la scarica e usa]
     Feed --> Pipeline[Pipeline di build<br/>la scarica automaticamente]
 ```
+
+Boards, Repos, Pipelines, Test Plans e Artifacts producono, ogni giorno,
+una quantità enorme di piccoli segnali: sprint in corso, pipeline che
+passano o falliscono, bug aperti. Nessuno vuole aprire cinque moduli
+diversi ogni mattina solo per farsi un'idea generale: è qui che entra in
+gioco l'ultimo modulo, la Dashboard.
 
 ---
 

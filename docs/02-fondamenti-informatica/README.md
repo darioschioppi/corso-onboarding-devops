@@ -79,16 +79,19 @@ Nelle prossime sezioni vediamo nel dettaglio i pezzi principali dell'hardware
 
 > **💡 Esempio pratico**
 >
-> Il tuo laptop di lavoro è hardware (schermo, tastiera, CPU, RAM). Su di
-> esso girano software come il sistema operativo, il browser e il client
-> per collegarti in VPN al progetto. Allo stesso modo, un server che ospita
-> l'applicazione del team è hardware (fisico o virtuale, in cloud) su cui
-> girano software come il sistema operativo Linux, il motore container e
-> l'applicazione stessa.
+> Il laptop di lavoro di Marco è hardware (schermo, tastiera, CPU, RAM). Su
+> di esso girano software come il sistema operativo, il browser e il client
+> per collegarsi in VPN al progetto. Allo stesso modo, un server che ospita
+> **ShopFacile**, la piattaforma e-commerce su cui lavora il team, è
+> hardware (fisico o virtuale, in cloud) su cui girano software come il
+> sistema operativo Linux, il motore container e l'applicazione stessa.
 
 ---
 
 ## 2.2 La CPU: il cervello che calcola
+
+Abbiamo detto che l'hardware è il "corpo" del computer: cominciamo a
+sezionarlo, partendo dal componente che fa più "pensare" tra tutti, la CPU.
 
 La **CPU** (Central Processing Unit, "unità centrale di elaborazione") è il
 componente che esegue le istruzioni. È lei che fa i calcoli, prende le
@@ -128,6 +131,10 @@ calcolo della macchina.
 
 ## 2.3 La RAM: la memoria di lavoro temporanea
 
+La CPU, però, non calcola nel vuoto: ha bisogno di un posto dove tenere a
+portata di mano i dati su cui sta lavorando in questo preciso istante. Quel
+posto è la RAM.
+
 La **RAM** (Random Access Memory) è la memoria che il computer usa mentre
 sta lavorando. È velocissima, ma ha due caratteristiche importanti:
 
@@ -162,6 +169,10 @@ RAM è piena: non c'è più spazio sulla scrivania.
 ---
 
 ## 2.4 Il disco: la memoria permanente
+
+Abbiamo visto che la RAM si svuota allo spegnimento: ma allora dove restano
+salvati i dati di ShopFacile (ordini, prodotti, clienti) anche quando i
+server vengono riavviati? Serve una memoria che non "dimentichi" nulla.
 
 Il **disco** (hard disk o, oggi più spesso, SSD - Solid State Drive) è la
 memoria dove i dati restano salvati **anche quando spegni il computer**. È
@@ -260,6 +271,10 @@ operativo più usato per far funzionare applicazioni web e infrastrutture.
 
 ## 2.6 Processi e Thread
 
+Abbiamo detto che il sistema operativo decide chi usa la CPU e quanta RAM
+assegnare: ma a "chi", concretamente? La risposta è: ai processi e ai
+thread, le unità di lavoro che il sistema operativo gestisce ogni istante.
+
 Quando apri un programma (ad esempio il browser), il sistema operativo crea
 un **processo**: un'istanza del programma in esecuzione, con la sua porzione
 di memoria RAM dedicata, isolata dagli altri programmi.
@@ -301,6 +316,10 @@ thread incide molto sulle sue performance.
 ---
 
 ## 2.7 Il File System: come sono organizzati i file
+
+Processi e thread lavorano sui dati in RAM, ma quei dati — codice, immagini,
+configurazioni — devono comunque "vivere" da qualche parte sul disco quando
+non sono in uso: è qui che entra in gioco il file system.
 
 Il **file system** è il modo in cui il sistema operativo organizza e
 memorizza i file sul disco. Praticamente ogni informazione che il computer
@@ -353,7 +372,7 @@ cartelle e file su un file system.
 
 > **💡 Esempio pratico**
 >
-> Un developer ti scrive in chat: "il file di configurazione è in
+> Marco ti scrive in chat: "il file di configurazione di ShopFacile è in
 > `/app/config/produzione.json`". Grazie a quello che hai appena imparato,
 > sai leggere quel percorso: parti dalla radice (`/`), entri nella cartella
 > `app`, poi in `config`, e lì trovi il file `produzione.json`. Non serve
@@ -364,7 +383,10 @@ cartelle e file su un file system.
 
 ## 2.8 La rete: cos'è una rete di computer
 
-Finora abbiamo parlato di un singolo computer. Ma il valore vero della
+Finora abbiamo parlato di un singolo computer — CPU, RAM, disco, sistema
+operativo, file. Ma un server con ShopFacile installato sopra, da solo e
+isolato, non servirebbe a nessuno: deve poter essere raggiunto dai clienti
+che navigano da casa loro. Il valore vero della
 tecnologia moderna nasce quando i computer **si parlano tra loro**: questo è
 possibile grazie alle **reti**.
 
@@ -384,15 +406,20 @@ di dispositivi intermedi (router) finché non arrivano a destinazione.
 
 > **💡 Esempio pratico**
 >
-> Gli utenti segnalano che l'applicazione del progetto "non si carica più".
-> Il team di infrastruttura scopre che il problema non è nell'applicazione
-> stessa, ma in un guasto di rete tra due data center che impedisce ai
-> server di raggiungersi: un classico problema "di rete", da distinguere da
-> un bug nel codice.
+> I clienti segnalano che ShopFacile "non si carica più". Marco, che si
+> occupa spesso di infrastruttura, scopre che il problema non è
+> nell'applicazione stessa, ma in un guasto di rete tra due data center che
+> impedisce ai server di raggiungersi: un classico problema "di rete", da
+> distinguere da un bug nel codice.
 
 ---
 
 ## 2.9 TCP/IP: come i computer si "spediscono lettere"
+
+Abbiamo detto che una rete permette a dispositivi diversi di scambiarsi
+informazioni: ma con quali regole precise avviene questo scambio? Le
+definisce un protocollo di base che sta sotto (quasi) tutto il resto,
+TCP/IP.
 
 **TCP/IP** è l'insieme di regole (un "protocollo", cioè un linguaggio comune
 condiviso) che permette a due computer di scambiarsi dati su una rete,
@@ -441,6 +468,11 @@ protocolli più "di alto livello" che userai spesso a parole, come HTTP.
 
 ## 2.10 HTTP e HTTPS: il protocollo del web
 
+TCP/IP garantisce che i dati arrivino a destinazione, ma non dice nulla su
+**come** un browser deve chiedere una pagina web a un server: per quello
+serve un protocollo di livello più alto, costruito sopra TCP/IP, che è
+HTTP.
+
 **HTTP** (HyperText Transfer Protocol) è il protocollo usato per
 trasferire pagine web e dati tra un **client** (es. il tuo browser) e un
 **server** (il computer che "ospita" il sito). È costruito sopra TCP/IP: se
@@ -482,38 +514,41 @@ la connessione è protetta con HTTPS.
 
 > **💡 Esempio pratico**
 >
-> Durante un test di sicurezza sulla piattaforma, viene segnalato che una
+> Durante un test di sicurezza su ShopFacile, viene segnalato che una
 > vecchia pagina interna è ancora raggiungibile in HTTP (senza cifratura).
-> Il team la corregge configurando un redirect automatico verso la versione
-> HTTPS, così chi provasse ad accedere alla versione non sicura viene
-> reindirizzato automaticamente a quella protetta.
+> Giulia, sempre attenta alla qualità, la corregge configurando un
+> redirect automatico verso la versione HTTPS, così chi provasse ad
+> accedere alla versione non sicura viene reindirizzato automaticamente a
+> quella protetta.
 
 ---
 
 ## 2.11 DNS: la rubrica telefonica di internet
 
-Abbiamo detto che ogni computer/server su internet ha un **indirizzo IP**
-(es. `142.250.180.4`). Ma tu, per visitare un sito, scrivi un nome facile da
-ricordare come `www.google.com`, non una sequenza di numeri. Chi fa la
-traduzione da nome a indirizzo IP?
+Nella sezione precedente abbiamo visto che HTTP fa viaggiare richiesta e
+risposta tra client e server, ma un server, come ogni computer su internet,
+è identificato da un **indirizzo IP** (es. `142.250.180.4`). Ma un cliente,
+per visitare il sito, digita nel browser un nome facile da ricordare come
+`www.shopfacile.it`, non una sequenza di numeri. Chi fa la traduzione da
+nome a indirizzo IP?
 
 Il **DNS** (Domain Name System)!
 
 ### Analogia: la rubrica telefonica
 
-Il DNS funziona come una **rubrica telefonica**: tu vuoi chiamare "Mario",
+Il DNS funziona come una **rubrica telefonica**: tu vuoi chiamare "Luca",
 non ricordi il suo numero di telefono a memoria, quindi consulti la rubrica,
-trovi il nome "Mario" e la rubrica ti restituisce il numero corretto da
-chiamare. Il DNS fa esattamente questo per internet: tu chiedi
-`www.google.com`, il DNS ti risponde con l'indirizzo IP del server giusto, e
-solo dopo il tuo browser può effettivamente contattarlo.
+trovi il nome "Luca" e la rubrica ti restituisce il numero corretto da
+chiamare. Il DNS fa esattamente questo per internet: un cliente chiede
+`www.shopfacile.it`, il DNS gli risponde con l'indirizzo IP del server
+giusto, e solo dopo il suo browser può effettivamente contattarlo.
 
 ```mermaid
 sequenceDiagram
     participant U as Utente (browser)
     participant D as Server DNS
-    participant S as Server del sito
-    U->>D: A che indirizzo IP corrisponde "www.esempio.com"?
+    participant S as Server di ShopFacile
+    U->>D: A che indirizzo IP corrisponde "www.shopfacile.it"?
     D->>U: È 93.184.216.34
     U->>S: Richiesta HTTP a 93.184.216.34
     S->>U: Risposta con il contenuto della pagina
@@ -524,15 +559,19 @@ che vogliamo visitare: praticamente impossibile.
 
 > **💡 Esempio pratico**
 >
-> Dopo aver spostato l'applicazione su un nuovo server, il team aggiorna il
+> Dopo aver spostato ShopFacile su un nuovo server, il team aggiorna il
 > record DNS del progetto perché punti al nuovo indirizzo IP. Per alcune
-> ore, però, alcuni utenti continuano a raggiungere il vecchio server: è un
-> fenomeno normale, chiamato "propagazione DNS", perché la modifica impiega
-> un po' di tempo a diffondersi su tutti i server DNS del mondo.
+> ore, però, alcuni clienti continuano a raggiungere il vecchio server: è
+> un fenomeno normale, chiamato "propagazione DNS", perché la modifica
+> impiega un po' di tempo a diffondersi su tutti i server DNS del mondo.
 
 ---
 
 ## 2.12 API: come i software si parlano tra loro
+
+Finora abbiamo visto come un client raggiunge un server (DNS, HTTP). Ma una
+volta raggiunto, come chiede esattamente "dammi la lista prodotti" o
+"registra questo ordine" in un linguaggio che il server capisca? Con le API.
 
 **API** sta per **Application Programming Interface** ("interfaccia di
 programmazione delle applicazioni"). È il modo in cui un software espone
@@ -556,9 +595,9 @@ In termini informatici:
 - un'app di meteo sul tuo telefono non "misura" la temperatura da sola: fa
   una **richiesta API** a un servizio esterno che gestisce i dati
   meteorologici, e riceve una **risposta** con i dati richiesti;
-- un sito di e-commerce può usare le API di un servizio di pagamento per
-  gestire il pagamento con carta, senza dover costruire da zero un intero
-  sistema di pagamenti.
+- ShopFacile, al momento del pagamento, usa le API di un servizio di
+  pagamento esterno per gestire il pagamento con carta, senza dover
+  costruire da zero un intero sistema di pagamenti.
 
 ```mermaid
 graph LR
@@ -572,16 +611,20 @@ di tanti "pezzi" (servizi) che comunicano tra loro tramite API.
 
 > **💡 Esempio pratico**
 >
-> Il team deve aggiungere l'invio di notifiche via SMS agli utenti della
-> piattaforma. Invece di costruire da zero un intero sistema per inviare
-> SMS (server, connessioni con gli operatori telefonici, ecc.), il team
-> integra le API REST di un servizio esterno specializzato: basta inviare
-> una richiesta con numero e testo del messaggio, e il servizio esterno si
-> occupa di tutto il resto.
+> Sara chiede al team di aggiungere l'invio di notifiche via SMS ai clienti
+> di ShopFacile quando un ordine viene spedito. Invece di costruire da zero
+> un intero sistema per inviare SMS (server, connessioni con gli operatori
+> telefonici, ecc.), Marco integra le API REST di un servizio esterno
+> specializzato: basta inviare una richiesta con numero e testo del
+> messaggio, e il servizio esterno si occupa di tutto il resto.
 
 ---
 
 ## 2.13 REST: uno stile comune per costruire API
+
+Le API, come abbiamo appena visto, permettono a due software di parlarsi.
+Ma perché tutti riescano a capirsi senza reinventare ogni volta le regole
+del "dialogo", serve un modo condiviso di costruirle: lo stile REST.
 
 **REST** (REpresentational State Transfer) non è una tecnologia specifica,
 ma uno **stile**, un insieme di convenzioni condivise su come costruire le
@@ -603,11 +646,11 @@ standard per indicare l'azione da compiere su quella risorsa:
 | `PUT` / `PATCH` | Modifica un elemento esistente | "Aggiorna l'indirizzo di spedizione dell'ordine 42" |
 | `DELETE` | Elimina un elemento | "Cancella l'ordine 42" |
 
-Esempio pratico: un'API REST per gestire ordini potrebbe avere un indirizzo
-come:
+Esempio pratico: l'API REST che ShopFacile usa per gestire gli ordini
+potrebbe avere un indirizzo come:
 
 ```
-GET https://api.esempio.com/ordini/42
+GET https://api.shopfacile.it/ordini/42
 ```
 
 per "recuperare i dettagli dell'ordine con id 42".
@@ -619,6 +662,11 @@ importante che il concetto ti sia chiaro.
 ---
 
 ## 2.14 JSON e XML: i formati per scambiarsi dati
+
+Abbiamo visto come un'API REST identifica una risorsa come "l'ordine 42" e
+come intervenirci (GET, POST...). Ma in che formato viaggiano concretamente
+i dati di quell'ordine dentro la richiesta e la risposta? Qui entrano in
+gioco JSON e XML.
 
 Quando due software si scambiano dati (ad esempio tramite un'API), devono
 usare un **formato comune**, condiviso, che entrambi sappiano "leggere". I
@@ -678,6 +726,10 @@ in integrazioni con sistemi più datati.
 
 ## 2.15 Database relazionali e SQL
 
+Il JSON dell'ordine visto poco fa deve comunque essere salvato da qualche
+parte in modo permanente e interrogabile — non basta scambiarlo in una
+risposta API, va anche conservato. È qui che entrano in gioco i database.
+
 Un **database** (base di dati) è un sistema organizzato per **salvare,
 organizzare e recuperare grandi quantità di dati** in modo efficiente e
 strutturato — molto più potente e affidabile di un semplice file Excel per
@@ -701,7 +753,7 @@ Le tabelle possono essere **collegate** tra loro: ad esempio, la tabella
 ordine" — questa è la "relazione" da cui prende il nome "database
 relazionale".
 
-Esempio, tabella `Clienti`:
+Esempio, tabella `Clienti` del database di ShopFacile:
 
 | id | nome | email |
 |----|------|-------|
@@ -745,6 +797,11 @@ Esempi di database relazionali diffusi: **Microsoft SQL Server**,
 
 ## 2.16 Database NoSQL
 
+Le tabelle rigide di SQL funzionano benissimo per dati regolari come clienti
+e ordini. Ma cosa succede quando i dati da salvare hanno una struttura molto
+variabile, come il catalogo prodotti di ShopFacile? Qui SQL comincia a
+scricchiolare, ed entrano in gioco i database NoSQL.
+
 I database **NoSQL** ("Not Only SQL") sono un'alternativa ai database
 relazionali, pensati per casi in cui la rigida struttura a tabelle non è la
 scelta migliore.
@@ -752,7 +809,7 @@ scelta migliore.
 ### Perché esistono
 
 Immagina di dover salvare dati molto **variabili** nella struttura (ad
-esempio: prodotti di un e-commerce, dove ogni categoria di prodotto ha
+esempio: i prodotti nel catalogo di ShopFacile, dove ogni categoria ha
 attributi diversi — un libro ha "autore" e "numero pagine", uno smartphone ha
 "memoria" e "colore"). Costringere questi dati in tabelle rigide e uniformi
 sarebbe scomodo. I database NoSQL permettono maggiore **flessibilità**.
@@ -807,6 +864,10 @@ fasi di progettazione di un nuovo servizio.
 
 ## 2.17 Virtual Machine: un computer dentro un computer
 
+Fin qui abbiamo parlato di dati (SQL, NoSQL): ora torniamo all'infrastruttura
+che fa girare ShopFacile. Un modo classico per ricavare più "computer"
+indipendenti da un solo server fisico è la macchina virtuale.
+
 Una **Virtual Machine** (VM, macchina virtuale) è un software che **simula
 un computer completo** dentro un altro computer fisico. Dal punto di vista di
 chi la usa, si comporta esattamente come un computer vero e proprio: ha il
@@ -842,16 +903,21 @@ graph TD
 
 > **💡 Esempio pratico**
 >
-> Il team di infrastruttura deve testare un aggiornamento importante prima
-> di applicarlo ai server di produzione. Crea una nuova VM di test partendo
+> Marco deve testare un aggiornamento importante prima di applicarlo ai
+> server di produzione di ShopFacile. Crea una nuova VM di test partendo
 > da un'immagine standard identica a quella di produzione, prova
-> l'aggiornamento lì sopra senza alcun rischio per gli utenti reali, e solo
+> l'aggiornamento lì sopra senza alcun rischio per i clienti reali, e solo
 > dopo aver verificato che tutto funziona procede con l'aggiornamento vero
 > e proprio.
 
 ---
 
 ## 2.18 Container: più leggeri di una VM
+
+Le VM funzionano, ma portare con sé un intero sistema operativo per ogni
+appartamento del "condominio" ha un costo in termini di peso e velocità.
+Esiste un'alternativa più leggera, molto usata oggi anche per ShopFacile: i
+container.
 
 Un **container** è un altro modo per "isolare" un'applicazione e le sue
 dipendenze, ma in modo molto più **leggero** rispetto a una VM: invece di
@@ -912,9 +978,9 @@ avviare (secondi, invece di minuti) e più efficienti in termini di risorse.
 
 > **💡 Esempio pratico**
 >
-> Un utente segnala un bug sull'applicazione in produzione. Lo sviluppatore,
-> invece di provare a indovinare cosa non funzioni, lancia in locale sul
-> proprio computer lo stesso identico container usato in produzione (stesse
+> Un cliente segnala un bug su ShopFacile in produzione. Ahmed, invece di
+> provare a indovinare cosa non funzioni, lancia in locale sul proprio
+> computer lo stesso identico container usato in produzione (stesse
 > librerie, stessa versione del linguaggio, stessa configurazione) e
 > riesce a riprodurre il problema in pochi minuti, con la certezza di
 > lavorare in un ambiente identico a quello reale.
@@ -922,6 +988,10 @@ avviare (secondi, invece di minuti) e più efficienti in termini di risorse.
 ---
 
 ## 2.19 Docker: lo strumento più diffuso per i container
+
+Abbiamo appena descritto cosa sono i container, ma "chi" li crea e li fa
+girare concretamente? Nella grande maggioranza dei casi, incluso il progetto
+ShopFacile, lo strumento usato è Docker.
 
 **Docker** è oggi lo strumento più popolare e diffuso per creare, distribuire
 ed eseguire container. È diventato talmente centrale nel mondo dello sviluppo
@@ -956,8 +1026,8 @@ registry": ora sai cosa significano a grandi linee.
 
 > **💡 Esempio pratico**
 >
-> Il team scrive un Dockerfile che parte da un'immagine base con il
-> linguaggio di programmazione già installato, copia il codice
+> Marco scrive un Dockerfile per ShopFacile che parte da un'immagine base con
+> il linguaggio di programmazione già installato, copia il codice
 > dell'applicazione e installa le librerie necessarie. La pipeline di
 > CI/CD (ne parleremo più avanti nel corso) usa questo Dockerfile per
 > costruire automaticamente una nuova immagine ogni volta che il codice
@@ -967,6 +1037,10 @@ registry": ora sai cosa significano a grandi linee.
 ---
 
 ## 2.20 Kubernetes: l'orchestratore di container
+
+Docker ti permette di creare e avviare un singolo container, ma ShopFacile
+in produzione non ne ha uno solo: ne ha decine, distribuiti su più macchine.
+Gestirli a mano diventa presto impossibile, e qui entra in gioco Kubernetes.
 
 Quando un'applicazione è composta da tanti container (magari decine o
 centinaia, distribuiti su tante macchine diverse per gestire tanti utenti
@@ -1026,8 +1100,8 @@ complessità di certe attività.
 
 > **💡 Esempio pratico**
 >
-> Durante un evento con un picco di utenti sulla piattaforma (ad esempio una
-> promozione con molto traffico), Kubernetes rileva l'aumento del carico e
+> Durante il Black Friday, con un picco di clienti su ShopFacile per una
+> promozione con molto traffico, Kubernetes rileva l'aumento del carico e
 > scala automaticamente da 3 a 10 container della stessa applicazione, per
 > distribuire meglio le richieste. Passato il picco, riduce di nuovo il
 > numero di container a 3, risparmiando risorse — tutto senza che nessuno

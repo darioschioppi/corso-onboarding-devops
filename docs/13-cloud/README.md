@@ -37,10 +37,13 @@ Immagina di dover organizzare una cena per 50 persone. Hai due opzioni:
    attrezzature, e quando hai finito non devi più pensarci.
 
 Per decenni, le aziende che avevano bisogno di far girare un software hanno
-fatto la scelta (1): compravano server fisici, li installavano in una stanza
-climatizzata (la "sala server"), pagavano tecnici per manutenerli, e se il
-software cresceva dovevano comprare altri server. Se il software calava di
-utilizzo, quei server restavano lì, comprati e pagati, a fare poco.
+fatto la scelta (1) — ed è esattamente quello che ha fatto per anni
+**ShopFacile**, la piattaforma di e-commerce (catalogo prodotti, carrello,
+ordini, pagamenti) che useremo come filo conduttore di questa sezione:
+compravano server fisici, li installavano in una stanza climatizzata (la
+"sala server"), pagavano tecnici per manutenerli, e se il software cresceva
+dovevano comprare altri server. Se il software calava di utilizzo, quei
+server restavano lì, comprati e pagati, a fare poco.
 
 Il **cloud computing** è la scelta (2) applicata all'informatica: invece di
 possedere e gestire tu i server fisici, **usi via internet i server e le
@@ -53,11 +56,11 @@ Amazon o Google), pagando solo per quello che usi e quando lo usi.
 > arredato**: entri, usi quello che c'è, e quando ti serve una stanza in più
 > la aggiungi (o la togli) senza dover ristrutturare un edificio.
 
-In pratica, quando un'azienda "mette il software sul cloud" significa che il
-codice, i database e i file non girano più su un server fisico di sua
-proprietà dentro il suo ufficio, ma su server che appartengono a un provider
-cloud, distribuiti in enormi data center in giro per il mondo, ai quali si
-accede via internet.
+In pratica, quando ShopFacile "mette il software sul cloud" significa che il
+codice, il database degli ordini e i file (immagini dei prodotti, fatture)
+non girano più su un server fisico di proprietà dell'azienda dentro il suo
+ufficio, ma su server che appartengono a un provider cloud, distribuiti in
+enormi data center in giro per il mondo, ai quali si accede via internet.
 
 Questo cambia radicalmente il modo di lavorare:
 
@@ -67,11 +70,22 @@ Questo cambia radicalmente il modo di lavorare:
   sostituire un alimentatore): è il provider che ci pensa;
 - si paga in base al consumo, non un costo fisso indipendentemente dall'uso.
 
+> **Esempio pratico**: Marco, che in ShopFacile si occupa spesso di
+> infrastruttura, guida la migrazione: il vecchio server fisico che ospitava
+> il catalogo prodotti e il database degli ordini viene spento, e lo stesso
+> software torna a girare — senza essere riscritto — su risorse affittate da
+> un provider cloud. Il giorno dei saldi, quando il traffico su ShopFacile
+> quadruplica, il team non deve più sperare che il server fisico regga:
+> basta aggiungere risorse a richiesta e poi rilasciarle.
+
 ---
 
 ## 13.2 I tre modelli principali: IaaS, PaaS, SaaS
 
-Non tutto il cloud è uguale: quando "affitti" qualcosa dal cloud, puoi
+Migrare ShopFacile sul cloud non è stata una scelta "tutto o niente": Marco
+ha dovuto decidere, pezzo per pezzo dell'infrastruttura, **quanta
+responsabilità di gestione lasciare al provider e quanta tenersi**. Non
+tutto il cloud è uguale: quando "affitti" qualcosa dal cloud, puoi
 affittare **più o meno responsabilità**. Il modo più semplice per capirlo è
 pensare a come si può abitare in un posto: puoi comprare un terreno e
 costruire tu la casa, puoi affittare un appartamento arredato, oppure puoi
@@ -101,17 +115,23 @@ Chi usa IaaS: chi ha bisogno di massimo controllo e flessibilità, o deve
 migrare software esistente pensato per girare su server "tradizionali" senza
 riscriverlo.
 
-> **Esempio pratico**: il team deve spostare un vecchio applicativo
-> gestionale, pensato per girare su un server Windows in ufficio, senza
-> riscriverlo. La soluzione è creare una macchina virtuale IaaS: si installa
-> lo stesso sistema operativo, si copiano gli stessi file, si configurano le
-> stesse porte di rete. Non cambia una riga di codice. Il vantaggio non è
-> "meno lavoro da fare" ma "niente hardware da comprare e mantenere": se la
-> macchina virtuale si rivela sottodimensionata, in pochi minuti il team ne
-> aumenta la potenza (CPU, RAM) dal pannello di controllo del provider,
-> invece di aspettare settimane per un nuovo server fisico.
+> **Esempio pratico**: Marco deve spostare sul cloud il vecchio motore di
+> generazione delle fatture di ShopFacile, pensato per girare su un server
+> Windows in ufficio, senza riscriverlo. La soluzione è creare una macchina
+> virtuale IaaS: si installa lo stesso sistema operativo, si copiano gli
+> stessi file, si configurano le stesse porte di rete. Non cambia una riga
+> di codice. Il vantaggio non è "meno lavoro da fare" ma "niente hardware da
+> comprare e mantenere": se la macchina virtuale si rivela sottodimensionata
+> durante un picco di ordini, in pochi minuti Marco ne aumenta la potenza
+> (CPU, RAM) dal pannello di controllo del provider, invece di aspettare
+> settimane per un nuovo server fisico.
 
 ### 13.2.2 PaaS — Platform as Service
+
+Se con la fattura Marco ha scelto di portarsi dietro anche il sistema
+operativo da gestire, per il catalogo prodotti di ShopFacile — la parte
+dell'applicazione che cambia più spesso — il team preferisce liberarsi
+anche di quel livello: entra in scena il PaaS.
 
 **PaaS** significa "piattaforma come servizio". Il provider ti affitta anche
 **la piattaforma** su cui far girare il software: sistema operativo,
@@ -134,19 +154,23 @@ Chi usa PaaS: la maggior parte dei team che sviluppano applicazioni moderne,
 perché permette di concentrarsi sul codice senza perdere tempo a gestire
 server e sistemi operativi.
 
-> **Esempio pratico**: un developer del team finisce di scrivere una nuova
-> funzionalità per l'applicazione web del progetto. Con un servizio PaaS,
-> pubblica il codice (spesso con un comando o con la pipeline vista nella
-> sezione 11) e in pochi minuti la nuova versione è online, raggiungibile via
-> browser, senza che nessuno debba configurare un sistema operativo, aprire
-> porte di rete o installare un runtime a mano. In parallelo, i dati
-> dell'applicazione vivono in un database gestito: nessuno del team deve
-> occuparsi di installare il motore del database, programmare i backup
-> notturni o applicare le patch di sicurezza — il provider lo fa in
+> **Esempio pratico**: Ahmed finisce di scrivere una nuova funzionalità per
+> il catalogo prodotti di ShopFacile (i filtri di ricerca per categoria). Con
+> un servizio PaaS, pubblica il codice (spesso con un comando o con la
+> pipeline vista nella sezione 11) e in pochi minuti la nuova versione è
+> online, raggiungibile via browser, senza che nessuno debba configurare un
+> sistema operativo, aprire porte di rete o installare un runtime a mano. In
+> parallelo, i dati del catalogo vivono in un database gestito: nessuno del
+> team deve occuparsi di installare il motore del database, programmare i
+> backup notturni o applicare le patch di sicurezza — il provider lo fa in
 > automatico, e se qualcosa va storto è possibile ripristinare un backup
 > recente con pochi clic.
 
 ### 13.2.3 SaaS — Software as Service
+
+Con IaaS e PaaS, il team di ShopFacile ha comunque scritto e distribuito
+codice proprio. C'è però un terzo livello, ancora più delegato, che il team
+usa ogni giorno senza nemmeno pensarci: quello del software già pronto.
 
 **SaaS** significa "software come servizio". Qui non affitti infrastruttura
 né piattaforma: **usi direttamente un software già finito**, di solito via
@@ -170,20 +194,24 @@ Chi usa SaaS: chiunque abbia bisogno di una funzionalità (email, CRM,
 gestione progetti) senza voler sviluppare o mantenere il software che la
 fornisce.
 
-> **Esempio pratico**: il team ha bisogno di gestire il backlog, le pipeline
-> e i repository del progetto. Nessuno "installa" Azure DevOps su un server:
-> ci si registra, si apre il browser, si accede con le proprie credenziali e
-> il servizio è già lì, pronto all'uso e aggiornato dal provider senza che il
-> team debba fare nulla. Lo stesso vale per la posta elettronica aziendale o
-> per lo strumento di videochiamata usato nei daily: sono tutti software
-> "già finiti", usati così come sono, senza che qualcuno in azienda ne debba
-> gestire l'infrastruttura sottostante.
+> **Esempio pratico**: il team di ShopFacile ha bisogno di gestire il
+> backlog, le pipeline e i repository del progetto. Nessuno "installa"
+> Azure DevOps su un server: Sara e Luca si registrano, aprono il browser,
+> accedono con le proprie credenziali e il servizio è già lì, pronto all'uso
+> e aggiornato dal provider senza che il team debba fare nulla. Lo stesso
+> vale per la posta elettronica aziendale o per lo strumento di
+> videochiamata usato nei daily: sono tutti software "già finiti", usati
+> così come sono, senza che qualcuno in ShopFacile ne debba gestire
+> l'infrastruttura sottostante.
 
 ---
 
 ## 13.3 Confronto: chi gestisce cosa
 
-La differenza chiave tra IaaS, PaaS e SaaS è **quanta responsabilità di
+Ora che Marco ha usato tutti e tre i livelli su pezzi diversi
+dell'infrastruttura di ShopFacile, conviene vedere in un colpo d'occhio come
+si posizionano l'uno rispetto all'altro. La differenza chiave tra IaaS, PaaS
+e SaaS è **quanta responsabilità di
 gestione resta al cliente e quanta passa al provider cloud**. Più si sale da
 IaaS verso SaaS, meno cose deve gestire il cliente (ma meno controllo ha).
 
@@ -246,11 +274,13 @@ flowchart LR
 
 ## 13.4 Azure: panoramica generale
 
-**Microsoft Azure** è la piattaforma cloud di Microsoft, ed è quella che
-incontrerai più spesso in questo corso e nel lavoro quotidiano, dato che il
-team usa già Azure DevOps (sezione 10). Azure offre centinaia di servizi;
-qui vediamo solo i concetti principali, giusto per riconoscerli quando li
-sentirai nominare.
+Visti i tre modelli in astratto, è utile sapere anche su quale provider
+concreto ShopFacile li ha effettivamente implementati. **Microsoft Azure** è
+la piattaforma cloud di Microsoft, ed è quella che incontrerai più spesso in
+questo corso e nel lavoro quotidiano, dato che il team usa già Azure DevOps
+(sezione 10) e vi ha migrato la propria infrastruttura. Azure offre
+centinaia di servizi; qui vediamo solo i concetti principali, giusto per
+riconoscerli quando li sentirai nominare.
 
 - **Macchine virtuali (Virtual Machines)** — il servizio IaaS di base: un
   server virtuale su cui installare qualsiasi sistema operativo e software,
@@ -277,10 +307,13 @@ Service" o "i dati sono su Blob Storage" saprai di cosa si sta parlando.
 
 ## 13.5 AWS: la principale alternativa
 
-**Amazon Web Services (AWS)** è il principale concorrente di Azure (ed è
-storicamente il pioniere del cloud computing su larga scala). Alcuni
-progetti o clienti usano AWS invece di (o insieme ad) Azure, quindi è utile
-riconoscere i nomi equivalenti:
+ShopFacile ha scelto Azure, ma non è l'unico provider possibile: se un giorno
+il progetto dovesse integrarsi con un partner che usa un altro fornitore, o
+valutare un cambio, è utile riconoscere subito i nomi equivalenti. **Amazon
+Web Services (AWS)** è il principale concorrente di Azure (ed è storicamente
+il pioniere del cloud computing su larga scala). Alcuni progetti o clienti
+usano AWS invece di (o insieme ad) Azure, quindi è utile riconoscere i nomi
+equivalenti:
 
 | Concetto                     | Azure               | AWS                  |
 |-------------------------------|---------------------|----------------------|
@@ -301,7 +334,9 @@ semplice.
 
 ## 13.6 Scalabilità: verticale vs orizzontale
 
-Uno dei grandi vantaggi del cloud è la **scalabilità**: la capacità di
+Che si scelga Azure o AWS, il motivo per cui Marco ha spinto per il cloud fin
+dall'inizio ha un nome preciso: la scalabilità. Uno dei grandi vantaggi del
+cloud è la **scalabilità**: la capacità di
 adattare le risorse informatiche disponibili in base a quanto ne serve in un
 dato momento, in modo rapido.
 
@@ -331,15 +366,18 @@ flowchart TB
 
 Nel cloud, la scalabilità orizzontale è particolarmente potente perché si
 possono aggiungere (o togliere) macchine in pochi minuti, spesso in modo
-**automatico** in base al traffico reale (es. più macchine durante i saldi
-di un e-commerce, meno durante la notte). Questo sarebbe quasi impossibile
-con server fisici di proprietà, dove comprare un nuovo server richiede
-settimane.
+**automatico** in base al traffico reale — esattamente il caso di ShopFacile
+durante i saldi, con più macchine durante il picco e meno durante la notte.
+Questo sarebbe quasi impossibile con server fisici di proprietà, dove
+comprare un nuovo server richiede settimane.
 
 ---
 
 ## 13.7 Pay-as-you-go: paghi solo quello che usi
 
+Poter scalare su e giù in pochi minuti sarebbe un vantaggio a metà se si
+continuasse comunque a pagare come prima, a prescindere dall'uso: il pezzo
+che completa il quadro è il modo in cui il cloud fa pagare quelle risorse.
 Il modello di pagamento tipico del cloud si chiama **pay-as-you-go** ("paga
 in base a quanto usi"), ed è probabilmente il cambiamento più concreto
 rispetto al vecchio modo di gestire l'infrastruttura.
@@ -351,8 +389,9 @@ rispetto al vecchio modo di gestire l'infrastruttura.
 
 Nel cloud questo significa, per esempio, che se hai una macchina virtuale
 attiva 3 ore al giorno, paghi solo per quelle 3 ore (e non per le 24). Se il
-tuo sito ha un picco di traffico per una settimana e poi torna normale, puoi
-scalare su e poi tornare giù, pagando solo per il periodo di picco.
+sito di ShopFacile ha un picco di traffico per una settimana di saldi e poi
+torna normale, il team può scalare su e poi tornare giù, pagando solo per il
+periodo di picco.
 
 Questo modello è molto diverso dall'acquisto di un server fisico, dove il
 costo è quasi tutto "anticipato" (compri il server, che poi resta tuo per
@@ -362,6 +401,10 @@ anni, usato o no).
 
 ## 13.8 Regioni, data center e alta disponibilità
 
+Pagare solo per quello che si usa presuppone che ci sia sempre qualcosa da
+usare: se ShopFacile fosse ospitata in un solo data center e quello avesse un
+guasto, tutto il pay-as-you-go del mondo non servirebbe a nulla mentre il
+sito è offline. È qui che entrano in gioco regioni e data center multipli.
 I provider cloud non hanno un solo, enorme data center: ne hanno **decine**,
 sparsi in tutto il mondo, organizzati in **regioni** (per esempio "Europa
 occidentale", "Stati Uniti orientali", "Asia sud-orientale"). Ogni regione
@@ -371,7 +414,9 @@ Questo ha due vantaggi principali:
 
 - **Vicinanza geografica**: puoi far girare il tuo software in una regione
   vicina ai tuoi utenti, così le pagine si caricano più velocemente (meno
-  distanza = meno tempo di viaggio dei dati).
+  distanza = meno tempo di viaggio dei dati) — per questo ShopFacile, che
+  vende soprattutto in Italia, gira su una regione Azure in Europa
+  occidentale.
 - **Alta disponibilità**: se un data center ha un problema (es. un guasto
   elettrico), il software può continuare a funzionare perché è distribuito
   su più data center o più regioni. È come avere due farmacie in città
@@ -384,6 +429,10 @@ cloud invece di un singolo server fisico in un singolo posto — meno rischio
 di interruzioni del servizio.
 
 ---
+
+Con questo, il percorso di ShopFacile dal server in ufficio a un'infrastruttura
+cloud distribuita su più data center è completo: riassumiamo i concetti
+principali visti lungo la strada.
 
 ## 13.9 Riepilogo: cosa ti serve ricordare
 

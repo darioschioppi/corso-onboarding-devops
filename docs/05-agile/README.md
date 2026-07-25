@@ -8,6 +8,8 @@ Nelle sezioni precedenti hai visto come nasce un software (requisiti, analisi, s
 
 Si chiama **Agile**, e se lavori (o lavorerai) in un team di sviluppo software, è quasi certo che lo sentirai nominare fin dal primo giorno: "il nostro team lavora in modo agile", "facciamo Scrum", "usiamo una board Kanban". Questa sezione ti dà le basi per capire da dove viene questo termine, cosa significa davvero, e perché ha cambiato il modo in cui si costruisce il software negli ultimi 20 anni.
 
+Per rendere i concetti meno astratti, in questa sezione e nelle prossime due (Scrum e Kanban) useremo sempre lo stesso progetto di riferimento: **ShopFacile**, una piattaforma e-commerce (catalogo prodotti, carrello, ordini, pagamenti, sconti e promozioni) sviluppata da un piccolo team interno. Il team è composto da **Marco** e **Giulia** (developer, lei molto attenta a test e qualità), **Ahmed** (developer junior, in crescita), **Sara** (Product Owner, si occupa di business e priorità) e **Luca** (Scrum Master, facilita il lavoro del team). Li ritroverai in quasi tutti gli esempi pratici che seguono.
+
 ## 🎯 Obiettivi della sezione
 
 Alla fine di questa sezione saprai:
@@ -43,6 +45,8 @@ flowchart TB
 
 > 💡 **Analogia**: il Waterfall è come costruire una casa seguendo un progetto architettonico immutabile, firmato e bloccato fin dal primo giorno. Solo alla fine dei lavori, dopo mesi o anni, la famiglia entra per la prima volta nella casa finita — e solo in quel momento scopre se le misure della cucina erano davvero quelle giuste per le sue esigenze.
 
+Immagina se il team di ShopFacile avesse dovuto raccogliere e bloccare *tutti* i requisiti su catalogo, carrello e pagamenti prima di scrivere una sola riga di codice: qualsiasi promozione lanciata da un concorrente nel frattempo avrebbe reso il progetto già in ritardo sul mercato ancora prima del rilascio.
+
 Il problema di questo approccio è diventato via via più evidente, soprattutto a partire dagli anni '90, quando il software ha iniziato a diventare sempre più complesso e i mercati sempre più rapidi a cambiare:
 
 - **Il cliente vede il risultato troppo tardi.** Se il progetto dura un anno, il cliente scopre il prodotto finito dopo un anno — e nel frattempo le sue esigenze possono essere cambiate, o si accorge che aveva descritto male ciò di cui aveva davvero bisogno.
@@ -51,7 +55,7 @@ Il problema di questo approccio è diventato via via più evidente, soprattutto 
 
 Negli anni '90 e nei primi anni 2000, diversi gruppi di sviluppatori (indipendenti tra loro) iniziarono a sperimentare approcci alternativi, più flessibili e incentrati sul consegnare valore al cliente in modo rapido e frequente, piuttosto che pianificare tutto in anticipo nei minimi dettagli. Nacquero così metodi con nomi come Scrum, Extreme Programming (XP), Crystal, e altri — tutti con filosofie simili ma pratiche diverse.
 
-Nel **febbraio 2001**, 17 di questi sviluppatori si incontrarono in una località di montagna (Snowbird, Utah, USA) per discutere cosa avessero in comune i loro approcci. Da quell'incontro nacque un documento breve e diretto: il **Manifesto per lo Sviluppo Agile di Software** (*Manifesto Agile*). Non era un metodo, non era una checklist di regole: era un insieme di **valori e principi condivisi**, un vero e proprio cambio di mentalità.
+Nel **febbraio 2001**, 17 di questi sviluppatori si incontrarono in una località di montagna (Snowbird, Utah, USA) per discutere cosa avessero in comune i loro approcci. Da quell'incontro nacque un documento breve e diretto: il **Manifesto per lo Sviluppo Agile di Software** (*Manifesto Agile*). Non era un metodo, non era una checklist di regole: era un insieme di **valori e principi condivisi**, un vero e proprio cambio di mentalità. Vediamo subito questi 4 valori nel concreto, applicandoli al team di ShopFacile che ci accompagnerà per il resto della sezione.
 
 ---
 
@@ -65,25 +69,25 @@ Il Manifesto Agile è composto, prima di tutto, da **4 valori**. Sono espressi c
 
 Non significa "i processi e gli strumenti non servono" — Git, Jira, le pipeline di CI/CD sono tutti strumenti utilissimi che vedrai in questo corso. Significa che uno strumento perfetto usato da un team che non comunica bene produce risultati peggiori di un team che comunica bene con strumenti semplici.
 
-**Esempio pratico**: se un problema di progetto emerge, un team con questo valore preferisce che due persone si parlino direttamente (anche solo con una videochiamata di 10 minuti) piuttosto che scambiarsi 15 email formali su un sistema di ticket, sperando che il messaggio arrivi comunque chiaro.
+**Esempio pratico**: quando il carrello di ShopFacile mostra un totale sbagliato dopo l'applicazione di un codice sconto, Marco e Giulia preferiscono chiarirsi con una videochiamata di 10 minuti piuttosto che scambiarsi 15 email formali su un sistema di ticket, sperando che il messaggio arrivi comunque chiaro.
 
 ### 2. Software funzionante, più che documentazione esaustiva
 
 Non significa "non scriviamo documentazione" — la documentazione utile (come questo stesso corso!) ha valore. Significa che l'obiettivo primario di un progetto software è **produrre qualcosa che funziona e che le persone possono usare**, non produrre migliaia di pagine di specifiche che nessuno leggerà mai o che diventeranno obsolete in due settimane.
 
-**Esempio pratico**: a metà di uno sprint, il team può scegliere di dedicare tempo a completare una funzionalità che il cliente può già provare, invece di scrivere un documento di 40 pagine che descrive nel dettaglio come funzionerà quella stessa funzionalità.
+**Esempio pratico**: a metà di uno sprint, il team di ShopFacile può scegliere di dedicare tempo a completare il flusso di checkout che Sara può già provare sul carrello, invece di scrivere un documento di 40 pagine che descrive nel dettaglio come funzionerà quel flusso.
 
 ### 3. Collaborazione con il cliente, più che negoziazione dei contratti
 
 Non significa "i contratti non servono" — restano necessari, soprattutto in ambito aziendale. Significa che il rapporto con il cliente non dovrebbe limitarsi a "firmiamo un contratto all'inizio e ci rivediamo alla consegna finale", ma dovrebbe essere una **collaborazione continua**, con feedback frequenti durante tutto il progetto.
 
-**Esempio pratico**: invece di consegnare il prodotto finito dopo 6 mesi e scoprire solo allora che "non era esattamente quello che intendevamo", il team mostra al cliente una versione parziale ma funzionante ogni 2 settimane, raccogliendo feedback che permettono di correggere la direzione strada per strada.
+**Esempio pratico**: invece di consegnare il modulo pagamenti di ShopFacile finito dopo 6 mesi e scoprire solo allora che "non era esattamente quello che intendevamo", il team mostra a Sara (e al cliente, tramite lei) una versione parziale ma funzionante del carrello ogni 2 settimane, raccogliendo feedback che permettono di correggere la direzione strada per strada.
 
 ### 4. Rispondere al cambiamento, più che seguire un piano
 
 Non significa "non pianifichiamo nulla" — pianificare resta fondamentale, e lo vedrai bene nella sezione sul Project Management. Significa che un piano fatto a inizio progetto non può prevedere tutto, e quando emergono nuove informazioni (il mercato cambia, il cliente capisce meglio cosa vuole, si scopre un vincolo tecnico imprevisto), è più intelligente **adattare il piano** che seguirlo alla lettera solo perché "era scritto così".
 
-**Esempio pratico**: durante lo sviluppo, un concorrente lancia una funzionalità che cambia le priorità del mercato. Un team agile può rivedere il proprio backlog (l'elenco delle attività da fare) e riorganizzare le priorità già alla prossima iterazione, invece di aspettare la fine di un piano annuale immodificabile.
+**Esempio pratico**: durante lo sviluppo, un concorrente lancia una funzionalità di sconti aggressivi che cambia le priorità del mercato. Sara può rivedere il backlog di ShopFacile (l'elenco delle attività da fare) e riorganizzare le priorità già alla prossima iterazione, invece di aspettare la fine di un piano annuale immodificabile.
 
 ```mermaid
 flowchart LR
@@ -99,13 +103,13 @@ flowchart LR
 
 ## 5.3 I 12 principi Agile: raggruppati per temi
 
-Oltre ai 4 valori, il Manifesto elenca **12 principi** più operativi. Non serve impararli a memoria uno per uno: è molto più utile raggrupparli per temi, perché in fondo raccontano poche idee ripetute con angolazioni diverse.
+I 4 valori che abbiamo appena visto restano un po' astratti se non si traducono in comportamenti concreti: è esattamente questo che fanno i **12 principi** più operativi elencati nel Manifesto. Non serve impararli a memoria uno per uno: è molto più utile raggrupparli per temi, perché in fondo raccontano poche idee ripetute con angolazioni diverse.
 
 ### Tema 1 — Soddisfazione del cliente al centro
 
 I principi Agile insistono sulla **consegna frequente** di valore reale al cliente, preferendo cicli di poche settimane piuttosto che consegne rare e lontane nel tempo. La priorità più alta è soddisfare il cliente attraverso consegne di valore continue e anticipate.
 
-**Esempio pratico**: un team che sviluppa un sito di prenotazioni non aspetta di avere "tutto il sito perfetto" per farlo vedere al cliente. Consegna prima la funzionalità di ricerca, poi quella di prenotazione, poi quella di pagamento — ogni pezzo utilizzabile e verificabile appena pronto.
+**Esempio pratico**: il team di ShopFacile non aspetta di avere "tutto il sito perfetto" per farlo vedere a Sara e al cliente. Consegna prima la funzionalità di ricerca prodotti, poi quella del carrello, poi quella dei pagamenti — ogni pezzo utilizzabile e verificabile appena pronto.
 
 ### Tema 2 — Collaborazione quotidiana tra le persone coinvolte
 
@@ -117,25 +121,25 @@ I principi sottolineano che le persone di business (chi rappresenta gli interess
 
 Un principio fondamentale afferma che il cambiamento dei requisiti va **accolto con favore**, anche a stadi avanzati dello sviluppo, perché i processi agili permettono di sfruttarlo a vantaggio del cliente, offrendo un vantaggio competitivo. Questo è un ribaltamento radicale rispetto alla mentalità Waterfall, dove il cambiamento era visto come un problema da evitare.
 
-**Esempio pratico**: se durante il progetto il cliente si rende conto che una funzionalità pianificata non serve più, e ne serve invece un'altra più urgente, un team agile riorganizza le priorità del proprio lavoro futuro senza dover "riaprire" un intero progetto formalmente chiuso.
+**Esempio pratico**: se durante il progetto il cliente si rende conto che una funzionalità pianificata non serve più, e ne serve invece un'altra più urgente (come i famosi sconti aggressivi del concorrente visti in 5.1), il team di ShopFacile riorganizza le priorità del proprio lavoro futuro senza dover "riaprire" un intero progetto formalmente chiuso.
 
 ### Tema 4 — Semplicità ed efficienza
 
 Un principio recita che "la semplicità — l'arte di massimizzare la quantità di lavoro non svolto — è essenziale". In altre parole: fare solo il lavoro necessario per raggiungere l'obiettivo, evitando di costruire funzionalità complesse "che potrebbero servire un giorno" ma che nessuno ha davvero richiesto.
 
-**Esempio pratico**: se un cliente chiede un modulo per esportare dati in PDF, un team con mentalità agile costruisce prima la funzione più semplice che risolve il problema, invece di progettare da subito un sistema di esportazione universale con 20 formati diversi che nessuno userà.
+**Esempio pratico**: se un cliente chiede a ShopFacile un modulo per esportare in PDF lo storico dei propri ordini, il team costruisce prima la funzione più semplice che risolve il problema, invece di progettare da subito un sistema di esportazione universale con 20 formati diversi che nessuno userà.
 
 ### Tema 5 — Team auto-organizzati e motivati
 
 I principi insistono sul costruire progetti attorno a **persone motivate**, dando loro l'ambiente e il supporto di cui hanno bisogno, e fidandosi che sapranno portare a termine il lavoro. Le architetture, i requisiti e i progetti migliori emergono da **team che si auto-organizzano**, cioè che decidono internamente come dividersi il lavoro, piuttosto che ricevere ogni compito imposto dall'alto nei minimi dettagli.
 
-**Esempio pratico**: invece che un Project Manager assegni manualmente ogni singolo task a ogni sviluppatore, il team stesso, durante la pianificazione dello sprint, decide chi si occuperà di cosa in base a competenze e disponibilità — il PM facilita il processo, non lo comanda dall'alto.
+**Esempio pratico**: invece che Luca assegni manualmente ogni singolo task a Marco, Giulia e Ahmed, il team stesso, durante la pianificazione dello sprint, decide chi si occuperà di cosa in base a competenze e disponibilità — Luca facilita il processo, non lo comanda dall'alto.
 
 ### Tema 6 — Miglioramento continuo
 
 Un ultimo tema, altrettanto importante: a intervalli regolari, il team deve **riflettere su come diventare più efficace**, per poi mettere in pratica quanto imparato. Questo principio è il seme di quella che nella sezione su Scrum chiamerai "retrospettiva": una pratica dedicata proprio a imparare dagli errori e dai successi, iterazione dopo iterazione.
 
-**Esempio pratico**: alla fine di ogni ciclo di lavoro (ad esempio ogni 2 settimane), il team si ferma 30-60 minuti per chiedersi: cosa è andato bene? Cosa possiamo migliorare? E prova concretamente a cambiare qualcosa nel ciclo successivo, senza aspettare la fine del progetto per correggere le proprie abitudini.
+**Esempio pratico**: alla fine di ogni sprint di ShopFacile (ad esempio ogni 2 settimane), Luca facilita una retrospettiva di 30-60 minuti in cui il team si chiede: cosa è andato bene? Cosa possiamo migliorare? Il team prova concretamente a cambiare qualcosa nel ciclo successivo, senza aspettare la fine del progetto per correggere le proprie abitudini.
 
 ```mermaid
 mindmap
@@ -161,7 +165,7 @@ mindmap
 
 ## 5.4 Il "mindset" Agile: più di un metodo, un modo di pensare
 
-Una delle cose più difficili da capire per chi arriva da fuori (te compreso, oggi) è che **Agile non è una checklist di regole da seguire**. È soprattutto un **mindset**, cioè un atteggiamento mentale che guida le decisioni quotidiane del team.
+Valori e principi sono scritti su carta, ma conoscerli a memoria non basta: quello che conta davvero è come si comportano le persone quando nessuno controlla la checklist. Una delle cose più difficili da capire per chi arriva da fuori (te compreso, oggi) è che **Agile non è una checklist di regole da seguire**. È soprattutto un **mindset**, cioè un atteggiamento mentale che guida le decisioni quotidiane del team.
 
 Cosa significa davvero avere un mindset agile, in pratica?
 
@@ -181,7 +185,7 @@ Un errore comune, anche in aziende che si definiscono "agili", è applicare le *
 
 ## 5.5 Waterfall vs Agile: il confronto visivo
 
-Riassumiamo visivamente la differenza principale tra i due approcci: il Waterfall procede in linea retta, fase dopo fase, con un unico rilascio alla fine; l'Agile procede per **cicli brevi e ripetuti** (spesso chiamati iterazioni o sprint), ognuno dei quali produce qualcosa di utilizzabile.
+Dopo aver visto valori, principi e mindset uno per uno, è utile fare un passo indietro e guardare il quadro d'insieme, confrontando direttamente il modello Agile con quello Waterfall visto nella sezione 5.1. Riassumiamo visivamente la differenza principale tra i due approcci: il Waterfall procede in linea retta, fase dopo fase, con un unico rilascio alla fine; l'Agile procede per **cicli brevi e ripetuti** (spesso chiamati iterazioni o sprint), ognuno dei quali produce qualcosa di utilizzabile.
 
 ```mermaid
 flowchart TB
@@ -225,7 +229,7 @@ Non significa che il Waterfall sia "sbagliato" in assoluto: in contesti dove i r
 
 ## 5.6 Dall'Agile ai framework concreti: Scrum e Kanban
 
-Un punto importante da chiarire: **Agile non è un metodo con regole precise da seguire passo passo**. È un insieme di valori e principi — quello che abbiamo visto finora. Per applicarlo concretamente nel lavoro di tutti i giorni, negli anni sono nati diversi **framework** (cornici operative, con ruoli, riti e artefatti specifici) che *implementano* la filosofia Agile in modo pratico.
+Sappiamo ora perché l'Agile è nato e cosa lo distingue dal Waterfall: resta da capire come il team di ShopFacile applica concretamente questi valori nel lavoro di ogni giorno. Un punto importante da chiarire prima di procedere: **Agile non è un metodo con regole precise da seguire passo passo**. È un insieme di valori e principi — quello che abbiamo visto finora. Per applicarlo concretamente nel lavoro di tutti i giorni, negli anni sono nati diversi **framework** (cornici operative, con ruoli, riti e artefatti specifici) che *implementano* la filosofia Agile in modo pratico.
 
 I due framework più diffusi nel mondo dello sviluppo software — e quelli che approfondirai nelle prossime due sezioni di questo corso — sono:
 

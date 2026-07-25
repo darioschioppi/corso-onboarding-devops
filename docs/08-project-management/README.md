@@ -22,6 +22,13 @@ con la consapevolezza che il piano cambierà. Il ruolo del Project Manager
 Manager) è più simile a un **navigatore che aggiorna la rotta ogni giorno**
 che a un ingegnere che disegna un progetto immutabile su carta.
 
+Anche in questa sezione useremo come filo conduttore il team di
+**ShopFacile**, la piattaforma e-commerce che hai già incontrato: **Sara**
+(Product Owner) sarà la voce del business tra gli stakeholder, **Luca**
+(Scrum Master) seguirà da vicino processo e rischi — RAID Log, RACI,
+monitoraggio — mentre **Marco**, **Giulia** e **Ahmed**, il team di
+sviluppo, daranno concretezza agli esempi di KPI e reportistica.
+
 ## 🎯 Obiettivi della sezione
 
 Alla fine di questa sezione saprai:
@@ -100,18 +107,22 @@ quadrantChart
     Ufficio legale: [0.2, 0.6]
 ```
 
-**Esempio pratico**: nel progetto per una nuova funzionalità di pagamento
-online, il cliente ha alto potere e alto interesse (va coinvolto attivamente
-in ogni decisione importante); il team di sicurezza interno ha alto potere
-ma interesse più episodico (va coinvolto nei momenti critici, come la
-validazione prima del rilascio in produzione); gli utenti finali hanno alto
-interesse ma poco potere diretto sulle decisioni (vanno rappresentati
+**Esempio pratico**: nel progetto ShopFacile per una nuova funzionalità di
+pagamento online, il cliente/committente ha alto potere e alto interesse
+(va coinvolto attivamente in ogni decisione importante) — nella pratica di
+ShopFacile è **Sara**, la Product Owner, a rappresentare questa voce del
+business nelle decisioni quotidiane; il team di sicurezza interno ha alto
+potere ma interesse più episodico (va coinvolto nei momenti critici, come
+la validazione prima del rilascio in produzione); gli utenti finali hanno
+alto interesse ma poco potere diretto sulle decisioni (vanno rappresentati
 tramite ricerche utente, feedback, test di usabilità).
 
 Perché questo conta per un Junior Project Manager? Perché la causa più
 comune di problemi in un progetto non è "il codice non funziona", ma
 **qualcuno importante non è stato informato o coinvolto al momento giusto**.
-Mappare gli stakeholder all'inizio ti evita sorprese a metà progetto.
+Mappare gli stakeholder all'inizio ti evita sorprese a metà progetto — ma
+sapere *chi* coinvolgere non basta se non hai anche un posto dove tracciare
+*cosa* può andare storto: è il compito del RAID Log, che vediamo subito.
 
 ---
 
@@ -167,17 +178,20 @@ flowchart LR
 ```
 
 **Esempio pratico**: un estratto reale (semplificato) di RAID Log a metà
-dello Sprint 6 di un progetto di e-commerce, così come potrebbe apparire
-in una board condivisa con il team:
+dello Sprint 6 di ShopFacile, così come potrebbe apparire in una board
+condivisa con il team. In ShopFacile non esiste un Project Manager
+dedicato: le responsabilità di "Tech Lead" e "Project Manager" viste in
+tabella sono spesso portate avanti da **Luca**, insieme al team, accanto
+al suo ruolo di Scrum Master:
 
 | ID | Categoria | Descrizione | Responsabile | Impatto (1-5) | Stato | Aperto il |
 |---|---|---|---|---|---|---|
-| R-12 | Risk | Il fornitore di hosting ha comunicato una finestra di manutenzione non pianificata nella settimana del rilascio | Tech Lead | 4 | Aperto | 03/06 |
-| R-13 | Risk | Se non testiamo il carico prima del Black Friday, rischio di rallentamenti sotto picco di traffico | QA Lead | 5 | In mitigazione | 05/06 |
-| A-07 | Assumption | Stiamo assumendo che l'ambiente di staging resti disponibile fino a fine mese | Project Manager | 3 | Da verificare | 01/06 |
-| A-08 | Assumption | Assumiamo che il cliente fornisca il feedback sul design entro 3 giorni lavorativi | Project Manager | 2 | Da verificare | 04/06 |
-| I-04 | Issue | Il servizio di invio SMS di terze parti restituisce errori 500 dal 06/06 | Sviluppatore backend | 4 | In corso | 06/06 |
-| D-05 | Dependency | Il rilascio del modulo pagamenti dipende dall'approvazione del team sicurezza, prevista per il 12/06 | Tech Lead | 5 | In attesa | 02/06 |
+| R-12 | Risk | Il fornitore di hosting ha comunicato una finestra di manutenzione non pianificata nella settimana del rilascio | Luca (Tech Lead) | 4 | Aperto | 03/06 |
+| R-13 | Risk | Se non testiamo il carico prima del Black Friday, rischio di rallentamenti sotto picco di traffico | Giulia (QA Lead) | 5 | In mitigazione | 05/06 |
+| A-07 | Assumption | Stiamo assumendo che l'ambiente di staging resti disponibile fino a fine mese | Luca (Project Manager) | 3 | Da verificare | 01/06 |
+| A-08 | Assumption | Assumiamo che Sara fornisca il feedback sul design entro 3 giorni lavorativi | Luca (Project Manager) | 2 | Da verificare | 04/06 |
+| I-04 | Issue | Il servizio di invio SMS di terze parti restituisce errori 500 dal 06/06 | Marco (Sviluppatore backend) | 4 | In corso | 06/06 |
+| D-05 | Dependency | Il rilascio del modulo pagamenti dipende dall'approvazione del team sicurezza, prevista per il 12/06 | Luca (Tech Lead) | 5 | In attesa | 02/06 |
 
 Con soli 6 righe, un Project Manager junior può già farsi una domanda
 utile: **quali elementi con impatto alto (4-5) non hanno ancora un'azione
@@ -215,7 +229,12 @@ problema, assegnando a ogni attività uno dei quattro ruoli:
 > stati serviti, ma non ha partecipato a nessun piatto.
 
 **Esempio pratico**: matrice RACI per l'attività "rilascio di una nuova
-funzionalità in produzione".
+funzionalità in produzione" — lo stesso rilascio del modulo pagamenti
+visto nel RAID Log di ShopFacile qui sopra. I ruoli della tabella restano
+generici (così puoi riusarla per qualsiasi progetto), ma nel team
+ShopFacile sono coperti così: Sviluppatore → **Ahmed**, Tech Lead/Project
+Manager → **Luca**, QA/Tester → **Giulia**, Cliente → **Sara**, in quanto
+voce del business.
 
 | Attività | Sviluppatore | Tech Lead | Project Manager | QA / Tester | Cliente |
 |---|---|---|---|---|---|
@@ -237,6 +256,10 @@ Qualche osservazione utile da tenere a mente quando costruisci una RACI:
 - Troppi "C" su un'attività la rendono lenta: ogni consultazione è un
   potenziale collo di bottiglia. Usa "C" solo dove il parere serve
   davvero.
+
+Una RACI ben fatta chiarisce chi fa cosa lungo il percorso di un rilascio,
+ma non dice ancora **quando** quel rilascio conta davvero per chi guarda il
+progetto da fuori. È qui che entra in gioco il concetto di milestone.
 
 ---
 
@@ -268,12 +291,17 @@ analisi dei requisiti", "prima release disponibile per un gruppo pilota di
 utenti (beta)", "completamento dei test di sicurezza", "go-live in
 produzione", "primo mese di produzione senza incidenti critici". Non sono
 attività in sé, ma **traguardi** che raccontano un salto di stato del
-progetto.
+progetto — per ShopFacile, il go-live del nuovo modulo pagamenti che
+abbiamo visto nel RAID Log e nella RACI è esattamente questo tipo di
+milestone: non un task tra tanti, ma un momento che Sara comunicherà
+anche al di fuori del team.
 
 In un contesto Agile, le milestone convivono bene con gli sprint: uno
 sprint può contribuire a una milestone senza esaurirla, e una milestone
 spesso coincide con la fine di una serie di sprint (ad esempio, la fine di
-una release che raggruppa più sprint).
+una release che raggruppa più sprint). Ma un traguardo così visibile porta
+con sé anche più da perdere se qualcosa va storto lungo il percorso — ed è
+proprio quello che il prossimo paragrafo insegna a gestire.
 
 ---
 
@@ -318,20 +346,23 @@ quadrantChart
     Piccolo ritardo fornitore hosting: [0.3, 0.5]
 ```
 
-**Esempio concreto**: "rischio di ritardo per dipendenza da un altro team".
+**Esempio concreto**: "rischio di ritardo per dipendenza da un altro team" —
+lo stesso rischio D-05 già anticipato nel RAID Log di ShopFacile.
 
-- **Descrizione del rischio**: la nuova funzionalità di pagamento richiede
-  che il team di infrastruttura fornisca un nuovo ambiente sicuro entro
-  due settimane; quel team ha già altri due progetti in corso.
+- **Descrizione del rischio**: la nuova funzionalità di pagamento di
+  ShopFacile richiede che il team di infrastruttura fornisca un nuovo
+  ambiente sicuro entro due settimane; quel team ha già altri due progetti
+  in corso.
 - **Probabilità**: media-alta (il team esterno è oggettivamente
   sovraccarico, lo si vede dal loro backlog).
 - **Impatto**: alto (senza quell'ambiente, il rilascio non può partire, e
   la data comunicata al cliente è a rischio).
-- **Mitigazione**: si chiede una conferma scritta della data al team
-  infrastruttura appena possibile (per trasformare l'assunzione in un
-  impegno verificato); si valuta un piano B con un ambiente temporaneo
-  meno performante ma disponibile prima; si comunica per tempo al cliente
-  che esiste un rischio, invece di scoprirlo a due giorni dalla scadenza.
+- **Mitigazione**: **Luca** decide di chiedere una conferma scritta della
+  data al team infrastruttura appena possibile (per trasformare
+  l'assunzione in un impegno verificato); valuta con il team un piano B con
+  un ambiente temporaneo meno performante ma disponibile prima; e si
+  accorda con Sara per comunicare per tempo al cliente che esiste un
+  rischio, invece di farlo scoprire a due giorni dalla scadenza.
 
 Da notare come questo esempio collega direttamente rischio, assunzione e
 dipendenza — gli stessi concetti visti nel RAID Log: non sono strumenti
@@ -352,8 +383,9 @@ I livelli tipici, dal più generale al più operativo:
 
 1. **Roadmap**: la visione a lungo termine (mesi/trimestri/anno), con i
    grandi temi e obiettivi di business. Non contiene dettagli tecnici, ma
-   direzioni: "nel primo trimestre miglioriamo l'esperienza di checkout",
-   "nel secondo trimestre lanciamo l'app mobile".
+   direzioni: nella roadmap di ShopFacile che Sara porta agli stakeholder
+   potrebbe leggersi "nel primo trimestre miglioriamo l'esperienza di
+   checkout", "nel secondo trimestre lanciamo l'app mobile".
 2. **Release Plan**: un livello più concreto, che raggruppa più sprint per
    arrivare a un rilascio significativo per gli utenti o il cliente. Qui
    iniziano a comparire funzionalità specifiche e stime di massima.
@@ -381,6 +413,10 @@ lontano è incerto), mentre uno sprint plan troppo vago è inutile (perché il
 team deve poter lavorare su qualcosa di concreto già domani mattina). Il
 tuo compito non è "prevedere tutto", ma tenere questi livelli **coerenti
 tra loro** e aggiornarli quando la realtà li smentisce.
+
+Avere un piano a più livelli, però, non ti dice ancora se ShopFacile lo sta
+effettivamente rispettando giorno per giorno: per quello serve osservare
+l'andamento reale del team, non solo il piano scritto.
 
 ---
 
@@ -428,13 +464,19 @@ Lavoro rimanente (story point)
    * = andamento ideale     ● = andamento reale del team
 ```
 
-In questo esempio, il team parte più lento del previsto (la linea reale sta
-sopra quella ideale nei primi giorni — un possibile segnale di rischio da
-discutere in stand-up), ma recupera nella seconda metà dello sprint,
-chiudendo comunque a zero entro la fine. Un Project Manager non guarda solo
-"se" la linea arriva a zero, ma **come** ci arriva: una discesa brusca solo
-nell'ultimo giorno è spesso il sintomo di lavoro "spuntato" tutto insieme a
-fine sprint, non di un reale progresso quotidiano.
+In questo esempio, il team di ShopFacile parte più lento del previsto (la
+linea reale sta sopra quella ideale nei primi giorni — un possibile segnale
+di rischio da discutere in stand-up), ma recupera nella seconda metà dello
+sprint, chiudendo comunque a zero entro la fine. È tipicamente **Luca**, in
+quanto Scrum Master, a tenere d'occhio questo burndown e la dashboard del
+team ogni giorno: non guarda solo "se" la linea arriva a zero, ma **come**
+ci arriva — una discesa brusca solo nell'ultimo giorno è spesso il sintomo
+di lavoro "spuntato" tutto insieme a fine sprint, non di un reale progresso
+quotidiano.
+
+Questi stessi grafici che Luca osserva ogni giorno sono anche la materia
+prima da cui si ricavano numeri di sintesi più stabili, utili per
+confrontare uno sprint con l'altro: i KPI.
 
 ---
 
@@ -466,8 +508,8 @@ comparabile tra persone o addirittura tra team diversi). Usato male, un KPI
 distrugge la fiducia del team; usato bene, aiuta tutti a vedere dove
 migliorare.
 
-**Esempio pratico**: confronto tra due sprint consecutivi dello stesso
-team, con alcuni KPI di sintesi:
+**Esempio pratico**: confronto tra due sprint consecutivi del team di
+ShopFacile, con alcuni KPI di sintesi:
 
 | KPI | Sprint 8 | Sprint 9 | Cosa può significare |
 |---|---|---|---|
@@ -487,6 +529,10 @@ lavora peggio") trarrebbe la conclusione sbagliata; guardare i KPI **come
 insieme coerente**, non uno per uno isolato, è quello che permette di
 fare la domanda giusta in retrospettiva: "cosa ha causato l'aumento dei
 bug nello Sprint 9?", invece di "perché avete lavorato di meno?".
+
+Questi KPI, però, restano numeri grezzi finché qualcuno non li traduce in
+un messaggio comprensibile per chi non li guarda ogni giorno: è il compito
+della reportistica.
 
 ---
 
@@ -514,18 +560,19 @@ Due macro-categorie di report, con caratteristiche molto diverse:
 | **Obiettivo** | Dare fiducia e visibilità decisionale a chi non segue i dettagli ogni giorno | Coordinare il lavoro quotidiano e risolvere blocchi in tempo reale |
 
 **Esempio pratico**: la stessa informazione — "il rilascio della nuova
-funzionalità di pagamento slitta di una settimana per un problema di
-sicurezza emerso nei test" — viene comunicata in due modi molto diversi:
+funzionalità di pagamento di ShopFacile slitta di una settimana per un
+problema di sicurezza emerso nei test" — viene comunicata in due modi
+molto diversi:
 
-- **Al cliente/management**: "Il rilascio della funzionalità di pagamento
-  è posticipato di una settimana per garantire il rispetto degli standard
-  di sicurezza richiesti. Non ci sono impatti sul budget. Nuova data
-  prevista: [data]."
-- **Al team, in stand-up o nella dashboard operativa**: "Il test di
-  sicurezza automatizzato ha rilevato una vulnerabilità nella gestione dei
-  token di sessione nel modulo di pagamento (vedi issue #128); serve un
-  fix nel branch `fix/token-sicurezza` prima di riaprire la Merge Request
-  e far ripartire la pipeline."
+- **Al cliente/management, a cura di Sara**: "Il rilascio della
+  funzionalità di pagamento è posticipato di una settimana per garantire
+  il rispetto degli standard di sicurezza richiesti. Non ci sono impatti
+  sul budget. Nuova data prevista: [data]."
+- **Al team, in stand-up o nella dashboard operativa, a cura di Luca**:
+  "Il test di sicurezza automatizzato ha rilevato una vulnerabilità nella
+  gestione dei token di sessione nel modulo di pagamento (vedi issue
+  #128); serve un fix nel branch `fix/token-sicurezza` prima di riaprire
+  la Merge Request e far ripartire la pipeline."
 
 Stessa realtà, due livelli di risoluzione informativa. Un errore comune dei
 Project Manager junior è portare al cliente il livello di dettaglio

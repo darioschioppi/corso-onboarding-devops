@@ -25,6 +25,17 @@ astratta: è il tuo futuro lavoro quotidiano.
 > spesa, quanti piatti preparare, con quale squadra in cucina e quando
 > assaggiare per correggere il sapore prima di servire in tavola.
 
+Per non restare sul piano astratto, in questa sezione seguiremo lo stesso
+progetto di riferimento delle altre sezioni del corso: **ShopFacile**, la
+piattaforma di e-commerce (catalogo prodotti, carrello, ordini, pagamenti,
+sconti) su cui lavora un piccolo team interno. È proprio in questa sezione
+che i membri di quel team assumono, per la prima volta in modo formale, i
+tre ruoli di Scrum: **Sara** è la Product Owner, **Luca** è lo Scrum
+Master — il ruolo che anche tu andrai a occupare — e **Marco**, **Giulia**
+e **Ahmed** compongono il team di sviluppo. Li ritroverai in ogni
+paragrafo che segue, mentre applicano concretamente Scrum al lavoro
+quotidiano su ShopFacile.
+
 ## 🎯 Obiettivi della sezione
 
 Alla fine di questa sezione saprai:
@@ -132,14 +143,14 @@ Le responsabilità principali del Product Owner:
 - accetta o rifiuta il lavoro completato a fine sprint, verificando che
   soddisfi quanto richiesto.
 
-> 📌 **Esempio pratico**: il Product Owner ha in cima al Product Backlog tre
-> voci: "Aggiungere il pagamento con carta di credito", "Correggere un bug
-> che blocca il login su mobile" e "Aggiungere un filtro di ricerca
-> avanzata". Nella prossima Sprint Planning decide di dare priorità massima
-> al bug di login (blocca utenti reali ogni giorno), poi al pagamento con
-> carta (richiesto da molti clienti), lasciando il filtro di ricerca più in
-> basso: non è meno utile, ma nessun cliente lo ha ancora richiesto con
-> urgenza.
+> 📌 **Esempio pratico**: **Sara**, Product Owner di ShopFacile, ha in cima
+> al Product Backlog tre voci: "Aggiungere il pagamento con carta di
+> credito", "Correggere un bug che blocca il login su mobile" e "Aggiungere
+> un filtro di ricerca avanzata". Nella prossima Sprint Planning decide di
+> dare priorità massima al bug di login (blocca utenti reali ogni giorno),
+> poi al pagamento con carta (richiesto da molti clienti), lasciando il
+> filtro di ricerca più in basso: non è meno utile, ma nessun cliente lo ha
+> ancora richiesto con urgenza.
 
 Un errore comune da evitare: il Product Owner **non è un manager che dà
 ordini al team** su come lavorare, e non decide **come** tecnicamente
@@ -203,13 +214,13 @@ rimuoverli**, anche quando la soluzione non dipende direttamente da lui/lei
 (in quel caso, il compito diventa "scalare" il problema alla persona giusta
 e seguirne la risoluzione).
 
-> 📌 **Esempio pratico**: durante il Daily Scrum, uno sviluppatore dice "sono
-> bloccato da due giorni: aspetto le credenziali di accesso a un ambiente di
-> test". Lo Scrum Master annota l'impedimento, non lo discute lì (per non
-> allungare il daily), e subito dopo scrive al responsabile IT per
-> sollecitare l'accesso, aggiornando il team il giorno seguente. Non risolve
-> lui stesso il problema tecnico: si assicura che chi può risolverlo lo
-> faccia in tempi rapidi.
+> 📌 **Esempio pratico**: durante il Daily Scrum, uno sviluppatore di
+> ShopFacile dice "sono bloccato da due giorni: aspetto le credenziali di
+> accesso a un ambiente di test". **Luca**, lo Scrum Master, annota
+> l'impedimento, non lo discute lì (per non allungare il daily), e subito
+> dopo scrive al responsabile IT per sollecitare l'accesso, aggiornando il
+> team il giorno seguente. Non risolve lui stesso il problema tecnico: si
+> assicura che chi può risolverlo lo faccia in tempi rapidi.
 
 ### 6.2.3 Team di sviluppo: chi realizza il prodotto
 
@@ -240,13 +251,13 @@ Caratteristiche chiave del team di sviluppo in Scrum:
   esiste "il problema è di quel singolo sviluppatore", esiste "il problema
   è del team".
 
-> 📌 **Esempio pratico**: lo Sprint Backlog contiene una User Story che
-> richiede sia lavoro di back-end che di front-end. Nessuno assegna i task
-> dall'esterno: durante lo Sprint Planning i due sviluppatori competenti si
-> dividono spontaneamente il lavoro ("io mi occupo dell'API, tu del
-> componente grafico") e si aggiornano a vicenda nei Daily Scrum successivi,
-> senza bisogno che il Product Owner o lo Scrum Master decidano chi fa
-> cosa.
+> 📌 **Esempio pratico**: lo Sprint Backlog di ShopFacile contiene una User
+> Story che richiede sia lavoro di back-end che di front-end. Nessuno
+> assegna i task dall'esterno: durante lo Sprint Planning **Marco** e
+> **Ahmed** si dividono spontaneamente il lavoro ("io mi occupo dell'API,
+> tu del componente grafico") e si aggiornano a vicenda nei Daily Scrum
+> successivi, senza bisogno che il Product Owner o lo Scrum Master
+> decidano chi fa cosa.
 
 ---
 
@@ -292,11 +303,15 @@ Dentro ogni Sprint si svolgono, in ordine, gli altri quattro eventi: la
 Sprint Planning all'inizio, i Daily Scrum ogni giorno, e la Sprint Review e
 la Sprint Retrospective alla fine.
 
-**Esempio pratico**: il progetto lavora a sprint di 2 settimane, che
-iniziano sempre di lunedì. Lunedì mattina si tiene la Sprint Planning,
+**Esempio pratico**: il team di ShopFacile lavora a sprint di 2 settimane,
+che iniziano sempre di lunedì. Lunedì mattina si tiene la Sprint Planning,
 ogni mattina alle 9:30 il Daily Scrum, e il venerdì della seconda settimana
 si tengono, in sequenza, Sprint Review e Sprint Retrospective. Il lunedì
 successivo inizia già il nuovo sprint.
+
+Visto il contenitore nel suo complesso, entriamo ora nel primo evento che
+lo apre concretamente: come il team decide, sprint per sprint, cosa
+finirà davvero dentro quelle due settimane.
 
 ### 6.3.2 Sprint Planning: cosa faremo in questo sprint
 
@@ -324,14 +339,18 @@ questo sprint, spesso scomposte in task più piccoli e operativi.
 > tattica di gioco per la partita di questa settimana — non per tutto il
 > campionato, solo per la prossima partita.
 
-> 📌 **Esempio pratico**: il team ha una Velocity media di 25 punti. In
-> Sprint Planning, il Product Owner presenta le prime 6 voci del Product
+> 📌 **Esempio pratico**: il team di ShopFacile ha una Velocity media di 25
+> punti. In Sprint Planning, **Sara** presenta le prime 6 voci del Product
 > Backlog (che valgono, in totale, 34 punti). Dopo discussione, il team si
 > accorge che l'ultima voce (8 punti) è troppo rischiosa da completare
 > insieme alle altre e la rimanda al prossimo sprint, portando l'impegno
 > totale a 26 punti — vicino alla propria Velocity storica. Lo Sprint Goal
 > che ne esce è: "Permettere ai clienti di completare un ordine dall'inizio
 > alla fine, incluso il pagamento".
+
+Una volta chiuso lo Sprint Backlog, il team di ShopFacile non lo mette in
+un cassetto: lo esegue giorno per giorno, e il primo strumento con cui lo
+fa è proprio il Daily Scrum.
 
 ### 6.3.3 Daily Scrum: il check-in quotidiano
 
@@ -376,6 +395,10 @@ seguire e risolvere quell'ostacolo.
 > aggiorna velocemente su chi ha un problema (un infortunio, una difficoltà)
 > e si aggiusta la rotta per il resto della sessione.
 
+Daily dopo daily, il team di ShopFacile arriva così alla fine delle due
+settimane: è il momento di mostrare a chi non ha seguito il lavoro
+giorno per giorno cosa è stato davvero costruito.
+
 ### 6.3.4 Sprint Review: cosa abbiamo costruito
 
 La **Sprint Review** è la riunione di chiusura in cui il team mostra il
@@ -402,18 +425,22 @@ di tutto questo per aggiornare il Product Backlog.
 > magari chiedono "la prossima volta, un po' meno piccante" — feedback che
 > entra direttamente nel menù (Product Backlog) della prossima settimana.
 
-> 📌 **Esempio pratico**: il team mostra dal vivo, sull'ambiente di test, il
-> nuovo flusso di checkout appena completato: uno sviluppatore inserisce un
-> ordine di prova davanti a tutti, mostrando ogni passaggio fino alla
-> conferma. Uno stakeholder nota che manca un messaggio di errore chiaro se
-> la carta di credito viene rifiutata: il Product Owner annota la richiesta
-> e la aggiunge, come nuova voce, al Product Backlog per una prossima
-> Sprint Planning.
+> 📌 **Esempio pratico**: il team di ShopFacile mostra dal vivo, sull'ambiente
+> di test, il nuovo flusso di checkout appena completato: uno sviluppatore
+> inserisce un ordine di prova davanti a tutti, mostrando ogni passaggio
+> fino alla conferma. Uno stakeholder nota che manca un messaggio di errore
+> chiaro se la carta di credito viene rifiutata: **Sara** annota la
+> richiesta e la aggiunge, come nuova voce, al Product Backlog per una
+> prossima Sprint Planning.
 
 Un errore comune da evitare come Scrum Master: la Sprint Review **non è
 una presentazione formale con slide** preparata a parte. È una demo pratica
 e informale del prodotto, pensata per generare conversazione e feedback
 reale, non per "fare bella figura".
+
+Con il prodotto mostrato e il backlog aggiornato, resta un'ultima domanda
+prima di chiudere lo sprint: non cosa è stato costruito, ma come il team
+ci ha lavorato — ed è esattamente il tema della Sprint Retrospective.
 
 ### 6.3.5 Sprint Retrospective: come possiamo lavorare meglio
 
@@ -464,6 +491,11 @@ Facilitare bene la Retrospective è una delle competenze più importanti di
 uno Scrum Master: è il principale motore del **miglioramento continuo**
 del team, uno dei pilastri di Scrum e dell'Agile in generale.
 
+Con la Retrospective si chiude il ciclo degli eventi: il team di ShopFacile
+riparte da capo con una nuova Sprint Planning, ma quel ciclo, ad ogni giro,
+produce e trasforma sempre gli stessi tre elementi tangibili. Vediamoli
+nel dettaglio.
+
 ---
 
 ## 6.4 Gli artefatti di Scrum
@@ -495,8 +527,8 @@ responsabilità del **Product Owner**.
 > ma sai cosa ti serve, in ordine di urgenza (il latte è finito, serve
 > subito; le tovagliette nuove possono aspettare).
 
-> 📌 **Esempio pratico**: il Product Backlog di un progetto e-commerce
-> potrebbe contenere, tra le tante voci: "Come cliente, voglio salvare più
+> 📌 **Esempio pratico**: il Product Backlog di ShopFacile potrebbe
+> contenere, tra le tante voci: "Come cliente, voglio salvare più
 > indirizzi di spedizione" (priorità alta, già stimata), "Come cliente,
 > voglio ricevere una notifica quando il mio ordine è spedito" (priorità
 > media), "Come amministratore, voglio esportare un report vendite
@@ -519,6 +551,11 @@ Caratteristiche importanti del Product Backlog:
 
 Le voci del Product Backlog sono tipicamente scritte in formato **User
 Story** (le vediamo nel prossimo paragrafo).
+
+Il Product Backlog di ShopFacile, per quanto ben ordinato, resta però una
+lista di *possibilità*: solo una piccola parte di quelle voci diventa
+lavoro concreto in un dato sprint. È esattamente quel sottoinsieme a
+formare il secondo artefatto.
 
 ### 6.4.2 Sprint Backlog: il piano di questo sprint
 
@@ -554,6 +591,11 @@ può aggiornarlo giorno per giorno (ad esempio aggiungendo un task che si
 scopre necessario durante lo sprint) — sempre restando fedele allo Sprint
 Goal stabilito in Planning.
 
+Man mano che il team di ShopFacile porta a termine le voci dello Sprint
+Backlog, quelle righe scritte su una lista si trasformano in qualcosa di
+concreto e verificabile: è qui che entra in gioco il terzo artefatto,
+l'Increment.
+
 ### 6.4.3 Increment: il pezzo di prodotto realmente costruito
 
 L'**Increment** è il pezzo di prodotto realmente completato durante lo
@@ -566,10 +608,10 @@ alla Definition of Done** del team (ne parliamo tra poco).
 > vissuta, anche se la casa nel complesso non è ancora finita.
 
 > 📌 **Esempio pratico**: a fine sprint, la funzionalità "salvataggio di più
-> indirizzi di spedizione" è conforme alla Definition of Done: codice
-> scritto e revisionato, test automatici che passano, verificata
-> manualmente, distribuita in ambiente di test. Questo pezzo di prodotto è
-> l'Increment di quello sprint — anche se il Product Owner decide di non
+> indirizzi di spedizione" di ShopFacile è conforme alla Definition of
+> Done: codice scritto e revisionato, test automatici che passano,
+> verificata manualmente, distribuita in ambiente di test. Questo pezzo di
+> prodotto è l'Increment di quello sprint — anche se **Sara** decide di non
 > rilasciarlo subito agli utenti finali, aspettando di raggrupparlo con
 > altre due funzionalità nella prossima release.
 
@@ -581,6 +623,11 @@ Product Owner alla fine decide di non rilasciarlo subito agli utenti finali
 un'unica release). "Potenzialmente utilizzabile" significa che, dal punto
 di vista tecnico e qualitativo, **sarebbe già pronto per andare in
 produzione**.
+
+Ruoli, eventi e artefatti danno la struttura; ma per capire davvero come
+una voce del Product Backlog di ShopFacile passa dall'essere un'idea a
+un compito che il team sa stimare e realizzare, serve guardare al formato
+con cui quelle voci vengono scritte concretamente.
 
 ---
 
@@ -624,6 +671,10 @@ da un menu a tendina."*
 Le User Story più grandi vengono spesso raggruppate in **Epic** (storie
 troppo grandi per essere completate in un solo sprint, che vanno scomposte
 in User Story più piccole prima di poter entrare in uno sprint).
+
+Scrivere bene una User Story, però, risponde solo alla domanda "cosa
+serve fare e perché". Resta da rispondere a un'altra domanda, altrettanto
+concreta per chi pianifica uno sprint: quanto lavoro richiede davvero.
 
 ---
 
@@ -687,6 +738,10 @@ Una User Story troppo grande per essere stimata con sicurezza (es. "vale
 tra 40 e 100 punti, non sappiamo") è quasi sempre un segnale che va
 **scomposta** in storie più piccole prima di poter entrare in uno sprint.
 
+Stimare ogni singola storia è utile sprint dopo sprint, ma il vero valore
+di quei numeri emerge solo quando li si osserva nel tempo, aggregati: è
+proprio questo che fa la Velocity.
+
 ---
 
 ## 6.7 Velocity: quanto il team riesce a fare in uno sprint
@@ -731,6 +786,10 @@ con questa metrica, e può spingere i team a "gonfiare" artificialmente le
 stime — proteggere il team da questo uso scorretto della metrica è
 anch'esso un compito dello Scrum Master.
 
+Sapere quanto il team riesce a fare non basta, però, se le storie che gli
+arrivano in Sprint Planning sono ancora ambigue o mal definite: serve un
+filtro condiviso prima ancora di iniziare a stimarle e pianificarle.
+
 ---
 
 ## 6.8 Definition of Ready: quando una storia può entrare in sprint
@@ -758,19 +817,23 @@ ma un insieme comune potrebbe essere):
 - è sufficientemente piccola da poter essere completata in un singolo
   sprint.
 
-> 📌 **Esempio pratico**: la User Story "Come cliente, voglio pagare con
-> carta di credito" arriva in Sprint Planning ma il team si accorge che non
-> ha ancora criteri di accettazione chiari (cosa succede se la carta viene
-> rifiutata? quali carte sono supportate?) né una stima. Non soddisfa la
-> Definition of Ready: resta nel Product Backlog, il Product Owner la
-> raffina con il team in una sessione di refinement, e potrà entrare in uno
-> sprint successivo, quando sarà davvero "pronta".
+> 📌 **Esempio pratico**: nel progetto ShopFacile, la User Story "Come
+> cliente, voglio pagare con carta di credito" arriva in Sprint Planning ma
+> il team si accorge che non ha ancora criteri di accettazione chiari (cosa
+> succede se la carta viene rifiutata? quali carte sono supportate?) né una
+> stima. Non soddisfa la Definition of Ready: resta nel Product Backlog,
+> **Sara** la raffina con il team in una sessione di refinement, e potrà
+> entrare in uno sprint successivo, quando sarà davvero "pronta".
 
 Perché la Definition of Ready è utile: evita che il team scopra, a metà
 sprint, che una storia era troppo ambigua per essere realizzata bene,
 causando ritardi, rilavorazioni o discussioni infinite proprio quando
 ormai il tempo dello sprint è già stato impegnato. È molto meglio scoprire
 l'ambiguità **prima** che la storia entri nello sprint.
+
+La Definition of Ready presidia l'ingresso di una storia nello sprint;
+la sua "gemella" presidia invece l'uscita, cioè il momento in cui il team
+può davvero dire di aver finito.
 
 ---
 
@@ -834,6 +897,10 @@ of Done** solo per dichiarare più storie completate in fretta.
 | **Risponde alla domanda** | "Siamo pronti a iniziare a lavorarci?" | "Abbiamo davvero finito di lavorarci?" |
 | **Se non soddisfatta** | La storia resta nel Product Backlog, non entra in sprint | La storia resta "in corso", non si conta come completata |
 
+Ruoli, eventi, artefatti, stime e criteri di qualità: abbiamo visto tutti
+i pezzi che il team di ShopFacile usa ogni sprint. Vale la pena, prima di
+chiudere la sezione, vederli riuniti in un unico schema.
+
 ---
 
 ## 6.10 Il flusso completo, in sintesi
@@ -851,6 +918,11 @@ flowchart TD
     D -->|Sprint Retrospective:<br/>miglioramento del processo| F["Azioni di miglioramento<br/>per il prossimo sprint"]
     F -.->|influenzano il modo<br/>di lavorare| B
 ```
+
+Questo schema è, in pratica, il lavoro che **Luca** ripete ogni due
+settimane su ShopFacile. Resta un'ultima domanda, la più concreta di
+tutte per te: cosa significa, giorno per giorno, essere lo Scrum Master
+che fa funzionare questo ciclo.
 
 ---
 
@@ -908,6 +980,11 @@ cosa, quali riunioni funzionano e quali sono percepite come inutili, dove
 nascono davvero gli impedimenti) e solo dopo iniziare a proporre piccoli
 miglioramenti, uno alla volta — esattamente come farebbe il team stesso in
 una Retrospective ben condotta.
+
+È esattamente questo l'equilibrio che **Luca** ha imparato a trovare
+lavorando con **Sara**, **Marco**, **Giulia** e **Ahmed** su ShopFacile: lo
+stesso equilibrio che, da qui in avanti nel corso, dovrai imparare a
+trovare tu.
 
 ---
 

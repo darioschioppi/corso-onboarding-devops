@@ -10,6 +10,8 @@ Capire questo processo è fondamentale per te, futuro Junior Project Manager, pe
 
 Pensa a questa sezione come alla mappa di un territorio che esplorerai per tutta la tua carriera: oggi impari i nomi delle vie principali, poi con l'esperienza scoprirai i dettagli di ogni singolo quartiere.
 
+Per non restare sul piano astratto, seguiremo come filo conduttore **ShopFacile**, la piattaforma e-commerce che hai già incontrato nella sezione precedente, con il suo piccolo team interno: Marco e Giulia (developer, lei molto attenta a test e qualità), Ahmed (developer junior, in crescita), Sara (Product Owner) e Luca (Scrum Master).
+
 ## 🎯 Obiettivi della sezione
 
 Alla fine di questa sezione saprai:
@@ -53,7 +55,7 @@ Vediamo ora ogni fase nel dettaglio.
 
 In questa fase il project manager, il cliente e gli analisti si incontrano per capire cosa serve davvero. Il risultato è un documento (o una lista di elementi in uno strumento come Jira o Azure DevOps, che vedremo più avanti) che elenca i **requisiti**.
 
-**Esempio pratico**: durante una riunione, il cliente dice "vogliamo che i nostri utenti possano cercare i prodotti nel catalogo per nome o categoria". Il Project Manager trascrive questa richiesta in una card del backlog, magari titolata "Ricerca prodotti nel catalogo", senza ancora sapere se si useranno filtri, una barra di ricerca testuale o entrambe le cose: quella scelta arriverà nella fase successiva.
+**Esempio pratico**: durante una riunione su ShopFacile, il cliente dice "vogliamo che i nostri utenti possano cercare i prodotti nel catalogo per nome o categoria". Sara, la Product Owner, trascrive questa richiesta in una card del backlog, magari titolata "Ricerca prodotti nel catalogo", senza ancora sapere se si useranno filtri, una barra di ricerca testuale o entrambe le cose: quella scelta arriverà nella fase successiva.
 
 Approfondiamo questo concetto nella prossima sezione perché è cruciale.
 
@@ -68,7 +70,9 @@ Nel software, questa fase si chiama **analisi** (o analisi tecnica/progettazione
 - Come i dati saranno organizzati e salvati
 - Quali rischi tecnici ci sono e come affrontarli
 
-**Esempio pratico**: il requisito è "l'utente deve poter recuperare la password se la dimentica". L'analisi stabilisce come: si invierà un'email con un link temporaneo, quel link scadrà dopo 30 minuti, i dati della password saranno salvati in un certo modo per motivi di sicurezza. È il passaggio dall'idea al progetto tecnico.
+**Esempio pratico**: il requisito è "l'utente deve poter recuperare la password se la dimentica". Marco, che spesso si occupa di infrastruttura e di questo tipo di scelte tecniche, stabilisce come: si invierà un'email con un link temporaneo, quel link scadrà dopo 30 minuti, i dati della password saranno salvati in un certo modo per motivi di sicurezza. È il passaggio dall'idea al progetto tecnico.
+
+Una volta che si sa "come" farlo, resta solo un passaggio: farlo davvero. Passiamo quindi alla fase di sviluppo.
 
 ### 3. Sviluppo: si scrive il codice
 
@@ -80,7 +84,9 @@ Un'analogia utile: se dici a un amico "fammi un caffè", lui capisce dal contest
 
 Lo sviluppatore prende i documenti di analisi e li traduce in queste istruzioni dettagliate, organizzate in file di testo (i "file di codice") che insieme compongono il software. Il codice viene poi salvato e condiviso con il resto del team usando strumenti come Git (che vedremo nella prossima sezione).
 
-**Esempio pratico**: l'analisi ha stabilito che serve una funzione che calcoli lo sconto finale su un carrello. Lo sviluppatore scrive, in un linguaggio come Python o Java, una serie di istruzioni tipo "prendi il totale del carrello, verifica se esiste un codice sconto valido, se sì calcola la percentuale da sottrarre, altrimenti restituisci il totale invariato". Ogni singolo caso (carrello vuoto, codice sconto scaduto, sconto superiore al totale) deve essere previsto esplicitamente: il computer non "capisce" cosa intendevi, esegue solo quello che hai scritto.
+**Esempio pratico**: l'analisi ha stabilito che serve una funzione che calcoli lo sconto finale su un carrello di ShopFacile. Marco scrive, in un linguaggio come Python o Java, una serie di istruzioni tipo "prendi il totale del carrello, verifica se esiste un codice sconto valido, se sì calcola la percentuale da sottrarre, altrimenti restituisci il totale invariato". Ogni singolo caso (carrello vuoto, codice sconto scaduto, sconto superiore al totale) deve essere previsto esplicitamente: il computer non "capisce" cosa intendevi, esegue solo quello che hai scritto.
+
+Il codice è scritto, ma "sembra funzionare" non basta: prima di fidarsene bisogna verificarlo sistematicamente. È qui che entra in gioco il testing.
 
 ### 4. Testing: si verifica che funzioni
 
@@ -96,7 +102,9 @@ Esistono diversi tipi di test, con diversi livelli di dettaglio:
 
 Perché si testa? Perché è molto più economico e veloce trovare un errore prima che il software arrivi agli utenti, piuttosto che scoprirlo quando migliaia di persone lo stanno già usando (e magari perdendo dati o soldi a causa di quell'errore).
 
-**Esempio pratico**: per la nuova funzionalità di ricerca prodotti, il team scrive un test unitario che verifica che la funzione di ricerca restituisca risultati corretti con un solo prodotto nel catalogo; un test di integrazione che verifica che la ricerca funzioni correttamente insieme al filtro dei prezzi; e infine un tester QA prova a digitare caratteri strani (accenti, emoji, campo vuoto) nella barra di ricerca per vedere se qualcosa si rompe. Solo dopo che tutti e tre i livelli di test danno esito positivo, la funzionalità viene considerata pronta per il passo successivo.
+**Esempio pratico**: per la nuova funzionalità di ricerca prodotti di ShopFacile, Ahmed scrive un test unitario che verifica che la funzione di ricerca restituisca risultati corretti con un solo prodotto nel catalogo; Giulia, sempre molto attenta alla qualità, scrive un test di integrazione che verifica che la ricerca funzioni correttamente insieme al filtro dei prezzi, e poi prova lei stessa a digitare caratteri strani (accenti, emoji, campo vuoto) nella barra di ricerca per vedere se qualcosa si rompe. Solo dopo che tutti e tre i livelli di test danno esito positivo, la funzionalità viene considerata pronta per il passo successivo.
+
+I test sono tutti verdi: la funzionalità può finalmente lasciare l'ambiente del team ed essere messa nelle mani degli utenti veri.
 
 ### 5. Rilascio (Deploy): si va "in produzione"
 
@@ -108,7 +116,9 @@ Un'analogia: è il giorno del trasferimento nella casa nuova. Tutto quello che �
 
 Il deploy può essere un'operazione delicata: si tratta di installare la nuova versione del software sui sistemi che gli utenti usano davvero, a volte senza nemmeno interrompere il servizio (pensa a un aggiornamento di un'app che non ti fa nemmeno notare che è cambiato qualcosa). Nella sezione dedicata al DevOps e alla CI/CD scoprirai come oggi questo processo venga spesso automatizzato per essere più rapido e sicuro.
 
-**Esempio pratico**: il team decide di rilasciare la nuova funzionalità di ricerca prodotti di notte, in una fascia orario con pochissimi utenti collegati, per limitare l'impatto nel caso qualcosa vada storto. Il deploy viene fatto prima solo su una piccola parte dei server (un cosiddetto "rilascio graduale"): se dopo un'ora tutto funziona bene, la nuova versione viene estesa a tutti gli utenti; se emergono problemi, si può tornare rapidamente alla versione precedente (un'operazione chiamata *rollback*).
+**Esempio pratico**: il team decide di rilasciare la nuova funzionalità di ricerca prodotti di ShopFacile di notte, in una fascia orario con pochissimi utenti collegati, per limitare l'impatto nel caso qualcosa vada storto. Il deploy viene fatto prima solo su una piccola parte dei server (un cosiddetto "rilascio graduale"): se dopo un'ora tutto funziona bene, la nuova versione viene estesa a tutti gli utenti; se emergono problemi, si può tornare rapidamente alla versione precedente (un'operazione chiamata *rollback*).
+
+Il software è finalmente in produzione, ma la storia non finisce qui: da questo momento inizia una fase che dura molto più a lungo di tutte le altre messe insieme, la manutenzione.
 
 ### 6. Manutenzione: la cura continua
 
@@ -123,7 +133,9 @@ La **manutenzione** comprende tutte le attività che avvengono dopo il rilascio:
 
 Un progetto software di successo può restare "in manutenzione" per anni, anche decenni. È una fase spesso sottovalutata da chi è alle prime armi, ma in realtà occupa una parte enorme del tempo e del budget di un progetto informatico nel lungo periodo.
 
-**Esempio pratico**: sei mesi dopo il rilascio, la funzionalità di ricerca prodotti inizia a rispondere sempre più lentamente perché il catalogo è cresciuto da 500 a 50.000 prodotti. Nessun requisito iniziale parlava di questo scenario: è un'attività di manutenzione, in cui il team introduce un meccanismo di **caching** (una sorta di "memoria veloce" che conserva i risultati delle ricerche più frequenti) per riportare i tempi di risposta a livelli accettabili.
+**Esempio pratico**: sei mesi dopo il rilascio, la funzionalità di ricerca prodotti di ShopFacile inizia a rispondere sempre più lentamente perché il catalogo è cresciuto da 500 a 50.000 prodotti. Nessun requisito iniziale parlava di questo scenario: è un'attività di manutenzione, in cui Marco introduce un meccanismo di **caching** (una sorta di "memoria veloce" che conserva i risultati delle ricerche più frequenti) per riportare i tempi di risposta a livelli accettabili.
+
+Abbiamo visto le sei fasi in azione. Ma per parlarne con precisione nel lavoro quotidiano, serve anche il vocabolario giusto: cominciamo dai requisiti, distinguendo due categorie che confonderai spesso all'inizio.
 
 ## 📋 Requisiti: funzionali e non funzionali
 
@@ -165,17 +177,21 @@ Tornando all'analogia della casa: se il requisito funzionale è "vogliamo una cu
 
 Un errore comune di chi inizia in questo settore è concentrarsi solo sui requisiti funzionali, perché sono i più "visibili" e i clienti li richiedono esplicitamente. Ma un buon Project Manager sa che i requisiti non funzionali (velocità, sicurezza, affidabilità) sono altrettanto critici: un'app che fa tutto quello che deve, ma è lentissima o insicura, è comunque un fallimento.
 
+Anche il requisito meglio scritto, però, non garantisce che il codice finale si comporti come previsto: a volte qualcosa va storto, ed è lì che entra in scena il bug.
+
 ## 🐛 Bug: quando qualcosa va storto
 
 Un **bug** è un difetto nel software: un comportamento non corretto, non previsto o non voluto. Il termine in inglese significa letteralmente "insetto", e c'è una storia (in parte leggendaria, ma bellissima) dietro questo nome.
 
 > **Curiosità storica**: si racconta che nel 1947, mentre lavorava su uno dei primi grandi calcolatori (il Harvard Mark II), la programmatrice e informatica Grace Hopper e il suo team trovarono una falena vera e propria incastrata tra i contatti di un relè elettromeccanico, che causava un malfunzionamento. Il team incollò l'insetto su un foglio del registro di laboratorio con la scritta "First actual case of bug being found" (primo caso reale di un bug trovato). Da allora, "bug" è diventato il termine universale per indicare un errore nel software (anche se il termine era già usato in ambito ingegneristico prima di quell'episodio).
 
-**Esempio concreto di bug**: un e-commerce dove, se metti nel carrello più di 99 pezzi dello stesso prodotto, il prezzo totale diventa negativo per un errore nel calcolo. L'utente potrebbe finire per "guadagnare" acquistando, invece di pagare! Questo è esattamente il tipo di comportamento inatteso che un bug produce: qualcosa che nessuno ha previsto o voluto, che si scopre spesso solo quando il software viene usato in modi che gli sviluppatori non avevano immaginato.
+**Esempio concreto di bug**: su ShopFacile, Giulia scopre durante un test che se metti nel carrello più di 99 pezzi dello stesso prodotto, il prezzo totale diventa negativo per un errore nel calcolo. L'utente potrebbe finire per "guadagnare" acquistando, invece di pagare! Questo è esattamente il tipo di comportamento inatteso che un bug produce: qualcosa che nessuno ha previsto o voluto, che si scopre spesso solo quando il software viene usato in modi che gli sviluppatori non avevano immaginato.
 
-I bug possono essere piccoli e quasi invisibili (un testo scritto con il colore sbagliato) o gravissimi (un sistema bancario che addebita importi errati). Parte del lavoro di un Project Manager è proprio aiutare a **classificare** i bug per gravità e priorità, per decidere quali vanno risolti immediatamente e quali possono aspettare.
+I bug possono essere piccoli e quasi invisibili (un testo scritto con il colore sbagliato) o gravissimi (un sistema bancario che addebita importi errati). Parte del lavoro di un Project Manager è proprio aiutare a **classificare** i bug per gravità e priorità, per decidere quali vanno risolti immediatamente e quali possono aspettare: il bug del prezzo negativo di ShopFacile, per esempio, è abbastanza grave da bloccare tutto il resto.
 
 ## ✨ Feature: una nuova funzionalità
+
+Un bug corregge qualcosa che non va, ma non tutto il lavoro del team nasce da un errore da correggere: molto lavoro nasce dal desiderio di aggiungere qualcosa di nuovo e utile. Questo si chiama feature.
 
 Una **feature** è, al contrario del bug, qualcosa di voluto: una nuova funzionalità che si aggiunge al software per offrire più valore agli utenti.
 
@@ -191,6 +207,8 @@ La differenza tra bug fix (correzione di un bug) e feature è quindi:
 | Esempio | "Il bottone 'Acquista' non risponde al click su alcuni telefoni" | "Aggiungere la possibilità di salvare i prodotti preferiti" |
 
 Questa distinzione è fondamentale perché, come Project Manager, dovrai spesso gestire un elenco (detto **backlog**, termine che approfondiremo nella sezione sull'Agile) contenente sia bug da correggere che feature da sviluppare, e aiutare il team a decidere le priorità.
+
+Ogni volta che un bug viene corretto o una feature aggiunta, il software cambia rispetto a prima: serve un modo per identificare con precisione "quale versione" stiamo usando o discutendo in un dato momento.
 
 ## 🔢 Versioning: perché numeriamo il software
 
@@ -218,9 +236,11 @@ Un sistema molto diffuso si chiama **Semantic Versioning** (versionamento semant
 
 Questo sistema è uno standard molto diffuso nel mondo dello sviluppo software, adottato da moltissime librerie e applicazioni.
 
+Numerare le versioni presuppone però che il codice arrivi in modo ordinato a uno stato "pubblicabile" — e questo, con più persone che scrivono codice insieme, non è affatto scontato. Vediamo come si organizza concretamente il lavoro di squadra sul codice.
+
 ## 🌿 Branching: lavorare in parallelo
 
-Immagina un team di 5 sviluppatori che lavorano tutti insieme, contemporaneamente, sullo stesso identico file di codice. Cosa potrebbe succedere? Molto probabilmente, un disastro: le modifiche di uno cancellerebbero quelle di un altro, e sarebbe impossibile capire chi ha cambiato cosa.
+Immagina un team di 5 sviluppatori — pensa a Marco, Giulia, Ahmed e ai loro colleghi di ShopFacile — che lavorano tutti insieme, contemporaneamente, sullo stesso identico file di codice. Cosa potrebbe succedere? Molto probabilmente, un disastro: le modifiche di uno cancellerebbero quelle di un altro, e sarebbe impossibile capire chi ha cambiato cosa.
 
 Per questo esiste il concetto di **branch** (in italiano "ramo"). Un branch è come una copia parallela e temporanea del progetto, su cui una persona (o un piccolo gruppo) può lavorare in isolamento, senza disturbare il lavoro degli altri, per poi ricongiungere le modifiche al progetto principale quando sono pronte.
 
@@ -243,11 +263,11 @@ gitGraph
 
 Questo concetto sarà spiegato con molti più dettagli pratici (comandi, strumenti, esempi passo-passo) nella prossima sezione dedicata a Git e GitLab. Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi.
 
-**Esempio pratico**: mentre uno sviluppatore lavora sul branch `feature-ricerca-prodotti` per aggiungere la barra di ricerca, un'altra sviluppatrice lavora in parallelo sul branch `fix-carrello` per correggere il bug del prezzo negativo visto prima. Nessuno dei due deve aspettare che l'altro finisca: lavorano entrambi sul proprio ramo, isolati, e uniranno le modifiche al tronco principale quando saranno pronti, ciascuno con i suoi tempi.
+**Esempio pratico**: mentre Ahmed lavora sul branch `feature-ricerca-prodotti` per aggiungere la barra di ricerca, Giulia lavora in parallelo sul branch `fix-carrello` per correggere il bug del prezzo negativo visto prima. Nessuno dei due deve aspettare che l'altro finisca: lavorano entrambi sul proprio ramo, isolati, e uniranno le modifiche al tronco principale quando saranno pronti, ciascuno con i suoi tempi.
 
 ## 🔁 Dal branch al merge: merge request e code review
 
-Una volta che uno sviluppatore ha finito di lavorare sul proprio ramo (ad esempio ha completato la feature "login con email"), non può semplicemente "ricongiungere" le sue modifiche al tronco principale senza controlli. Sarebbe rischioso: e se il suo codice avesse errori? E se rompesse qualcosa che già funzionava?
+Un branch isolato, però, non può restare isolato per sempre: prima o poi il lavoro va ricongiunto al tronco principale. Ma una volta che uno sviluppatore ha finito di lavorare sul proprio ramo (ad esempio ha completato la feature "login con email"), non può semplicemente "ricongiungere" le sue modifiche al tronco principale senza controlli. Sarebbe rischioso: e se il suo codice avesse errori? E se rompesse qualcosa che già funzionava?
 
 Per questo, prima di unire le modifiche, si passa attraverso due passaggi fondamentali: la **merge request** e la **code review**.
 
@@ -257,7 +277,9 @@ Una **merge request** (spesso abbreviata **MR** — su altre piattaforme lo stes
 
 È come quando, dopo aver scritto una relazione di lavoro, non la invii direttamente al cliente, ma la mandi prima al tuo responsabile per un controllo. La merge request è esattamente quella richiesta di controllo, applicata al codice.
 
-**Esempio pratico**: lo sviluppatore che ha finito la barra di ricerca prodotti apre una merge request con un titolo come "Aggiunta ricerca prodotti per nome e categoria" e una descrizione che spiega cosa cambia, come è stato testato e magari uno screenshot del risultato. A quel punto la merge request compare in una lista visibile a tutto il team (su GitLab o Azure DevOps), pronta per essere revisionata.
+**Esempio pratico**: Ahmed, che ha finito la barra di ricerca prodotti, apre una merge request con un titolo come "Aggiunta ricerca prodotti per nome e categoria" e una descrizione che spiega cosa cambia, come è stato testato e magari uno screenshot del risultato. A quel punto la merge request compare in una lista visibile a tutto il team (su GitLab o Azure DevOps), pronta per essere revisionata.
+
+Aprire la merge request, però, non basta: qualcuno deve davvero leggere quel codice prima che diventi parte ufficiale del progetto. È il momento della code review.
 
 ### Code Review: il controllo dei colleghi
 
@@ -272,13 +294,13 @@ Perché è importante che sia qualcun altro a controllare, e non solo chi ha scr
 
 Se durante la code review emergono problemi, chi ha scritto il codice apporta le correzioni richieste, e il processo si ripete finché tutti sono soddisfatti.
 
-**Esempio pratico**: un collega, revisionando la merge request della ricerca prodotti, lascia un commento del tipo "qui la ricerca fa distinzione tra maiuscole e minuscole, un utente che scrive 'scarpe' con la S minuscola non troverebbe 'Scarpe' scritto con la maiuscola: puoi correggerlo?". Lo sviluppatore corregge il codice, aggiorna la merge request, e il collega la approva.
+**Esempio pratico**: Giulia, revisionando la merge request della ricerca prodotti, lascia un commento del tipo "qui la ricerca fa distinzione tra maiuscole e minuscole, un utente che scrive 'scarpe' con la S minuscola non troverebbe 'Scarpe' scritto con la maiuscola: puoi correggerlo?". Ahmed corregge il codice, aggiorna la merge request, e Giulia la approva.
 
 ### Merge: l'unione finale
 
-Quando la merge request è stata approvata dai colleghi durante la code review, si procede al **merge**: l'unione definitiva delle modifiche del ramo (branch) al progetto principale. A questo punto, quella nuova funzionalità o correzione diventa parte ufficiale del software, pronta per le fasi successive (ulteriori test, e infine il rilascio).
+La code review è stata superata: non resta che rendere ufficiale il lavoro. Quando la merge request è stata approvata dai colleghi durante la code review, si procede al **merge**: l'unione definitiva delle modifiche del ramo (branch) al progetto principale. A questo punto, quella nuova funzionalità o correzione diventa parte ufficiale del software, pronta per le fasi successive (ulteriori test, e infine il rilascio).
 
-**Esempio pratico**: dopo l'approvazione, lo sviluppatore (o un collega con i permessi adeguati) clicca sul bottone "Merge" nello strumento usato dal team. Da quel momento, il codice della barra di ricerca fa parte del branch principale `main`, insieme al lavoro di tutti gli altri membri del team, e sarà incluso nel prossimo rilascio pianificato.
+**Esempio pratico**: dopo l'approvazione, Ahmed (o un collega con i permessi adeguati) clicca sul bottone "Merge" nello strumento usato dal team. Da quel momento, il codice della barra di ricerca fa parte del branch principale `main` di ShopFacile, insieme al lavoro di tutti gli altri membri del team, e sarà incluso nel prossimo rilascio pianificato.
 
 ```mermaid
 flowchart LR
@@ -301,20 +323,20 @@ Questo flusso — branch, merge request, code review, merge — è oggi lo stand
 
 ## 🧩 Come si collegano tutti questi concetti
 
-Facciamo un piccolo riepilogo con un esempio end-to-end, per vedere come tutti i concetti di questa sezione si incastrano insieme in un caso reale (semplificato):
+Abbiamo visto tanti termini uno alla volta: requisiti, bug, feature, versioning, branch, merge request, code review, merge. Facciamo un piccolo riepilogo con un esempio end-to-end sul progetto ShopFacile, per vedere come tutti i concetti di questa sezione si incastrano insieme in un caso reale (semplificato):
 
-1. Il cliente chiede una nuova funzionalità: "vogliamo che gli utenti possano recuperare la password" → è un **requisito funzionale**, che finisce nel backlog come **feature**.
-2. Il team tecnico fa l'**analisi**: decide di implementarla con un'email contenente un link temporaneo.
-3. Uno sviluppatore crea un **branch** dedicato e inizia lo **sviluppo**, scrivendo il codice necessario.
+1. Il cliente chiede una nuova funzionalità: "vogliamo che gli utenti possano recuperare la password" → è un **requisito funzionale**, che Sara fa finire nel backlog di ShopFacile come **feature**.
+2. Marco fa l'**analisi**: decide di implementarla con un'email contenente un link temporaneo.
+3. Ahmed crea un **branch** dedicato e inizia lo **sviluppo**, scrivendo il codice necessario.
 4. Durante lo sviluppo scopre e corregge anche un piccolo **bug** preesistente in una funzione che invia le email.
 5. Finito il lavoro, apre una **merge request**.
-6. Un collega esegue la **code review**, chiede una piccola modifica per rispettare un **requisito non funzionale** (il link deve scadere dopo 30 minuti per motivi di sicurezza).
-7. Lo sviluppatore corregge, il collega approva, si fa il **merge**.
+6. Giulia esegue la **code review**, chiede una piccola modifica per rispettare un **requisito non funzionale** (il link deve scadere dopo 30 minuti per motivi di sicurezza).
+7. Ahmed corregge, Giulia approva, si fa il **merge**.
 8. Il team esegue il **testing** (unitario, di integrazione e manuale) sulla nuova funzionalità.
-9. Tutto ok: si prepara il **rilascio** e si assegna un nuovo numero di **versione**, ad esempio da 2.3.1 a 2.4.0 (è una nuova feature, quindi cambia il numero MINOR).
+9. Tutto ok: si prepara il **rilascio** e si assegna un nuovo numero di **versione** a ShopFacile, ad esempio da 2.3.1 a 2.4.0 (è una nuova feature, quindi cambia il numero MINOR).
 10. Il software va in **produzione**. Da qui in avanti, entra nella fase di **manutenzione**: se emergono nuovi bug legati a questa funzionalità, il ciclo ripartirà da capo su un nuovo branch.
 
-Come vedi, tutti questi termini che oggi possono sembrare astratti sono in realtà i mattoni con cui è costruito il lavoro quotidiano di qualsiasi team software. Nelle prossime sezioni approfondirai molti di questi concetti con strumenti e pratiche concrete.
+Come vedi, tutti questi termini che oggi possono sembrare astratti sono in realtà i mattoni con cui è costruito il lavoro quotidiano di qualsiasi team software, ShopFacile incluso. Nelle prossime sezioni approfondirai molti di questi concetti con strumenti e pratiche concrete.
 
 ## 📝 Esercizi pratici
 

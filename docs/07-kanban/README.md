@@ -5,9 +5,17 @@
 
 
 Nella sezione precedente hai visto Scrum: sprint a tempo fisso, ruoli
-definiti, eventi ricorrenti (planning, daily, review, retrospettiva). Scrum
-è un framework molto "strutturato". Kanban parte da un'idea diversa e più
-semplice: **rendere visibile il lavoro e limitare quanto ne facciamo
+definiti, eventi ricorrenti (Sprint Planning, Daily Scrum, Sprint Review,
+Sprint Retrospective). Immagina il team di **ShopFacile** appena uscito da
+una Sprint Retrospective: tra i punti emersi c'è che i bug urgenti segnalati
+dagli utenti, arrivati a metà sprint senza preavviso, hanno continuato a
+"saltare la fila" e a scombinare la pianificazione fatta a inizio sprint.
+Sara e Luca si chiedono se, almeno per questo tipo di lavoro imprevedibile,
+un flusso continuo non sia più adatto di uno sprint a tempo fisso. È
+esattamente il problema che Kanban è pensato per risolvere.
+
+Scrum è un framework molto "strutturato". Kanban parte da un'idea diversa e
+più semplice: **rendere visibile il lavoro e limitare quanto ne facciamo
 contemporaneamente**, senza necessariamente imporre sprint o ruoli fissi.
 
 Se Scrum è come organizzare il lavoro a "capitoli" di durata fissa, Kanban
@@ -110,26 +118,32 @@ Le board Kanban possono essere fisiche (un muro con post-it) o digitali
 vedrai come si costruisce concretamente una board Kanban dentro
 Azure DevOps.
 
-> 💡 **Esempio pratico**: immagina la board di un piccolo team di
-> manutenzione, con 4 colonne — **To Do**, **In Sviluppo**, **In Test**,
+> 💡 **Esempio pratico**: immagina la board Kanban del team di
+> **ShopFacile**, con 4 colonne — **To Do**, **In Sviluppo**, **In Test**,
 > **Done** — e in un dato lunedì mattina la situazione è questa:
 >
 > - **To Do** (6 card): richieste appena arrivate, non ancora prese in
 >   carico — es. "Aggiungere validazione campo email", "Bug: pagina
 >   lenta su mobile".
-> - **In Sviluppo** (2 card): "Fix errore export PDF" (assegnata a
->   Marco), "Aggiornare libreria di logging" (assegnata a Giulia).
+> - **In Sviluppo** (3 card): "Fix errore export PDF" (assegnata a
+>   Marco), "Aggiornare libreria di logging" (assegnata a Giulia),
+>   "Aggiungere filtro categoria al catalogo" (assegnata ad Ahmed).
 > - **In Test** (1 card): "Nuovo filtro ricerca prodotti", in verifica
 >   dal tester.
 > - **Done** (3 card, completate questa settimana): "Fix bottone
 >   disabilitato", "Aggiornamento pagina contatti", "Correzione
 >   traduzione IT".
 >
-> Guardando solo questa riga di numeri (6 / 2 / 1 / 3), un Project
+> Guardando solo questa riga di numeri (6 / 3 / 1 / 3), un Project
 > Manager può già farsi una prima idea del flusso: c'è più lavoro in
-> attesa (6) di quanto il team ne stia lavorando attivamente (2+1=3) —
+> attesa (6) di quanto il team ne stia lavorando attivamente (3+1=4) —
 > non è necessariamente un problema, ma è un segnale da tenere
 > d'occhio se il numero in "To Do" continua solo a crescere.
+
+Avere una board così, visibile a tutti, è già un grande passo avanti — ma
+non basta da solo: bisogna anche controllare **quanto lavoro il team si
+mette a fare contemporaneamente**, non solo renderlo visibile. È qui che
+entra in gioco il concetto di WIP.
 
 ---
 
@@ -187,16 +201,22 @@ team, su cui vale la pena indagare (manca una competenza? una fase
 richiede un'approvazione lenta? c'è troppa dipendenza da una sola
 persona?).
 
-> 💡 **Esempio pratico**: il team fissa il limite di WIP della colonna
-> "In Sviluppo" a **3**. Martedì la colonna ha già 3 card (A, B, C) e
-> uno sviluppatore che ha appena finito un task vorrebbe iniziarne uno
-> nuovo, la card D. Con il limite di WIP attivo, **non può farlo**:
+> 💡 **Esempio pratico**: nel team di ShopFacile, la colonna "In Sviluppo"
+> ha un limite di WIP fissato a **3**. Martedì la colonna ha già 3 card
+> (A, B, C) e **Ahmed**, che ha appena finito un task, vorrebbe iniziarne
+> uno nuovo, la card D. Con il limite di WIP attivo, **non può farlo**:
 > deve prima aiutare a completare A, B o C (magari facendo code review
 > a un collega, o testando manualmente una delle tre) e farla avanzare
 > in "In Test". Solo quando una delle tre card lascia la colonna, si
 > "libera uno slot" e la card D può entrare. Il risultato pratico è che
-> lo sviluppatore, invece di aprire un quarto fronte, spinge a chiudere
+> Ahmed, invece di aprire un quarto fronte, spinge a chiudere
 > qualcosa che è già a metà — ed è esattamente l'effetto voluto.
+
+Limitare il WIP non serve solo a evitare che il team apra troppi fronti
+contemporaneamente: come vedremo subito, avere poche card "in corso" alla
+volta rende anche possibile **misurare con precisione** quanto tempo
+impiega davvero una card ad attraversare la board, dall'ingresso in To Do
+al completamento.
 
 ---
 
@@ -204,7 +224,8 @@ persona?).
 
 Kanban, essendo un metodo orientato al "flusso" continuo di lavoro, si
 misura soprattutto con due metriche di tempo, spesso confuse tra loro ma
-concettualmente diverse.
+concettualmente diverse. Vediamole applicate alla board di ShopFacile che
+abbiamo appena descritto.
 
 ### Lead Time
 
@@ -288,6 +309,11 @@ flowchart TB
 > dipende da **quanto la card ha aspettato in coda**, non da quanto ci
 > ha messo il team a farla una volta iniziata.
 
+Lead Time e Cycle Time sono le metriche con cui Kanban misura il flusso
+continuo di lavoro; Scrum, che lavora a sprint, misura invece l'avanzamento
+con una metrica diversa, la Velocity. Vale la pena confrontare i due
+approcci fianco a fianco, per capire quando ha senso usare l'uno o l'altro.
+
 ---
 
 ## 7.5 Kanban vs Scrum: quando usare cosa
@@ -341,6 +367,9 @@ flowchart LR
     Scrum -.combinati in.-> Scrumban[("Scrumban")]
     Kanban -.combinati in.-> Scrumban
 ```
+
+Chiudiamo qui il confronto con Scrum: riprendiamo in breve i punti chiave
+di questa sezione su Kanban.
 
 ---
 

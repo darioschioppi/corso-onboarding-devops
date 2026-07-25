@@ -23,6 +23,16 @@ che vedrai dopo (pipeline, ambienti, monitoraggio, sicurezza) ti sembrerà
 la conseguenza naturale di un'idea semplice, non un elenco di strumenti
 scollegati tra loro.
 
+Per rendere tutto più concreto, in questa sezione useremo un unico
+progetto di riferimento, che ritroverai anche nelle sezioni successive:
+**ShopFacile**, una piattaforma e-commerce (catalogo prodotti, carrello,
+ordini, pagamenti, sconti) sviluppata da un piccolo team interno composto,
+tra gli altri, da **Marco** e **Giulia** (developer), **Ahmed** (developer
+junior, in crescita), **Sara** (Product Owner) e **Luca** (Scrum Master).
+Vedrai questi nomi tornare più volte: non sono persone diverse in ogni
+esempio, ma lo stesso team che affronta, di volta in volta, un problema
+diverso.
+
 ## 🎯 Obiettivi della sezione
 
 Alla fine di questa sezione saprai:
@@ -89,6 +99,11 @@ comprare attrezzi da falegname non fa di te un falegname. Gli strumenti
 aiutano, e sono importanti — li vedrai nel dettaglio nella prossima
 sezione — ma senza il cambiamento di cultura e di collaborazione, restano
 scatole vuote.
+
+Ma se DevOps è "solo" una cultura, perché è diventata così centrale nel
+lavoro quotidiano di un team come quello di ShopFacile? Per rispondere
+bisogna guardare al problema concreto che ha spinto a inventarla: torniamo
+indietro a come lavoravano i team **prima** che DevOps esistesse.
 
 ---
 
@@ -267,6 +282,13 @@ parti sono lente) diventano input diretto per la prossima fase di Plan.
 Questo è il motivo per cui il simbolo è un infinito e non una linea con un
 punto di arrivo.
 
+Conoscere le otto fasi del ciclo, però, non basta a farle funzionare bene
+insieme: perché quel ciclo scorra senza attriti, serve che le persone che
+lo attraversano — chi scrive il codice, chi lo gestisce in produzione —
+si comportino secondo alcuni principi condivisi. È proprio a questi
+principi, cioè alla cultura DevOps vera e propria, che dedichiamo il
+prossimo paragrafo.
+
 ---
 
 ## 9.4 La cultura DevOps: collaborazione, responsabilità, fiducia
@@ -351,23 +373,26 @@ DevOps è l'acronimo **CALMS**:
 | **M** | **Measurement** (Misurazione) | Misurare tutto ciò che conta con dati oggettivi: quanto spesso si rilascia, quanto tempo serve per riparare un guasto, quanti errori arrivano in produzione (i KPI DevOps visti nella sezione 8, come deployment frequency e MTTR) |
 | **S** | **Sharing** (Condivisione) | Condividere conoscenza, strumenti, successi e insuccessi tra i team, per non ripetere gli stessi errori e non "reinventare la ruota" |
 
-> 🛠️ **Esempio pratico**: immagina un team che rilascia ancora manualmente,
-> una volta al mese, seguendo una checklist su carta, senza sapere quanto
-> tempo richieda in media risolvere un guasto. Applicando CALMS:
+> 🛠️ **Esempio pratico**: immagina che il team di **ShopFacile** rilasci
+> ancora manualmente, una volta al mese, seguendo una checklist su carta,
+> senza sapere quanto tempo richieda in media risolvere un guasto.
+> Applicando CALMS:
 >
-> - **Culture**: dev e operations iniziano a partecipare alla stessa
->   retrospettiva, invece di due riunioni separate che non si parlano.
+> - **Culture**: **Marco** (developer) e chi si occupa dell'infrastruttura
+>   iniziano a partecipare alla stessa retrospettiva, invece di due
+>   riunioni separate che non si parlano.
 > - **Automation**: la checklist manuale viene trasformata in una pipeline
 >   che esegue build, test e deploy in automatico, riducendo gli errori.
 > - **Lean**: il team si rende conto che 3 dei 12 passaggi della vecchia
 >   checklist non servivano più a nulla, ed erano solo un'abitudine mai
 >   rimessa in discussione.
-> - **Measurement**: il team inizia a misurare la *deployment frequency*
->   (quante volte si rilascia) e l'*MTTR* (quanto tempo serve per risolvere
->   un guasto), passando da decisioni "a sensazione" a decisioni basate su
->   dati concreti.
-> - **Sharing**: la pipeline creata per un progetto viene documentata e
->   riutilizzata da un altro team, invece di essere reinventata da zero.
+> - **Measurement**: **Luca** (Scrum Master) inizia a far misurare al team
+>   la *deployment frequency* (quante volte si rilascia) e l'*MTTR* (quanto
+>   tempo serve per risolvere un guasto), passando da decisioni "a
+>   sensazione" a decisioni basate su dati concreti.
+> - **Sharing**: la pipeline creata per il catalogo prodotti di ShopFacile
+>   viene documentata da **Giulia** e riutilizzata anche per il servizio
+>   ordini, invece di essere reinventata da zero.
 
 Vale la pena notare che **la Cultura è la prima lettera, non l'ultima**: non
 è un caso. Molte aziende provano a "fare DevOps" partendo dall'automazione
@@ -375,6 +400,11 @@ o dagli strumenti, saltando il lavoro culturale — e spesso falliscono,
 perché installano pipeline sofisticate sopra un'organizzazione che continua
 a comportarsi con la vecchia logica del "muro della confusione". Gli
 strumenti amplificano una buona cultura; non la creano da soli.
+
+Aver visto CALMS ci porta dritti a una delle sue lettere in particolare:
+la **A** di Automation. È il pilastro più "tecnico" e visibile dei cinque,
+ed è talmente centrale nel lavoro quotidiano del team di ShopFacile che
+merita un paragrafo tutto suo.
 
 ---
 
@@ -415,13 +445,13 @@ Perché è così importante automatizzare? Per tre ragioni concrete:
 > compromesso tra soluzioni), ma elimina la fatica ripetitiva dove non
 > serve giudizio, solo costanza.
 
-Esempi molto concreti di automazione che incontrerai nel tuo team, e che
-approfondiremo nelle prossime sezioni (specialmente nella 11, dedicata
-proprio a CI/CD):
+Esempi molto concreti di automazione che incontrerai nel team di
+ShopFacile, e che approfondiremo nelle prossime sezioni (specialmente
+nella 11, dedicata proprio a CI/CD):
 
-- **Build automatiche**: ogni volta che un cambiamento di codice viene
-  proposto, un sistema compila automaticamente il progetto, senza che
-  nessuno debba farlo manualmente sul proprio computer.
+- **Build automatiche**: ogni volta che **Ahmed** propone un cambiamento
+  al codice del carrello, un sistema compila automaticamente il progetto,
+  senza che nessuno debba farlo manualmente sul proprio computer.
 - **Test automatici**: una suite di test viene eseguita automaticamente ad
   ogni cambiamento, verificando che il codice funzioni come previsto e che
   non abbia rotto nulla che funzionava prima.
@@ -433,6 +463,11 @@ proprio a CI/CD):
   reti, database avviene tramite file di configurazione eseguiti
   automaticamente (lo vedremo nel dettaglio parlando di Infrastructure as
   Code, sezione 9.9).
+
+Tra tutte queste forme di automazione, una in particolare merita un
+paragrafo dedicato, perché è quella con cui uno sviluppatore di ShopFacile
+ha a che fare più spesso di tutte: l'integrazione automatica del codice di
+più persone che lavorano insieme sullo stesso progetto.
 
 ---
 
@@ -478,10 +513,10 @@ flowchart LR
     E -.->|correzione rapida| A
 ```
 
-> 🛠️ **Esempio pratico**: uno sviluppatore apre una Merge Request che modifica
-> la funzione di calcolo dello sconto su un ordine. Ecco cosa succede,
-> passo per passo, in una pipeline di CI tipica (li vedrai nel dettaglio
-> nella sezione 11):
+> 🛠️ **Esempio pratico**: **Ahmed** apre una Merge Request che modifica la
+> funzione di calcolo dello sconto su un ordine di ShopFacile. Ecco cosa
+> succede, passo per passo, in una pipeline di CI tipica (li vedrai nel
+> dettaglio nella sezione 11):
 >
 > 1. Il codice modificato viene "caricato" (push) sul repository condiviso.
 > 2. La pipeline si attiva automaticamente (il cosiddetto *trigger*), senza
@@ -490,9 +525,11 @@ flowchart LR
 >    c'è un errore di sintassi, la pipeline si ferma già qui.
 > 4. Vengono eseguiti i **test automatici**: ad esempio, un test verifica
 >    che "uno sconto del 10% su un ordine da 100€ dia esattamente 90€".
-> 5. Se un test fallisce (magari lo sviluppatore ha sbagliato un calcolo),
->    la pipeline segnala l'errore in pochi minuti, direttamente nella Pull
->    Request, prima che il codice venga integrato.
+> 5. Se un test fallisce (magari Ahmed ha sbagliato un calcolo), la
+>    pipeline segnala l'errore in pochi minuti, direttamente nella Pull
+>    Request, prima che il codice venga integrato. Sarà **Giulia**, che
+>    revisiona spesso queste Merge Request, ad aiutarlo a individuare il
+>    problema.
 > 6. Solo se build e test passano, il codice viene integrato nel ramo
 >    principale — pronto per le fasi successive (Delivery o Deployment).
 
@@ -501,6 +538,11 @@ funziona, lo sviluppatore lo scopre in pochi minuti, mentre ha ancora ben
 in mente cosa ha appena scritto — non settimane dopo, quando ha già
 dimenticato i dettagli di quella modifica e deve "ricordarsi" cosa aveva
 fatto.
+
+Sapere che il codice è stato integrato correttamente, però, non dice ancora
+nulla su **quando** e **come** quella modifica arriverà davanti agli utenti
+di ShopFacile: è qui che entrano in gioco Delivery e Deployment, i due
+concetti che completiamo nel prossimo paragrafo.
 
 ---
 
@@ -554,14 +596,15 @@ Continuous Deployment, non appena tutti i controlli pre-volo automatici
 sono superati, l'aereo decolla da solo, senza aspettare quel comando
 umano.
 
-> 🛠️ **Esempio pratico**: immagina che una nuova funzionalità ("aggiungi un
-> filtro di ricerca per data") abbia appena superato build e test
-> automatici.
+> 🛠️ **Esempio pratico**: immagina che in ShopFacile una nuova funzionalità
+> ("aggiungi un filtro di ricerca per data nel catalogo") abbia appena
+> superato build e test automatici.
 >
-> - Con **Continuous Delivery**, il pacchetto pronto resta "in attesa" e un
->   Product Owner (o un responsabile del rilascio) apre la pipeline, guarda
->   che tutto sia verde, e clicca manualmente su "Deploy in produzione" —
->   magari aspettando il momento di minor traffico sul sito.
+> - Con **Continuous Delivery**, il pacchetto pronto resta "in attesa" e
+>   **Sara** (Product Owner), insieme a un responsabile del rilascio, apre
+>   la pipeline, guarda che tutto sia verde, e clicca manualmente su "Deploy
+>   in produzione" — magari aspettando il momento di minor traffico sul
+>   sito.
 > - Con **Continuous Deployment**, non appena i test automatici passano, la
 >   stessa funzionalità viene installata in produzione da sola, nel giro di
 >   pochi minuti dal commit originale, senza che nessuno clicchi nulla.
@@ -629,6 +672,12 @@ riguarda l'integrazione del codice; Delivery e Deployment riguardano
 entrambi il rilascio, e si distinguono solo per **chi (o cosa) preme
 l'ultimo bottone**.
 
+Sia con Delivery che con Deployment, però, il codice di ShopFacile deve
+comunque "atterrare" da qualche parte: su server, reti e database che
+qualcuno deve aver preparato in anticipo. Il prossimo paragrafo racconta
+come anche questa parte — l'infrastruttura, non solo il codice
+applicativo — sia diventata "automazione", esattamente come build e test.
+
 ---
 
 ## 9.8 Infrastructure as Code (IaC): l'infrastruttura scritta come codice
@@ -667,19 +716,19 @@ descritto.
 
 > 🛠️ **Esempio pratico**: ecco un estratto semplificato (sintassi
 > approssimativa, solo per farti capire l'idea, non un file da eseguire
-> davvero) di come potrebbe apparire un file IaC che descrive un server
-> web e il relativo database:
+> davvero) di come potrebbe apparire un file IaC che descrive il server
+> web e il database di ShopFacile:
 >
 > ```
 > resource "server_web" {
->   nome          = "server-app-produzione"
+>   nome          = "server-shopfacile-produzione"
 >   dimensione    = "media" # 2 CPU, 4 GB RAM
 >   sistema       = "Linux"
 >   porta_aperta  = 443      # HTTPS
 > }
 >
 > resource "database" {
->   nome          = "db-ordini-produzione"
+>   nome          = "db-ordini-shopfacile-produzione"
 >   tipo          = "PostgreSQL"
 >   backup_auto   = true
 >   accesso       = "solo da server_web"
@@ -728,6 +777,11 @@ flowchart LR
     C -.->|"stato attuale<br/>confrontato col file"| B
 ```
 
+Una volta che server e database di ShopFacile sono stati creati — a mano
+o, meglio, tramite IaC — il lavoro non finisce lì: bisogna sapere, giorno
+per giorno, se quell'infrastruttura e il software che ci gira sopra stanno
+funzionando bene. È il compito del monitoring, che vediamo subito.
+
 ---
 
 ## 9.9 Monitoring: sapere se le cose stanno andando bene
@@ -755,9 +809,14 @@ tempo reale, e **alert** (avvisi automatici, spesso via email, SMS o
 strumenti come Slack/Teams) che si attivano quando un indicatore supera
 una soglia critica — ad esempio, "il tempo di risposta del sito ha
 superato i 3 secondi" o "meno del 5% di spazio disco disponibile". In
-questo modo, il team viene avvisato **prima** che un problema diventi
-visibile agli utenti finali, o quasi contemporaneamente al primo utente che
-lo nota — non ore o giorni dopo.
+questo modo, il team di ShopFacile viene avvisato **prima** che un problema
+diventi visibile agli utenti finali, o quasi contemporaneamente al primo
+utente che lo nota — non ore o giorni dopo.
+
+Il monitoring, però, ha un limite che vale la pena anticipare subito: ti
+dice *che* qualcosa non va (il sito è lento), ma non sempre ti dice *perché*.
+Per quel "perché" serve un concetto più ampio, che vediamo nel prossimo
+paragrafo: l'observability.
 
 ---
 
@@ -833,6 +892,11 @@ il "perché" quando succede qualcosa di nuovo e inatteso); un sistema
 davvero osservabile, invece, ti dà gli strumenti per indagare in
 profondità anche su problemi che nessuno aveva previsto in anticipo.
 
+Tra i tre pilastri dell'observability appena visti — metriche, log e
+tracce — uno in particolare è così radicato nel lavoro quotidiano di un
+team come quello di ShopFacile da meritare un paragrafo a sé: i log.
+Vediamoli più da vicino.
+
 ---
 
 ## 9.11 Logging: la memoria degli eventi del sistema
@@ -876,23 +940,23 @@ potrebbero indicare un problema di rete o di un servizio esterno condiviso,
 non necessariamente un bug nel codice dell'applicazione stessa.
 
 > 🛠️ **Esempio pratico: monitoring, observability e logging insieme in un
-> incidente reale**. Per capire davvero come questi tre concetti lavorano
-> insieme (e non sono tre cose scollegate), segui questo scenario passo per
-> passo:
+> incidente reale su ShopFacile**. Per capire davvero come questi tre
+> concetti lavorano insieme (e non sono tre cose scollegate), segui questo
+> scenario passo per passo:
 >
 > 1. **Monitoring** (il "cosa"): alle 09:16 un **alert** automatico avvisa
 >    il team su Slack/Teams: "tempo di risposta medio del sito superiore a
 >    3 secondi". La dashboard mostra una linea che sale bruscamente. Il
 >    team sa *che* qualcosa non va, ma non ancora *perché*.
-> 2. **Observability** (il "perché"): un ingegnere guarda le **tracce**
->    delle richieste più lente e nota che il ritardo si concentra sempre
->    nello stesso punto della catena: la chiamata dal servizio ordini verso
->    un servizio esterno di pagamento. Le **metriche** confermano che è
+> 2. **Observability** (il "perché"): **Marco** guarda le **tracce** delle
+>    richieste più lente e nota che il ritardo si concentra sempre nello
+>    stesso punto della catena: la chiamata dal servizio ordini verso un
+>    servizio esterno di pagamento. Le **metriche** confermano che è
 >    proprio quel servizio esterno ad avere un tempo di risposta anomalo,
 >    non il database o il resto dell'applicazione.
-> 3. **Logging** (il dettaglio esatto): l'ingegnere apre i **log** dello
->    stesso intervallo di tempo — proprio quelli visti sopra — e trova la
->    riga `[ERROR] Pagamento fallito per ordine #98213: timeout verso il
+> 3. **Logging** (il dettaglio esatto): Marco apre i **log** dello stesso
+>    intervallo di tempo — proprio quelli visti sopra — e trova la riga
+>    `[ERROR] Pagamento fallito per ordine #98213: timeout verso il
 >    servizio esterno`, che confirma con precisione l'orario, l'ordine
 >    coinvolto e la causa tecnica esatta (un timeout).
 >
@@ -921,6 +985,12 @@ sulle architetture software), i log di ciascun servizio vengono spesso
 raccolti in un **unico sistema centralizzato**, per poterli cercare e
 correlare tutti insieme, invece di dover collegarsi manualmente a decine
 di server diversi per leggere ciascuno il proprio file di log locale.
+
+Con questo, il team di ShopFacile — e tu insieme a loro — ha attraversato
+tutti i concetti chiave di DevOps, dalla cultura agli strumenti concreti.
+Prima di passare ad Azure DevOps, la piattaforma dove questi concetti
+diventano schermate cliccabili, vale la pena fermarsi un momento a
+ricapitolare il percorso fatto.
 
 ---
 

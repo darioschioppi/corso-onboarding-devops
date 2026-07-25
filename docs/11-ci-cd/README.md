@@ -5,13 +5,16 @@
 
 
 Nella sezione DevOps hai già incontrato i concetti di **Continuous
-Integration** e **Continuous Delivery/Deployment**: sai che servono a
-integrare e rilasciare il codice in modo frequente e automatizzato, invece
-di accumulare mesi di lavoro in un unico rilascio rischioso. Questa
-sezione va un livello più in profondità: non "cosa sono CI/CD e perché
-servono" (quello lo trovi in [9. DevOps](../09-devops/README.md)), ma
-**come funziona davvero, passo per passo, una pipeline** — cioè lo
-strumento concreto che rende possibile la CI/CD.
+Integration** e **Continuous Delivery/Deployment**, applicati al lavoro
+quotidiano del team di **ShopFacile**: sai che servono a integrare e
+rilasciare il codice in modo frequente e automatizzato, invece di
+accumulare mesi di lavoro in un unico rilascio rischioso. Questa sezione
+resta sullo stesso progetto, ma va un livello più in profondità: non "cosa
+sono CI/CD e perché servono" (quello lo trovi in
+[9. DevOps](../09-devops/README.md)), ma **come funziona davvero, passo
+per passo, la pipeline** che Marco, Giulia e Ahmed usano ogni giorno per
+far arrivare le loro modifiche in produzione — cioè lo strumento concreto
+che rende possibile la CI/CD.
 
 Alla fine di questa sezione, quando in una daily standup qualcuno dirà
 "la pipeline è rossa sul quality gate della coverage" o "il deploy in
@@ -66,7 +69,8 @@ questi due concetti.
 Il meccanismo che rende concreti questi due concetti si chiama
 **pipeline**: una sequenza automatizzata di fasi che il codice attraversa,
 una dopo l'altra, dal momento in cui viene scritto al momento in cui gira
-davanti agli utenti reali.
+davanti agli utenti reali di ShopFacile. Vediamo ora, fase per fase, come è
+fatta davvero.
 
 ---
 
@@ -156,17 +160,22 @@ digitale del pacchetto). Il principio, però, resta lo stesso: **fasi in
 sequenza, ciascuna con la possibilità di fermare tutto se qualcosa non va
 bene**.
 
-> 🛠️ **Esempio pratico**: una developer del team, chiamiamola Giulia,
-> apre alle 10:03 una Merge Request con una modifica al calcolo di uno
-> sconto. Alle 10:04 la pipeline parte da sola: il checkout del codice
-> impiega 5 secondi, la build 40 secondi. Al minuto 2 la fase di test
-> automatici fallisce, perché uno dei test esistenti si aspettava un
-> risultato diverso da quello prodotto dalla modifica di Giulia. La
-> pipeline si ferma **esattamente lì**: non arriva né alla fase di
-> analisi di sicurezza né, ovviamente, al deploy. Giulia riceve una
-> notifica automatica (email o messaggio nella chat del team) con il
-> link al log del test fallito, corregge il codice, fa un nuovo commit
-> sulla stessa MR e la pipeline riparte da capo, dal checkout.
+> 🛠️ **Esempio pratico**: **Giulia** apre alle 10:03 una Merge Request con
+> una modifica al calcolo di uno sconto sul carrello di ShopFacile. Alle
+> 10:04 la pipeline parte da sola: il checkout del codice impiega 5
+> secondi, la build 40 secondi. Al minuto 2 la fase di test automatici
+> fallisce, perché uno dei test esistenti si aspettava un risultato
+> diverso da quello prodotto dalla sua modifica. La pipeline si ferma
+> **esattamente lì**: non arriva né alla fase di analisi di sicurezza né,
+> ovviamente, al deploy. Giulia riceve una notifica automatica (email o
+> messaggio nella chat del team) con il link al log del test fallito,
+> corregge il codice, fa un nuovo commit sulla stessa MR e la pipeline
+> riparte da capo, dal checkout.
+
+Nell'esempio la pipeline è partita da sola, senza che Giulia dovesse
+lanciarla a mano: è successo perché ha aperto la Merge Request, uno degli
+eventi che possono far scattare una pipeline. Vediamo ora quali sono
+questi eventi, chiamati **trigger**.
 
 ---
 
@@ -203,14 +212,20 @@ flowchart LR
     T4[👆 Trigger manuale] --> P
 ```
 
-**Esempio pratico**: nel progetto, la pipeline di CI (build + test) parte
-automaticamente a ogni push e a ogni aggiornamento di una Merge Request,
-per dare un feedback rapido allo sviluppatore. Il deploy in produzione,
-invece, ha un trigger manuale: anche se tutte le fasi precedenti sono
-andate a buon fine, è una persona (tipicamente il Tech Lead o un ruolo di
-Release Manager) che clicca "Deploy in produzione" in un momento
-concordato — ad esempio non di venerdì pomeriggio, per non rischiare un
-weekend di incidenti con poche persone disponibili a intervenire.
+**Esempio pratico**: **Marco** fa un push di alcuni commit sul branch della
+sua feature per il servizio ordini di ShopFacile. Non deve avvisare
+nessuno né lanciare nulla a mano: il push stesso è il trigger, e la
+pipeline di CI (build + test) parte automaticamente, per dare a Marco un
+feedback rapido su quel codice. Il deploy in produzione, invece, ha un
+trigger manuale: anche se tutte le fasi precedenti sono andate a buon
+fine, è una persona (tipicamente il Tech Lead o un ruolo di Release
+Manager) che clicca "Deploy in produzione" in un momento concordato — ad
+esempio non di venerdì pomeriggio, per non rischiare un weekend di
+incidenti con poche persone disponibili a intervenire.
+
+Una volta scattata la pipeline, però, il codice di Marco non resta fermo
+in un solo posto: attraversa una serie di ambienti diversi, ciascuno con
+un ruolo preciso. È il prossimo argomento.
 
 ---
 
@@ -267,6 +282,11 @@ Approfondirai la configurazione pratica di questi ambienti — chi ci
 accede, come si isolano, come si gestiscono le credenziali diverse per
 ciascuno — nella sezione [15. Ambienti di sviluppo](../15-ambienti-di-sviluppo/README.md).
 
+Abbiamo detto che il codice viene "promosso" da un ambiente all'altro
+**senza essere ricostruito**: ma cos'è, esattamente, questa cosa che si
+sposta identica da Dev a Test/QA a Staging a Produzione? È il momento di
+dare un nome preciso a quel "pacco": l'artifact.
+
 ---
 
 ## 11.5 Artifact: il "pacco" che viaggia lungo la pipeline
@@ -303,6 +323,12 @@ flowchart LR
     A --> DP[Deploy in Produzione]
 ```
 
+Sappiamo ora **cosa** attraversa la pipeline (l'artifact) e **dove**
+(gli ambienti). Manca un pezzo: **chi decide** l'ordine esatto di queste
+fasi, e come quella decisione viene scritta e mantenuta nel tempo dal
+team di ShopFacile. È qui che entra in gioco il concetto di Pipeline as
+Code.
+
 ---
 
 ## 11.6 Pipeline as Code: la pipeline è codice, non un click di troppo
@@ -337,6 +363,10 @@ I vantaggi pratici di questo approccio:
 - la pipeline **vive insieme al codice che testa**: se un branch richiede
   una fase diversa, quella definizione sta proprio in quel branch, non in
   una configurazione globale scollegata dal codice.
+
+Parlare di "file YAML versionato in Git" resta astratto finché non lo si
+vede scritto per intero: ecco quindi come potrebbe apparire davvero il
+file che definisce la pipeline di ShopFacile.
 
 ---
 
@@ -434,6 +464,11 @@ la **struttura**. Nota come:
   prima di procedere — il trigger manuale di cui parlavamo sopra, applicato
   a un singolo stage invece che a tutta la pipeline.
 
+Guardando questo file, nota lo stage `Test`: contiene non solo gli unit
+test, ma anche un'analisi di qualità e sicurezza. È proprio lì, in quel
+punto della pipeline, che entra in gioco uno dei controlli più importanti
+per un team come quello di ShopFacile: il quality gate.
+
 ---
 
 ## 11.8 Quality Gate: i controlli che possono bloccare tutto
@@ -453,17 +488,20 @@ Esempi tipici di quality gate:
 | **Vulnerabilità di sicurezza** | Nessuna vulnerabilità di livello "alto" o "critico" nelle dipendenze usate | Il rilascio viene bloccato finché la libreria vulnerabile non viene aggiornata o sostituita |
 | **Qualità del codice** | Es. nessun nuovo problema critico introdotto (complessità eccessiva, duplicazioni) | Il rilascio viene bloccato o segnalato per revisione, secondo le regole del progetto |
 
-> 🛠️ **Esempio pratico**: nel progetto, il quality gate sulla coverage è
-> impostato all'80%. Un developer aggiunge una nuova funzionalità di 120
-> righe ma scrive test solo per 60 di quelle righe: la coverage
-> complessiva del progetto scende sotto la soglia, e la pipeline si
-> ferma con un messaggio tipo `Quality gate failed: coverage 76% (soglia
-> 80%)`. Il developer non può "convincere" la pipeline con una buona
+> 🛠️ **Esempio pratico**: in ShopFacile, il quality gate sulla coverage è
+> impostato all'80%. **Ahmed** aggiunge una nuova funzionalità di 120
+> righe per il carrello ma scrive test solo per 60 di quelle righe: la
+> coverage complessiva del progetto scende sotto la soglia, e la pipeline
+> si ferma con un messaggio tipo `Quality gate failed: coverage 76%
+> (soglia 80%)`. Ahmed non può "convincere" la pipeline con una buona
 > motivazione: deve aggiungere altri test finché la percentuale non
-> torna sopra soglia, oppure — solo se davvero giustificato e con
-> l'approvazione di un ruolo autorizzato — il team decide consapevolmente
-> di alzare temporaneamente l'eccezione per quel singolo commit,
-> lasciando comunque una traccia scritta del perché.
+> torna sopra soglia. **Giulia**, che segue spesso queste segnalazioni,
+> lo aiuta a capire quali casi mancano di copertura — un'occasione di
+> apprendimento più che un rimprovero, in linea con la blameless culture
+> vista nella sezione DevOps. Solo se davvero giustificato e con
+> l'approvazione di un ruolo autorizzato, il team può decidere
+> consapevolmente di alzare temporaneamente l'eccezione per quel singolo
+> commit, lasciando comunque una traccia scritta del perché.
 
 > 💡 **Analogia**: un quality gate funziona come i controlli di sicurezza
 > in aeroporto. Non importa quanta fretta hai di prendere il volo (di
@@ -481,6 +519,12 @@ automaticamente a ogni singolo rilascio, senza eccezioni "perché stavolta
 ho fretta". Questo è uno dei motivi per cui i team DevOps maturi riescono
 a rilasciare spesso *e* con affidabilità: i quality gate tolgono dalle
 spalle delle persone la responsabilità di "ricordarsi di controllare".
+
+Ma anche superando ogni quality gate immaginabile, resta un caso che
+nessun controllo automatico può eliminare del tutto: un problema che
+emerge solo quando il codice è già davanti agli utenti reali di
+ShopFacile. Cosa fa il team in quel momento è l'ultimo argomento di
+questa parte più "operativa" della pipeline.
 
 ---
 
@@ -527,12 +571,27 @@ flowchart LR
     RB --> V1B[✅ Versione 213<br/>di nuovo in produzione]
 ```
 
+> 🛠️ **Esempio pratico**: pochi minuti dopo il deploy della versione 214
+> del servizio pagamenti di ShopFacile, gli alert segnalano un tasso di
+> errore anomalo sugli acquisti. **Luca**, come Scrum Master, convoca al
+> volo Marco e Giulia per decidere insieme: il problema è abbastanza
+> serio da giustificare un rollback immediato, oppure basta un hotfix
+> rapido? In questo caso decidono per il rollback: si ri-rilascia la
+> versione 213, nota e stabile, mentre Marco indaga con calma sulla causa
+> reale, senza la pressione di dover risolvere tutto a caldo in
+> produzione.
+
 Un punto culturale importante da portare con te come futuro Project
 Manager: **un rollback non è un fallimento del team, è un successo del
 processo**. Un'organizzazione che rilascia frequentemente e ha un
 rollback rapido e testato è molto più sana di una che rilascia raramente
 sperando che "vada tutto bene", perché quest'ultima, quando qualcosa va
 storto (e prima o poi succede), non ha un piano B pronto.
+
+Fin qui abbiamo visto ogni fase, trigger e controllo della pipeline in
+modo concettuale, senza legarli a un prodotto specifico. Nella pratica,
+però, il team di ShopFacile usa strumenti reali per implementare ciascuna
+di queste fasi: è il momento di vederli con i loro nomi.
 
 ---
 
@@ -542,7 +601,8 @@ Finora abbiamo parlato di fasi, trigger, ambienti e quality gate in modo
 concettuale, senza legarci a un prodotto specifico. Nella pratica, ogni
 fase della pipeline è quasi sempre implementata da uno strumento reale, e
 sentirai questi nomi citati costantemente nelle conversazioni tecniche del
-team. Vediamone cinque tra i più diffusi.
+team di ShopFacile. Vediamone cinque tra i più diffusi, seguendo lo stesso
+ordine in cui si passano il testimone lungo la pipeline.
 
 ### Jenkins: l'orchestratore storico della pipeline
 
@@ -564,6 +624,12 @@ nativo non copre.
 > installare dove vuoi e collegare a qualsiasi "magazzino" di codice
 > (GitLab, ma anche altri), con la massima flessibilità di configurazione.
 
+Una volta che Jenkins ha completato con successo build e test del
+servizio ordini di ShopFacile, il risultato non può restare un file
+sparso sul disco di un agente di build: serve un formato pronto per
+viaggiare identico fino in produzione. È qui che il testimone passa a
+Docker.
+
 ### Docker: il packaging portatile
 
 Abbiamo già incontrato **Docker** al paragrafo 11.5, parlando di artifact:
@@ -576,6 +642,11 @@ compilato e testato viene trasformato in un'immagine versionata (es.
 Staging e Produzione — lo stesso principio "build once, deploy many" già
 visto.
 
+Avere un'immagine Docker pronta, però, non significa ancora che sia
+**sicuro** farla avanzare verso il deploy: prima bisogna verificare che il
+codice al suo interno superi le soglie di qualità e sicurezza del
+progetto. È il compito di SonarQube.
+
 ### SonarQube: il quality gate concreto
 
 **SonarQube** è uno strumento di **analisi statica del codice** (*static
@@ -587,6 +658,11 @@ configurate (es. coverage minima, zero vulnerabilità critiche), SonarQube
 segnala il fallimento e la pipeline si ferma, esattamente come
 nell'esempio della coverage all'80% visto in quel paragrafo.
 
+Superato il quality gate di SonarQube e completato il deploy, il lavoro
+della pipeline non finisce lì: bisogna sapere come si comporta
+l'applicazione una volta davanti agli utenti reali di ShopFacile. Questo
+compito spetta a Dynatrace.
+
 ### Dynatrace: il monitoraggio che informa il rollback
 
 **Dynatrace** è una piattaforma di **observability e monitoring**: tiene
@@ -597,6 +673,11 @@ paragrafo 11.9 sul rollback: quando Dynatrace rileva un tasso di errore
 anomalo dopo un rilascio, quel segnale è spesso l'innesco che porta il
 team a decidere un rollback, prima ancora che arrivino segnalazioni dagli
 utenti.
+
+Tutto questo percorso — build, packaging, quality gate, monitoraggio — non
+nasce dal nulla: parte quasi sempre da un ticket che descrive cosa
+costruire, ed è a quel ticket che il lavoro tecnico torna a riferirsi. È
+il ruolo di Jira Software.
 
 ### Jira Software: il tracking del lavoro, collegato alla pipeline
 

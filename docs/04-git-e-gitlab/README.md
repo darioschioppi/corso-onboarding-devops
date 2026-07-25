@@ -63,7 +63,7 @@ se quello andava giù, si perdeva tutto.
 
 ```mermaid
 flowchart LR
-    A[Computer di Marco] <-->|sincronizzazione| S[(Server remoto<br/>es. GitLab)]
+    A[Computer di Marco] <-->|sincronizzazione| S[(Repository di ShopFacile<br/>su GitLab)]
     B[Computer di Giulia] <-->|sincronizzazione| S
     C[Computer di Ahmed] <-->|sincronizzazione| S
 ```
@@ -78,7 +78,7 @@ l'obiettivo è che tu capisca **la logica**.
 
 ## 4.2 Cos'è GitLab (e non è la stessa cosa di Git!)
 
-Uno degli equivoci più comuni per chi inizia è pensare che Git e GitLab
+Nel diagramma di prima abbiamo scritto "GitLab" sopra il server remoto un po' di sfuggita: è il momento di chiarire di cosa si tratta davvero. Uno degli equivoci più comuni per chi inizia, infatti, è pensare che Git e GitLab
 siano la stessa cosa. Non lo sono.
 
 | | Git | GitLab |
@@ -123,7 +123,7 @@ infrastruttura.
 
 ## 4.3 Repository: il "progetto" versionato
 
-Un **repository** (spesso abbreviato "repo") è semplicemente **la cartella
+GitLab ospita i progetti, dicevamo: ma cosa contiene esattamente uno di quei progetti da un punto di vista tecnico? La risposta è il repository. Un **repository** (spesso abbreviato "repo") è semplicemente **la cartella
 di un progetto**, ma tracciata da Git. Contiene tutti i file del progetto
 (codice, documentazione, configurazioni) più una cartella speciale
 invisibile chiamata `.git`, dove Git conserva tutta la cronologia delle
@@ -149,16 +149,16 @@ git clone https://gitlab.com/nome-organizzazione/nome-progetto.git
 Dopo un `git clone`, avrai sul tuo computer una copia completa del
 progetto, compresa tutta la sua storia — pronta per essere modificata.
 
-> 🧪 **Esempio pratico**: immagina che il team ti mandi il link a un
+> 🧪 **Esempio pratico**: immagina che Marco ti mandi il link al
 > repository GitLab del progetto, ad esempio
-> `https://gitlab.com/nome-progetto/backend-api` (o, se l'azienda usa
+> `https://gitlab.com/shopfacile/backend-api` (o, se l'azienda usa
 > un'istanza self-hosted, qualcosa come
-> `https://gitlab.tuaazienda.it/nome-progetto/backend-api`). Aprendolo nel
+> `https://gitlab.tuaazienda.it/shopfacile/backend-api`). Aprendolo nel
 > browser vedrai: una lista di cartelle e file (il codice), un pulsante
 > blu "Clone" per clonarlo, il numero di branch attivi, e una voce
 > "Commits" con la cronologia di tutte le modifiche fatte finora. Se lo
 > clonassi sul tuo computer con
-> `git clone https://gitlab.com/nome-progetto/backend-api.git`, ti
+> `git clone https://gitlab.com/shopfacile/backend-api.git`, ti
 > ritroveresti in una cartella `backend-api` con dentro tutti quei file,
 > pronti per essere letti — anche se non li modifichi mai.
 
@@ -166,7 +166,7 @@ progetto, compresa tutta la sua storia — pronta per essere modificata.
 
 ## 4.4 Commit: uno scatto fotografico delle modifiche
 
-Un **commit** è un salvataggio "ufficiale" di un insieme di modifiche, con
+Il repository conserva "tutta la cronologia delle modifiche", abbiamo detto: ma di cosa è fatta, concretamente, questa cronologia? È fatta di commit. Un **commit** è un salvataggio "ufficiale" di un insieme di modifiche, con
 un messaggio che spiega **cosa** e **perché** è stato cambiato.
 
 > 💡 **Analogia**: immagina di scattare una fotografia allo stato attuale
@@ -206,7 +206,7 @@ Ogni commit ha un **identificativo univoco** (un codice esadecimale, es.
 qualsiasi momento futuro — utile per capire, ad esempio, "in quale commit
 è stato introdotto questo bug?".
 
-> 🧪 **Esempio pratico**: dopo tre commit, se lanci `git log --oneline`
+> 🧪 **Esempio pratico**: dopo tre commit di Marco su ShopFacile, se lanci `git log --oneline`
 > vedresti qualcosa così:
 > ```
 > a1b2c3d Aggiunge la validazione del campo email nel form di registrazione
@@ -215,13 +215,15 @@ qualsiasi momento futuro — utile per capire, ad esempio, "in quale commit
 > ```
 > Ogni riga è un commit: il codice a sinistra (es. `a1b2c3d`) è
 > l'identificativo univoco, il testo a destra è il messaggio. Se un giorno
-> qualcuno nota un bug nella validazione email, un developer potrà usare
+> Giulia nota un bug nella validazione email, potrà usare
 > `git log` per capire esattamente in quale commit — e quindi in che
 > momento — è stata introdotta quella modifica.
 
 ---
 
 ## 4.5 Branch: un ramo di lavoro parallelo
+
+Ogni commit di Marco si accumula in sequenza sulla stessa linea temporale: ma cosa succede quando Giulia e Ahmed devono lavorare *contemporaneamente* su cose diverse, senza pestarsi i piedi? Serve poter deviare dalla linea principale, ed è qui che entra in gioco il branch.
 
 Un **branch** (letteralmente "ramo") è una linea di sviluppo indipendente
 che parte da un punto della storia del progetto. Permette di lavorare su
@@ -258,15 +260,15 @@ vedi nelle Merge Request):
 Lavorare su branch separati è ciò che permette a più persone del team di
 lavorare **in parallelo sullo stesso progetto** senza pestarsi i piedi.
 
-> 🧪 **Esempio pratico**: il team deve sviluppare due cose in parallelo: una
-> nuova pagina di login e la correzione di un bug nel checkout. Due
-> developer diversi lanceranno:
+> 🧪 **Esempio pratico**: il team di ShopFacile deve sviluppare due cose in parallelo: una
+> nuova pagina di login e la correzione di un bug nel checkout. Marco e Ahmed
+> lanceranno:
 > ```bash
-> git checkout -b feature/login-utente        # developer A
-> git checkout -b fix/checkout-prezzo-errato  # developer B
+> git checkout -b feature/login-utente        # Marco
+> git checkout -b fix/checkout-prezzo-errato  # Ahmed
 > ```
-> Da questo momento lavorano su due "cantieri" separati: i commit di A non
-> toccano i file su cui lavora B (a meno che non modifichino esattamente
+> Da questo momento lavorano su due "cantieri" separati: i commit di Marco non
+> toccano i file su cui lavora Ahmed (a meno che non modifichino esattamente
 > gli stessi file), e nessuno dei due tocca `main`, che resta stabile per
 > tutti gli altri.
 
@@ -274,7 +276,7 @@ lavorare **in parallelo sullo stesso progetto** senza pestarsi i piedi.
 
 ## 4.6 Merge: unire due rami
 
-Il **merge** è l'operazione che **unisce le modifiche** fatte su un branch
+Marco e Ahmed, però, non possono lavorare per sempre su rami separati: prima o poi il loro lavoro deve tornare a far parte di un'unica versione condivisa. L'operazione che lo rende possibile è il merge. Il **merge** è l'operazione che **unisce le modifiche** fatte su un branch
 dentro un altro branch (tipicamente, si uniscono le modifiche di un branch
 di feature dentro `main`, una volta che il lavoro è completo e testato).
 
@@ -306,7 +308,7 @@ normalissimo nel lavoro quotidiano, non un errore grave.
 > Se nessuno ha toccato le stesse righe su `main` nel frattempo, Git
 > risponde con qualcosa come `Fast-forward` o
 > `Merge made by the 'ort' strategy` e il lavoro è unito automaticamente.
-> Se invece un altro developer aveva modificato lo stesso file nello stesso
+> Se invece Giulia aveva modificato lo stesso file nello stesso
 > punto, Git si ferma e restituisce un messaggio come
 > `CONFLICT (content): Merge conflict in login.js` — a quel punto tocca
 > aprire il file, decidere quale versione tenere (o combinarle), e
@@ -345,7 +347,7 @@ lavoro fatto nella linea principale.
 
 ## 4.7 Merge Request: il cuore della collaborazione su GitLab
 
-Una **Merge Request** (spesso abbreviata **MR**) è una **richiesta
+Abbiamo visto come funziona un merge da riga di comando, ma nella pratica quotidiana su GitLab il merge non viene quasi mai lanciato "a freddo": passa prima per uno strumento che formalizza la richiesta e apre lo spazio per la revisione, la Merge Request. Una **Merge Request** (spesso abbreviata **MR**) è una **richiesta
 formale** di unire le modifiche di un branch dentro un altro branch (di
 solito dentro `main`), passando prima per una **revisione** da parte di
 altri membri del team.
@@ -364,7 +366,7 @@ diverso: la logica è la stessa.)
 
 Il flusso tipico di una Merge Request:
 
-1. Uno sviluppatore crea un branch e ci lavora (con i suoi commit).
+1. Uno sviluppatore (ad esempio Marco) crea un branch e ci lavora (con i suoi commit).
 2. Quando il lavoro è pronto, apre una **Merge Request** su GitLab,
    proponendo di unire quel branch dentro `main` (o dentro un altro branch
    di destinazione).
@@ -394,18 +396,18 @@ avanzamento** del lavoro: quante MR sono aperte, quante sono in attesa di
 revisione, quanto tempo restano aperte prima di essere unite (un indicatore
 utile di quanto è fluido il processo del team).
 
-> 🧪 **Esempio pratico**: un developer ha finito la feature login. I
+> 🧪 **Esempio pratico**: Marco ha finito la feature login su ShopFacile. I
 > passaggi concreti su GitLab sarebbero:
 > 1. Push del branch: `git push origin feature/login-utente`.
 > 2. Su GitLab compare un banner "Create merge request": clicca, scrivi
 >    un titolo (es. "Aggiunge login utente con validazione email") e una
 >    descrizione di cosa cambia e perché.
-> 3. Assegna uno o due colleghi come reviewer/approver.
-> 4. I colleghi lasciano commenti tipo "Perché qui usiamo `==` invece di
->    `===`?" — il developer risponde o corregge con un nuovo commit sullo
+> 3. Assegna Giulia come reviewer/approver.
+> 4. Giulia lascia commenti tipo "Perché qui usiamo `==` invece di
+>    `===`?" — Marco risponde o corregge con un nuovo commit sullo
 >    stesso branch, che aggiorna automaticamente la MR.
 > 5. Quando i commenti sono risolti e i check automatici (CI/CD) sono
->    verdi, un reviewer clicca "Approve", poi qualcuno clicca "Merge".
+>    verdi, Giulia clicca "Approve", poi qualcuno clicca "Merge".
 >
 > Da Project Manager, vedresti questa MR nella sezione "Merge requests"
 > del repository con un'etichetta verde "Open" che diventa viola "Merged"
@@ -415,7 +417,7 @@ utile di quanto è fluido il processo del team).
 
 ## 4.8 Issue: tracciare bug e richieste
 
-Una **Issue** è una "voce" che descrive un problema da risolvere o una
+Finora abbiamo parlato di codice già scritto: branch, commit, merge request. Ma da dove nasce il lavoro stesso, cioè "cosa" bisogna scrivere o correggere? Spesso nasce da una Issue. Una **Issue** è una "voce" che descrive un problema da risolvere o una
 richiesta da realizzare: un bug da correggere, una nuova funzionalità da
 sviluppare, un miglioramento da valutare.
 
@@ -439,16 +441,15 @@ Molti team di progetto (incluso probabilmente il tuo) usano le Issue di
 GitLab — o l'equivalente "Work Item" in Azure DevOps — come base per la
 gestione del backlog che vedremo nelle sezioni su Agile, Scrum e Kanban.
 
-> 🧪 **Esempio pratico**: un utente segnala che il pulsante "Conferma
-> ordine" non funziona su un certo browser. Sul repository del progetto,
-> qualcuno apre una Issue così:
+> 🧪 **Esempio pratico**: un cliente di ShopFacile segnala che il pulsante "Conferma
+> ordine" non funziona su un certo browser. Sara apre una Issue così:
 > - **Titolo**: "Il pulsante Conferma ordine non risponde su Safari"
 > - **Descrizione**: passi per riprodurlo, screenshot, browser e versione
 >   usati
 > - **Label**: `bug`, `priorità-alta`
-> - **Assegnatario**: il developer che se ne occuperà
+> - **Assegnatario**: Ahmed, che se ne occuperà
 >
-> Il developer apre un branch `fix/conferma-ordine-safari`, risolve il
+> Ahmed apre un branch `fix/conferma-ordine-safari`, risolve il
 > problema, e nella descrizione della Merge Request scrive "Closes #57"
 > (dove 57 è il numero della Issue): una volta unita la MR, GitLab chiude
 > automaticamente la Issue numero 57.
@@ -457,7 +458,7 @@ gestione del backlog che vedremo nelle sezioni su Agile, Scrum e Kanban.
 
 ## 4.9 Release: una versione pubblicata ufficialmente
 
-Una **Release** è un punto preciso della storia del progetto che viene
+La Issue #57 è stata chiusa, il fix è unito in `main`: ma quando quel fix arriva davvero nelle mani degli utenti, con quale nome viene comunicato? Con quello di una Release. Una **Release** è un punto preciso della storia del progetto che viene
 "pubblicato" ufficialmente come versione consegnabile agli utenti finali
 (o al cliente).
 
@@ -480,7 +481,7 @@ rilascio** (release notes): un elenco leggibile di cosa è cambiato,
 utilissimo anche per un Project Manager che deve comunicare al cliente o
 agli stakeholder cosa contiene la nuova versione.
 
-> 🧪 **Esempio pratico**: il team rilascia la versione `2.3.0` del
+> 🧪 **Esempio pratico**: il team di ShopFacile rilascia la versione `2.3.0` del
 > prodotto. Sulla pagina "Releases" di GitLab troveresti una voce con:
 > - tag `v2.3.0`;
 > - titolo "Versione 2.3.0 — Gestione utenti";
@@ -497,7 +498,7 @@ agli stakeholder cosa contiene la nuova versione.
 
 ## 4.10 Tag: etichettare un punto preciso della storia
 
-Un **Tag** è un'etichetta che punta a un commit specifico, per marcarlo
+Ogni Release che abbiamo appena visto, in realtà, si appoggia su un meccanismo più elementare di Git per individuare quel punto preciso della storia: il tag. Un **Tag** è un'etichetta che punta a un commit specifico, per marcarlo
 come "punto di interesse" — quasi sempre usato insieme alle release.
 
 > 💡 **Analogia**: se la storia del progetto è un lungo rotolo di
@@ -538,7 +539,7 @@ costruito sopra un tag, con in più note descrittive, file scaricabili
 
 ## 4.11 Git Flow: un workflow strutturato a più branch
 
-**Git Flow** è un modello di organizzazione dei branch molto diffuso,
+Finora abbiamo visto i singoli "mattoncini" (branch, merge, MR, tag, release): ma come si combinano insieme in una strategia coerente, giorno per giorno, per tutto il team? Un primo modello molto diffuso è Git Flow. **Git Flow** è un modello di organizzazione dei branch molto diffuso,
 pensato per progetti con **cicli di rilascio pianificati** (es. una nuova
 versione ogni mese) e la necessità di gestire più cose in parallelo: nuove
 funzionalità, preparazione di una release, correzioni urgenti su
@@ -599,9 +600,9 @@ approvazione/rilascio è complesso e richiede una fase di stabilizzazione
 prima di ogni release. Lo svantaggio è che è un processo più pesante, con
 più branch da gestire e più passaggi di merge.
 
-> 🧪 **Esempio pratico**: il progetto rilascia una nuova versione ogni
+> 🧪 **Esempio pratico**: immaginiamo che ShopFacile rilasci una nuova versione ogni
 > mese. Lo scenario tipico con Git Flow:
-> - i developer lavorano tutto il mese su vari branch `feature/...` che
+> - Marco, Giulia e Ahmed lavorano tutto il mese su vari branch `feature/...` che
 >   partono da `develop` e ci tornano quando pronti;
 > - una settimana prima del rilascio si crea `release/1.4.0` da
 >   `develop`: qui si fanno solo piccoli fix e test finali, niente nuove
@@ -617,7 +618,7 @@ più branch da gestire e più passaggi di merge.
 
 ## 4.12 Trunk Based Development: il workflow semplificato
 
-Il **Trunk Based Development** (TBD) è un approccio molto più semplice:
+Git Flow, con i suoi cinque tipi di branch, funziona bene per rilasci pianificati, ma è un processo pesante per chi rilascia molto più spesso: esiste un'alternativa decisamente più snella. Il **Trunk Based Development** (TBD) è un approccio molto più semplice:
 tutti i membri del team lavorano il più possibile direttamente su **un
 unico branch principale** (il "trunk", cioè `main`), con **commit
 frequenti e piccoli**, integrando il proprio lavoro più volte al giorno.
@@ -659,8 +660,8 @@ vedremo più avanti nel corso. Lo svantaggio è che richiede molta disciplina
 e automazione: senza test solidi, integrare spesso su un unico branch
 diventa rischioso.
 
-> 🧪 **Esempio pratico**: il team lavora con Trunk Based Development e una
-> pipeline CI/CD solida. Una developer deve aggiungere un nuovo filtro di
+> 🧪 **Esempio pratico**: immaginiamo che il team di ShopFacile lavori con Trunk Based Development e una
+> pipeline CI/CD solida. Giulia deve aggiungere un nuovo filtro di
 > ricerca:
 > - crea un branch `feature/filtro-ricerca` la mattina;
 > - fa 2-3 commit piccoli nel corso della giornata, ciascuno verificato
@@ -692,6 +693,8 @@ questi due modelli, adattandole al proprio contesto.
 ---
 
 ## 4.13 Riepilogo dei comandi visti in questa sezione
+
+Abbiamo visto molti comandi sparsi nei vari esempi di questa sezione: raccogliamoli qui in un unico prontuario, utile come riferimento veloce quando ti troverai a seguire una conversazione tecnica del team.
 
 ```bash
 git init                              # crea un nuovo repository

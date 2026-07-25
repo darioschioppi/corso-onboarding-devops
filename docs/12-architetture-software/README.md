@@ -7,7 +7,10 @@
 Nella sezione 2 (Fondamenti di informatica) hai già incontrato i mattoncini
 di base: API, REST, database, container. In questa sezione facciamo un passo
 in più: vediamo come questi mattoncini vengono **combinati insieme** per
-costruire il software di cui il tuo team si occupa.
+costruire il software di cui il tuo team si occupa — e lo facciamo seguendo
+di nuovo **ShopFacile**, la piattaforma e-commerce già incontrata nelle
+sezioni DevOps, Azure DevOps e CI/CD, con **Marco** nel ruolo di chi discute
+spesso le scelte infrastrutturali e architetturali del progetto.
 
 Non ti serve saper progettare un'architettura software — è il lavoro degli
 sviluppatori e degli architetti. Ti serve invece **capire a grandi linee come
@@ -51,6 +54,10 @@ villetta e un grattacielo hanno esigenze diverse e richiedono progetti
 diversi. Lo stesso vale per il software: la scelta dell'architettura dipende
 dalle dimensioni del progetto, dal numero di utenti, dal team disponibile e
 da quanto velocemente deve poter crescere.
+
+Anche ShopFacile, come ogni software, ha dovuto affrontare questa scelta fin
+dall'inizio. Vediamo le due "piante" più comuni tra cui il team ha dovuto
+decidere: il monolite e i microservizi.
 
 ---
 
@@ -116,13 +123,28 @@ graph TB
 - **Difficile far crescere tanti team in parallelo** senza che si "pestino i
   piedi" a vicenda sullo stesso codice.
 
-**Esempio pratico**: immagina un gestionale interno per l'ufficio commerciale,
-scritto come un unico progetto: la gestione dei clienti, la generazione dei
-preventivi, la fatturazione e l'invio delle email di notifica vivono tutti
-nello stesso codice e vengono compilati in un unico eseguibile. Se un
-developer deve correggere un piccolo bug nella generazione dei preventivi,
-deve comunque ricompilare, testare e rilasciare **l'intera applicazione**,
-comprese le parti (fatturazione, email) che non ha nemmeno toccato.
+**Esempio pratico**: ShopFacile è nato esattamente così, come **monolite**:
+il catalogo prodotti, il carrello, la gestione degli ordini, i pagamenti e
+gli sconti vivevano tutti nello stesso progetto, compilato in un unico
+eseguibile. Era la scelta giusta per un team piccolo che doveva partire in
+fretta. Ma quando **Marco** deve correggere un piccolo bug nel calcolo di
+uno sconto, si trova a dover ricompilare, testare e rilasciare **l'intera
+applicazione**, comprese le parti (pagamenti, magazzino) che non ha nemmeno
+toccato — un costo che, all'inizio, il team accettava volentieri in cambio
+della semplicità.
+
+> 💡 **Per confronto**: non tutti i software devono necessariamente evolvere
+> oltre il monolite. Un gestionale interno per l'ufficio commerciale, usato
+> da poche decine di persone e senza picchi di traffico, può restare un
+> monolite per anni senza alcun problema: la scelta dipende dal contesto, non
+> è "il monolite è superato". Lo vedremo tra poco parlando di quando ha
+> davvero senso cambiare.
+
+Con il tempo, però, ShopFacile è cresciuto: più utenti, più developer nel
+team, più traffico concentrato su alcune funzionalità (il catalogo durante
+i saldi, i pagamenti durante il Black Friday). È qui che il monolite ha
+iniziato a mostrare i suoi limiti, ed è qui che entra in scena l'architettura
+alternativa: i microservizi.
 
 ---
 
@@ -199,25 +221,27 @@ graph LR
 - **Richiede un team più maturo** su temi come CI/CD, containerizzazione e
   monitoraggio, perché la complessità operativa cresce parecchio.
 
-**Esempio pratico**: nello stesso gestionale, in versione a microservizi, la
-generazione dei preventivi diventa un servizio separato, con il suo
-repository e la sua pipeline di rilascio. Se il team vuole aggiungere un
-nuovo tipo di sconto nei preventivi, rilascia **solo quel servizio**: la
-fatturazione e l'invio delle email continuano a funzionare esattamente come
-prima, senza bisogno di essere ritestati o rilasciati di nuovo.
+**Esempio pratico**: **Marco** e il resto del team decidono di scomporre
+ShopFacile in microservizi: il catalogo prodotti diventa un servizio
+separato, con il suo repository e la sua pipeline di rilascio (quella vista
+nella sezione 11). Se il team vuole aggiungere un nuovo filtro di ricerca
+nel catalogo, rilascia **solo quel servizio**: i pagamenti e la gestione
+ordini continuano a funzionare esattamente come prima, senza bisogno di
+essere ritestati o rilasciati di nuovo.
 
 ### Quando ha senso passare da monolite a microservizi
 
 Non è vero che i microservizi sono "sempre meglio". Anzi: molti progetti,
-soprattutto agli inizi, **partono volutamente come monolite**, perché è più
-rapido e il team è piccolo. Il passaggio a microservizi ha senso quando
-succede una o più di queste cose:
+soprattutto agli inizi, **partono volutamente come monolite**, proprio come
+ha fatto ShopFacile, perché è più rapido e il team è piccolo. Il passaggio a
+microservizi ha senso quando succede una o più di queste cose — ed è
+esattamente il ragionamento che Marco ha portato al team di ShopFacile:
 
 - il team è cresciuto molto e più squadre lavorano sullo stesso codice,
   intralciandosi a vicenda;
 - alcune parti del sistema hanno bisogno di scalare molto più di altre (es.
-  il motore di ricerca prodotti riceve 100 volte più traffico della gestione
-  fatture);
+  il catalogo prodotti di ShopFacile riceve 100 volte più traffico della
+  gestione fatture);
 - i rilasci del monolite sono diventati lenti, rischiosi e "tutto o nulla";
 - il codice è diventato talmente grande e intrecciato che anche piccole
   modifiche richiedono di toccare (e ritestare) mezza applicazione.
@@ -225,7 +249,11 @@ succede una o più di queste cose:
 Una buona regola pratica che sentirai spesso: **"non iniziare con i
 microservizi"**. Molte aziende, incluse alcune molto famose nel settore
 tech, sono partite da un monolite e sono passate ai microservizi solo quando
-la crescita lo ha reso necessario — non il contrario.
+la crescita lo ha reso necessario — non il contrario. Un gestionale interno
+per l'ufficio commerciale, usato da poche decine di persone senza picchi di
+traffico, è un controesempio utile: probabilmente non incontrerà mai nessuna
+di queste quattro condizioni, e restare monolite per lui è la scelta giusta,
+non un ritardo da recuperare.
 
 ### Monolite vs Microservizi: la tabella di confronto
 
@@ -243,9 +271,12 @@ la crescita lo ha reso necessario — non il contrario.
 
 ## 12.4 Come comunicano i componenti
 
-Sia nel monolite (tra i suoi moduli interni) che, soprattutto, nei
-microservizi (tra servizi separati), i vari "pezzi" del software devono
-scambiarsi informazioni. Ci sono principalmente due modalità.
+Nel momento in cui ShopFacile è diventato un insieme di servizi separati
+(catalogo, ordini, pagamenti, magazzino), è emersa una domanda nuova: come
+fanno questi servizi a scambiarsi informazioni tra loro? Sia nel monolite
+(tra i suoi moduli interni) che, soprattutto, nei microservizi (tra servizi
+separati), i vari "pezzi" del software devono comunicare. Ci sono
+principalmente due modalità.
 
 ### Comunicazione sincrona: API e REST
 
@@ -260,9 +291,9 @@ Questo funziona benissimo per molti casi ("dammi i dati di questo cliente",
 servizio che deve rispondere è lento o irraggiungibile, chi ha fatto la
 richiesta resta bloccato ad aspettare.
 
-**Esempio pratico**: il frontend di un'applicazione vuole mostrare i dettagli
-di un ordine. Fa una richiesta HTTP di tipo GET a un'API REST del backend, e
-resta in attesa della risposta:
+**Esempio pratico**: il frontend di ShopFacile vuole mostrare i dettagli di
+un ordine al cliente. Fa una richiesta HTTP di tipo GET a un'API REST del
+backend, e resta in attesa della risposta:
 
 Richiesta:
 
@@ -285,6 +316,12 @@ Finché il backend non risponde, il frontend resta "in attesa" — esattamente
 come nell'analogia della telefonata — prima di poter mostrare questi dati a
 schermo.
 
+Questo tipo di comunicazione, però, non è adatto a tutto: se il servizio
+Ordini di ShopFacile dovesse restare "in attesa" ogni volta che avvisa il
+servizio Email di inviare una conferma, un rallentamento della posta
+elettronica bloccherebbe anche la conferma dell'ordine. Per questi casi
+serve un modo diverso di comunicare: la comunicazione asincrona.
+
 ### Comunicazione asincrona: le code di messaggi
 
 Per certi casi è più comodo **non restare in attesa** di una risposta
@@ -305,11 +342,11 @@ Pensa alla differenza tra una telefonata e una **cassetta della posta**:
   in questo momento non è in casa, il messaggio resta comunque nella
   cassetta ad aspettarlo, senza perdersi.
 
-Esempio pratico: quando un cliente completa un ordine su un e-commerce, il
-servizio Ordini potrebbe non chiamare direttamente e "in diretta" il servizio
-Email per inviare la conferma. Invece, scrive un messaggio del tipo "ordine
-42 completato" in una coda; il servizio Email (quando è pronto, magari
-qualche secondo dopo) legge quel messaggio dalla coda e invia l'email. Se il
+Esempio pratico: quando un cliente completa un ordine su ShopFacile, il
+servizio Ordini non chiama direttamente e "in diretta" il servizio Email per
+inviare la conferma. Invece, scrive un messaggio del tipo "ordine 42
+completato" in una coda; il servizio Email (quando è pronto, magari qualche
+secondo dopo) legge quel messaggio dalla coda e invia l'email. Se il
 servizio Email in quel momento è sovraccarico o temporaneamente fermo, il
 messaggio resta comunque in coda, e verrà elaborato appena il servizio torna
 disponibile — non si perde nulla.
@@ -338,9 +375,12 @@ Esempi di strumenti che sentirai citare per questo scopo: **RabbitMQ**,
 
 ## 12.5 Frontend vs Backend
 
-Ogni applicazione web o mobile che usi (un sito di e-commerce, un'app
-bancaria, un gestionale aziendale) è divisa, concettualmente, in due grandi
-parti: **frontend** e **backend**.
+Finora abbiamo parlato di come i servizi di ShopFacile comunicano **tra
+loro**. Ma c'è un'altra comunicazione altrettanto importante: quella tra il
+sistema e la persona che lo usa, cioè il cliente che naviga il sito. Per
+capirla, serve distinguere due grandi parti presenti in ogni applicazione
+web o mobile (un sito di e-commerce come ShopFacile, un'app bancaria, un
+gestionale aziendale): **frontend** e **backend**.
 
 - il **frontend** è tutto ciò che l'utente vede e con cui interagisce
   direttamente: pagine, bottoni, moduli da compilare, grafici. È la parte
@@ -382,19 +422,24 @@ graph LR
     LOGIC -->|Risposta API| UI
 ```
 
-**Esempio pratico**: quando clicchi il pulsante "Conferma ordine" su un sito
-di e-commerce, il **frontend** (il bottone che hai cliccato) invia una
+**Esempio pratico**: quando clicchi il pulsante "Conferma ordine" su
+ShopFacile, il **frontend** (il bottone che hai cliccato) invia una
 richiesta al **backend** con i dati del carrello; il backend verifica che i
 prodotti siano disponibili, calcola il totale applicando eventuali sconti,
 salva l'ordine nel database e restituisce al frontend una risposta ("ordine
 confermato, numero 42"), che il frontend traduce in un messaggio di conferma
-a schermo. Tu, da utente, vedi solo l'ultimo passaggio: tutto il resto
+a schermo. Tu, da cliente, vedi solo l'ultimo passaggio: tutto il resto
 avviene "in cucina".
 
 Nel team sentirai spesso parlare di "sviluppatori frontend" e "sviluppatori
 backend" (o "full-stack", chi lavora su entrambi): sono specializzazioni
 diverse, con linguaggi e strumenti spesso diversi, anche se lavorano sullo
 stesso prodotto finale.
+
+Detto così, "frontend" e "backend" sembrano semplicemente due metà dello
+stesso programma. In realtà, quasi sempre, girano fisicamente in due posti
+diversi e comunicano attraverso una rete: è il momento di guardare a questo
+rapporto con il nome più tecnico che porta, il modello client-server.
 
 ---
 
@@ -412,13 +457,22 @@ in cloud) è il server. Non è una regola matematica assoluta — esistono
 architetture più sofisticate — ma per il 90% dei casi che incontrerai
 questa corrispondenza è un buon punto di partenza mentale.
 
-**Esempio pratico**: quando apri l'app di home banking sul telefono, l'app
-stessa (che gira sul tuo telefono) è il **client**: fa una richiesta ("dammi
-il saldo del mio conto") a un **server** remoto della banca, che elabora la
-richiesta e restituisce il dato. Se spegni il telefono, il server della
-banca continua a funzionare tranquillamente per tutti gli altri clienti: il
-client è "usa e getta", il server resta sempre lì, pronto a rispondere a
-nuove richieste.
+**Esempio pratico**: quando apri ShopFacile sul telefono, l'app stessa (che
+gira sul tuo telefono) è il **client**: fa una richiesta ("dammi i dettagli
+del mio ultimo ordine") a un **server** remoto di ShopFacile, che elabora la
+richiesta e restituisce il dato. Se chiudi l'app, il server continua a
+funzionare tranquillamente per tutti gli altri clienti: il client è "usa e
+getta", il server resta sempre lì, pronto a rispondere a nuove richieste.
+
+> 💡 **Per confronto**: lo stesso schema vale, identico, per un'app di home
+> banking: l'app sul telefono è il client, il server remoto della banca è il
+> server. Cambia il contesto (acquisti contro conto corrente), non la
+> struttura client-server sottostante.
+
+Sappiamo quindi che un client parla con un server, e che dentro quel server
+convivono frontend e backend. Ma **dentro il backend stesso**, come sono
+organizzati presentazione, logica di business e dati? Un modo diffuso di
+rispondere a questa domanda è l'architettura a 3 livelli.
 
 ---
 
@@ -475,16 +529,24 @@ Questo schema a 3 livelli è alla base di moltissime applicazioni aziendali
 "tradizionali" (gestionali, portali interni, applicazioni web classiche), e
 puoi ritrovarlo sia dentro un monolite (i tre livelli vivono nello stesso
 blocco di codice) sia distribuito su più microservizi (ogni servizio ha
-comunque, internamente, una sua piccola struttura a livelli).
+comunque, internamente, una sua piccola struttura a livelli) — come nel
+caso del servizio Ordini di ShopFacile.
 
-**Esempio pratico**: in un gestionale che applica uno sconto del 10% agli
-ordini superiori a 100€, il livello di presentazione mostra semplicemente il
-totale finale nel carrello; il livello di logica di business è quello che
-**decide** se lo sconto si applica o no, facendo il calcolo; il livello dati
-è quello che, a fine ordine, salva il totale scontato nel database. Se un
-giorno la regola cambia (es. lo sconto diventa 15%), basta modificare il
-livello di logica di business: la presentazione e il database non vengono
-toccati.
+**Esempio pratico**: nel servizio Ordini di ShopFacile, che applica uno
+sconto del 10% agli ordini superiori a 100€, il livello di presentazione
+mostra semplicemente il totale finale nel carrello; il livello di logica di
+business è quello che **decide** se lo sconto si applica o no, facendo il
+calcolo; il livello dati è quello che, a fine ordine, salva il totale
+scontato nel database. Se un giorno la regola cambia (es. lo sconto diventa
+15%), basta modificare il livello di logica di business: la presentazione e
+il database non vengono toccati. Lo stesso identico schema, del resto, è
+alla base anche di un gestionale aziendale "classico" per l'ufficio
+commerciale: cambia il dominio (sconti sugli ordini contro preventivi e
+fatture), non la struttura a tre livelli.
+
+Dopo monolite, microservizi, comunicazione e 3 livelli, resta un ultimo modo
+di organizzare il codice, agli antipodi rispetto al server "sempre acceso"
+che abbiamo dato per scontato finora: il serverless.
 
 ---
 
@@ -505,11 +567,13 @@ serverless è più come prendere un **taxi**: lo chiami solo quando ti serve
 uno spostamento, paghi solo per quella corsa, e non devi preoccuparti di
 manutenzione, parcheggio o assicurazione quando non lo stai usando.
 
-Esempio pratico: una funzione serverless che si attiva solo quando un utente
-carica una foto sul sito, per ridimensionarla automaticamente in diverse
-dimensioni, e poi si "spegne" fino alla prossima foto caricata. Non serve
+Esempio pratico: in ShopFacile, quando un cliente carica la foto di un
+prodotto reso da segnalare, una funzione serverless si attiva solo in quel
+momento, per ridimensionare l'immagine automaticamente in diverse
+dimensioni, e poi si "spegne" fino al prossimo caricamento. Non serve
 tenere un server acceso 24 ore su 24 in attesa che qualcuno carichi una
-foto.
+foto — a differenza del servizio Ordini o Pagamenti, che devono restare
+sempre pronti a rispondere.
 
 Vantaggi principali: si paga solo per l'uso effettivo (nessun costo per il
 tempo "di inattività"), e non serve gestire manualmente l'infrastruttura
@@ -521,6 +585,11 @@ avvio a freddo") o limiti di durata.
 
 Esempi di servizi serverless che sentirai citare: **Azure Functions**, **AWS
 Lambda**. Ne riparleremo con più dettaglio nella sezione 13 (Cloud).
+
+Con questo abbiamo attraversato tutte le scelte architetturali principali
+che il team di ShopFacile ha dovuto affrontare, da "un blocco unico o tanti
+servizi?" fino a "serve un server sempre acceso o basta una funzione al
+bisogno?". Prima di passare al Cloud, fermiamoci un momento a riepilogare.
 
 ---
 

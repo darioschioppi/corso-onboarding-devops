@@ -80,20 +80,24 @@ un "optional" che si aggiunge se resta tempo a fine sprint. Un PM che tratta
 la sicurezza come priorità fin dalla pianificazione fa risparmiare
 tempo, denaro e problemi seri più avanti.
 
-**Esempio pratico**: durante la pianificazione di una nuova funzionalità
-che permette agli utenti di caricare documenti, il team si accorge che
-serve anche configurare i permessi di accesso a quei file e cifrare il
-canale di upload. Se il PM inserisce questo lavoro nella stima dello sprint
-fin dall'inizio (come farebbe con qualsiasi altro requisito), il rilascio
-resta nei tempi. Se invece la sicurezza viene "ricordata" solo a fine
-sprint, il rilascio slitta e il team lavora sotto pressione per rimettersi
-in pari — lo stesso lavoro, fatto più tardi, costa di più.
+**Esempio pratico**: durante la pianificazione di una nuova funzionalità di
+ShopFacile che permette ai clienti di caricare la foto di un prodotto da
+restituire, il team si accorge che serve anche configurare i permessi di
+accesso a quei file e cifrare il canale di upload. Se Sara, come PO,
+inserisce questo lavoro nella stima dello sprint fin dall'inizio (come
+farebbe con qualsiasi altro requisito), il rilascio resta nei tempi. Se
+invece la sicurezza viene "ricordata" solo a fine sprint, il rilascio
+slitta e il team lavora sotto pressione per rimettersi in pari — lo stesso
+lavoro, fatto più tardi, costa di più.
 
 ---
 
 ## 14.2 Autenticazione vs Autorizzazione
 
-Sono due concetti che si sentono nominare quasi sempre insieme, e che
+Il caricamento delle foto di resa solleva subito una domanda concreta: chi
+può fare cosa, su quei file e su ShopFacile in generale? È il momento di
+distinguere con precisione due concetti che si sentono nominare quasi
+sempre insieme, e che
 vengono facilmente confusi — ma rispondono a due domande diverse:
 
 - **Autenticazione** risponde alla domanda: **"Chi sei?"**. È il processo
@@ -136,18 +140,23 @@ flowchart TD
     style OK fill:#d4edda
 ```
 
-**Esempio pratico nel progetto**: un membro del team può autenticarsi
-correttamente sulla piattaforma Azure DevOps (sa la password, entra), ma
-essere autorizzato solo a **leggere** il codice di un certo repository e
-non a **modificare** le impostazioni della pipeline di produzione — quel
-permesso è riservato, ad esempio, al Tech Lead. Due sviluppatori autenticati
-sulla stessa piattaforma possono avere autorizzazioni completamente diverse.
+**Esempio pratico nel progetto**: Ahmed può autenticarsi correttamente sulla
+piattaforma Azure DevOps del progetto ShopFacile (sa la password, entra),
+ma essere autorizzato solo a **leggere** il codice del repository del
+catalogo prodotti e non a **modificare** le impostazioni della pipeline di
+produzione — quel permesso è riservato, ad esempio, a Marco o a Luca. Due
+sviluppatori autenticati sulla stessa piattaforma possono avere
+autorizzazioni completamente diverse.
 
 ---
 
 ## 14.3 Password, credenziali e MFA: le buone pratiche di base
 
-La stragrande maggioranza degli incidenti di sicurezza non nasce da
+Autenticazione e autorizzazione presuppongono entrambe una cosa: che sia
+davvero difficile "spacciarsi" per qualcun altro. Ed è proprio qui, sulle
+credenziali usate per autenticarsi, che si concentra la maggior parte degli
+incidenti reali. La stragrande maggioranza degli incidenti di sicurezza non
+nasce da
 tecniche sofisticate da film di spionaggio, ma da **credenziali debitamente
 rubate o indovinate**: password troppo semplici, riutilizzate ovunque, o
 condivise con troppa disinvoltura.
@@ -209,7 +218,9 @@ verifica che l'MFA sia attivo", non solo la prima.
 
 ## 14.4 HTTPS e crittografia: un richiamo veloce
 
-Nella sezione [2. Fondamenti di informatica](../02-fondamenti-informatica/README.md)
+Password e MFA proteggono l'accesso a un sistema, ma non bastano da sole:
+anche quando i dati viaggiano in rete o restano salvati da qualche parte,
+serve un'altra forma di protezione. Nella sezione [2. Fondamenti di informatica](../02-fondamenti-informatica/README.md)
 hai già visto la differenza tra HTTP e HTTPS: HTTPS **cifra** i dati
 scambiati tra client e server, in modo che chi li intercettasse lungo il
 tragitto non possa leggerli.
@@ -249,24 +260,26 @@ quando un cliente chiede "i nostri dati sono cifrati?", la risposta
 completa riguarda **sia** il transito (HTTPS) **sia** il salvataggio (a
 riposo).
 
-**Esempio pratico**: un utente compila un modulo con i propri dati
-personali su un sito web e li invia. Se il sito usa HTTPS, quei dati
-viaggiano cifrati dal browser dell'utente al server — anche se qualcuno
-intercettasse il traffico di rete (ad esempio su un Wi-Fi pubblico non
-sicuro), leggerebbe solo una sequenza illeggibile. Una volta arrivati al
-server, quei dati vengono salvati in un database: se anche il database è
-configurato per cifrare i dati "a riposo", chi eventualmente accedesse
-senza autorizzazione al disco fisico del server (un furto, una copia
-illegittima del backup) troverebbe comunque dati illeggibili senza la
-chiave giusta. Le due protezioni sono indipendenti: un sito può avere
-HTTPS ma un database non cifrato, o viceversa — un cliente attento chiede
-entrambe.
+**Esempio pratico**: un cliente compila il modulo di pagamento al checkout
+di ShopFacile e invia i propri dati (indirizzo di spedizione, dati della
+carta). Se il sito usa HTTPS, quei dati viaggiano cifrati dal browser del
+cliente al server — anche se qualcuno intercettasse il traffico di rete
+(ad esempio su un Wi-Fi pubblico non sicuro), leggerebbe solo una sequenza
+illeggibile. Una volta arrivati al server, quei dati vengono salvati nel
+database ordini: se anche il database è configurato per cifrare i dati "a
+riposo", chi eventualmente accedesse senza autorizzazione al disco fisico
+del server (un furto, una copia illegittima del backup) troverebbe
+comunque dati illeggibili senza la chiave giusta. Le due protezioni sono
+indipendenti: un sito può avere HTTPS ma un database non cifrato, o
+viceversa — un cliente attento chiede entrambe.
 
 ---
 
 ## 14.5 Vulnerabilità comuni: perché il codice va "testato" anche per la sicurezza
 
-Una **vulnerabilità** è un errore o una debolezza nel software che
+Cifrare i dati non serve a nulla se il codice stesso ha una falla che
+permette di aggirare i controlli a monte: è il momento di guardare da
+dove nascono davvero questi problemi. Una **vulnerabilità** è un errore o una debolezza nel software che
 qualcuno con intenzioni malevole (un *attaccante*) può sfruttare per fare
 qualcosa che non dovrebbe poter fare: leggere dati che non gli
 appartengono, modificarli, bloccare un servizio.
@@ -304,11 +317,26 @@ questo tipo, e che per questo il codice va **testato anche per la
 sicurezza**, con strumenti dedicati, esattamente come si testa la
 correttezza funzionale con i test automatici visti nella sezione 11.
 
+**Esempio pratico**: Ahmed, ancora alle prime armi, scrive una nuova
+funzionalità per applicare i codici promozionali al carrello e, per fare
+in fretta, costruisce la query verso il database concatenando
+direttamente il testo digitato dal cliente nel campo "codice
+promozionale", senza validarlo. Durante la code review, Giulia — che
+segue da vicino test e qualità del codice — nota il problema e segnala
+la Merge Request come da correggere prima ancora che arrivi a un test
+funzionale: è esattamente il tipo di errore (un classico caso di SQL
+Injection) che un developer alle prime esperienze può commettere senza
+malizia, e che una revisione attenta deve intercettare prima del
+rilascio, non dopo.
+
 ---
 
 ## 14.6 OWASP Top 10: il riferimento standard del settore
 
-Con il tempo, la community internazionale della sicurezza informatica ha
+Riconoscere una singola query pericolosa in una code review è utile, ma
+il team non può fare affidamento solo sulla memoria di chi legge il
+codice quel giorno: serve un riferimento condiviso e sistematico. Con il
+tempo, la community internazionale della sicurezza informatica ha
 raccolto e catalogato le vulnerabilità più comuni e più pericolose che
 colpiscono le applicazioni web, mantenendo una lista aggiornata
 periodicamente: la **OWASP Top 10**.
@@ -356,7 +384,9 @@ standard riconosciuto, non "a occhio".
 
 ## 14.7 DevSecOps: la sicurezza fin dall'inizio ("shift left")
 
-Nella sezione [9. DevOps](../09-devops/README.md) hai visto come la cultura
+La OWASP Top 10 dice *cosa* controllare; resta da capire *quando* farlo
+nel ciclo di vita del progetto — ed è qui che entra in gioco un principio
+già visto altrove in una forma diversa. Nella sezione [9. DevOps](../09-devops/README.md) hai visto come la cultura
 DevOps abbatta il muro tra chi scrive il software e chi lo mette in
 produzione, integrando i due mondi in un unico flusso continuo. Il
 **DevSecOps** estende esattamente la stessa logica alla sicurezza: la "Sec"
@@ -407,7 +437,9 @@ configurato sulla pipeline di questo progetto?".
 
 ## 14.8 Scan di sicurezza nella pipeline CI/CD
 
-Nella sezione [11. CI/CD](../11-ci-cd/README.md) hai già incontrato,
+Il "shift left" resta un principio astratto finché non si traduce in
+qualcosa che gira automaticamente a ogni commit: vediamo concretamente
+come. Nella sezione [11. CI/CD](../11-ci-cd/README.md) hai già incontrato,
 nella fase "Analisi di qualità e sicurezza del codice" e nella tabella dei
 quality gate, l'idea che la pipeline includa controlli automatici di
 sicurezza. Qui rendiamo quel concetto un po' più concreto.
@@ -455,11 +487,22 @@ occasionale, è lo stesso visto per i test automatici in generale:
 sempre, senza dipendere dalla memoria o dalla disponibilità di una persona
 che "se ne ricordi".
 
+**Esempio pratico**: Marco, che segue spesso la parte infrastrutturale di
+ShopFacile, configura lo scan SCA sulla pipeline del servizio pagamenti e
+scopre che una libreria usata per generare i PDF delle fatture ha una
+vulnerabilità nota, già pubblicata. Il quality gate blocca il rilascio
+finché la libreria non viene aggiornata: senza quello scan automatico, la
+falla sarebbe rimasta in produzione fino a quando (e se) qualcuno se ne
+fosse accorto da solo, magari troppo tardi.
+
 ---
 
 ## 14.9 GDPR e privacy dei dati: un accenno essenziale
 
-Il **GDPR** (General Data Protection Regulation, "Regolamento Generale
+Gli scan automatici proteggono il codice, ma c'è un'altra dimensione della
+sicurezza che riguarda direttamente le persone i cui dati ShopFacile
+raccoglie ogni giorno — clienti che comprano, si registrano, chiedono un
+rimborso. Il **GDPR** (General Data Protection Regulation, "Regolamento Generale
 sulla Protezione dei Dati") è la normativa europea che disciplina come le
 aziende devono trattare i **dati personali** delle persone (nomi, email,
 indirizzi, dati di navigazione, e molto altro).
@@ -491,25 +534,28 @@ progetto **tocca dati personali**, per sapere che in quei casi il tema
 sicurezza/privacy va coinvolto fin dalla pianificazione, non aggiunto a
 posteriori.
 
-**Esempio pratico**: il team riceve una richiesta di funzionalità che
-prevede di salvare, per ogni utente, anche il numero di telefono e la
-posizione geografica approssimativa. Sono entrambi dati personali secondo
-il GDPR. Un PM attento, in fase di pianificazione, si pone (e pone al
-team) alcune domande prima di stimare lo sprint: "questo dato è davvero
-necessario per la funzionalità, o stiamo raccogliendo più del dovuto?",
-"chi avrà accesso a questo dato una volta salvato?", "per quanto tempo lo
-conserviamo?". Se invece la funzionalità viene sviluppata e rilasciata
-senza porsi queste domande, e in seguito si scopre un accesso non
-autorizzato a quei dati, il progetto si trova davanti a un data breach da
-notificare formalmente, con tempi stretti e conseguenze reali — non un
-semplice bug da correggere alla prossima release.
+**Esempio pratico**: Sara, come PO, riceve dal cliente una richiesta di
+funzionalità che prevede di salvare, per ogni cliente di ShopFacile, anche
+il numero di telefono e la posizione geografica approssimativa (per
+proporre le consegne più rapide vicino a lui). Sono entrambi dati
+personali secondo il GDPR. Sara, in fase di pianificazione, si pone (e
+pone al team) alcune domande prima di stimare lo sprint: "questo dato è
+davvero necessario per la funzionalità, o stiamo raccogliendo più del
+dovuto?", "chi avrà accesso a questo dato una volta salvato?", "per quanto
+tempo lo conserviamo?". Se invece la funzionalità viene sviluppata e
+rilasciata senza porsi queste domande, e in seguito si scopre un accesso
+non autorizzato ai dati dei clienti, ShopFacile si trova davanti a un data
+breach da notificare formalmente, con tempi stretti e conseguenze reali —
+non un semplice bug da correggere alla prossima release.
 
 ---
 
 ## 14.10 Backup e disaster recovery: il piano B quando qualcosa va storto
 
-Chiudiamo con un tema che a volte viene percepito come "amministrativo" ma
-è parte integrante della sicurezza: cosa succede se, nonostante tutte le
+Anche il progetto più attento a GDPR, scan e code review non è immune da
+un imprevisto puro e semplice: un tema che a volte viene percepito come
+"amministrativo" ma è parte integrante della sicurezza, ed è l'ultimo
+ingrediente di questa sezione. Cosa succede se, nonostante tutte le
 precauzioni, qualcosa va comunque storto — un guasto hardware, un errore
 umano che cancella dati per sbaglio, o un attacco che compromette un
 sistema.
@@ -546,16 +592,20 @@ tutto si ferma?" sta facendo una domanda di business legittima, a cui il
 team tecnico deve poter rispondere con numeri concreti (gli RTO/RPO
 concordati), non con un generico "dovremmo farcela".
 
-**Esempio pratico**: il database di produzione di un progetto subisce un
-guasto e diventa inaccessibile alle 14:00 di un giorno lavorativo. Se il
-progetto ha concordato un RTO di 2 ore, il team ha l'obiettivo di
-ripristinare il servizio entro le 16:00. Se l'RPO concordato è di 1 ora, e
-l'ultimo backup automatico risale alle 13:30, il team sa già, prima
-ancora di iniziare il ripristino, che andranno persi al massimo 30 minuti
-di dati recenti — un'informazione che il PM può comunicare subito al
-cliente, invece di scoprirlo a ripristino concluso. Senza questi numeri
-concordati in anticipo, la stessa situazione genera solo incertezza e
-domande a cui nessuno sa rispondere con precisione.
+**Esempio pratico**: il database ordini di ShopFacile subisce un guasto e
+diventa inaccessibile alle 14:00 di un giorno lavorativo, proprio durante
+i saldi. Luca, come Scrum Master, coordina la risposta all'incidente:
+raccoglie chi serve, tiene aggiornato il resto del team e fa da punto di
+contatto con Sara per le comunicazioni verso il cliente, mentre Marco
+lavora al ripristino tecnico. ShopFacile ha concordato un RTO di 2 ore,
+quindi il team ha l'obiettivo di ripristinare il servizio entro le 16:00.
+Se l'RPO concordato è di 1 ora, e l'ultimo backup automatico risale alle
+13:30, il team sa già, prima ancora di iniziare il ripristino, che
+andranno persi al massimo 30 minuti di ordini recenti — un'informazione
+che Luca può comunicare subito, invece di scoprirla a ripristino
+concluso. Senza questi numeri concordati in anticipo, la stessa situazione
+genera solo incertezza e domande a cui nessuno sa rispondere con
+precisione.
 
 ---
 

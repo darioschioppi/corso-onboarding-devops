@@ -1,5 +1,9 @@
 # 7. Kanban
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/07-kanban.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione precedente hai visto Scrum: sprint a tempo fisso, ruoli
 definiti, eventi ricorrenti (planning, daily, review, retrospettiva). Scrum
 è un framework molto "strutturato". Kanban parte da un'idea diversa e più

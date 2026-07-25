@@ -1,5 +1,9 @@
 # 11. CI/CD
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/11-ci-cd.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione DevOps hai già incontrato i concetti di **Continuous
 Integration** e **Continuous Delivery/Deployment**: sai che servono a
 integrare e rilasciare il codice in modo frequente e automatizzato, invece

@@ -1,5 +1,9 @@
 # 16. Glossario
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/16-glossario.pdf)** — utile per la stampa o la lettura offline.
+
+
 Questo glossario raccoglie in un unico posto tutti i termini incontrati nel corso, dai concetti base di informatica fino alla sicurezza e agli ambienti di produzione. Le voci sono in **ordine alfabetico rigoroso** (gli acronimi come CI, CPU o KPI sono ordinati per le lettere dell'acronimo stesso, non per il nome per esteso), così puoi usarlo come un vero dizionario: se leggi un termine che non ricordi mentre studi una sezione, torna qui, cercalo e poi eventualmente segui il rimando "→ approfondito nella sezione X" per tornare al capitolo che lo spiega con esempi e contesto completo.
 
 Non serve leggerlo tutto d'un fiato: è pensato per essere consultato, non studiato in ordine. Buona consultazione.

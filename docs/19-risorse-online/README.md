@@ -1,5 +1,9 @@
 # 19. Risorse online
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/19-risorse-online.pdf)** — utile per la stampa o la lettura offline.
+
+
 ## Come usare questa sezione
 
 Questa non è una sezione da leggere tutta d'un fiato, e non è nemmeno un test: è una **cassetta degli attrezzi**. Raccoglie link a documentazione ufficiale, corsi gratuiti, video e articoli, organizzati per area tematica seguendo lo stesso ordine delle sezioni del corso.

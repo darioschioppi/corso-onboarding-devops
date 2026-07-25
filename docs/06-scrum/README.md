@@ -1,5 +1,9 @@
 # 6. Scrum
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/06-scrum.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione precedente hai scoperto l'Agile come **filosofia**: un insieme
 di valori e principi (persone prima dei processi, collaborazione con il
 cliente, adattamento al cambiamento, consegne frequenti). Ma una filosofia,

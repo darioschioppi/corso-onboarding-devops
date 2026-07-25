@@ -1,5 +1,9 @@
 # 18. Libri consigliati
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/18-libri-consigliati.pdf)** — utile per la stampa o la lettura offline.
+
+
 Le sezioni da 1 a 17 di questo corso ti hanno già dato tutto ciò che ti serve per muovere i primi passi nel ruolo: i fondamenti tecnici, i framework Agile/Scrum, il Project Management e il mondo DevOps. Questa sezione è diversa dalle altre: non introduce concetti nuovi e obbligatori, ma raccoglie **12 libri di riferimento**, indicati direttamente dal responsabile del team, pensati per **approfondire con più calma e più profondità** ciò che nel corso hai visto in forma sintetica.
 
 ## La logica dei 5 livelli

@@ -1,5 +1,9 @@
 # 4. Git e GitHub
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/04-git-e-github.pdf)** — utile per la stampa o la lettura offline.
+
+
 Se hai mai lavorato su un documento Word con altre persone, probabilmente
 conosci già l'incubo dei file chiamati `Progetto_finale_v2_DEFINITIVO_uso_questo.docx`.
 Qualcuno ha modificato una frase, qualcun altro ha cancellato per errore

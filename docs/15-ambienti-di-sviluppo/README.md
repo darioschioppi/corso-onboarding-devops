@@ -1,5 +1,9 @@
 # 15. Ambienti di sviluppo
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/15-ambienti-di-sviluppo.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione [11. CI/CD](../11-ci-cd/README.md) hai già incontrato il
 concetto di **ambiente**: sai che il codice non passa direttamente dal
 computer di uno sviluppatore agli utenti finali, ma attraversa diverse

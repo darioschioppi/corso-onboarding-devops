@@ -1,5 +1,9 @@
 # 13. Cloud
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/13-cloud.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione precedente hai visto come è "fatto" un software: monolite o
 microservizi, frontend e backend, database, code di messaggi. Ora facciamo un
 passo ulteriore e ci chiediamo: **dove vive fisicamente tutto questo?** Su

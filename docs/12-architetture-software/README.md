@@ -1,5 +1,9 @@
 # 12. Architetture software
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/12-architetture-software.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione 2 (Fondamenti di informatica) hai già incontrato i mattoncini
 di base: API, REST, database, container. In questa sezione facciamo un passo
 in più: vediamo come questi mattoncini vengono **combinati insieme** per

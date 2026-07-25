@@ -1,5 +1,9 @@
 # 2. Fondamenti di informatica
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/02-fondamenti-informatica.pdf)** — utile per la stampa o la lettura offline.
+
+
 Questa è una delle sezioni più importanti di tutto il corso. Non preoccuparti
 se non hai mai scritto una riga di codice o non sai cosa sia un server: qui
 costruiamo insieme, da zero, tutto il vocabolario tecnico che ti servirà per

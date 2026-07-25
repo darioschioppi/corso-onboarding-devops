@@ -1,5 +1,9 @@
 # 3. Come nasce un software
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/03-come-nasce-un-software.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nella sezione precedente hai imparato cosa sono hardware, software, reti e altri concetti di base dell'informatica. Ora facciamo un passo avanti: come nasce, concretamente, un software? Chi lo progetta? Chi lo scrive? Chi decide quando è pronto per essere usato dalle persone?
 
 Capire questo processo è fondamentale per te, futuro Junior Project Manager, perché il tuo lavoro consisterà proprio nel coordinare le persone e le attività che compongono questo processo. Non dovrai scrivere codice, ma dovrai capire di cosa parlano gli sviluppatori, cosa significa "abbiamo trovato un bug in produzione" o "la pull request è ancora in review", e come si inserisce ogni attività nel percorso complessivo di un progetto software.

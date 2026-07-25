@@ -1,5 +1,9 @@
 # 10. Azure DevOps
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/10-azure-devops.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nelle sezioni precedenti hai visto tanti concetti "in teoria": cos'è una
 board Kanban, come funziona uno sprint Scrum, cosa sono un repository, un
 commit, una Pull Request, e cos'è la cultura DevOps. Tutti questi concetti,

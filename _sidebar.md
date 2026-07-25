@@ -1,4 +1,5 @@
 - [🏠 Home](/)
+- [📚 Scarica corso completo (PDF)](pdf/corso-completo.pdf)
 
 - **Corso**
   - [1. Introduzione](docs/01-introduzione/README.md)

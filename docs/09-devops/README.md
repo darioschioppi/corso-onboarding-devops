@@ -1,5 +1,9 @@
 # 9. DevOps
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/09-devops.pdf)** — utile per la stampa o la lettura offline.
+
+
 Nelle sezioni precedenti hai imparato **come un team organizza il lavoro**
 (Agile, Scrum, Kanban) e **come si tiene sotto controllo un progetto** nel
 suo complesso (Project Management, con stakeholder, RAID Log, RACI, KPI).

@@ -1,5 +1,9 @@
 # 1. Introduzione
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/01-introduzione.pdf)** — utile per la stampa o la lettura offline.
+
+
 ## Benvenuto/a a bordo! 👋
 
 Ciao, e benvenuto/a in azienda!

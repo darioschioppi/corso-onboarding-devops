@@ -1,5 +1,9 @@
 # 14. Sicurezza
 
+
+> 📄 **[Scarica questa sezione in PDF](../../pdf/14-sicurezza.pdf)** — utile per la stampa o la lettura offline.
+
+
 Fin qui hai visto come il codice viene scritto, integrato, testato e
 rilasciato attraverso una pipeline (sezione 11), come viene organizzato in
 architetture e servizi (sezione 12), e dove "vive" fisicamente

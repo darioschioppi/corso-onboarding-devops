@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Corso di Onboarding – Junior Project Manager / Scrum Master</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  <meta name="description" content="Manuale di onboarding per Junior Project Manager: fondamenti informatici, Agile, Scrum, Kanban, DevOps e Project Management">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <style>
+    :root {
+      --theme-color: #2c6e91;
+    }
+    .markdown-section {
+      max-width: 960px;
+    }
+    .markdown-section pre > code {
+      border-radius: 6px;
+    }
+    .mermaid {
+      text-align: center;
+      margin: 1.5em 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    window.$docsify = {
+      name: 'Corso Onboarding DevOps & Project Management',
+      repo: 'darioschioppi/corso-onboarding-devops',
+      loadSidebar: true,
+      subMaxLevel: 3,
+      auto2top: true,
+      coverpage: true,
+      onlyCover: false,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
+      search: {
+        maxAge: 86400000,
+        paths: 'auto',
+        placeholder: 'Cerca nel corso...',
+        noData: 'Nessun risultato.',
+        depth: 4
+      },
+      count: {
+        countable: true
+      },
+      copyCode: {
+        buttonText: 'Copia',
+        errorText: 'Errore',
+        successText: 'Copiato'
+      },
+      pagination: {
+        previousText: 'Precedente',
+        nextText: 'Successivo',
+        crossChapter: true,
+        crossChapterText: true
+      },
+      mermaidConfig: {
+        theme: 'default'
+      }
+    };
+  </script>
+  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-count/dist/countable.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify-mermaid@2.0.1/dist/docsify-mermaid.js"></script>
+  <script>
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+</body>
+</html>

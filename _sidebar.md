@@ -1,0 +1,24 @@
+- [🏠 Home](/)
+
+- **Corso**
+  - [1. Introduzione](docs/01-introduzione/README.md)
+  - [2. Fondamenti di informatica](docs/02-fondamenti-informatica/README.md)
+  - [3. Come nasce un software](docs/03-come-nasce-un-software/README.md)
+  - [4. Git e GitHub](docs/04-git-e-github/README.md)
+  - [5. Agile](docs/05-agile/README.md)
+  - [6. Scrum](docs/06-scrum/README.md)
+  - [7. Kanban](docs/07-kanban/README.md)
+  - [8. Project Management](docs/08-project-management/README.md)
+  - [9. DevOps](docs/09-devops/README.md)
+  - [10. Azure DevOps](docs/10-azure-devops/README.md)
+  - [11. CI/CD](docs/11-ci-cd/README.md)
+  - [12. Architetture software](docs/12-architetture-software/README.md)
+  - [13. Cloud](docs/13-cloud/README.md)
+  - [14. Sicurezza](docs/14-sicurezza/README.md)
+  - [15. Ambienti di sviluppo](docs/15-ambienti-di-sviluppo/README.md)
+
+- **Risorse**
+  - [16. Glossario](docs/16-glossario/README.md)
+  - [17. Piano di studio](docs/17-piano-di-studio/README.md)
+  - [18. Libri consigliati](docs/18-libri-consigliati/README.md)
+  - [19. Risorse online](docs/19-risorse-online/README.md)

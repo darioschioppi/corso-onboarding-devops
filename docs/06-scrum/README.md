@@ -993,7 +993,7 @@ trovare tu.
 Gli esercizi seguenti servono a consolidare quanto visto in questa sezione
 con qualcosa che puoi davvero fare, non solo leggere. Non serve un progetto
 reale per farli: puoi usare scenari immaginari, e diversi da quelli
-già proposti nel piano di studio (sezione 16) — qui l'obiettivo è
+già proposti nel piano di studio (sezione 17) — qui l'obiettivo è
 approfondire con più dettaglio, proprio perché questa è la sezione più
 importante del corso per il tuo ruolo.
 
@@ -1068,7 +1068,7 @@ importante del corso per il tuo ruolo.
 
 - [7. Kanban](../07-kanban/README.md) — un altro framework Agile, spesso complementare o alternativo a Scrum
 - [8. Project Management](../08-project-management/README.md) — come gli strumenti di gestione progetto si integrano con la pratica quotidiana di uno Scrum Master
-- [15. Glossario](../15-glossario/README.md) — per ripassare velocemente i termini di questa sezione
+- [16. Glossario](../16-glossario/README.md) — per ripassare velocemente i termini di questa sezione
 
 ## 📚 Risorse
 

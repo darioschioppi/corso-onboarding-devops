@@ -16,9 +16,10 @@
   - [12. Cloud](docs/12-cloud/README.md)
   - [13. Sicurezza](docs/13-sicurezza/README.md)
   - [14. Ambienti di sviluppo](docs/14-ambienti-di-sviluppo/README.md)
+  - [15. Intelligenza artificiale](docs/15-intelligenza-artificiale/README.md)
 
 - **Risorse**
-  - [15. Glossario](docs/15-glossario/README.md)
-  - [16. Piano di studio](docs/16-piano-di-studio/README.md)
-  - [17. Libri consigliati](docs/17-libri-consigliati/README.md)
-  - [18. Risorse online](docs/18-risorse-online/README.md)
+  - [16. Glossario](docs/16-glossario/README.md)
+  - [17. Piano di studio](docs/17-piano-di-studio/README.md)
+  - [18. Libri consigliati](docs/18-libri-consigliati/README.md)
+  - [19. Risorse online](docs/19-risorse-online/README.md)

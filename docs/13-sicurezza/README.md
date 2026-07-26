@@ -729,7 +729,7 @@ voce, o scrivendo due righe) a queste domande:
 ## 🔗 Collegamenti
 
 - [14. Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) — come si configurano in pratica accessi, credenziali e isolamento tra Dev, Test, Staging e Produzione
-- [15. Glossario](../15-glossario/README.md) — per ripassare rapidamente ogni termine visto in questa sezione
+- [16. Glossario](../16-glossario/README.md) — per ripassare rapidamente ogni termine visto in questa sezione
 
 ## 📚 Risorse
 

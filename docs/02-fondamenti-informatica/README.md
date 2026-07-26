@@ -1229,7 +1229,7 @@ ai colleghi.
 - [9. DevOps](../09-devops/README.md) — dove Docker e Kubernetes tornano centrali
 - [11. Architetture software](../11-architetture-software/README.md) — dove API e REST vengono approfonditi
 - [12. Cloud](../12-cloud/README.md) — dove VM e container vengono usati concretamente su Azure/AWS
-- [15. Glossario](../15-glossario/README.md) — per ripassare rapidamente ogni termine visto qui
+- [16. Glossario](../16-glossario/README.md) — per ripassare rapidamente ogni termine visto qui
 
 ## 📚 Risorse
 

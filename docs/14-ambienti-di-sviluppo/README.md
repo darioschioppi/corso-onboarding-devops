@@ -547,7 +547,7 @@ incontrato nella sezione CI/CD:
 ## 🔗 Collegamenti
 
 - [10. CI/CD](../10-ci-cd/README.md) — come la pipeline promuove il codice tra questi stessi ambienti
-- [15. Glossario](../15-glossario/README.md) — definizioni rapide di Dev, Staging, Produzione e termini correlati
+- [16. Glossario](../16-glossario/README.md) — definizioni rapide di Dev, Staging, Produzione e termini correlati
 
 ## 📚 Risorse
 

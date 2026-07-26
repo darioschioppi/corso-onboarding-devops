@@ -794,7 +794,7 @@ che poi puoi anche eliminare.
 - [5. Agile](../05-agile/README.md) — il mindset dietro le pratiche di integrazione frequente che abbiamo visto con il Trunk Based Development
 - [9. DevOps](../09-devops/README.md) — la cultura di automazione e rilascio continuo che rende possibile il Trunk Based Development
 - [10. CI/CD](../10-ci-cd/README.md) — le pipeline automatiche (GitHub Actions) che si attivano su commit e Pull Request
-- [15. Glossario](../15-glossario/README.md) — per ripassare velocemente i termini di questa sezione
+- [16. Glossario](../16-glossario/README.md) — per ripassare velocemente i termini di questa sezione
 
 ## 📚 Risorse
 

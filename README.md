@@ -21,14 +21,14 @@ spiegato dalle basi, con analogie semplici, esempi concreti e diagrammi.
 
 ## Come usare questo corso
 
-1. Segui le sezioni **nell'ordine numerico** (1 → 18): sono progressive,
+1. Segui le sezioni **nell'ordine numerico** (1 → 19): sono progressive,
    ogni argomento si appoggia sui precedenti.
 2. Non avere fretta: alcune sezioni (fondamenti di informatica, DevOps)
    sono dense. Rileggi con calma, prova gli esempi, guarda i diagrammi.
-3. Usa la sezione [Piano di studio](docs/16-piano-di-studio/README.md) come
+3. Usa la sezione [Piano di studio](docs/17-piano-di-studio/README.md) come
    guida settimanale: ti dice cosa studiare, quanto tempo dedicarci e come
    verificare di aver capito.
-4. Consulta il [Glossario](docs/15-glossario/README.md) ogni volta che
+4. Consulta il [Glossario](docs/16-glossario/README.md) ogni volta che
    incontri un termine che non ricordi.
 5. Alla fine di ogni settimana confrontati con il tuo mentor/collega sul
    team per validare quanto imparato e fare domande.
@@ -51,10 +51,11 @@ spiegato dalle basi, con analogie semplici, esempi concreti e diagrammi.
 | 12 | [Cloud](docs/12-cloud/README.md) | IaaS, PaaS, SaaS, Azure, AWS | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/12-cloud.pdf) |
 | 13 | [Sicurezza](docs/13-sicurezza/README.md) | Concetti base di sicurezza informatica | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/13-sicurezza.pdf) |
 | 14 | [Ambienti di sviluppo](docs/14-ambienti-di-sviluppo/README.md) | Dev/Test/Staging/Prod | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/14-ambienti-di-sviluppo.pdf) |
-| 15 | [Glossario](docs/15-glossario/README.md) | Tutti i termini del corso, in ordine alfabetico | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/15-glossario.pdf) |
-| 16 | [Piano di studio](docs/16-piano-di-studio/README.md) | Programma dettagliato di 8 settimane | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/16-piano-di-studio.pdf) |
-| 17 | [Libri consigliati](docs/17-libri-consigliati/README.md) | Letture per livello, con motivazione | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/17-libri-consigliati.pdf) |
-| 18 | [Risorse online](docs/18-risorse-online/README.md) | Documentazione, corsi, video | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/18-risorse-online.pdf) |
+| 15 | [Intelligenza artificiale](docs/15-intelligenza-artificiale/README.md) | AI, machine learning, LLM e AI generativa applicati al lavoro del team | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/15-intelligenza-artificiale.pdf) |
+| 16 | [Glossario](docs/16-glossario/README.md) | Tutti i termini del corso, in ordine alfabetico | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/16-glossario.pdf) |
+| 17 | [Piano di studio](docs/17-piano-di-studio/README.md) | Programma dettagliato di 9 settimane | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/17-piano-di-studio.pdf) |
+| 18 | [Libri consigliati](docs/18-libri-consigliati/README.md) | Letture per livello, con motivazione | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/18-libri-consigliati.pdf) |
+| 19 | [Risorse online](docs/19-risorse-online/README.md) | Documentazione, corsi, video | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/19-risorse-online.pdf) |
 
 > 📚 **[Scarica il corso completo in un unico PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/corso-completo.pdf)**
 

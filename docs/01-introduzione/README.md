@@ -20,23 +20,23 @@ Non ti verrà chiesto di scrivere codice o di diventare uno sviluppatore. Ti ver
 
 ## Come è organizzato questo corso
 
-Il corso è diviso in **18 sezioni numerate**, pensate per essere seguite **in ordine progressivo**: ogni sezione si appoggia sui concetti spiegati in quella precedente, un po' come i mattoncini di un Lego — non puoi costruire il tetto se non hai ancora messo le fondamenta.
+Il corso è diviso in **19 sezioni numerate**, pensate per essere seguite **in ordine progressivo**: ogni sezione si appoggia sui concetti spiegati in quella precedente, un po' come i mattoncini di un Lego — non puoi costruire il tetto se non hai ancora messo le fondamenta.
 
 Le sezioni si possono raggruppare in quattro grandi blocchi:
 
 1. **Fondamenta tecniche** (sezioni 2-4): cosa è un computer, come "nasce" un software, cos'è Git/GitHub. Ti servono per capire il linguaggio di base che sviluppatori e tecnici usano ogni giorno.
 2. **Metodologie di lavoro** (sezioni 5-8): Agile, Scrum, Kanban e Project Management. Sono i "metodi di organizzazione del lavoro" — qui il tuo background gestionale ti aiuterà moltissimo, perché sono concetti di organizzazione applicati al software.
-3. **Mondo DevOps** (sezioni 9-13): DevOps, CI/CD, architetture software, cloud e sicurezza. È il cuore tecnico del corso, quello più legato al ruolo che andrai a occupare.
-4. **Strumenti di supporto e consultazione** (sezioni 14-18): ambienti di sviluppo, glossario, piano di studio, libri e risorse online. Non sono da "studiare" una volta e basta: sono pensate per essere consultate spesso, come un dizionario o un'agenda.
+3. **Mondo DevOps** (sezioni 9-15): DevOps, CI/CD, architetture software, cloud, sicurezza, ambienti di sviluppo e intelligenza artificiale. È il cuore tecnico del corso, quello più legato al ruolo che andrai a occupare: l'intelligenza artificiale chiude questo blocco perché ormai si intreccia con quasi tutti gli argomenti visti prima — dalla pipeline CI/CD alla code review, fino al monitoraggio.
+4. **Strumenti di supporto e consultazione** (sezioni 16-19): glossario, piano di studio, libri e risorse online. Non sono da "studiare" una volta e basta: sono pensate per essere consultate spesso, come un dizionario o un'agenda.
 
 > 🎯 **Esempio pratico**: se in una riunione senti dire "la pipeline è rossa, il rilascio è bloccato", non serve che tu capisca subito cosa significhi nel dettaglio. Ti basta pensare "questo è un argomento del Blocco C, probabilmente della sezione 10 sul CI/CD" e prendere nota mentale per approfondirlo quando arrivi lì, invece di sentirti perso/a o di dover fingere di aver capito.
 
-Oltre alle 18 sezioni, trovi due strumenti trasversali che ti accompagneranno per tutto il percorso:
+Oltre alle 19 sezioni, trovi due strumenti trasversali che ti accompagneranno per tutto il percorso:
 
-- **Il [Glossario](../15-glossario/README.md)** (sezione 15): ogni volta che incontri un termine che non ricordi — sia in questo corso, sia durante una riunione di lavoro — puoi cercarlo lì. Non c'è nulla di male nel non ricordare a memoria cosa significa "backlog" la terza volta che lo senti: è normale, ci vuole ripetizione.
-- **Il [Piano di studio](../16-piano-di-studio/README.md)** (sezione 16): un programma settimanale su **8 settimane** che ti dice, settimana per settimana, cosa leggere, quanto tempo dedicarci, e con quali attività pratiche verificare di aver capito (ad esempio: "questa settimana osserva una Daily Scrum del team e prendi nota di cosa succede").
+- **Il [Glossario](../16-glossario/README.md)** (sezione 16): ogni volta che incontri un termine che non ricordi — sia in questo corso, sia durante una riunione di lavoro — puoi cercarlo lì. Non c'è nulla di male nel non ricordare a memoria cosa significa "backlog" la terza volta che lo senti: è normale, ci vuole ripetizione.
+- **Il [Piano di studio](../17-piano-di-studio/README.md)** (sezione 17): un programma settimanale su **9 settimane** che ti dice, settimana per settimana, cosa leggere, quanto tempo dedicarci, e con quali attività pratiche verificare di aver capito (ad esempio: "questa settimana osserva una Daily Scrum del team e prendi nota di cosa succede").
 
-> 💡 **Consiglio pratico**: la prima volta che apri il corso, dai una scorsa veloce a tutti i titoli delle 18 sezioni (li trovi anche nel menu laterale). Non devi capire tutto subito: ti basta avere una mappa mentale di "cosa troverò più avanti", così quando in una sezione si accenna a un concetto che verrà spiegato dopo, saprai che è normale e che arriverà il suo momento.
+> 💡 **Consiglio pratico**: la prima volta che apri il corso, dai una scorsa veloce a tutti i titoli delle 19 sezioni (li trovi anche nel menu laterale). Non devi capire tutto subito: ti basta avere una mappa mentale di "cosa troverò più avanti", così quando in una sezione si accenna a un concetto che verrà spiegato dopo, saprai che è normale e che arriverà il suo momento.
 
 ---
 
@@ -93,7 +93,7 @@ Prima di iniziare, qualche indicazione su come vivere questo percorso senza scor
 2. **Fai domande, sempre.** Non esiste una domanda "troppo banale" in questo percorso. Chi lavora ogni giorno con questi strumenti a volte dà per scontati concetti che per te sono nuovi: chiedere è il modo più veloce per colmare quel divario, molto più veloce che aspettare di capire tutto da solo/a leggendo.
 3. **Collega la teoria a quello che vedi sul campo.** Ogni volta che in una riunione o in una chat di lavoro senti un termine nuovo, provalo a ricercare nel [Glossario](../16-glossario/README.md) o pensa a quale sezione del corso lo tratta. Questo doppio binario (teoria + osservazione pratica) è il modo più efficace per imparare in questo contesto.
 4. **Prova gli esempi, non limitarti a leggerli.** Dove il corso propone un esempio pratico (una board Kanban, un comando Git, un diagramma di pipeline), se possibile provalo tu stesso/a in un ambiente di prova. Capire leggendo è utile, ma capire "con le mani" resta molto più solido.
-5. **Usa il piano di studio come bussola, non come gabbia.** Il [Piano di studio](../16-piano-di-studio/README.md) a 8 settimane è una guida, non un obbligo rigido: se una settimana hai bisogno di più tempo su un argomento (capita spessissimo con i fondamenti di informatica, sezione 2), prenditelo. È molto meglio capire bene una sezione in più tempo che correre e arrivare in fondo con basi fragili.
+5. **Usa il piano di studio come bussola, non come gabbia.** Il [Piano di studio](../17-piano-di-studio/README.md) a 9 settimane è una guida, non un obbligo rigido: se una settimana hai bisogno di più tempo su un argomento (capita spessissimo con i fondamenti di informatica, sezione 2), prenditelo. È molto meglio capire bene una sezione in più tempo che correre e arrivare in fondo con basi fragili.
 6. **A fine settimana, fai un check-in con la tua collega o il tuo mentor.** Un breve confronto settimanale ti permette di validare cosa hai capito, chiarire dubbi rimasti in sospeso e ricevere indicazioni su cosa osservare la settimana successiva nel lavoro reale del team.
 
 > **Esempio pratico**: leggi nella sezione 7 cos'è un limite di WIP (Work In Progress) su una board Kanban. Il giorno dopo, durante una riunione, senti la tua collega dire "non possiamo prendere in carico un'altra card, siamo già al limite in 'In Corso'". Invece di lasciarlo passare, collegalo subito a quanto letto e magari chiedi: "è questo il limite di WIP di cui si parlava nella sezione 7?". Questo piccolo gesto — collegare una lettura a una frase sentita dal vivo — è esattamente il "doppio binario" di cui si parla al punto 3.
@@ -102,7 +102,7 @@ Prima di iniziare, qualche indicazione su come vivere questo percorso senza scor
 
 ## La mappa del corso
 
-Il diagramma seguente mostra come le 18 sezioni si collegano tra loro a grandi linee. Non è necessario memorizzarlo: serve solo per farti un'idea di dove ti troverai, sezione dopo sezione.
+Il diagramma seguente mostra come le 19 sezioni si collegano tra loro a grandi linee. Non è necessario memorizzarlo: serve solo per farti un'idea di dove ti troverai, sezione dopo sezione.
 
 ```mermaid
 flowchart TD
@@ -125,24 +125,25 @@ flowchart TD
         S9 --> S11["11. Architetture software"]
         S9 --> S12["12. Cloud"]
         S9 --> S13["13. Sicurezza"]
+        S9 --> S14["14. Ambienti di sviluppo"]
+        S9 --> S15["15. Intelligenza artificiale"]
     end
 
     BLOCCO3 --> BLOCCO4
 
     subgraph BLOCCO4["Blocco D - Strumenti di supporto"]
-        S14["14. Ambienti di sviluppo"]
-        S15["15. Glossario"]
-        S16["16. Piano di studio"]
-        S17["17. Libri consigliati"]
-        S18["18. Risorse online"]
+        S16["16. Glossario"]
+        S17["17. Piano di studio"]
+        S18["18. Libri consigliati"]
+        S19["19. Risorse online"]
     end
 
-    S15 -.consultazione continua.-> S2
-    S15 -.consultazione continua.-> S9
-    S16 -.guida settimanale.-> S1
+    S16 -.consultazione continua.-> S2
+    S16 -.consultazione continua.-> S9
+    S17 -.guida settimanale.-> S1
 ```
 
-In sintesi: prima impari **il linguaggio di base** del software (Blocco A), poi **il modo in cui i team si organizzano** per costruirlo (Blocco B), poi **gli strumenti e i processi specifici** della piattaforma DevOps che gestirai (Blocco C), e infine hai a disposizione un **kit di strumenti di consultazione** (Blocco D) da usare per tutta la durata del percorso e anche dopo.
+In sintesi: prima impari **il linguaggio di base** del software (Blocco A), poi **il modo in cui i team si organizzano** per costruirlo (Blocco B), poi **gli strumenti e i processi specifici** della piattaforma DevOps che gestirai, incluso l'impatto dell'intelligenza artificiale sul lavoro quotidiano (Blocco C), e infine hai a disposizione un **kit di strumenti di consultazione** (Blocco D) da usare per tutta la durata del percorso e anche dopo.
 
 ---
 
@@ -174,9 +175,9 @@ Prima di passare alla sezione 2, prova questi esercizi: non richiedono ancora co
 ## 🔗 Collegamenti
 
 - [2. Fondamenti di informatica](../02-fondamenti-informatica/README.md) — le basi tecniche da cui parte tutto il resto del corso
-- [15. Glossario](../15-glossario/README.md) — da consultare ogni volta che incontri un termine nuovo
-- [16. Piano di studio](../16-piano-di-studio/README.md) — il programma dettagliato delle 8 settimane
-- [18. Risorse online](../18-risorse-online/README.md) — materiali extra se vuoi approfondire fin da subito
+- [16. Glossario](../16-glossario/README.md) — da consultare ogni volta che incontri un termine nuovo
+- [17. Piano di studio](../17-piano-di-studio/README.md) — il programma dettagliato delle 9 settimane
+- [19. Risorse online](../19-risorse-online/README.md) — materiali extra se vuoi approfondire fin da subito
 
 ## 📚 Risorse
 

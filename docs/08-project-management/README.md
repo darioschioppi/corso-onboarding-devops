@@ -1468,7 +1468,7 @@ strumento conta meno del ragionamento che ci metti dietro.
 - [6. Scrum](../06-scrum/README.md) — i ruoli (Scrum Master, Product Owner) e la Sprint Retrospective che dialogano con Project Manager, sponsor e lessons learned del PMBOK
 - [9. DevOps](../09-devops/README.md) — la cultura e le pratiche che rendono possibile un monitoraggio continuo e KPI come deployment frequency e MTTR
 - [10. CI/CD](../10-ci-cd/README.md) — i quality gate della pipeline come automazione concreta del Quality Control visto in 8.18
-- [15. Glossario](../15-glossario/README.md) — le definizioni sintetiche di RAID Log, RACI, milestone, change request e degli altri termini incontrati in questa sezione
+- [16. Glossario](../16-glossario/README.md) — le definizioni sintetiche di RAID Log, RACI, milestone, change request e degli altri termini incontrati in questa sezione
 
 ## 📚 Risorse
 

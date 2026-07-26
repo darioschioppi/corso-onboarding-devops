@@ -180,8 +180,20 @@ hr {
 
 img {
   max-width: 100%;
+  max-height: 22cm;
+  height: auto;
   display: block;
   margin: 1em auto;
+  page-break-inside: avoid;
+}
+
+/* I diagrammi mermaid escono da pandoc con class="diagram": vanno forzati a
+   tutta la larghezza utile, altrimenti weasyprint li rende alla dimensione
+   nativa in pixel e risultano minuscoli e illeggibili. */
+img.diagram {
+  width: 100%;
+  max-height: 22cm;
+  object-fit: contain;
 }
 
 figure.mermaid-diagram {
@@ -272,22 +284,30 @@ def render_block(match):
         return "```text\n[Diagramma mermaid #%d — vedi versione online]\n%s```" % (counter, code)
 
     mmd_path = os.path.join(assets_dir, "diagram-%02d.mmd" % counter)
-    svg_path = os.path.join(assets_dir, "diagram-%02d.svg" % counter)
+    # PNG e non SVG: weasyprint non sa interpretare il CSS interno degli SVG
+    # prodotti da mermaid e scarterebbe silenziosamente l'immagine.
+    png_path = os.path.join(assets_dir, "diagram-%02d.png" % counter)
     with open(mmd_path, "w", encoding="utf-8") as fh:
         fh.write(code)
 
     cmd = [
         "npx", "-y", "-p", "@mermaid-js/mermaid-cli", "mmdc",
-        "-i", mmd_path, "-o", svg_path,
+        "-i", mmd_path, "-o", png_path,
         "--puppeteerConfigFile", puppeteer_cfg,
         "--backgroundColor", "white",
+        "--scale", "3",
+        "--width", "1200",
     ]
     try:
         subprocess.run(cmd, check=True, capture_output=True, timeout=90)
-        if os.path.exists(svg_path) and os.path.getsize(svg_path) > 0:
-            rel = os.path.relpath(svg_path, os.path.dirname(dst_md))
-            return "\n![Diagramma %d](%s)\n" % (counter, rel)
-        raise RuntimeError("svg vuoto o assente")
+        if os.path.exists(png_path) and os.path.getsize(png_path) > 0:
+            # Percorso ASSOLUTO: weasyprint riceve l'HTML da pandoc e risolve
+            # i percorsi relativi rispetto alla cwd, non al Markdown, quindi
+            # con un percorso relativo scarterebbe l'immagine senza errori.
+            # Alt text vuoto: pandoc userebbe il testo come didascalia visibile
+            # sotto l'immagine ("Diagramma N"), che è solo rumore.
+            return "\n![](%s){.diagram}\n" % os.path.abspath(png_path)
+        raise RuntimeError("png vuoto o assente")
     except Exception as exc:
         failures += 1
         sys.stderr.write("[build-pdf] mermaid fallito per blocco #%d: %s\n" % (counter, exc))
@@ -432,17 +452,10 @@ for dir in "${SECTION_DIRS[@]}"; do
   section_work="$WORK_DIR/$section_name"
   tmp_md="$section_work/README.md"
   # Riusa il markdown pre-processato (mermaid già renderizzato) creato nel
-  # loop precedente, ma copia gli asset SVG nella cartella condivisa del
-  # documento combinato con path aggiornati.
+  # loop precedente. I diagrammi sono referenziati con path ASSOLUTI, quindi
+  # non serve copiare gli asset né riscrivere i percorsi.
   combined_section_md="$WORK_DIR/combined-$section_name.md"
-
-  if [ -d "$section_work/assets" ]; then
-    mkdir -p "$COMBINED_ASSETS/$section_name"
-    cp -r "$section_work"/assets/. "$COMBINED_ASSETS/$section_name/" 2>/dev/null || true
-    sed -E "s#\]\(assets/#](combined-assets/${section_name}/#g" "$tmp_md" > "$combined_section_md"
-  else
-    cp "$tmp_md" "$combined_section_md"
-  fi
+  cp "$tmp_md" "$combined_section_md"
 
   echo "" >> "$COMBINED_MD"
   cat "$combined_section_md" >> "$COMBINED_MD"

@@ -38,6 +38,13 @@ Alla fine di questa sezione saprai:
 - spiegare cos'è un **LLM (Large Language Model)**, cosa vuol dire "AI
   generativa" e perché un modello può **"allucinare"** (inventare
   informazioni false in modo plausibile);
+- spiegare cos'è il **RAG (Retrieval-Augmented Generation)** e perché è la
+  tecnica che permette a un assistente AI di rispondere basandosi su
+  documenti reali dell'azienda, invece di inventare o affidarsi solo a
+  quanto imparato durante il training;
+- spiegare cos'è **MCP (Model Context Protocol)** e la differenza tra un
+  assistente che "conversa" e un assistente che può anche **usare strumenti
+  e collegarsi a sistemi** (repository, ticket, database);
 - riconoscere come l'AI si inserisce negli strumenti di sviluppo (es.
   **GitHub Copilot**) e perché il codice generato va comunque revisionato;
 - riconoscere il termine **AIOps** e capire dove l'AI si inserisce nel ciclo
@@ -267,22 +274,308 @@ continuazione verificata.
 > considerare come requisito esistente qualcosa che va invece progettato da
 > zero.
 
-Questi modelli generano testo su qualsiasi argomento — e uno degli argomenti
-su cui si sono rivelati sorprendentemente efficaci è, non a caso, il codice
-sorgente stesso: è per questo che negli ultimi anni sono arrivati dentro gli
-strumenti di sviluppo che Marco, Giulia e Ahmed usano ogni giorno.
+Le allucinazioni viste sopra nascono da un limite molto specifico: un LLM
+conosce solo ciò che ha "visto" durante il training, un processo che si
+conclude a un certo punto nel tempo e non si aggiorna da solo. Non conosce i
+documenti interni di ShopFacile, non conosce i ticket dell'ultima settimana,
+non conosce nulla che sia stato scritto dopo la chiusura del suo training —
+e se gli chiedi qualcosa che non sa, come visto al paragrafo precedente, il
+rischio è che lo **inventi** con la stessa sicurezza con cui risponde a una
+domanda che conosce davvero. La domanda naturale, a questo punto, è: c'è un
+modo per far sì che il modello risponda basandosi sui **nostri** documenti
+reali, invece di affidarsi solo a quello che ha imparato una volta per
+tutte? È esattamente il problema che risolve la tecnica che vediamo ora.
 
 ---
 
-## 15.4 AI negli strumenti di sviluppo: cosa cambia per Marco, Giulia e Ahmed
+## 15.4 RAG: far rispondere il modello sui documenti veri, non su quello che "ricorda"
 
-Se un LLM può generare testo plausibile su qualsiasi argomento, e il codice
-sorgente è anch'esso un tipo di testo (con una sintassi molto più rigida di
-una lingua naturale, ma testo), è comprensibile che gli stessi modelli si
-siano rivelati molto efficaci anche nel generare codice. È così che l'AI è
-entrata concretamente nell'ambiente di lavoro del team di ShopFacile, dentro
-lo stesso editor di codice e lo stesso GitHub che hai già incontrato nella
-sezione 4.
+**RAG (Retrieval-Augmented Generation)**, in italiano "generazione aumentata
+dal recupero", è una tecnica che affronta di petto il problema appena
+descritto: un LLM che non conosce i documenti interni di un'azienda e che,
+di fronte a una domanda su di essi, rischia di inventare una risposta
+plausibile ma falsa.
+
+### Il problema, in breve
+
+Un LLM impara tutto quello che sa durante il training, guardando enormi
+quantità di testo pubblico. Non ha mai visto, né potrebbe aver visto, la
+documentazione interna di ShopFacile, la politica di reso aggiornata la
+settimana scorsa, o i ticket di supporto degli ultimi mesi. Se qualcuno gli
+chiede qualcosa su questi contenuti, il modello non ha altra scelta che
+generare la continuazione più plausibile — con il rischio di allucinazione
+già visto al paragrafo 15.3, ma questa volta su informazioni che
+**esistono davvero**, solo che il modello non le ha mai viste.
+
+### L'idea del RAG
+
+Una prima idea per risolvere il problema potrebbe essere: ri-addestrare il
+modello anche sui documenti di ShopFacile. Ma il training, come visto al
+paragrafo 15.2, è un processo lento e costoso, da ripetere ogni volta che un
+documento cambia — del tutto impraticabile per una politica di reso che
+viene aggiornata ogni due mesi. Il RAG prende una strada diversa e molto più
+semplice: **non tocca il modello**. Invece, al momento della domanda, va a
+**recuperare** i documenti giusti e li **fornisce** al modello insieme alla
+domanda stessa, chiedendogli di rispondere basandosi su quelli.
+
+### Come funziona, in 4 passaggi
+
+1. **Preparazione (una volta, in anticipo)**: i documenti aziendali (policy,
+   manuali, ticket passati...) vengono spezzati in pezzi più piccoli
+   (chiamati **chunk**, letteralmente "pezzi") e trasformati in
+   **embedding**: rappresentazioni numeriche del *significato* di quel
+   pezzo di testo, non del testo letterale. Pensa a un embedding come a un
+   modo per convertire una frase in una serie di coordinate su una mappa
+   immaginaria, dove testi con un significato simile finiscono in punti
+   vicini tra loro. Questi embedding vengono salvati in un **database
+   vettoriale**: un archivio pensato apposta per trovare rapidamente,
+   dentro migliaia di questi "punti sulla mappa", quelli più vicini a un
+   punto di partenza.
+2. **La domanda dell'utente** viene trasformata nello stesso modo, cioè nel
+   suo embedding — la stessa "mappa", lo stesso tipo di coordinate.
+3. **Ricerca per similarità (retrieval)**: il sistema cerca, dentro il
+   database vettoriale, i pezzi di documento con l'embedding più vicino a
+   quello della domanda — cioè quelli **semanticamente** più simili, non
+   quelli che contengono le stesse identiche parole. È una differenza
+   importante: chi cerca "posso avere un rimborso?" può ottenere anche i
+   pezzi di documento che parlano di "reso" o di "storno", perché il
+   significato è vicino anche se le parole usate sono diverse — una ricerca
+   tradizionale per parola esatta non troverebbe quel collegamento.
+4. **Generazione aumentata**: i pezzi di documento recuperati vengono
+   inseriti nel prompt insieme alla domanda originale, con un'istruzione
+   del tipo "rispondi basandoti solo su questi testi". Il modello, a questo
+   punto, non deve più "ricordare" nulla: ha il materiale giusto davanti,
+   nella finestra di contesto vista al paragrafo 15.3, e lo usa per
+   formulare la risposta.
+
+```mermaid
+flowchart LR
+    subgraph PREP["Preparazione - una volta"]
+        DOC["📄 Documenti ShopFacile<br/>policy, manuali, ticket"] --> CHUNK[✂️ Divisione in chunk]
+        CHUNK --> EMB1[🔢 Embedding di ogni chunk]
+        EMB1 --> DB[(🗄️ Database vettoriale)]
+    end
+    subgraph RUN["Ogni domanda"]
+        Q[❓ Domanda dell'utente] --> EMB2[🔢 Embedding della domanda]
+        EMB2 --> SEARCH["🔍 Ricerca dei chunk<br/>più simili nel significato"]
+        DB --> SEARCH
+        SEARCH --> CTX[📋 Chunk recuperati + domanda]
+        CTX --> LLM[🧠 LLM]
+        LLM --> ANS["💬 Risposta ancorata<br/>ai documenti reali"]
+    end
+```
+
+### Perché interessa a un PM
+
+Il RAG è la tecnologia dietro molti strumenti che probabilmente incontrerai
+presto: chatbot che rispondono su una base di documentazione aziendale,
+assistenti per il servizio clienti che rispondono basandosi sulle policy
+reali, strumenti di ricerca interna che, invece di restituire un elenco di
+documenti da leggere, restituiscono direttamente una risposta sintetica
+citando le fonti.
+
+> 🛠️ **Esempio pratico**: **Sara** propone al team di costruire un
+> assistente interno che risponda alle domande frequenti sul prodotto
+> ShopFacile pescando dalla documentazione di prodotto e dai ticket di
+> supporto già chiusi, così i nuovi membri del team (e i colleghi del
+> servizio clienti) non debbano più cercare a mano tra decine di pagine.
+> **Marco** la implementa proprio con un RAG: i documenti di ShopFacile e i
+> ticket passati vengono trasformati in embedding e salvati in un database
+> vettoriale; quando qualcuno chiede "qual è la politica di reso per un
+> articolo già usato?", il sistema recupera i paragrafi giusti della policy
+> reale e li passa al modello, che risponde citando esattamente quella
+> fonte — non una policy generica "plausibile per un e-commerce" come
+> l'esempio delle allucinazioni visto al paragrafo 15.3.
+
+### Vantaggi
+
+- Le risposte sono **ancorate a fonti reali**, che si possono anche citare
+  esplicitamente ("questa risposta si basa sul documento X").
+- Aggiornare le informazioni è semplice: basta aggiornare i documenti di
+  partenza (e i relativi embedding), **senza toccare il modello**.
+- Non serve rifare nessun processo di training: è molto più rapido ed
+  economico che ri-addestrare un modello da zero.
+
+### Limiti e attenzioni — da non sottovalutare
+
+- **Garbage in, garbage out**: se la ricerca recupera il documento
+  sbagliato (o un documento vecchio, mai aggiornato), la risposta sarà
+  costruita su basi sbagliate — con la stessa sicurezza apparente di una
+  risposta corretta.
+- Il RAG **riduce** le allucinazioni, ma non le **elimina**: il modello può
+  comunque interpretare male un documento corretto, o mischiarlo con
+  qualcosa che ha "imparato" durante il training.
+- La qualità delle risposte dipende **direttamente** dalla qualità e
+  dall'organizzazione della documentazione di partenza — un punto su cui un
+  PM/Scrum Master può avere un impatto reale, ad esempio insistendo perché
+  la documentazione di ShopFacile sia tenuta aggiornata e ben strutturata.
+- I **permessi di accesso** ai documenti vanno rispettati anche dentro un
+  sistema RAG: se l'assistente pesca indistintamente anche da documenti
+  riservati, chi lo interroga potrebbe leggere informazioni a cui non
+  dovrebbe avere accesso — lo stesso tema di autorizzazione già visto nella
+  sezione [13. Sicurezza](../13-sicurezza/README.md).
+
+### RAG o fine-tuning? Due strade diverse
+
+Il **fine-tuning** è l'alternativa "storica" al RAG: consiste nel
+ri-addestrare, almeno parzialmente, un modello sui propri dati, così che le
+informazioni diventino parte del modello stesso, invece di essere recuperate
+al momento della domanda.
+
+| | RAG | Fine-tuning |
+|---|---|---|
+| Cosa serve | Documenti organizzati + un database vettoriale | Un nuovo ciclo di training su dati propri |
+| Quando conviene | Informazioni che cambiano spesso (policy, ticket, catalogo) | Uno stile o un comportamento molto specifico e stabile nel tempo |
+| Aggiornare le informazioni | Semplice: si aggiornano i documenti | Complesso: richiede un nuovo training |
+| Complessità/costo tipici | Più bassi, più rapidi da mettere in piedi | Più alti, richiedono più tempo e competenze |
+| Cita le fonti | Sì, naturalmente | No, l'informazione è "dentro" il modello |
+
+Nella maggior parte dei casi in cui un'azienda vuole che un assistente
+risponda sui propri documenti aggiornati, il RAG è la strada più diretta; il
+fine-tuning entra in gioco più raramente, quando serve cambiare in modo
+stabile "come" un modello si comporta, non solo "cosa" sa.
+
+Il RAG risolve un problema preciso: dare al modello **conoscenza** aggiornata
+su cui basare le risposte. Ma un assistente che sa solo *rispondere*,
+per quanto bene informato, resta comunque isolato dal resto del lavoro del
+team: non può aprire un ticket, non può leggere lo stato di una Pull
+Request, non può interrogare un sistema aziendale. È il prossimo problema da
+affrontare.
+
+---
+
+## 15.5 MCP: dare al modello mani per agire, non solo occhi per leggere
+
+Il RAG, visto al paragrafo precedente, risolve il problema della
+**conoscenza**: permette a un modello di rispondere basandosi su documenti
+veri. Ma un assistente AI, anche ben informato, resta per natura **isolato**:
+sa conversare, ma da solo non può leggere il repository GitHub di
+ShopFacile, aprire un ticket, interrogare un database o consultare un
+sistema aziendale specifico. Serve un modo per collegarlo a questi sistemi
+— ed è qui che entra in gioco MCP.
+
+### Il problema, prima di MCP
+
+Storicamente, ogni volta che si voleva collegare un assistente AI a un
+sistema esterno (un repository di codice, un sistema di ticket, un
+database), quell'integrazione andava costruita **su misura**, in modo
+diverso per ogni combinazione di assistente e sistema. Con N assistenti
+diversi e M sistemi diversi da collegare, il numero di integrazioni da
+costruire e mantenere cresce rapidamente — ognuna con le sue regole, i suoi
+formati, la sua manutenzione separata.
+
+### Cos'è MCP
+
+**MCP (Model Context Protocol)** è uno **standard aperto** — introdotto da
+Anthropic e con un'adozione crescente nel resto del settore — che definisce
+un modo **comune** con cui un assistente AI può collegarsi a fonti di dati e
+strumenti esterni.
+
+> 💡 **Analogia**: pensa a MCP come a una **presa standard**, un po' come la
+> porta **USB-C** di un dispositivo elettronico. Prima di uno standard
+> condiviso, ogni dispositivo aveva il suo connettore proprietario, e ogni
+> accessorio andava costruito su misura per quel connettore. Con una presa
+> standard, invece, basta che un sistema la supporti perché qualunque
+> dispositivo compatibile possa collegarsi, senza bisogno di un adattatore
+> costruito apposta per ogni singola combinazione.
+
+### Come è fatto, concettualmente
+
+- Un **MCP server** è il componente che "espone" verso l'assistente le
+  capacità di un determinato sistema: leggere file, interrogare un
+  database, chiamare un'API (Application Programming Interface, l'insieme
+  di regole con cui due software si parlano tra loro), oppure eseguire
+  un'azione concreta.
+- L'assistente AI si comporta da **client**: si collega a uno o più MCP
+  server e, in base alla richiesta dell'utente, **decide quando e quale
+  strumento usare** tra quelli che il server mette a disposizione.
+- Lo stesso MCP server, una volta costruito, può essere usato da qualunque
+  assistente compatibile con lo standard — è proprio questo che elimina
+  l'esplosione di integrazioni su misura vista sopra.
+
+```mermaid
+flowchart TB
+    subgraph PRIMA["Prima di MCP - integrazioni una a una"]
+        direction LR
+        A1[🤖 Assistente A] --- S1[📁 Repository]
+        A1 --- S2[🎫 Ticket]
+        A2[🤖 Assistente B] --- S1
+        A2 --- S3[(🗄️ Database)]
+    end
+    subgraph DOPO["Con MCP - un connettore comune"]
+        direction LR
+        AST[🤖 Assistente AI] --> MCP1["🔌 MCP server<br/>repository GitHub"]
+        AST --> MCP2["🔌 MCP server<br/>sistema di ticket"]
+        AST --> MCP3["🔌 MCP server<br/>database"]
+        AST --> MCP4["🔌 MCP server<br/>documentazione"]
+    end
+```
+
+### Esempio pratico ShopFacile
+
+> 🛠️ **Esempio pratico**: **Marco** collega l'assistente AI usato dal team
+> a un MCP server per il repository GitHub di ShopFacile e a uno per il
+> sistema di ticket. A quel punto **Ahmed** può chiedere direttamente
+> all'assistente "quali sono le Pull Request aperte sul servizio
+> pagamenti?" e ottenere una risposta basata sui dati **reali** del
+> repository in quel momento, non una risposta plausibile ma inventata come
+> nell'esempio delle allucinazioni al paragrafo 15.3. Allo stesso modo,
+> **Luca** può chiedere una sintesi dei ticket chiusi durante l'ultimo
+> sprint per prepararsi alla Sprint Review, senza doverli scorrere uno per
+> uno a mano.
+
+### Perché interessa a un PM
+
+MCP segna la differenza tra un assistente che **"parla"** (risponde a
+domande, propone testo) e un assistente che **"fa"** (può leggere dati
+aggiornati da sistemi reali, e in alcuni casi anche eseguire azioni). Questo
+abilita l'automazione di attività ripetitive e riduce il lavoro di
+integrazione su misura tra strumenti — un impatto che, come PM/Scrum
+Master, puoi arrivare a vedere direttamente nelle stime e nei tempi di un
+progetto che prevede questo tipo di automazione. Allo stesso tempo, dare a
+un assistente la capacità di collegarsi a sistemi reali apre domande di
+governance nuove, da non prendere alla leggera.
+
+### Rischi e attenzioni — da non sottovalutare
+
+- Dare a un assistente la capacità di **agire** su un sistema (non solo
+  leggerlo) richiede confini chiari: permessi minimi necessari per quel
+  compito specifico, non un accesso totale "per sicurezza"; approvazione
+  umana prima di qualsiasi azione **irreversibile** (es. chiudere un
+  ticket, cancellare dei dati); tracciabilità di cosa l'assistente ha
+  effettivamente fatto.
+- Va valutato con attenzione **quali dati** un MCP server espone e **a chi**
+  — lo stesso tema di autenticazione e autorizzazione già visto nella
+  sezione [13. Sicurezza](../13-sicurezza/README.md): un assistente
+  collegato a troppi sistemi, con permessi troppo ampi, può diventare un
+  punto d'accesso a informazioni che chi lo usa non dovrebbe vedere.
+- Un assistente capace di eseguire azioni concrete è, di fatto, una
+  **superficie di attacco in più** da considerare nel quadro complessivo
+  della sicurezza del progetto: le stesse domande poste per qualsiasi altro
+  sistema con accesso a dati o funzionalità sensibili si pongono, allo
+  stesso modo, per un assistente collegato via MCP.
+
+Il RAG e MCP risolvono, insieme, due metà dello stesso problema: il RAG dà
+al modello **conoscenza** aggiornata su cui basare le risposte, MCP gli dà
+**mani** per leggere sistemi reali e, quando serve, agire su di essi. Messi
+insieme, trasformano un assistente generico — capace solo di conversare su
+argomenti generali — in uno strumento realmente utile nel contesto specifico
+di un'azienda come ShopFacile.
+
+---
+
+## 15.6 AI negli strumenti di sviluppo: cosa cambia per Marco, Giulia e Ahmed
+
+RAG e MCP, visti nei due paragrafi precedenti, riguardano soprattutto
+assistenti "esterni" collegati a documenti e sistemi. Ma c'è un terreno in
+cui l'AI generativa si è inserita ancora più a fondo, dentro il lavoro
+quotidiano di chi scrive codice: se un LLM può generare testo plausibile su
+qualsiasi argomento, e il codice sorgente è anch'esso un tipo di testo (con
+una sintassi molto più rigida di una lingua naturale, ma testo), è
+comprensibile che gli stessi modelli si siano rivelati molto efficaci anche
+nel generare codice. È così che l'AI è entrata concretamente nell'ambiente
+di lavoro del team di ShopFacile, dentro lo stesso editor di codice e lo
+stesso GitHub che hai già incontrato nella sezione 4.
 
 L'esempio più noto e concreto è **GitHub Copilot**: un assistente AI
 integrato nell'editor di codice, che osserva quello che lo sviluppatore sta
@@ -344,7 +637,7 @@ vita DevOps.
 
 ---
 
-## 15.5 AI nel ciclo di vita DevOps: dall'idea al monitoraggio
+## 15.7 AI nel ciclo di vita DevOps: dall'idea al monitoraggio
 
 Copilot, visto al paragrafo precedente, interviene in un punto molto preciso
 del lavoro: mentre il codice viene scritto. Ma il ciclo DevOps visto nella
@@ -407,7 +700,7 @@ tuo ruolo quotidiano.
 
 ---
 
-## 15.6 AI nel lavoro di un Project Manager / Scrum Master
+## 15.8 AI nel lavoro di un Project Manager / Scrum Master
 
 Fin qui l'AI ha toccato soprattutto il lavoro tecnico di Marco, Giulia e
 Ahmed. Ma gli stessi strumenti di AI generativa visti al paragrafo 15.3 sono
@@ -480,14 +773,15 @@ contesto professionale, ed è utile vederli insieme, in modo più sistematico.
 
 ---
 
-## 15.7 Rischi, limiti e uso responsabile
+## 15.9 Rischi, limiti e uso responsabile
 
 Abbiamo incontrato, sezione dopo paragrafo, diversi limiti dell'AI: le
-allucinazioni (paragrafo 15.3), la mancanza di contesto aziendale (paragrafo
-15.6), la necessità di revisione umana del codice (paragrafo 15.4). È il
-momento di raccoglierli in un quadro unico, insieme ad altri rischi che non
-abbiamo ancora nominato, perché sono proprio quelli su cui un PM/Scrum Master
-viene più spesso interpellato.
+allucinazioni (paragrafo 15.3), i limiti del RAG e le questioni di
+autorizzazione legate a RAG e MCP (paragrafi 15.4 e 15.5), la mancanza di
+contesto aziendale (paragrafo 15.8), la necessità di revisione umana del
+codice (paragrafo 15.6). È il momento di raccoglierli in un quadro unico,
+insieme ad altri rischi che non abbiamo ancora nominato, perché sono proprio
+quelli su cui un PM/Scrum Master viene più spesso interpellato.
 
 - **Allucinazioni** (già viste al paragrafo 15.3): informazioni false
   generate con sicurezza. Vanno sempre verificate, specialmente prima di
@@ -556,7 +850,7 @@ resta sempre di chi la usa e di chi decide sulla base di quello che produce.
 
 ---
 
-## 15.8 MLOps: come si porta un modello in produzione, in sintesi
+## 15.10 MLOps: come si porta un modello in produzione, in sintesi
 
 I rischi visti al paragrafo precedente riguardano soprattutto l'uso di
 modelli già pronti, spesso costruiti da altre aziende. Ma se il team di
@@ -610,7 +904,7 @@ riferisce e perché non è semplicemente "un bug da correggere".
 
 ---
 
-## 15.9 Come usarla bene nel quotidiano
+## 15.11 Come usarla bene nel quotidiano
 
 Dopo aver visto potenzialità, usi concreti e rischi, resta una domanda molto
 pratica: come ti comporti tu, ogni giorno, quando apri uno strumento di AI
@@ -624,10 +918,13 @@ senza subirne i limiti.
 >    ShopFacile, i suoi accordi commerciali o le decisioni prese la settimana
 >    scorsa: più contesto utile (e non riservato) fornisci nella richiesta,
 >    più la risposta sarà pertinente — ma senza mai includere dati sensibili
->    o proprietari, come visto al paragrafo 15.7. In una conversazione molto
+>    o proprietari, come visto al paragrafo 15.9. In una conversazione molto
 >    lunga, ricorda anche il limite della finestra di contesto visto al
 >    paragrafo 15.3: se l'assistente sembra aver "dimenticato" qualcosa
->    detto all'inizio, spesso basta ripeterlo brevemente nel prompt.
+>    detto all'inizio, spesso basta ripeterlo brevemente nel prompt. Se invece
+>    l'assistente che usi è collegato a documenti o sistemi reali tramite RAG
+>    o MCP (paragrafi 15.4 e 15.5), verifica comunque le risposte prima di
+>    darle per buone: aiutano a ridurre le allucinazioni, non le eliminano.
 > 2. **Chiedi di spiegare, non solo di fare.** Chiedere "spiegami perché
 >    questa user story è formulata così" invece di limitarti ad accettare il
 >    testo generato ti aiuta a imparare e a verificare che il ragionamento
@@ -656,7 +953,7 @@ finale.
 
 ---
 
-## 15.10 Riepilogo
+## 15.12 Riepilogo
 
 In questa sezione hai visto come l'intelligenza artificiale si inserisce nel
 lavoro quotidiano di un team come quello di ShopFacile, e in particolare nel
@@ -672,6 +969,13 @@ tuo ruolo di Junior PM/Scrum Master:
 - gli **LLM** e l'**AI generativa** producono testo (o codice) plausibile
   predicendo la continuazione più probabile, non consultando una base di
   fatti verificati — da qui il rischio delle **allucinazioni**;
+- il **RAG (Retrieval-Augmented Generation)** riduce (senza eliminare) le
+  allucinazioni facendo rispondere il modello sui documenti reali
+  dell'azienda, recuperati al momento della domanda invece che "ricordati"
+  dal training; **MCP (Model Context Protocol)** è lo standard aperto che
+  permette a un assistente AI di collegarsi, in modo comune, a sistemi e
+  strumenti esterni (repository, ticket, database) — dando al modello,
+  rispettivamente, **conoscenza** aggiornata e **mani** per agire;
 - strumenti come **GitHub Copilot** assistono Marco, Giulia e Ahmed nella
   scrittura di codice e test, ma il codice generato **va sempre revisionato**
   come qualsiasi altro, tramite Pull Request, code review e quality gate;
@@ -695,8 +999,8 @@ tuo ruolo di Junior PM/Scrum Master:
   smemorato — non come un oracolo infallibile.
 
 Hai ormai incontrato, sezione dopo sezione, un numero considerevole di
-termini nuovi — da questa sezione in particolare AI, ML, LLM, MLOps, AIOps —
-oltre a tutti quelli delle sezioni precedenti. Nella prossima sezione trovi
+termini nuovi — da questa sezione in particolare AI, ML, LLM, RAG, MCP,
+MLOps, AIOps — oltre a tutti quelli delle sezioni precedenti. Nella prossima sezione trovi
 esattamente lo strumento pensato per non doverli ricordare tutti a memoria: il
 [16. Glossario](../16-glossario/README.md), un dizionario consultabile in
 ogni momento del tuo percorso.
@@ -715,6 +1019,12 @@ voce, o scrivendo due righe) a queste domande:
 - Sai spiegare cos'è l'overfitting con l'analogia dello studente?
 - Sai spiegare perché un LLM può "allucinare", collegandolo a come genera
   davvero il testo?
+- Sai spiegare cos'è il RAG, i suoi 4 passaggi in sintesi, e perché riduce
+  ma non elimina le allucinazioni?
+- Sai spiegare cos'è MCP con l'analogia della presa standard/USB-C, e la
+  differenza tra un assistente che "parla" e uno che "fa"?
+- Sai spiegare, con parole tue, quando conviene il RAG e quando invece il
+  fine-tuning?
 - Sai spiegare perché il codice generato da uno strumento come GitHub
   Copilot va comunque revisionato, e da chi/come?
 - Sai spiegare cos'è l'AIOps e a quale area del DevOps si collega?
@@ -724,7 +1034,7 @@ voce, o scrivendo due righe) a queste domande:
   in strumenti di AI pubblici, collegandolo al GDPR visto nella sezione 13?
 - Sai spiegare cos'è MLOps e perché un modello può degradare nel tempo?
 - Sapresti elencare almeno tre delle regole pratiche viste al paragrafo
-  15.9 per un uso responsabile dell'AI?
+  15.11 per un uso responsabile dell'AI?
 
 ---
 
@@ -790,13 +1100,42 @@ voce, o scrivendo due righe) a queste domande:
    umano esiste ancora su quel risultato (revisione, approvazione,
    verifica).
 
-7. **Applica le cinque regole del paragrafo 15.9 a un caso concreto.**
+7. **Applica le cinque regole del paragrafo 15.11 a un caso concreto.**
    Pensa alla prossima volta che useresti (o hai usato) un'AI generativa
    per un compito reale del tuo lavoro, e ripassa mentalmente le cinque
    regole pratiche: quali hai già seguito, quali no?
    ✅ **Come verificare**: individua almeno una regola che, guardando
    indietro, non avevi seguito, e scrivi in una riga cosa faresti diversamente
    la prossima volta.
+
+8. **Individua un caso RAG nella tua azienda.** Pensa (o chiedi a un
+   collega) se esiste, o servirebbe, un assistente che risponda a domande
+   frequenti pescando dalla documentazione interna, dai ticket passati o
+   dalle policy aziendali. Elenca quali documenti concreti dovrebbero
+   alimentarlo, e chi dovrebbe poterlo interrogare.
+   ✅ **Come verificare**: la tua lista di documenti è specifica (non solo
+   "la documentazione"), e hai anche pensato a chi **non** dovrebbe poter
+   accedere a quell'assistente, se alcuni documenti fossero riservati.
+
+9. **RAG o fine-tuning?** Per ciascuno dei seguenti casi, decidi (con una
+   riga di motivazione) se ti sembra più adatto un approccio RAG o un
+   fine-tuning: (a) un assistente che deve rispondere sulla policy di reso
+   aggiornata ogni mese; (b) un assistente che deve sempre rispondere con
+   uno stile e un tono aziendale molto specifico, stabile nel tempo.
+   ✅ **Come verificare**: confronta le tue risposte con la tabella del
+   paragrafo 15.4 — il caso (a), che cambia spesso, dovrebbe orientarti
+   verso il RAG; il caso (b), stabile nel tempo, verso il fine-tuning.
+
+10. **Ragiona sui permessi di un assistente collegato via MCP.** Immagina
+    che il team voglia collegare un assistente AI, tramite MCP, al sistema
+    di ticket di supporto di ShopFacile. Scrivi quali permessi minimi
+    gli daresti (es. solo lettura dei ticket aperti? può anche chiuderli?
+    può rispondere ai clienti in autonomia?) e quali azioni richiederebbero
+    invece un'approvazione umana.
+    ✅ **Come verificare**: la tua lista distingue chiaramente tra azioni di
+    sola lettura (più sicure da concedere) e azioni che modificano qualcosa
+    o sono irreversibili (che richiedono più cautela e, idealmente,
+    approvazione umana).
 
 ---
 
@@ -806,13 +1145,14 @@ voce, o scrivendo due righe) a queste domande:
 - [4. Git e GitHub](../04-git-e-github/README.md) — Pull Request e code review, i controlli umani che restano invariati anche quando il codice è generato con assistenza AI
 - [9. DevOps](../09-devops/README.md) — il ciclo DevOps di cui MLOps e AIOps sono, rispettivamente, il "cugino" e l'estensione
 - [10. CI/CD](../10-ci-cd/README.md) — la pipeline e i quality gate che verificano anche il codice generato con assistenza AI
-- [13. Sicurezza](../13-sicurezza/README.md) — GDPR, privacy e protezione dei dati, temi centrali quando si usano strumenti di AI pubblici
+- [13. Sicurezza](../13-sicurezza/README.md) — autenticazione, autorizzazione, GDPR e protezione dei dati, temi centrali per i permessi di accesso di un sistema RAG e per la governance di un assistente collegato via MCP
 - [16. Glossario](../16-glossario/README.md) — per ripassare rapidamente ogni termine visto in questa sezione
 
 ## 📚 Risorse
 
 - [GitHub Copilot — panoramica ufficiale](https://github.com/features/copilot)
 - [GitHub Docs — Documentazione su GitHub Copilot](https://docs.github.com/copilot)
+- [Model Context Protocol — sito ufficiale del protocollo](https://modelcontextprotocol.io)
 - [DeepLearning.AI — corsi introduttivi su AI e machine learning](https://www.deeplearning.ai)
 - [Commissione Europea — Strategia europea per l'intelligenza artificiale](https://digital-strategy.ec.europa.eu/en/policies/european-approach-artificial-intelligence)
-- [OWASP — Top 10 per applicazioni basate su LLM](https://owasp.org/www-project-top-10-for-large-language-model-applications/)
+- [OWASP — Top 10 per applicazioni basate su LLM (include rischi di RAG e di integrazioni con strumenti/agenti)](https://owasp.org/www-project-top-10-for-large-language-model-applications/)

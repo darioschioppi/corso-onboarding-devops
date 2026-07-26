@@ -51,7 +51,7 @@ Una volta in produzione, il **Monitoring** osserva lo stato del sistema e il **L
 Il **DevOps** è la cornice culturale che tiene insieme tutti i fili visti sopra: il **CALMS** ne riassume i cinque pilastri, mentre la **Cultura DevOps** descrive concretamente cosa cambia nel modo di lavorare quotidiano di un team come quello di ShopFacile, fino a pratiche come l'**IaC (Infrastructure as Code)** che trattano l'infrastruttura come se fosse codice, versionabile e revisionabile come qualsiasi Pull Request.
 
 ### Come l'AI entra nel lavoro del team
-Tutto parte dai dati: attraverso il **Training (addestramento)**, un algoritmo di **Machine Learning** (o, più nello specifico, di **Deep Learning**) impara pattern da grandi quantità di esempi e produce un **Modello (AI)**, che poi viene interrogato in fase di **Inferenza** per generare risposte su casi nuovi. Gli **LLM (Large Language Model)** sono uno dei risultati più visibili di questo processo, e alimentano la categoria dell'**AI generativa**: strumenti concreti come **Copilot (GitHub Copilot)** nascono proprio da qui, trasformando un **Prompt** scritto dallo sviluppatore in suggerimenti di codice. Questa tecnologia ha però dei limiti che il team di ShopFacile deve conoscere prima di fidarsene ciecamente: l'**Allucinazione (AI)**, il **Bias** ereditato dai dati di training, e l'**Overfitting**, quando un modello impara troppo bene gli esempi visti e generalizza male su quelli nuovi. Proprio come il **DevOps** ha portato automazione e collaborazione al rilascio del software, l'**MLOps** ne applica gli stessi principi al ciclo di vita dei modelli AI, mentre l'**AIOps** usa queste stesse tecniche per potenziare il monitoraggio dei sistemi in produzione.
+Tutto parte dai dati: attraverso il **Training (addestramento)**, un algoritmo di **Machine Learning** (o, più nello specifico, di **Deep Learning**) impara pattern da grandi quantità di esempi e produce un **Modello (AI)**, che poi viene interrogato in fase di **Inferenza** per generare risposte su casi nuovi. Gli **LLM (Large Language Model)** sono uno dei risultati più visibili di questo processo, e alimentano la categoria dell'**AI generativa**: strumenti concreti come **Copilot (GitHub Copilot)** nascono proprio da qui, trasformando un **Prompt** scritto dallo sviluppatore in suggerimenti di codice. Questa tecnologia ha però dei limiti che il team di ShopFacile deve conoscere prima di fidarsene ciecamente: l'**Allucinazione (AI)**, il **Bias** ereditato dai dati di training, e l'**Overfitting**, quando un modello impara troppo bene gli esempi visti e generalizza male su quelli nuovi. Proprio come il **DevOps** ha portato automazione e collaborazione al rilascio del software, l'**MLOps** ne applica gli stessi principi al ciclo di vita dei modelli AI, mentre l'**AIOps** usa queste stesse tecniche per potenziare il monitoraggio dei sistemi in produzione. Un **LLM (Large Language Model)** da solo, però, non conosce i documenti interni di un'azienda come ShopFacile né può agire sui suoi sistemi: il **RAG (Retrieval-Augmented Generation)** risolve il primo limite recuperando al momento della domanda i pezzi (**Chunk**) di documentazione più pertinenti da un **Database vettoriale**, individuati tramite **Ricerca semantica** sugli **Embedding**, invece di dover riaddestrare il modello con il **Fine-tuning**; il **MCP (Model Context Protocol)**, con i suoi **MCP server**, risolve il secondo, dando allo stesso modello un modo standard per collegarsi a strumenti e sistemi reali. In sintesi: il primo dà al modello la conoscenza, il secondo gli dà la capacità di agire.
 
 ### Il percorso end-to-end in un unico schema
 
@@ -138,6 +138,9 @@ Un acronimo (Culture, Automation, Lean, Measurement, Sharing) che riassume i cin
 ### Change Request (richiesta di modifica)
 Una proposta formale di modificare qualcosa già deciso nel progetto — ambito, tempi, costi o requisiti — che va valutata e approvata prima di essere applicata, invece di lasciare che il progetto cambi rotta senza controllo. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope Creep** (il rischio che corre un progetto se le richieste di modifica non passano da qui).
 
+### Chunk
+Un piccolo pezzo di testo (poche frasi o un paragrafo) in cui viene spezzato un documento lungo prima di elaborarlo con l'intelligenza artificiale, ad esempio nel RAG: dividere in pezzi più piccoli permette di recuperare solo la parte di documento davvero rilevante per una domanda, invece di doverlo leggere per intero ogni volta. → approfondito nella sezione 15 (Intelligenza artificiale).
+
 ### CI (Continuous Integration)
 La pratica di integrare frequentemente (più volte al giorno) il proprio codice con quello del resto del team, verificando automaticamente con dei test che tutto continui a funzionare insieme. → approfondito nella sezione 9 (DevOps) e nella sezione 10 (CI/CD). Si collega a: **Pipeline** (il meccanismo che la rende concreta) e **Quality Gate** (il controllo che ne verifica l'esito).
 
@@ -195,6 +198,9 @@ Un database che non organizza i dati in tabelle rigide come quelli relazionali, 
 ### Database relazionale
 Un database che organizza i dati in tabelle collegate tra loro tramite relazioni, un po' come fogli Excel che si richiamano a vicenda; si interroga con il linguaggio SQL. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### Database vettoriale
+Un tipo particolare di database pensato per salvare e ricercare Embedding, cioè rappresentazioni numeriche del significato di un testo: invece di cercare parole esatte, permette di trovare rapidamente i contenuti più simili nel significato a una domanda, anche tra milioni di documenti. → approfondito nella sezione 15 (Intelligenza artificiale).
+
 ### Deep Learning
 Un ramo del Machine Learning basato su reti neurali artificiali organizzate in molti "strati" (deep, cioè profondo), particolarmente efficace per compiti complessi come il riconoscimento di immagini o la comprensione del linguaggio naturale, ed è la tecnologia alla base della maggior parte degli LLM moderni. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **Machine Learning** (il campo più ampio di cui è una tecnica specifica) e **LLM (Large Language Model)** (uno dei risultati più visibili di questa tecnica).
 
@@ -225,6 +231,9 @@ Sigla di Domain Name System: il "elenco telefonico" di internet, che traduce nom
 ### Docker
 Lo strumento più diffuso per creare, eseguire e distribuire Container, cioè applicazioni "pacchettizzate" insieme a tutto ciò che serve loro per funzionare ovunque nello stesso modo. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **Container** (ciò che crea e distribuisce) e **Artifact (build)** (un'immagine Docker è uno dei formati più comuni di artifact).
 
+### Embedding
+Una rappresentazione numerica (una lista di numeri) del significato di un testo, un'immagine o altro contenuto, calcolata da un modello di intelligenza artificiale: due contenuti con significato simile avranno un embedding simile, anche se usano parole diverse. È la base tecnica che rende possibile la Ricerca semantica. → approfondito nella sezione 15 (Intelligenza artificiale).
+
 ### Epic
 Un'attività molto grande, che raggruppa più User Story legate a un unico obiettivo di ampio respiro, troppo estesa per essere completata in un singolo Sprint. → approfondito nella sezione 6 (Scrum).
 
@@ -236,6 +245,9 @@ Una funzionalità del software: una caratteristica o capacità concreta che l'ut
 
 ### File System
 Il modo in cui un sistema operativo organizza e conserva i file su un disco, tramite cartelle e nomi, permettendo di ritrovarli e gestirli facilmente. → approfondito nella sezione 2 (Fondamenti di informatica).
+
+### Fine-tuning
+Il processo di riaddestrare ulteriormente un modello di intelligenza artificiale già pronto, usando dati specifici di un'azienda o di un compito, per specializzarlo su quel contesto invece di usarlo "come viene". È un'alternativa al RAG per dare a un modello conoscenza specifica: più lenta e costosa da aggiornare, ma capace di cambiare più a fondo il comportamento del modello. → approfondito nella sezione 15 (Intelligenza artificiale).
 
 ### Frontend
 La parte di un'applicazione con cui l'utente interagisce direttamente: l'interfaccia visibile (pagine web, schermate, pulsanti), che comunica con il Backend per mostrare e inviare informazioni. → approfondito nella sezione 11 (Architetture software).
@@ -296,6 +308,12 @@ Un ramo dell'intelligenza artificiale in cui un sistema impara a svolgere un com
 
 ### Manifesto Agile
 Il documento pubblicato nel 2001 da un gruppo di sviluppatori che definisce i valori e i principi alla base dell'approccio Agile, come privilegiare le persone e la collaborazione rispetto a processi rigidi e documentazione eccessiva. → approfondito nella sezione 5 (Agile).
+
+### MCP (Model Context Protocol)
+Sigla di Model Context Protocol: uno standard aperto, introdotto da Anthropic e con adozione crescente, che definisce un modo comune con cui un assistente AI si collega a fonti di dati e strumenti esterni, un po' come una presa USB-C che permette di collegare dispositivi diversi con lo stesso connettore. Prima di MCP, ogni assistente andava collegato "a mano" a ogni sistema con cui doveva interagire; MCP evita questa moltiplicazione di integrazioni su misura. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **LLM (Large Language Model)** (l'assistente che, tramite MCP, si collega agli strumenti esterni) e **API** (il modo con cui, dietro le quinte, un MCP server spesso espone le proprie capacità).
+
+### MCP server
+Il componente che, seguendo lo standard MCP, espone a un assistente AI le capacità di un sistema — ad esempio leggere dei file, interrogare un database o chiamare un'API — così che l'assistente possa scegliere quando e come usarle per rispondere a una richiesta. → approfondito nella sezione 15 (Intelligenza artificiale).
 
 ### Merge
 L'operazione con cui le modifiche fatte su un Branch vengono riunite (unite) al codice principale o a un altro branch. → approfondito nella sezione 3 (Come nasce un software).
@@ -390,6 +408,9 @@ Un controllo automatico inserito in una pipeline che blocca l'avanzamento del ri
 ### RACI
 Una matrice usata in Project Management per chiarire i ruoli in un'attività: chi è Responsible (la esegue), chi è Accountable (ne risponde), chi va Consultato e chi va solo Informato. → approfondito nella sezione 8 (Project Management).
 
+### RAG (Retrieval-Augmented Generation)
+Sigla di Retrieval-Augmented Generation, cioè "generazione aumentata dal recupero": una tecnica che, invece di riaddestrare un modello di intelligenza artificiale, gli fornisce al momento della domanda i documenti più rilevanti recuperati da una base documentale aziendale, così che possa rispondere basandosi su fonti verificabili invece che solo su ciò che ha imparato durante il Training. Ha però dei limiti: se recupera il documento sbagliato la risposta sarà sbagliata, e la qualità dipende sempre da quella della documentazione di partenza. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **Allucinazione (AI)** (il rischio che questa tecnica riduce, senza eliminarlo del tutto) e **Fine-tuning** (l'alternativa, più costosa da aggiornare, di riaddestrare il modello invece di fornirgli i documenti al momento della domanda).
+
 ### RAID Log
 Un registro che il project manager tiene per tracciare Risks (rischi), Assumptions (assunzioni), Issues (problemi) e Dependencies (dipendenze) di un progetto, per avere sempre sotto controllo i punti critici. → approfondito nella sezione 8 (Project Management).
 
@@ -410,6 +431,9 @@ Uno stile molto diffuso per progettare API web, basato su regole semplici e stan
 
 ### Rete
 Un insieme di computer e dispositivi collegati tra loro per scambiarsi dati e comunicare, dalla piccola rete di un ufficio fino a internet, la rete di reti più grande al mondo. → approfondito nella sezione 2 (Fondamenti di informatica).
+
+### Ricerca semantica
+Una ricerca che trova i contenuti più simili nel significato a una domanda, confrontando i loro Embedding, invece di cercare le stesse identiche parole scritte: permette ad esempio di trovare un documento utile anche se non contiene nessuna delle parole usate nella domanda. → approfondito nella sezione 15 (Intelligenza artificiale).
 
 ### Rischio
 Un evento incerto che, se si verifica, può avere un impatto positivo o (più spesso) negativo su un progetto; identificarlo e pianificarne la gestione è uno dei compiti principali del project manager. → approfondito nella sezione 8 (Project Management).

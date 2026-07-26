@@ -221,7 +221,7 @@ Qui la parola d'ordine è **massima cautela**:
 **Chi ci accede**: un numero molto ristretto di persone, quasi sempre
 solo tramite strumenti e processi automatizzati (la pipeline stessa),
 raramente con accesso manuale diretto — approfondiremo il perché nel
-paragrafo 15.10.
+paragrafo 14.10.
 
 **Cosa succede qui**: ogni errore ha un impatto reale su persone vere.
 Non è più "lavoro in corso": è il prodotto finito, in uso.
@@ -524,7 +524,7 @@ incontrato nella sezione CI/CD:
    l'ambiente di Test così com'è, citando almeno un rischio concreto.
 
 5. **Osserva chi può fare cosa, dove.** Confronta la tabella di accesso
-   agli ambienti vista nel paragrafo 15.10 con la situazione reale del
+   agli ambienti vista nel paragrafo 14.10 con la situazione reale del
    progetto: chi ha accesso diretto a Dev? Chi può promuovere codice in
    Staging? Chi (o cosa, es. solo la pipeline) può rilasciare in
    Produzione?

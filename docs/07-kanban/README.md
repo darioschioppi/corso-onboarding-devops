@@ -220,6 +220,20 @@ volta rende anche possibile **misurare con precisione** quanto tempo
 impiega davvero una card ad attraversare la board, dall'ingresso in To Do
 al completamento.
 
+C'è però un effetto collaterale del limite di WIP che nessun manuale racconta volentieri: quando la colonna è piena e qualcuno resta senza un task "proprio" da avviare, si sente in colpa, come se stesse "non facendo niente". È un riflesso comprensibile — siamo abituati a misurare il proprio valore dal numero di cose che abbiamo aperto — ma è esattamente il comportamento opposto a quello che il limite di WIP vuole ottenere. Il compito di chi facilita il team (che tu incontrerai nella pratica come Scrum Master, vedi la sezione 6.2.2) è ricordare, con costanza, che **aiutare a chiudere il lavoro di un collega è lavoro**, non meno prezioso di aprirne uno nuovo: è proprio quello che fa Ahmed nell'esempio sopra, e non è "tempo perso" solo perché non produce una nuova card con il suo nome sopra.
+
+### Classi di servizio e corsia di emergenza: e i bug urgenti?
+
+Il capitolo si è aperto con la domanda di Sara e Luca: cosa si fa quando arriva un bug critico che non può aspettare il proprio turno in coda? La risposta di Kanban non è "si ignora la board e si lavora fuori sistema": è definire, **prima** che il problema si presenti e insieme al team, una **classe di servizio** dedicata all'urgenza reale, spesso visualizzata come una corsia separata in alto sulla board (in inglese si parla di *swimlane*).
+
+Tre decisioni vanno prese in anticipo, non nel momento della crisi:
+
+- **Quante corsie di emergenza esistono.** Tipicamente **una sola**: se ogni tipo di richiesta ha la sua corsia "prioritaria", nessuna lo è davvero più delle altre, e il limite di WIP perde significato.
+- **Quali criteri rendono un lavoro davvero urgente.** Non basta "il cliente dice che è urgente": un criterio concreto per ShopFacile potrebbe essere "il sito è irraggiungibile o un cliente non riesce a pagare, in produzione, in questo momento" — non "sarebbe comodo averlo prima".
+- **Cosa succede al lavoro normale quando la corsia di emergenza viene usata.** La card urgente entra e viene lavorata subito, anche superando il limite di WIP della colonna — ma il team ne discute apertamente nel Daily successivo, perché quel superamento ha un costo: qualcos'altro, inevitabilmente, avanza più lentamente.
+
+> 📌 **Esempio pratico**: tornando al team di ShopFacile, dopo la Retrospective con cui si è aperto questo capitolo, Sara e Luca definiscono insieme al team una singola corsia di emergenza, riservata solo a bug che bloccano un pagamento o rendono il sito irraggiungibile. La settimana dopo arriva esattamente un caso così: un bug impedisce a una parte dei clienti di completare il checkout. La card entra nella corsia di emergenza, **Giulia** la prende in carico subito, superando per un giorno il limite di WIP della colonna "In Sviluppo". Nel Daily seguente il team ne discute apertamente: la card "Aggiornare libreria di logging" che stava a metà è rimasta ferma un giorno in più, ma è una conseguenza accettata, non un imprevisto subito in silenzio. I bug urgenti non "saltano la fila" in modo caotico e invisibile come prima: hanno una fila propria, dichiarata e con regole chiare.
+
 ---
 
 ## 7.4 Lead Time e Cycle Time
@@ -333,6 +347,8 @@ ma organizzano il lavoro in modo diverso.
 | **Metriche tipiche** | Velocity (punti completati per sprint) | Lead Time, Cycle Time, Throughput |
 | **Cambiamenti a metà lavoro** | Scoraggiati a metà sprint (si aspetta il prossimo) | Benvenuti in qualsiasi momento, il flusso è continuo |
 
+Nella tabella compare un termine che non hai ancora incontrato: il **Throughput** (letteralmente "capacità di elaborazione") è semplicemente **quante card il team completa in un dato periodo** (es. "12 card a settimana"), a differenza di Lead Time e Cycle Time che misurano una durata. Se Lead Time e Cycle Time rispondono a "quanto tempo ci vuole", il Throughput risponde a "quanto ne finiamo" — le due informazioni insieme danno un quadro completo del flusso: un team può avere un Cycle Time basso ma un Throughput scarso, se lavora bene sulle poche card che porta avanti ma ne avvia troppo poche in parallelo.
+
 **Quando usare Scrum**: quando il lavoro si presta a essere pianificato in
 blocchi (sprint), il team vuole momenti regolari di revisione e
 retrospettiva, e serve una cadenza predicibile per pianificare e comunicare
@@ -370,6 +386,8 @@ flowchart LR
     Kanban -.combinati in.-> Scrumban
 ```
 
+Prima di chiudere, però, un'ultima onestà intellettuale: Kanban non è privo di costi. La sua stessa forza — l'assenza di una cadenza fissa — è anche il suo limite principale. Senza sprint, è più difficile dare al cliente una data di consegna prevedibile per un gruppo di funzionalità ("quando avremo tutte queste 5 cose insieme?" ha una risposta più naturale in Scrum che in Kanban, dove ogni card procede per conto proprio). E senza gli eventi ricorrenti di Scrum, mancano i momenti naturali in cui il team si ferma a fare una demo o a riflettere su come sta lavorando: una Review e una Retrospective non nascono da sole nel flusso continuo, vanno **istituite deliberatamente** — molti team Kanban le mantengono comunque, a cadenza fissa, anche senza uno sprint che le "obblighi".
+
 Chiudiamo qui il confronto con Scrum: riprendiamo in breve i punti chiave
 di questa sezione su Kanban.
 
@@ -379,9 +397,7 @@ di questa sezione su Kanban.
 
 - Kanban nasce nella produzione industriale (Toyota, filosofia "lean") e si
   è poi adattato al lavoro dei team software.
-- La **board** con le sue colonne rende visibile lo stato di ogni elemento
-  di lavoro (card); le colonne possono essere personalizzate per riflettere
-  il processo reale del team.
+- La **board**, con le sue colonne personalizzabili, rende visibile lo stato di ogni card.
 - Limitare il **WIP** (lavoro in corso) migliora il flusso complessivo:
   meno cose iniziate contemporaneamente, più cose finite rapidamente.
 - **Lead Time** misura l'attesa dal punto di vista di chi richiede;

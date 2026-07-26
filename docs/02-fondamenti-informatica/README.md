@@ -194,8 +194,9 @@ vai a dormire.
 | Uso | Lavoro "in corso" | Archiviazione permanente |
 
 Questa distinzione RAM/disco tornerà utile più avanti nel corso, ad esempio
-quando parleremo di database (dati salvati su disco) o di cache (dati tenuti
-in RAM per velocità).
+quando parleremo di database (dati salvati su disco) o di **cache**: una
+copia dei dati usati più di frequente, tenuta in RAM apposta per non dover
+andare a recuperarli ogni volta dal disco più lento, risparmiando tempo.
 
 > **💡 Esempio pratico**
 >
@@ -228,7 +229,10 @@ tutto questo traffico.
 Il **Sistema Operativo** (Operating System, OS) è il software che gestisce
 tutte le risorse hardware del computer (CPU, RAM, disco, schermo...) e
 permette agli altri programmi (Excel, Chrome, ecc.) di funzionare senza dover
-"parlare" direttamente con l'hardware.
+"parlare" direttamente con l'hardware. Perché esiste questo intermediario?
+Senza di lui, ogni sviluppatore dovrebbe riscrivere il proprio software per
+ogni modello di computer, e due programmi in esecuzione insieme potrebbero
+rovinarsi a vicenda memoria o file, senza nessuno che arbitri.
 
 I sistemi operativi più diffusi sono:
 
@@ -312,6 +316,16 @@ Questo concetto tornerà utile quando, più avanti, parlerai di applicazioni
 che devono gestire **tante richieste contemporaneamente** (es. un sito web
 con migliaia di visitatori): il modo in cui un software gestisce processi e
 thread incide molto sulle sue performance.
+
+Gestire tante richieste insieme apre però un problema delicato: cosa succede
+se due thread (o due processi) modificano lo **stesso dato** nello stesso
+istante? Se su ShopFacile è disponibile un solo pezzo di un prodotto e due
+clienti cliccano "Acquista" nello stesso millisecondo, senza una gestione
+corretta della contemporaneità entrambi gli ordini potrebbero essere
+accettati. Questo tipo di problema, legato al "chi arriva prima" tra
+operazioni simultanee, è anche la ragione per cui alcuni bug sono
+**intermittenti**: si manifestano solo in rare combinazioni di tempismo, e
+per questo sono tra i più difficili da riprodurre e correggere.
 
 ---
 
@@ -452,17 +466,16 @@ Immagina di dover spedire un grosso pacco a un amico in un'altra città:
 4. il destinatario le riceve, controlla che siano tutte arrivate e le
    ricompone nell'ordine giusto.
 
-Non hai bisogno di sapere i dettagli tecnici di TCP/IP per il tuo lavoro da
-PM, ma è utile sapere che **è il livello base** su cui si costruiscono
-protocolli più "di alto livello" che userai spesso a parole, come HTTP.
+Per il tuo lavoro da PM è utile soprattutto sapere che TCP/IP **è il livello
+base** su cui si costruiscono protocolli più "di alto livello" che userai
+spesso a parole, come HTTP.
 
 > **💡 Esempio pratico**
 >
-> In un ticket di supporto si legge: "il server non risponde sulla porta
-> 443". Il collega di infrastruttura controlla che quella porta TCP (usata
-> per HTTPS) sia effettivamente aperta sul firewall del server: se è
-> chiusa o bloccata, nessuna richiesta può arrivare a destinazione, anche
-> se il server è acceso e funzionante.
+> Un ticket segnala: "il server non risponde sulla porta 443". Se quella
+> porta TCP (usata per HTTPS) è chiusa o bloccata sul firewall, nessuna
+> richiesta arriva a destinazione, anche se il server è acceso e
+> funzionante.
 
 ---
 
@@ -560,10 +573,10 @@ che vogliamo visitare: praticamente impossibile.
 > **💡 Esempio pratico**
 >
 > Dopo aver spostato ShopFacile su un nuovo server, il team aggiorna il
-> record DNS del progetto perché punti al nuovo indirizzo IP. Per alcune
-> ore, però, alcuni clienti continuano a raggiungere il vecchio server: è
-> un fenomeno normale, chiamato "propagazione DNS", perché la modifica
-> impiega un po' di tempo a diffondersi su tutti i server DNS del mondo.
+> record DNS. Per alcune ore, però, alcuni clienti continuano a raggiungere
+> il vecchio server: è un fenomeno normale, chiamato "propagazione DNS",
+> perché la modifica impiega un po' di tempo a diffondersi su tutti i
+> server DNS del mondo.
 
 ---
 
@@ -655,9 +668,8 @@ GET https://api.shopfacile.it/ordini/42
 
 per "recuperare i dettagli dell'ordine con id 42".
 
-Non avrai bisogno di scrivere codice per costruire API REST, ma sentirai
-questo termine costantemente parlando con gli sviluppatori del team, quindi è
-importante che il concetto ti sia chiaro.
+Sentirai questo termine costantemente parlando con gli sviluppatori del
+team, quindi è importante che il concetto ti sia chiaro.
 
 ---
 
@@ -668,9 +680,15 @@ come intervenirci (GET, POST...). Ma in che formato viaggiano concretamente
 i dati di quell'ordine dentro la richiesta e la risposta? Qui entrano in
 gioco JSON e XML.
 
-Quando due software si scambiano dati (ad esempio tramite un'API), devono
-usare un **formato comune**, condiviso, che entrambi sappiano "leggere". I
-due formati più diffusi sono **JSON** e **XML**.
+Immagina cosa succederebbe senza un formato comune: ogni sistema
+inventerebbe il proprio modo di scrivere "l'ordine 42, cliente Mario Rossi,
+totale 129,90", e ogni coppia di sistemi che deve parlarsi (il catalogo, i
+pagamenti, le spedizioni...) richiederebbe un "traduttore" dedicato, con il
+numero che esplode rapidamente al crescere dei sistemi coinvolti. Per
+questo due software che si scambiano dati (ad esempio tramite un'API)
+usano un **formato comune**, condiviso, che entrambi sappiano "leggere"
+senza bisogno di un intermediario su misura. I due formati più diffusi
+sono **JSON** e **XML**.
 
 ### JSON
 
@@ -722,18 +740,36 @@ predefinito sarà **JSON**: è più compatto, più leggibile, e più facile da
 usare nella programmazione moderna. XML lo incontrerai più raramente, magari
 in integrazioni con sistemi più datati.
 
+Questo non significa che XML sia "superato": resta preferibile quando serve
+una **validazione rigorosa** con uno schema formale (settori come banking o
+pubblica amministrazione) o quando servono i cosiddetti **namespace** —
+un modo di "etichettare" i tag con un prefisso, per evitare che due
+sistemi diversi usino per errore lo stesso nome di campo con significati
+diversi — capacità che JSON non offre allo stesso livello.
+
 ---
 
 ## 2.15 Database relazionali e SQL
 
-Il JSON dell'ordine visto poco fa deve comunque essere salvato da qualche
-parte in modo permanente e interrogabile — non basta scambiarlo in una
-risposta API, va anche conservato. È qui che entrano in gioco i database.
+Prima che ShopFacile avesse un database vero e proprio per gli ordini, il
+team operativo teneva l'elenco su un foglio Excel condiviso. Un giorno, due
+operatori aprono lo stesso ordine nello stesso minuto: uno aggiorna
+l'indirizzo, l'altro lo segna come "spedito". Excel salva l'ultima modifica
+sopra l'altra senza avvisare nessuno, e non c'è cronologia da consultare per
+capire chi ha scritto cosa. È il problema della copia condivisa senza
+tracciamento: lo ritroverai identico, applicato al codice invece che a un
+foglio Excel, quando arriverai a Git nella sezione 4 — è lo stesso schema
+di fondo, con un file diverso.
+
+Il JSON dell'ordine visto poco fa va quindi salvato in un modo che eviti il
+problema appena descritto, non basta scambiarlo in una risposta API. È qui
+che entrano in gioco i database.
 
 Un **database** (base di dati) è un sistema organizzato per **salvare,
 organizzare e recuperare grandi quantità di dati** in modo efficiente e
-strutturato — molto più potente e affidabile di un semplice file Excel per
-gestire dati che crescono in volume e complessità.
+strutturato, gestendo correttamente gli accessi simultanei e mantenendo una
+cronologia delle modifiche — molto più potente e affidabile di un semplice
+file Excel per gestire dati che crescono in volume e complessità.
 
 I **database relazionali** organizzano i dati in **tabelle**, esattamente
 come un foglio Excel: righe e colonne.
@@ -993,6 +1029,12 @@ Abbiamo appena descritto cosa sono i container, ma "chi" li crea e li fa
 girare concretamente? Nella grande maggioranza dei casi, incluso il progetto
 ShopFacile, lo strumento usato è Docker.
 
+Come abbiamo appena visto, il problema di fondo è quello del "funziona sul
+mio computer": il laptop di Marco, il server di test e quello di produzione
+hanno spesso versioni leggermente diverse di librerie e configurazioni, e
+Docker è nato apposta per spedire il software **insieme al suo intero
+ambiente**, così che i tre coincidano sempre esattamente.
+
 **Docker** è oggi lo strumento più popolare e diffuso per creare, distribuire
 ed eseguire container. È diventato talmente centrale nel mondo dello sviluppo
 software moderno che spesso "container" e "Docker" vengono usati quasi come
@@ -1097,6 +1139,12 @@ ma sentirai questo nome citato molto spesso parlando dell'infrastruttura del
 progetto e dei tempi di rilascio: sapere cosa fa a grandi linee ti aiuterà a
 capire meglio le conversazioni tecniche del team e a stimare meglio la
 complessità di certe attività.
+
+Kubernetes, però, non serve sempre. Un'applicazione singola con traffico
+modesto, gestita da un container o due su un solo server, spesso non ha
+bisogno di un direttore d'orchestra: adottarlo solo "perché è quello che
+usano tutti" ha un costo reale in complessità e competenze, che può superare
+il beneficio ottenuto.
 
 > **💡 Esempio pratico**
 >

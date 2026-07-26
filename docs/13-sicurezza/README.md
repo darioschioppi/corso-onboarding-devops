@@ -48,12 +48,27 @@ Al termine di questa sezione saprai:
 
 ## 13.1 Perché la sicurezza riguarda anche un PM, non solo i tecnici
 
-Prova a pensarla così: la sicurezza informatica è come **l'impianto
-antincendio di un edificio**. Non lo vedi quasi mai in azione, ci speri di
-non doverlo mai usare, e nessuno pianifica una giornata di lavoro pensando
-all'impianto antincendio. Ma se manca, o è mal progettato, il giorno in cui
-succede qualcosa **le conseguenze sono enormemente più gravi** di quanto
-sarebbe costato prevenirle.
+Qualche mese prima che ShopFacile introducesse l'MFA anche in produzione, un
+collaboratore esterno aveva riusato la sua password aziendale su un
+servizio online diverso, non collegato al progetto. Quel servizio viene
+violato, e le sue credenziali finiscono in una lista di password rubate che
+circola online. Qualcuno le prova, per tentativo, sugli accessi di
+ShopFacile — chi ruba credenziali le prova ovunque, sperando che siano
+state riusate. Il tentativo si ferma sull'ambiente di test, perché lì l'MFA
+era già obbligatoria; in produzione, in quel momento, non lo era ancora.
+Ad accorgersene è Marco, il mattino dopo, leggendo per altri motivi il
+registro degli accessi: dodici tentativi falliti con una password
+**corretta**, bloccati solo dal secondo fattore. Quando lo porta a Luca, la
+domanda che si fanno non è "chi è stato", ma un'altra: perché una
+protezione che c'era in test non c'era anche dove stanno i dati veri dei
+clienti?
+
+È bastato questo episodio a rendere concreta un'idea altrimenti astratta:
+la sicurezza informatica è come **l'impianto antincendio di un edificio**.
+Non lo vedi quasi mai in azione, e nessuno pianifica una giornata di lavoro
+pensando all'impianto antincendio — ma se manca, o è mal progettato, il
+giorno in cui succede qualcosa **le conseguenze sono enormemente più
+gravi** di quanto sarebbe costato prevenirle.
 
 Per un Project Manager o uno Scrum Master, un incidente di sicurezza non è
 "un bug in più da segnare sul backlog": ha impatti che riconoscerai
@@ -71,7 +86,7 @@ immediatamente come "roba tua":
   requisiti di compliance). Non rispettarle può voler dire penali
   economiche o, nei casi più seri, la fine della collaborazione.
 - **Conformità legale**: normative come il GDPR (che vedremo al paragrafo
-  14.8) impongono obblighi precisi sulla protezione dei dati personali, con
+  13.9) impongono obblighi precisi sulla protezione dei dati personali, con
   sanzioni concrete in caso di violazione.
 
 Il punto chiave da portare con te: **la sicurezza è un requisito del
@@ -213,6 +228,21 @@ telefono di quella persona: l'attaccante non lo ha, e l'accesso viene
 bloccato. Questo è esattamente il motivo per cui, dopo un data breach di
 un servizio terzo, la prima raccomandazione è sempre "cambia la password e
 verifica che l'MFA sia attivo", non solo la prima.
+
+### Un errore frequente: le credenziali salvate nel repository
+
+Un modo comune tra i developer alle prime armi di vanificare queste
+precauzioni: salvare per errore una chiave di accesso (*API key*)
+**direttamente nei file del repository**. Come visto nella sezione 4, la
+storia dei commit **non si dimentica**: cancellarla nel commit successivo
+non basta, resta recuperabile nella cronologia.
+
+**Esempio pratico**: Ahmed sta per committare, per sbaglio, la chiave email
+di ShopFacile in un file di configurazione. Uno scanner di segreti nella
+pipeline (sezione 10) la intercetta e blocca il commit. Se non ci fosse
+stato, la regola sarebbe: quella credenziale va considerata **compromessa**
+e **sostituita**, non solo rimossa — resterebbe visibile nella cronologia.
+Un `.gitignore` ben configurato (sezione 4) previene il problema a monte.
 
 ---
 
@@ -432,6 +462,42 @@ da porsi già in fase di pianificazione, non solo a rilascio imminente:
 "questa nuova funzionalità gestisce dati sensibili?", "abbiamo previsto
 tempo per la revisione di sicurezza?", "il quality gate di sicurezza è
 configurato sulla pipeline di questo progetto?".
+
+### Il prezzo reale: sicurezza e velocità sono in tensione
+
+Più controlli non sono "gratis": ogni scan aggiuntivo allunga i tempi di
+rilascio, e alcune segnalazioni sono **falsi positivi** che
+qualcuno deve comunque analizzare e scartare. Un conflitto tipico: un
+quality gate blocca un rilascio per una vulnerabilità "media" in una
+libreria usata **solo nei test**, mai raggiungibile da un utente reale.
+Applicare sempre la regola più severa sembra prudente, ma può fermare un
+rilascio urgente per un rischio quasi nullo. Chi facilita il processo
+(spesso lo Scrum Master) deve **arbitrare in base al rischio reale** — dove
+si trova la vulnerabilità, chi potrebbe sfruttarla — invece di applicare
+automaticamente la regola più rigida.
+
+### Chi decide cosa: la governance della sicurezza
+
+Questo compromesso funziona solo se è chiaro **chi ha l'autorità di
+decidere**. Come per la matrice RACI vista nella sezione 8, per ShopFacile
+vanno resi espliciti: chi può **bloccare un rilascio** per motivi di
+sicurezza; chi **approva un'eccezione** al quality gate (non la stessa
+persona che ha scritto il codice coinvolto); chi **revoca gli accessi**
+quando una persona lascia il progetto, prima che un accesso dimenticato
+diventi un rischio silenzioso; chi fa la **revisione periodica dei
+permessi**, verificando che le autorizzazioni (paragrafo 13.2) siano ancora
+giustificate. Metterli per iscritto nella RACI, prima dell'emergenza, è
+lavoro di processo.
+
+### Sicurezza come voce di backlog, non come intenzione generica
+
+Un elemento come "rendere sicura l'applicazione" non è utilizzabile: non si
+stima, non si testa, e nessuno sa quando è "fatto" — viola la Definition of
+Done della sezione 6. Un elemento scritto bene ha un **criterio di
+accettazione verificabile**: *"Come cliente, voglio che l'accesso al mio
+account richieda un secondo fattore, così che una password rubata non
+basti. Criterio di accettazione: login con password corretta ma senza MFA
+valido restituisce accesso negato, verificabile con un test automatico."*
 
 ---
 

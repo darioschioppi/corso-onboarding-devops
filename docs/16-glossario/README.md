@@ -201,6 +201,9 @@ Un database che organizza i dati in tabelle collegate tra loro tramite relazioni
 ### Database vettoriale
 Un tipo particolare di database pensato per salvare e ricercare Embedding, cioè rappresentazioni numeriche del significato di un testo: invece di cercare parole esatte, permette di trovare rapidamente i contenuti più simili nel significato a una domanda, anche tra milioni di documenti. → approfondito nella sezione 15 (Intelligenza artificiale).
 
+### Debito tecnico
+L'insieme dei compromessi tecnici presi per rilasciare più in fretta (codice scritto "alla svelta", scorciatoie di progettazione, test saltati) che, come un debito finanziario, andranno prima o poi "ripagati" con lavoro di manutenzione, e che nel frattempo rendono più lento e rischioso ogni intervento successivo sul codice. → approfondito nella sezione 6 (Scrum).
+
 ### Deep Learning
 Un ramo del Machine Learning basato su reti neurali artificiali organizzate in molti "strati" (deep, cioè profondo), particolarmente efficace per compiti complessi come il riconoscimento di immagini o la comprensione del linguaggio naturale, ed è la tecnologia alla base della maggior parte degli LLM moderni. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **Machine Learning** (il campo più ampio di cui è una tecnica specifica) e **LLM (Large Language Model)** (uno dei risultati più visibili di questa tecnica).
 
@@ -212,6 +215,9 @@ L'elenco di criteri che una User Story deve soddisfare prima di poter essere acc
 
 ### Deploy/Rilascio
 L'operazione di rendere disponibile una nuova versione del software agli utenti, spostandola dall'ambiente in cui è stata sviluppata e testata a quello di produzione. → approfondito nella sezione 3 (Come nasce un software). Si collega a: **Artifact (build)** (ciò che viene effettivamente distribuito) e **Rollback** (l'operazione da compiere se il rilascio va male).
+
+### Deriva di configurazione
+Il progressivo disallineamento tra ambienti che dovrebbero somigliarsi (es. Test/QA, Staging, Produzione) quando una modifica di configurazione viene fatta in uno solo di essi e non replicata negli altri, portando col tempo a test che "passano" senza dire nulla sul comportamento reale. → approfondito nella sezione 14 (Ambienti di sviluppo).
 
 ### DevOps
 La fusione tra "Development" (sviluppo) e "Operations" (gestione dei sistemi): un approccio che unisce persone, processi e strumenti per rilasciare software in modo più rapido, frequente e affidabile. → approfondito nella sezione 9 (DevOps). Si collega a: **CALMS** (che ne riassume i pilastri) e **CI (Continuous Integration)** (una delle pratiche concrete che lo realizzano).
@@ -243,11 +249,17 @@ Una tecnica di Project Management che confronta tre valori — quanto lavoro era
 ### Feature
 Una funzionalità del software: una caratteristica o capacità concreta che l'utente può usare (ad esempio "possibilità di esportare un report in PDF"). → approfondito nella sezione 3 (Come nasce un software).
 
+### Feature flag
+Un interruttore nel codice che permette di attivare o disattivare una funzionalità già distribuita in produzione senza fare un nuovo rilascio, ad esempio per mostrarla solo a un gruppo ristretto di utenti o per disattivarla rapidamente se causa problemi. → approfondito nella sezione 10 (CI/CD).
+
 ### File System
 Il modo in cui un sistema operativo organizza e conserva i file su un disco, tramite cartelle e nomi, permettendo di ritrovarli e gestirli facilmente. → approfondito nella sezione 2 (Fondamenti di informatica).
 
 ### Fine-tuning
 Il processo di riaddestrare ulteriormente un modello di intelligenza artificiale già pronto, usando dati specifici di un'azienda o di un compito, per specializzarlo su quel contesto invece di usarlo "come viene". È un'alternativa al RAG per dare a un modello conoscenza specifica: più lenta e costosa da aggiornare, ma capace di cambiare più a fondo il comportamento del modello. → approfondito nella sezione 15 (Intelligenza artificiale).
+
+### FinOps
+La disciplina (dall'unione di "Finance" e "Operations") che si occupa di gestire, prevedere e ottimizzare la spesa cloud di un'azienda, tramite allarmi di spesa, attribuzione dei costi ai progetti giusti e collaborazione tra team tecnici e finanziari. → approfondito nella sezione 12 (Cloud).
 
 ### Frontend
 La parte di un'applicazione con cui l'utente interagisce direttamente: l'interfaccia visibile (pagine web, schermate, pulsanti), che comunica con il Backend per mostrare e inviare informazioni. → approfondito nella sezione 11 (Architetture software).
@@ -294,11 +306,17 @@ Uno strumento che gestisce automaticamente grandi quantità di Container in prod
 ### Lead Time
 Il tempo totale che intercorre dal momento in cui un'attività viene **richiesta** al momento in cui viene **consegnata**, includendo anche l'attesa prima che il lavoro inizi davvero. → approfondito nella sezione 7 (Kanban).
 
+### Legge di Conway
+L'osservazione secondo cui la struttura di un software tende a rispecchiare la struttura del team che lo costruisce, e viceversa: scomporre un'applicazione in servizi per dominio porta spesso, prima o poi, a riorganizzare anche le persone in squadre allineate a quegli stessi domini. → approfondito nella sezione 11 (Architetture software).
+
 ### Lessons Learned
 La raccolta strutturata, alla chiusura di un progetto (o di una sua fase), di cosa ha funzionato bene e cosa no, così da non ripetere gli stessi errori nei progetti successivi. → approfondito nella sezione 8 (Project Management). Si collega a: **Sprint Retrospective** (l'equivalente Agile, ma ripetuto a ogni Sprint invece che solo a fine progetto).
 
 ### LLM (Large Language Model)
 Sigla di Large Language Model, un modello di intelligenza artificiale addestrato su enormi quantità di testo per prevedere e generare linguaggio naturale in modo fluido; è la tecnologia dietro strumenti come ChatGPT o GitHub Copilot. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **AI generativa** (la categoria di utilizzo più diffusa per questi modelli) e **Token** (l'unità in cui il modello scompone il testo per elaborarlo).
+
+### Lock-in
+La dipendenza da un provider cloud (o da un fornitore di software) che si crea usando i suoi servizi specifici: più se ne usano, più diventa costoso, in tempo e denaro, cambiare fornitore in futuro. Non è un divieto ad usare quei servizi, ma un costo da valutare consapevolmente. → approfondito nella sezione 12 (Cloud).
 
 ### Logging
 La pratica di registrare in modo continuo gli eventi che accadono in un sistema (errori, richieste, azioni) in file o strumenti dedicati, utile per capire cosa è successo quando qualcosa va storto. → approfondito nella sezione 9 (DevOps).
@@ -439,7 +457,7 @@ Una ricerca che trova i contenuti più simili nel significato a una domanda, con
 Un evento incerto che, se si verifica, può avere un impatto positivo o (più spesso) negativo su un progetto; identificarlo e pianificarne la gestione è uno dei compiti principali del project manager. → approfondito nella sezione 8 (Project Management).
 
 ### Rollback
-L'operazione di tornare indietro a una versione precedente e funzionante del software dopo che un rilascio ha causato problemi in produzione. → approfondito nella sezione 10 (CI/CD). Si collega a: **Deploy/Rilascio** (l'operazione precedente, che a volte va corretta) e **Monitoring** (che ne segnala spesso la necessità).
+L'operazione di tornare indietro a una versione precedente e funzionante del software dopo che un rilascio ha causato problemi in produzione; il rollback del codice è di norma semplice, quello dei dati può non esserlo, se una modifica alla struttura del database è irreversibile. → approfondito nella sezione 10 (CI/CD) e nella sezione 14 (Ambienti di sviluppo). Si collega a: **Deploy/Rilascio** (l'operazione precedente, che a volte va corretta) e **Monitoring** (che ne segnala spesso la necessità).
 
 ### SaaS
 Sigla di Software as a Service: un modello cloud in cui usi direttamente un'applicazione già pronta tramite browser (come una webmail), senza doverti preoccupare di server, installazioni o aggiornamenti. → approfondito nella sezione 12 (Cloud).
@@ -468,6 +486,9 @@ Un modello cloud in cui scrivi solo il codice della funzione che ti serve e il f
 ### Sistema Operativo
 Il software di base che gestisce le risorse del computer (CPU, RAM, Disco) e permette a te e alle altre applicazioni di usarle, facendo da intermediario tra hardware e programmi. Esempi: Windows, macOS, Linux. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### SLA
+Sigla di Service Level Agreement: un accordo, spesso contrattuale, che definisce il livello di servizio garantito da un fornitore (ad esempio il tempo massimo di inattività accettabile o il tempo massimo di risposta a una segnalazione), con conseguenze concrete (spesso economiche) se non viene rispettato. → approfondito nella sezione 13 (Sicurezza).
+
 ### SPI (Schedule Performance Index)
 Un indice dell'Earned Value Management che misura quanto il progetto è in linea con i tempi pianificati: si calcola dividendo il valore del lavoro effettivamente completato (EV) per il valore del lavoro che era pianificato a questo punto (PV). Un SPI sopra 1 significa che si è avanti rispetto al piano, sotto 1 significa che si è in ritardo. → approfondito nella sezione 8 (Project Management). Si collega a: **EVM (Earned Value Management)** (il sistema di cui fa parte) e **CPI (Cost Performance Index)** (l'indice analogo sui costi).
 
@@ -492,6 +513,9 @@ L'incontro alla fine di ogni Sprint in cui il team mostra agli stakeholder ciò 
 ### SQL
 Sigla di Structured Query Language: il linguaggio usato per "interrogare" un Database relazionale, ad esempio per chiedere, aggiungere o modificare dati nelle tabelle. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### SRE (Site Reliability Engineering)
+Un approccio, nato in Google, che applica pratiche e mentalità da ingegneria del software alla gestione dei sistemi in produzione, con l'obiettivo di renderli affidabili in modo misurabile (ad esempio tramite obiettivi di affidabilità concordati) invece che "a sensazione". → approfondito nella sezione 9 (DevOps).
+
 ### Staging
 Un ambiente che replica il più possibile le condizioni reali della Produzione, usato come ultima verifica prima del rilascio definitivo agli utenti. → approfondito nella sezione 14 (Ambienti di sviluppo).
 
@@ -510,6 +534,9 @@ La famiglia di regole (protocolli) che permette ai computer di tutto il mondo di
 ### Thread
 Una "sotto-unità" di un Processo che può eseguire istruzioni in modo indipendente; più thread nello stesso processo permettono a un programma di fare più cose contemporaneamente in modo più efficiente. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### Throughput
+La quantità di lavoro (attività completate, richieste gestite) che un team o un sistema riesce a portare a termine in un'unità di tempo: per un team è quante attività completa a settimana, per un sistema informatico è quante richieste gestisce al secondo. → approfondito nella sezione 7 (Kanban).
+
 ### Token
 La più piccola unità di testo (una parola, parte di una parola o un simbolo di punteggiatura) in cui un LLM scompone il testo per elaborarlo; i servizi di AI generativa spesso fatturano l'utilizzo proprio in base al numero di token letti e generati. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **LLM (Large Language Model)** (che elabora il testo proprio in unità di questo tipo).
 
@@ -527,6 +554,9 @@ Una pratica in cui tutti gli sviluppatori integrano il proprio codice molto freq
 
 ### User Story
 Una breve descrizione di una funzionalità scritta dal punto di vista dell'utente, spesso nel formato "Come [ruolo], voglio [obiettivo], per [beneficio]", usata per catturare i requisiti in modo semplice e centrato sulle persone. → approfondito nella sezione 6 (Scrum). Si collega a: **Requisiti (funzionali e non funzionali)** (da cui spesso nasce) e **Product Backlog** (dove viene inserita in attesa di essere pianificata).
+
+### Vault (dei segreti)
+Uno strumento dedicato a custodire in modo cifrato password, chiavi di accesso e altre credenziali, concedendone l'uso solo a chi (una persona o un sistema, come una pipeline) ne ha davvero bisogno, invece di scriverle nel codice o passarle a mano tra le persone del team. → approfondito nella sezione 14 (Ambienti di sviluppo).
 
 ### Velocity
 La quantità media di Story Point che un team Scrum riesce a completare in uno Sprint, misurata negli Sprint passati e usata per stimare quanto lavoro pianificare in futuro. → approfondito nella sezione 6 (Scrum).

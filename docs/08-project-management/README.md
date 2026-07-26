@@ -14,8 +14,23 @@ cosa può andare storto, a che punto siamo, e come lo comunichiamo a chi non
 
 Attenzione a un equivoco comune: il Project Management **non è** la
 pianificazione rigida "a cascata" (Waterfall) che magari hai studiato
-all'università, con Gantt chart bloccati e fasi sequenziali immutabili. In
-un contesto Agile/DevOps, il project management convive con
+all'università, con Gantt chart bloccati e fasi sequenziali immutabili.
+
+Per capire perché questo corso non torna a quel modello, vale la pena
+vedere cosa succedeva davvero con Waterfall, non solo definirlo. In un
+progetto a cascata tipico, i requisiti vengono **congelati mesi prima**
+in un documento lungo, approvato una volta. Il team sviluppa per mesi
+seguendo quel documento, senza mostrare nulla al cliente fino alla fine —
+la **prima verifica reale** avviene solo alla consegna. È a quel punto che
+emerge il problema: il software corrisponde esattamente al documento, ma
+nel frattempo il mercato o la comprensione del problema sono cambiati, e
+il cliente scopre di aver ricevuto — con grande precisione tecnica — **la
+cosa sbagliata**. Non è un errore di programmazione: è un difetto
+strutturale dell'aver bloccato i requisiti troppo presto e verificato
+troppo tardi — l'argomento che spesso convince uno sponsor scettico a non
+chiedere "un Gantt dettagliato di tutto il progetto" il primo giorno.
+
+In un contesto Agile/DevOps, il project management convive con
 l'iterazione continua e l'incertezza: si pianifica, sì, ma a più livelli e
 con la consapevolezza che il piano cambierà. Il ruolo del Project Manager
 (o di chi ne fa le funzioni, come uno Scrum Master "aumentato" o un Delivery
@@ -137,6 +152,17 @@ sapere *chi* coinvolgere non basta se non hai anche un posto dove tracciare
 ---
 
 ## 8.2 RAID Log: la mappa dei problemi (prima che diventino problemi)
+
+Immagina questa situazione, capitata più volte in team come quello di
+ShopFacile: solo una persona sa che il fornitore di hosting ha in programma
+una manutenzione delicata — ma va in ferie senza scriverlo da nessuna
+parte. Nello stesso periodo, il rilascio di una funzionalità dipende da un
+fornitore esterno di pagamenti, ma nessuno ha mai tracciato formalmente
+questa dipendenza né chiesto una data di conferma. Quando i due problemi
+si sommano, il progetto si **ferma per due settimane**, e il team scopre
+solo allora che entrambe le informazioni erano note a qualcuno, ma non
+condivise né scritte da nessuna parte. È esattamente il problema che il
+RAID Log esiste per prevenire.
 
 **RAID** è un acronimo che raggruppa quattro categorie di informazioni che
 un team di progetto deve tracciare costantemente:
@@ -595,12 +621,40 @@ competenze più preziose del ruolo.
 
 ## 8.10 Il PMP e il PMBOK: che cosa sono e perché ti riguardano
 
+> 💡 Le prossime sottosezioni sono più lunghe delle precedenti: studiale
+> per **riconoscere il vocabolario** che troverai in azienda, certificazioni
+> e contratti — non per applicarlo integralmente ogni giorno, dato che il
+> tuo lavoro quotidiano in un team come ShopFacile resterà per lo più Agile.
+
+Un altro pezzo di vocabolario PMI, utile appena l'azienda avrà più di un
+progetto in corso, è la distinzione gerarchica tra **progetto**,
+**programma** e **portfolio**. Un **progetto** è uno sforzo temporaneo con
+obiettivo e fine definiti — il modulo pagamenti di ShopFacile. Un
+**programma** raggruppa progetti correlati (es. pagamenti, UI del
+carrello, sconti in un programma "Rifacimento checkout") perché
+coordinarli genera benefici in più. Un **portfolio** è il livello più
+alto: l'insieme di progetti e programmi di un'organizzazione, gestiti per
+allinearli alla strategia e decidere dove investire risorse limitate. Da
+Junior PM lavorerai quasi sempre sul singolo progetto, ma sapere che
+qualcuno decide priorità **tra** progetti spiega perché, a volte, un
+progetto in linea col piano viene comunque rallentato da una decisione
+presa più in alto.
+
 Finora hai visto strumenti singoli — RAID Log, RACI, milestone, KPI — presi
 in prestito dalla pratica di progetto senza dire da dove arrivano. In
 realtà molti di questi strumenti fanno parte di un corpo di conoscenza
 molto più ampio e riconosciuto a livello internazionale: quello del
 **PMI**, il **Project Management Institute**, l'associazione professionale
 di riferimento per chi fa project management in senso tradizionale.
+
+Perché è nato un corpo di conoscenza così formale? Il PMI nasce dal
+bisogno concreto di grandi progetti di ingegneria e costruzione, che
+sforavano **sistematicamente** costi e tempi previsti. Organizzazioni
+diverse dovevano collaborare sullo stesso progetto e comprare servizi da
+fornitori con un linguaggio diverso dal proprio: senza un vocabolario
+condiviso su cosa significa "rischio" o "scope", ogni collaborazione
+ripartiva da zero solo per capirsi. Codificare tutto in un'unica guida è
+stata la risposta a quel problema concreto, non un esercizio accademico.
 
 Il PMI pubblica una guida di riferimento chiamata **PMBOK Guide**
 (**Project Management Body of Knowledge**, cioè "corpo di conoscenza del
@@ -639,10 +693,16 @@ elementi utili a capire perché:
 - La versione più recente della guida, la **PMBOK Guide, 7th Edition**
   (pubblicata nel 2021), ha cambiato profondamente impostazione rispetto
   alle edizioni precedenti: non è più organizzata per "processi da
-  eseguire in un certo ordine", ma per **principi** generali e per
-  **performance domain** (aree di prestazione), pensati per essere
-  applicabili sia a progetti pianificati in anticipo sia a progetti gestiti
-  in modo iterativo/Agile. Ne parliamo con più dettaglio nella sezione 8.20.
+  eseguire in un certo ordine" (i 5 process group e le 10 knowledge area
+  che vedrai nelle prossime due sottosezioni, ancora oggi il modo più
+  diffuso con cui questi temi vengono insegnati e discussi), ma per **12
+  principi** generali (es. "essere un guardiano diligente e rispettoso",
+  "adattarsi in base al contesto") e **8 performance domain** (aree di
+  prestazione, come stakeholder, pianificazione, incertezza). Entrambi i
+  set sono pensati per essere applicabili sia a progetti pianificati in
+  anticipo sia a progetti gestiti in modo iterativo/Agile — un segnale
+  chiaro che anche il PMI riconosce che "un solo metodo per tutti i
+  progetti" non è più un'idea sostenibile.
 - Molte aziende reali — probabilmente anche quella per cui lavorerai — non
   scelgono "Agile puro" o "PMP puro", ma un **approccio ibrido**: usano il
   linguaggio e alcuni strumenti del PMBOK (stakeholder, rischio, budget,
@@ -746,16 +806,16 @@ hai già imparato in 8.1-8.9 trova qui il suo "cassetto" ufficiale.
 
 | Area di conoscenza | Di cosa si occupa | Dove l'hai già vista nel corso |
 |---|---|---|
-| **Integrazione** (Integration Management) | Coordinare tutte le altre aree in un piano coerente; gestire le modifiche in modo controllato | 8.13 (project charter), 8.17 (triplo vincolo e change request) |
+| **Integrazione** (Integration Management) | Coordinare tutte le altre aree in un piano coerente; gestire le modifiche in modo controllato | 8.13, 8.17 |
 | **Ambito** (Scope Management) | Definire cosa è (e cosa NON è) incluso nel progetto, ed evitare che cresca senza controllo | 8.14 (WBS e scope creep) |
-| **Tempi** (Schedule Management) | Pianificare attività, dipendenze e durate nel tempo | 8.6 (pianificazione a più livelli), 8.15 (schedule e critical path) |
+| **Tempi** (Schedule Management) | Pianificare attività, dipendenze e durate nel tempo | 8.6, 8.15 |
 | **Costi** (Cost Management) | Stimare, allocare e controllare il budget | 8.16 (EVM) |
-| **Qualità** (Quality Management) | Garantire che il risultato soddisfi gli standard richiesti | sezione 10 (quality gate nella pipeline CI/CD), 8.18 |
-| **Risorse** (Resource Management) | Gestire le persone e gli strumenti necessari al progetto | RACI (8.3), team ShopFacile |
+| **Qualità** (Quality Management) | Garantire che il risultato soddisfi gli standard richiesti | 8.18 (lo ritroverai anche nella sezione 10 su CI/CD) |
+| **Risorse** (Resource Management) | Gestire le persone e gli strumenti necessari al progetto | 8.3 |
 | **Comunicazione** (Communications Management) | Decidere cosa comunicare, a chi, con quale frequenza e formato | 8.9 (reportistica) |
-| **Rischi** (Risk Management) | Identificare, valutare e mitigare eventi incerti che possono impattare il progetto | 8.2 (RAID Log), 8.5 (rischio) |
-| **Approvvigionamenti** (Procurement Management) | Gestire fornitori esterni e contratti | 8.18 (es. il fornitore di pagamenti di ShopFacile) |
-| **Stakeholder** (Stakeholder Management) | Identificare e gestire le persone/gruppi con un interesse nel progetto | 8.1 (stakeholder) |
+| **Rischi** (Risk Management) | Identificare, valutare e mitigare eventi incerti che possono impattare il progetto | 8.2, 8.5 |
+| **Approvvigionamenti** (Procurement Management) | Gestire fornitori esterni e contratti | 8.18 |
+| **Stakeholder** (Stakeholder Management) | Identificare e gestire le persone/gruppi con un interesse nel progetto | 8.1 |
 
 > 💡 **Da notare**: leggendo la terza colonna, salta all'occhio che **non
 > stai imparando dieci concetti nuovi**. Stai scoprendo che gli strumenti
@@ -766,14 +826,9 @@ hai già imparato in 8.1-8.9 trova qui il suo "cassetto" ufficiale.
 
 Un chiarimento importante sulla versione della guida: questa
 organizzazione in 5 process group e 10 knowledge area è quella della
-**PMBOK Guide, 6th Edition**. Con la **7th Edition** (2021) il PMI ha
-cambiato profondamente struttura, passando a **12 principi** e **8
-performance domain** (di cui parliamo nella sezione 8.20): le 10 knowledge
-area non sono "sbagliate" o sparite dal vocabolario del settore — restano
-un riferimento pratico molto diffuso e utile per organizzare le idee — ma
-non sono più l'ossatura ufficiale dell'ultima edizione della guida. Le
-riportiamo qui perché restano il modo più comune con cui i temi di project
-management vengono ancora insegnati e discussi nella pratica.
+**PMBOK Guide, 6th Edition** — vedi il richiamo alla 7th Edition già fatto
+in 8.10, che ha cambiato struttura ma non ha reso obsoleto questo
+vocabolario, ancora il più diffuso nella pratica quotidiana.
 
 Con questa mappa in mano, puoi ora ripartire dall'inizio del "ciclo di
 vita" di un progetto secondo il PMBOK: il documento che lo fa nascere
@@ -1251,14 +1306,9 @@ semplicemente il riconoscimento che strumenti diversi servono bene a scopi
 diversi.
 
 Questo, non a caso, è anche la direzione presa dal PMI stesso con la
-**PMBOK Guide, 7th Edition** (2021): invece di imporre un solo set di
-processi, la guida più recente si basa su **12 principi** generali (es.
-"essere un guardiano diligente e rispettoso", "adattarsi in base al
-contesto") e **8 performance domain** (aree di prestazione, come
-stakeholder, pianificazione, incertezza), pensati per essere applicabili
-sia a progetti pianificati in anticipo sia a progetti gestiti in modo
-Agile/iterativo. È un segnale chiaro: anche il PMI riconosce che "un solo
-metodo per tutti i progetti" non è più un'idea sostenibile.
+**PMBOK Guide, 7th Edition** (2021), già introdotta in 8.10: un segnale
+chiaro che anche il PMI riconosce che "un solo metodo per tutti i
+progetti" non è più un'idea sostenibile.
 
 Cosa conviene sapere, in concreto, a un Junior Project Manager (o Scrum
 Master) che lavora in un team DevOps come quello di ShopFacile?
@@ -1277,6 +1327,32 @@ Master) che lavora in un team DevOps come quello di ShopFacile?
   sponsor con numeri e milestone, parlare "Agile" quando serve coordinare
   il lavoro quotidiano del team — sapendo che, sotto il vocabolario
   diverso, il problema che stai risolvendo è quasi sempre lo stesso.
+
+### Come si decide, in pratica: predittivo, Agile o ibrido
+
+I criteri per scegliere un approccio più predittivo o più Agile sono già
+apparsi in questa sezione — nel triplo vincolo (8.17), nel percorso
+critico (8.15), nell'EVM (8.16) — ma sparsi. Raccoglierli in poche domande
+operative aiuta a decidere davvero, all'inizio di un progetto:
+
+1. **Il perimetro è negoziabile, o fissato contrattualmente?** Se un
+   contratto elenca esattamente cosa va consegnato, hai poco margine per lo
+   scope "elastico" tipico di Scrum (8.17).
+2. **Esiste una scadenza esterna non spostabile** (una normativa, un
+   evento già annunciato)? In questi casi il percorso critico (8.15) resta
+   utile: la data non è negoziabile.
+3. **Quanto è probabile che i requisiti cambino mentre il team lavora?**
+   Più il dominio è incerto (il caso tipico di ShopFacile), più ha senso
+   un approccio iterativo che corregga la rotta sprint dopo sprint.
+4. **Lo sponsor pretende reportistica in formato tradizionale?** Un
+   cliente abituato a Gantt e SPI/CPI potrebbe richiedere quel linguaggio
+   nei report verso l'alto (8.9), anche se il team lavora in Scrum.
+
+Più le risposte spingono verso "fisso, rigido, poco cambiamento", più
+senso ha un approccio predittivo; più spingono verso "flessibile,
+incerto", più senso ha l'Agile. Nella pratica, gli **approcci ibridi sono
+la norma, non l'eccezione**: raro trovare un progetto puramente predittivo
+o puramente Agile.
 
 ---
 

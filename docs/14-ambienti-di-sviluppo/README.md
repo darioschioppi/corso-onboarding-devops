@@ -186,6 +186,16 @@ separato dal Test/QA: nei progetti più piccoli le due cose a volte
 coincidono, ma nei progetti maturi restano due tappe distinte, con scopi
 diversi.
 
+Il motivo per cui non tutti i progetti hanno quattro ambienti separati è il
+costo: più ambienti significano più infrastruttura (risorse cloud proprie
+per ciascuno, viste nella sezione 12), più licenze e più tempo del team per
+mantenerli allineati. Un progetto piccolo può scegliere consapevolmente di
+far coincidere Test/QA e Staging. È una decisione che un PM supporta spesso
+in prima persona: quando arriva una correzione urgente e qualcuno chiede
+"possiamo saltare lo Staging per questa volta?", la risposta giusta non è
+un automatico sì né un automatico no, ma un compromesso tempo/rischio da
+valutare caso per caso.
+
 > 🛠️ **Esempio pratico**: la correzione al totale del carrello, dopo aver
 > superato il Test/QA, viene promossa in Staging. Qui il volume di dati
 > è paragonabile a quello reale (migliaia di ordini storici anonimizzati,
@@ -212,7 +222,10 @@ davanti al pubblico pagante.
 Qui la parola d'ordine è **massima cautela**:
 
 - ogni deploy segue i quality gate e, tipicamente, un'approvazione
-  manuale (vista nella sezione CI/CD);
+  manuale (vista nella sezione CI/CD) — spesso data da un **Release
+  Manager**, cioè la persona (o il ruolo) responsabile di dare il via
+  libera finale a un rilascio in produzione, verificando che tutti i
+  controlli precedenti siano stati superati prima di autorizzarlo;
 - ogni modifica è monitorata attentamente subito dopo il rilascio
   (metriche di errore, tempi di risposta);
 - esiste sempre un piano di rollback pronto, nel caso qualcosa vada
@@ -225,6 +238,22 @@ paragrafo 14.10.
 
 **Cosa succede qui**: ogni errore ha un impatto reale su persone vere.
 Non è più "lavoro in corso": è il prodotto finito, in uso.
+
+### Rollback: tornare indietro, ma non sempre su tutto
+
+Vale la pena capire cosa significa davvero "un piano di rollback pronto",
+un'informazione utile se un giorno dovrai comunicare tempi durante un
+incidente. Tornare alla versione precedente del **codice** è di norma
+semplice: grazie a "build once, deploy many" (che vedrai tra poco), basta
+rimettere in esecuzione l'artifact precedente, già verificato in tutte le
+tappe.
+
+Tornare indietro sui **dati**, invece, spesso non lo è: se il rilascio ha
+anche modificato la struttura del database, il rollback del codice da solo
+non basta, e certe modifiche possono essere **irreversibili**. Per questo,
+davanti a un incidente, la domanda giusta non è solo "quanto ci vuole per
+tornare al codice precedente?" ma anche "il rollback coinvolge anche i
+dati?" — le due risposte possono avere tempi molto diversi.
 
 > 🛠️ **Esempio pratico — il percorso completo di una modifica**: seguiamo
 > l'intero viaggio della correzione al totale del carrello, dal commit
@@ -305,32 +334,23 @@ flowchart TD
 Il percorso della correzione al carrello ha funzionato senza sorprese
 proprio perché Dev, Test/QA, Staging e Produzione si somigliano il più
 possibile. Vediamo perché questa somiglianza non è un dettaglio, ma il
-punto centrale di tutta la catena. Hai forse già sentito la battuta
-"funziona sul mio computer" — è la
-scusa (semi-seria) di uno sviluppatore quando qualcosa non funziona in
-un altro ambiente. Il problema reale dietro la battuta è che **se gli
-ambienti sono troppo diversi tra loro**, un test superato in uno di essi
-non garantisce nulla sugli altri:
+punto centrale di tutta la catena. Conosci già, dalla sezione 2, il
+problema del "funziona sul mio computer" (una versione diversa di una
+libreria, un sistema operativo diverso, dati o configurazioni differenti) e,
+dalla sezione 10, la soluzione — **container** e principio "build once,
+deploy many": si pacchettizza il software una sola volta, e lo stesso
+identico artifact viene promosso, senza modifiche, da un ambiente
+all'altro.
 
-- una versione diversa di una libreria installata;
-- un sistema operativo diverso;
-- variabili di configurazione mancanti o diverse;
-- un database con una struttura leggermente diversa.
-
-La soluzione moderna è duplice: da un lato l'uso di **container** (visti
-nella sezione DevOps/CI-CD, es. immagini Docker), che pacchettizzano
-l'applicazione con tutto ciò che le serve per girare identica ovunque;
-dall'altro, il principio già incontrato nella sezione CI/CD di
-**"build once, deploy many"** — si compila e pacchettizza il software
-**una sola volta**, e lo stesso identico artifact viene promosso, senza
-modifiche, da un ambiente all'altro. In questo modo, se qualcosa
-funziona in Staging, è ragionevole aspettarsi che funzioni anche in
-Produzione, perché tecnicamente **è lo stesso identico pacchetto**, non
-una ricostruzione "simile".
-
-Più gli ambienti sono simili, meno sorprese si trovano man mano che si
-avanza nella catena — ed è per questo che lo Staging, in particolare, è
-tenuto quanto più possibile identico alla Produzione.
+Quello che aggiungiamo qui è come questo stesso principio si applica
+proprio al **passaggio tra ambienti**: se qualcosa funziona in Staging, è
+ragionevole aspettarsi che funzioni anche in Produzione, perché
+tecnicamente **è lo stesso identico pacchetto**, non una ricostruzione
+"simile" costruita ambiente per ambiente. Più gli ambienti sono simili tra
+loro (stessa infrastruttura, stesso artifact, differenze solo nella
+configurazione che vedrai al paragrafo 14.9), meno sorprese si trovano man
+mano che si avanza nella catena — ed è per questo che lo Staging, in
+particolare, è tenuto quanto più possibile identico alla Produzione.
 
 > 🛠️ **Esempio pratico**: in ShopFacile, ogni volta che una modifica passa
 > la fase di build in pipeline, viene generato un **unico** artifact
@@ -409,8 +429,11 @@ flowchart LR
 
 Le credenziali (password, chiavi di accesso) che fanno parte di queste
 configurazioni non vengono mai scritte nel codice: sono gestite tramite
-strumenti dedicati (es. un "vault" di segreti), collegandosi ancora al
-tema della sicurezza approfondito nella sezione dedicata.
+strumenti dedicati, spesso chiamati **vault** (letteralmente "caveau") di
+segreti — sistemi pensati apposta per custodire password e chiavi in modo
+cifrato, concedendo l'accesso solo a chi (o a cosa, es. la pipeline stessa)
+ne ha davvero bisogno, collegandosi ancora al tema della sicurezza
+approfondito nella sezione dedicata.
 
 > 🛠️ **Esempio pratico**: ShopFacile deve inviare un'email di conferma
 > quando un ordine viene completato. In Test/QA, la variabile di
@@ -423,19 +446,50 @@ tema della sicurezza approfondito nella sezione dedicata.
 > Il codice che gestisce l'invio non cambia di una riga tra i due
 > ambienti: cambia solo il valore di quella variabile.
 
+### Deriva di configurazione: quando gli ambienti si disallineano in silenzio
+
+Le configurazioni per ambiente funzionano solo finché qualcuno le mantiene
+allineate. Qualche tempo dopo aver cambiato fornitore per l'invio email in
+produzione, il team di ShopFacile scopre per caso che in Staging la
+variabile `EMAIL_SERVICE_URL` punta ancora al **vecchio** fornitore:
+qualcuno aveva aggiornato la produzione scordandosi di Staging. Nel
+frattempo, ogni test in Staging che coinvolgeva l'email continuava a
+"passare" — senza verificare nulla sul comportamento reale.
+
+Questo fenomeno si chiama **deriva di configurazione** (*configuration
+drift*): gli ambienti tendono a **divergere silenziosamente** nel tempo se
+nessuno se ne occupa attivamente. Riallineare gli ambienti richiede un
+lavoro esplicito: accorgersi di una deriva dovrebbe tradursi in un elemento
+di backlog concreto, non restare un problema noto che si riscopre per
+caso ogni volta.
+
 ---
 
 ## 14.10 Chi ha accesso a quali ambienti
 
+La regola che stai per leggere, in ShopFacile, non è nata da un manuale.
+Marco — la persona più esperta del team, non un principiante — teneva
+aperte contemporaneamente due connessioni al database: una su Test, una su
+Produzione. Esegue un comando per svuotare una tabella di prova, un
+comando che aveva già lanciato decine di volte senza conseguenze. Quel
+giorno, per distrazione, la finestra attiva era quella di **Produzione**:
+la tabella svuotata conteneva dati reali, e il ripristino dal backup ha
+richiesto ore, sotto pressione, con il sito in parte inutilizzabile.
+Nessuno aveva fatto niente di stupido: è esattamente questo il punto. Un
+errore banale e alla portata di chiunque non si previene chiedendo alle
+persone di stare più attente, ma **togliendo la possibilità di commetterlo**.
+
 Hai visto chi lavora in ciascun ambiente lungo il percorso del bug del
 carrello: Marco in Dev, Giulia in Test/QA, Sara e Ahmed in Staging, un
-numero ristretto di persone in Produzione. Questo schema non è casuale,
-ma segue una regola precisa. L'accesso agli ambienti segue un principio
-semplice: **più un ambiente è
-vicino agli utenti reali, più l'accesso è restrittivo**. Non è
-burocrazia fine a se stessa: è la stessa logica per cui non chiunque può
-entrare backstage la sera della prima, mentre durante le prove chiunque
-del cast può girare liberamente per il teatro.
+numero ristretto di persone in Produzione. Questo schema segue una regola
+precisa, nota come principio del **privilegio minimo**: ogni persona (o
+sistema) dovrebbe avere accesso solo a ciò che le serve davvero, non un
+accesso più ampio "per comodità". Applicato agli ambienti: **più un
+ambiente è vicino agli utenti reali, più l'accesso è restrittivo** — la
+stessa logica per cui non chiunque entra backstage la sera della prima. Se
+l'accesso a Produzione fosse limitato a poche persone tramite la sola
+pipeline, l'incidente sopra avrebbe avuto molte meno occasioni di
+verificarsi.
 
 - **Sviluppo**: accesso ampio, quasi tutto il team tecnico.
 - **Test/QA**: accesso al team di test/QA e agli sviluppatori, più
@@ -480,6 +534,23 @@ incontrato nella sezione CI/CD:
   a **variabili di configurazione**, non a modifiche del codice stesso;
 - l'accesso agli ambienti è tanto più restrittivo quanto più ci si
   avvicina alla produzione.
+
+---
+
+## ✅ Checklist di autoverifica
+
+- Sapresti spiegare, con l'analogia delle prove di uno spettacolo, perché
+  non si testa mai direttamente in produzione?
+- Sai descrivere lo scopo specifico dei quattro ambienti?
+- Sai spiegare "funziona sul mio computer" e come lo risolvono container e
+  "build once, deploy many"?
+- Sai spiegare perché non si usano mai dati reali fuori da produzione?
+- Sai spiegare a cosa servono le variabili di configurazione, con un
+  esempio, e cos'è la deriva di configurazione?
+- Sai spiegare perché l'accesso agli ambienti è tanto più restrittivo
+  quanto più ci si avvicina alla produzione, collegandolo al privilegio
+  minimo?
+- Sai spiegare la differenza tra rollback del codice e dei dati?
 
 ---
 

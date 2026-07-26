@@ -109,10 +109,23 @@ indietro a come lavoravano i team **prima** che DevOps esistesse.
 
 ## 9.2 Perché nasce DevOps: il muro della confusione
 
-Per capire perché DevOps è diventato così importante, bisogna capire il
-problema che risolve. E per capirlo, bisogna tornare a come funzionavano
-(e in molte aziende funzionano ancora) i team di sviluppo e di
-infrastruttura **prima** di DevOps.
+Per capire perché DevOps è diventato così importante, vale la pena vederlo
+succedere davvero, non solo descriverlo in astratto — tornando a un
+periodo di ShopFacile precedente a quello che conosci finora, quando
+sviluppo e infrastruttura erano ancora due reparti separati e la cultura
+DevOps non era stata ancora adottata.
+
+**Marco** ha pronto un fix urgente per un bug che blocca il checkout di
+una parte dei clienti di ShopFacile: vuole rilasciarlo subito. Il
+responsabile dell'infrastruttura di allora blocca il rilascio: un
+cambiamento non pianificato è, sui suoi dati, la causa più frequente dei
+guasti notturni di cui risponde lui. **Entrambi hanno ragione**: Marco è
+valutato su quanto in fretta risolve i problemi degli utenti, il
+responsabile su quanto resta stabile il sistema durante la notte — due
+obiettivi legittimi, in quel momento, in conflitto.
+
+Non è un problema specifico di ShopFacile: è così comune che ha preso un
+nome — il **muro della confusione**. Vediamo da dove nasce, in generale.
 
 ### Il mondo prima di DevOps: due team, due obiettivi opposti
 
@@ -282,6 +295,16 @@ parti sono lente) diventano input diretto per la prossima fase di Plan.
 Questo è il motivo per cui il simbolo è un infinito e non una linea con un
 punto di arrivo.
 
+Nella riga "Operate" hai notato la sigla **SRE**: vale la pena chiarirla,
+perché in azienda sentirai usare "DevOps" e "SRE" come sinonimi, spesso a
+torto. **Site Reliability Engineering (SRE)** è una disciplina nata in
+Google che applica un approccio ingegneristico, con obiettivi numerici
+precisi (gli *error budget*, quanta indisponibilità ci si può permettere),
+al mantenere un sistema affidabile in produzione. In sintesi: **DevOps è
+la cultura** che abbatte il muro tra Dev e Ops; **SRE è un modo specifico,
+orientato ai dati, di metterla in pratica**, soprattutto in Operate e
+Monitor — non tutte le aziende "DevOps" fanno anche SRE in senso stretto.
+
 Conoscere le otto fasi del ciclo, però, non basta a farle funzionare bene
 insieme: perché quel ciclo scorra senza attriti, serve che le persone che
 lo attraversano — chi scrive il codice, chi lo gestisce in produzione —
@@ -329,6 +352,17 @@ il tuo team) a dover gestire un problema alle tre di notte, scriverai
 codice più robusto, penserai di più a come monitorarlo, e sarai più
 motivato a collaborare con chi gestisce l'infrastruttura, perché non è più
 "un problema di qualcun altro".
+
+Questo beneficio, però, ha anche un costo umano reale, che un futuro
+Scrum Master non può ignorare: essere svegliati di notte per un guasto
+in produzione non è gratis per nessuno. Un turno di reperibilità mal
+gestito — sempre la stessa persona, nessuna compensazione, nessuna
+rotazione tra Marco, Giulia e Ahmed — logora chi lo sostiene e finisce per
+scontrarsi con uno dei valori che hai visto in Agile (sezione 5): un ritmo
+di lavoro **sostenibile** nel tempo. Un team DevOps maturo organizza
+l'on-call a rotazione, lo compensa esplicitamente e ne tiene conto nella
+pianificazione degli sprint successivi — non lo tratta come un dettaglio
+tecnico invisibile al project management.
 
 ### Blameless culture: imparare dagli errori senza cercare un colpevole
 
@@ -452,17 +486,24 @@ nella 11, dedicata proprio a CI/CD):
 - **Build automatiche**: ogni volta che **Ahmed** propone un cambiamento
   al codice del carrello, un sistema compila automaticamente il progetto,
   senza che nessuno debba farlo manualmente sul proprio computer.
-- **Test automatici**: una suite di test viene eseguita automaticamente ad
-  ogni cambiamento, verificando che il codice funzioni come previsto e che
-  non abbia rotto nulla che funzionava prima.
 - **Deploy automatici**: il pacchetto software viene installato
   automaticamente nell'ambiente giusto (test, staging, produzione), senza
   che una persona debba collegarsi manualmente a un server e copiare
   file a mano.
-- **Provisioning automatico dell'infrastruttura**: la creazione di server,
-  reti, database avviene tramite file di configurazione eseguiti
-  automaticamente (lo vedremo nel dettaglio parlando di Infrastructure as
-  Code, sezione 9.9).
+
+Altre forme altrettanto comuni — test automatici e provisioning
+automatico dell'infrastruttura — le vedrai nel dettaglio più avanti in
+questa stessa sezione e nella prossima, dedicata proprio a CI/CD.
+
+Prima di andare avanti, però, vale la pena smontare un'illusione comune:
+**automatizzare non è a costo zero, fatto una volta e buono per sempre**.
+Uno script o una pipeline sono, essi stessi, software: vanno aggiornati
+quando cambia il codice che orchestrano. Un'automazione scritta due anni
+fa e mai più toccata è spesso peggio di nessuna automazione: dà
+l'illusione di un controllo che non verifica più nulla di rilevante — un
+falso senso di sicurezza. Per un futuro Project Manager, questo significa
+allocare esplicitamente anche il tempo di **mantenere** script e pipeline,
+non solo quello di scriverli la prima volta.
 
 Tra tutte queste forme di automazione, una in particolare merita un
 paragrafo dedicato, perché è quella con cui uno sviluppatore di ShopFacile
@@ -688,12 +729,15 @@ anche di **infrastruttura**: server su cui essere eseguito, reti che
 permettano le comunicazioni, database per salvare i dati, regole di
 sicurezza che decidano chi può accedere a cosa.
 
-Storicamente, questa infrastruttura veniva creata e configurata **a mano**:
-una persona si collegava a un server, installava software, modificava
-file di configurazione, cliccava su pannelli di amministrazione — un
-lavoro lento, difficile da ripetere in modo identico, e soggetto a errori
-umani (proprio i problemi che l'automazione, vista nella sezione 9.5,
-cerca di risolvere).
+Immagina questa scena, capitata più di una volta in team come quello di
+ShopFacile: bisogna ricreare l'ambiente di test dopo un guasto, e qualcuno
+lo configura di nuovo **a mano**, a memoria. Ore dopo, un bug compare
+solo in quell'ambiente: la causa non è nel codice, ma in un parametro di
+configurazione dimenticato durante la ricostruzione manuale, diverso da
+quello di produzione. Questo è, storicamente, il problema
+dell'infrastruttura creata a mano: lenta, difficile da ripetere in modo
+identico, soggetta a errori umani (i problemi che l'automazione, vista
+nella sezione 9.5, cerca di risolvere).
 
 **Infrastructure as Code (IaC)** applica esattamente la stessa logica del
 controllo di versione del codice (Git, che hai visto nella sezione 4)
@@ -776,6 +820,17 @@ flowchart LR
     B --> C["☁️ Infrastruttura reale<br/>creata/modificata<br/>(server, reti, database)"]
     C -.->|"stato attuale<br/>confrontato col file"| B
 ```
+
+Anche l'IaC, però, non è un vantaggio senza contropartita. Scrivere e
+leggere questi file richiede una curva di apprendimento non banale.
+Inoltre, se qualcuno modifica l'infrastruttura reale a mano "per fare
+presto" senza aggiornare il file, i due **divergono**: il file descrive
+uno stato che non corrisponde più a quello reale, e la divergenza è
+difficile da scoprire finché non causa un problema. Infine, il file che
+può creare infrastruttura può anche **distruggerla**: una modifica
+sbagliata e non rivista può eliminare server o database reali in pochi
+secondi — un motivo in più per passare sempre da Pull Request e code
+review.
 
 Una volta che server e database di ShopFacile sono stati creati — a mano
 o, meglio, tramite IaC — il lavoro non finisce lì: bisogna sapere, giorno

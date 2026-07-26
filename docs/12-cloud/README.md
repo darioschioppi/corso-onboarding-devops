@@ -45,6 +45,19 @@ compravano server fisici, li installavano in una stanza climatizzata (la
 dovevano comprare altri server. Se il software calava di utilizzo, quei
 server restavano lì, comprati e pagati, a fare poco.
 
+Il momento in cui questo problema si è sentito davvero, in ShopFacile, è
+stato un dicembre di qualche anno fa. Le vendite di Natale erano già partite,
+il traffico sul sito cresceva di giorno in giorno, e il server esistente
+faticava a starci dietro: le pagine si caricavano lente, il checkout a
+volte si bloccava per qualche secondo nei momenti di punta. Il team ha
+ordinato subito un server aggiuntivo — ma il fornitore ha risposto che
+sarebbe arrivato **tra sei settimane**. Sei settimane dopo, i saldi di
+Natale erano finiti da un pezzo: il nuovo server sarebbe arrivato giusto in
+tempo per l'unico periodo dell'anno in cui il traffico, e quindi la
+capacità di calcolo in più, valeva davvero qualcosa. È esattamente il
+problema che la scelta (2) — pagare solo per quello che serve, quando
+serve — avrebbe potuto evitare.
+
 Il **cloud computing** è la scelta (2) applicata all'informatica: invece di
 possedere e gestire tu i server fisici, **usi via internet i server e le
 risorse informatiche di qualcun altro** (un "provider cloud" come Microsoft,
@@ -215,23 +228,6 @@ e SaaS è **quanta responsabilità di
 gestione resta al cliente e quanta passa al provider cloud**. Più si sale da
 IaaS verso SaaS, meno cose deve gestire il cliente (ma meno controllo ha).
 
-```mermaid
-flowchart TB
-    subgraph OnPrem["🏠 On-Premise<br/>(server proprio in azienda)"]
-        direction TB
-        O1[Applicazioni]
-        O2[Dati]
-        O3[Runtime]
-        O4[Middleware]
-        O5[Sistema Operativo]
-        O6[Virtualizzazione]
-        O7[Server]
-        O8[Storage]
-        O9[Rete]
-    end
-    style OnPrem fill:#ffe0e0
-```
-
 La tabella seguente è il modo più chiaro per vedere la "torta delle
 responsabilità": ogni riga è uno strato tecnico, e la cella indica **chi**
 se ne occupa.
@@ -252,6 +248,13 @@ se ne occupa.
 documenti) restano "tuoi": il provider li custodisce e li protegge, ma il
 contenuto è di tua responsabilità (es. non condividere per errore un file
 sensibile).*
+
+Questo "meno controllo diretto" ha un rovescio concreto. Se un servizio
+PaaS o SaaS ha un malfunzionamento, o cambia comportamento con un
+aggiornamento non richiesto, il team di ShopFacile **non può intervenire
+direttamente**: può solo aprire una segnalazione al provider, aspettare che
+risolva dal suo lato, e comunicare la situazione al cliente. È il prezzo di
+non doversi occupare della gestione quotidiana.
 
 In sintesi, salendo da IaaS a SaaS **deleghi progressivamente più lavoro
 operativo al provider**, in cambio di **meno controllo diretto** su come le
@@ -330,6 +333,16 @@ tipi di servizio**, solo con nomi diversi. Una volta capito il concetto (es.
 "storage per file"), riconoscere l'equivalente su un altro provider è
 semplice.
 
+C'è però un motivo per cui "cambiare provider" è più difficile di quanto
+sembri: si chiama **lock-in**. Più un progetto usa servizi **specifici** di
+un provider (non solo una macchina virtuale generica, ma funzionalità
+disponibili solo su Azure), più costa — in tempo, denaro, rischio —
+migrare altrove in futuro. Non è un divieto: è un costo da metter sul
+tavolo consapevolmente prima di scegliere, non da scoprire dopo. Alcune
+aziende usano **più provider contemporaneamente** (multi-cloud) per
+ridurre questa dipendenza, ma il prezzo è una complessità operativa che si
+moltiplica.
+
 ---
 
 ## 12.6 Scalabilità: verticale vs orizzontale
@@ -396,6 +409,29 @@ periodo di picco.
 Questo modello è molto diverso dall'acquisto di un server fisico, dove il
 costo è quasi tutto "anticipato" (compri il server, che poi resta tuo per
 anni, usato o no).
+
+> **Per confronto**: il pay-as-you-go non è automaticamente più economico —
+> dipende da quanto il carico **varia**. Con un carico costante e
+> prevedibile tutto l'anno, senza picchi, una macchina di proprietà usata
+> al massimo può costare **meno**, nel tempo, di una macchina cloud sempre
+> accesa e pagata a consumo. Il cloud conviene davvero quando il carico
+> **varia** (scali su e giù pagando solo i picchi, come nei saldi di
+> ShopFacile) o quando serve **partire subito** senza investimento
+> iniziale. È per questo che molte aziende adottano una scelta **ibrida**:
+> carichi stabili su infrastruttura propria, carichi variabili sul cloud.
+
+### Il costo cloud come voce di budget da monitorare
+
+Un costo che **varia** in base all'uso è più difficile da controllare di un
+costo fisso. Con un budget di progetto "classico" (sezione 8) la cifra è
+nota in anticipo; con il cloud, la fattura di un mese può crescere
+silenziosamente — una macchina dimenticata accesa, un picco non previsto —
+senza che nessuno se ne accorga finché non arriva il conto. Per questo un
+team maturo imposta **allarmi di spesa** e **attribuisce i costi ai
+progetti giusti**. La disciplina che si occupa di gestire e ottimizzare la
+spesa cloud si chiama **FinOps** (Finance + Operations): non serve
+diventarne esperti, ma sapere che esiste spiega perché il costo cloud
+compare come voce di controllo ricorrente al pari degli altri indicatori.
 
 ---
 
@@ -490,7 +526,7 @@ principali visti lungo la strada.
    colonne On-Premise, IaaS, PaaS, SaaS indicando chi gestisce cosa.
    ✅ **Come verificare**: confronta il tuo schema con la tabella originale
    nella sezione 12.3; se hai più di due celle diverse, rileggi la sezione
-   13.2 prima di andare avanti.
+   12.3 prima di andare avanti.
 
 3. **Traduci Azure in AWS (e viceversa).** Prendi 4 servizi Azure a caso tra
    quelli citati nella sezione 12.4 (es. Virtual Machines, App Service, Blob

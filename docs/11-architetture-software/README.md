@@ -123,15 +123,16 @@ graph TB
 - **Difficile far crescere tanti team in parallelo** senza che si "pestino i
   piedi" a vicenda sullo stesso codice.
 
-**Esempio pratico**: ShopFacile è nato esattamente così, come **monolite**:
-il catalogo prodotti, il carrello, la gestione degli ordini, i pagamenti e
-gli sconti vivevano tutti nello stesso progetto, compilato in un unico
-eseguibile. Era la scelta giusta per un team piccolo che doveva partire in
-fretta. Ma quando **Marco** deve correggere un piccolo bug nel calcolo di
-uno sconto, si trova a dover ricompilare, testare e rilasciare **l'intera
-applicazione**, comprese le parti (pagamenti, magazzino) che non ha nemmeno
-toccato — un costo che, all'inizio, il team accettava volentieri in cambio
-della semplicità.
+**Esempio pratico**: un lunedì, **Marco**, **Giulia** e **Ahmed** arrivano
+tutti e tre con una modifica pronta e indipendente — ma ShopFacile è un
+unico blocco, quindi esiste **un solo rilascio possibile** che le contiene
+tutte insieme. Se il test automatico sulla modifica di Giulia fallisce
+all'ultimo momento, il rilascio si ferma: anche le modifiche di Marco e
+Ahmed, già pronte da ore, restano bloccate con lei, benché il loro lavoro
+non abbia nulla in comune col suo. Il costo del monolite non è solo
+"ricompilare e rilasciare **l'intera applicazione**": è soprattutto **far
+aspettare le persone** l'una per colpa delle altre — un costo che,
+all'inizio, il team accettava volentieri in cambio della semplicità.
 
 > 💡 **Per confronto**: non tutti i software devono necessariamente evolvere
 > oltre il monolite. Un gestionale interno per l'ufficio commerciale, usato
@@ -216,8 +217,10 @@ graph LR
   chiama il servizio B che chiama il servizio C, e uno di questi è lento o
   irraggiungibile, il problema si propaga.
 - **Più difficile da debuggare**: un errore può nascere dall'interazione tra
-  più servizi, e "seguire il filo" del problema è più complesso che in un
-  monolite.
+  più servizi, ed è un costo aggiuntivo che richiede di investire proprio
+  negli strumenti di monitoraggio già visti nella sezione 9 (log
+  centralizzati, dashboard, allarmi) — senza di essi, capire quale servizio
+  ha causato il problema può richiedere ore anziché minuti.
 - **Richiede un team più maturo** su temi come CI/CD, containerizzazione e
   monitoraggio, perché la complessità operativa cresce parecchio.
 
@@ -228,6 +231,26 @@ nella sezione 10). Se il team vuole aggiungere un nuovo filtro di ricerca
 nel catalogo, rilascia **solo quel servizio**: i pagamenti e la gestione
 ordini continuano a funzionare esattamente come prima, senza bisogno di
 essere ritestati o rilasciati di nuovo.
+
+### Il prezzo pagato: quando la rete si mette in mezzo
+
+Qualche settimana dopo la scomposizione, un cliente segnala un ordine
+risultato pagato ma mai registrato come completato. **Giulia** indaga: il
+servizio Pagamenti ha confermato l'incasso, ma il messaggio verso il
+servizio Ordini si è perso per un timeout di rete. Nel vecchio monolite
+questo **non poteva accadere**: pagamento e ordine erano un'unica
+operazione sullo stesso database, o riuscivano entrambe o fallivano
+entrambe. Ora, con due servizi che si parlano via rete, una delle due
+operazioni può andare a buon fine e l'altra no — un problema chiamato
+**transazione distribuita**: un'operazione che deve avere successo su più
+servizi insieme, ma che la rete può "spezzare" a metà.
+
+I microservizi non eliminano la complessità: la **spostano** dal codice
+(dove un unico database garantiva tutto o niente) alla rete (dove serve
+gestire esplicitamente messaggi persi, in ritardo o duplicati). Per il tuo
+ruolo, la conseguenza è concreta: una modifica che coinvolge la
+comunicazione tra servizi può costare più del previsto in stima, per la
+gestione di errori e casi limite che nel monolite non esistevano.
 
 ### Quando ha senso passare da monolite a microservizi
 
@@ -266,6 +289,18 @@ non un ritardo da recuperare.
 | Isolamento dei guasti | Basso: un problema può bloccare tutto | Più alto: un servizio può fallire senza fermare tutti gli altri |
 | Autonomia dei team | Bassa: più team sullo stesso codice si intralciano | Alta: ogni team può gestire i propri servizi |
 | Adatto a | Progetti piccoli/medi, team piccoli, fasi iniziali (MVP) | Progetti grandi, molti team, esigenze di scalabilità differenziate |
+
+### Un effetto collaterale: la Legge di Conway
+
+Un'osservazione nota come **Legge di Conway**: la struttura del software
+che un'azienda costruisce tende a **rispecchiare la struttura del team**
+che lo costruisce — e vale anche il contrario. Quando il team di ShopFacile
+decide di scomporre il software per dominio (catalogo, ordini, pagamenti),
+prima o poi sente il bisogno di riorganizzare anche le **persone** in
+squadre allineate a quei domini. Per un PM o uno Scrum Master, una scelta
+architetturale non resta quindi confinata al codice: può tradursi in nuovi
+ruoli, responsabilità e meccanismi di coordinamento tra team che prima
+erano un tutt'uno.
 
 ---
 
@@ -361,8 +396,14 @@ graph LR
 Questo approccio è molto usato quando un evento (es. "ordine completato")
 deve essere notificato a **più** servizi interessati, senza che il servizio
 che genera l'evento debba conoscerli tutti o aspettare che rispondano tutti.
-Esempi di strumenti che sentirai citare per questo scopo: **RabbitMQ**,
-**Azure Service Bus**, **Kafka**.
+
+Perché serve uno strumento dedicato invece di scrivere i messaggi in una
+tabella del database? Perché una coda vera e propria garantisce la
+**consegna** anche se il destinatario era offline, **ritenta
+automaticamente** se il primo tentativo fallisce, e permette a ciascun
+servizio di leggere al proprio ritmo, senza che un consumatore lento
+accumuli lavoro per gli altri. Esempi: **RabbitMQ**, **Azure Service Bus**,
+**Kafka**.
 
 | | Comunicazione sincrona (API/REST) | Comunicazione asincrona (coda di messaggi) |
 |---|---|---|
@@ -495,6 +536,13 @@ L'idea chiave è che **ogni livello parla solo con quello adiacente**: il
 livello di presentazione non accede mai direttamente al database, ma passa
 sempre dal livello di logica di business, che fa da "filtro" e applica le
 regole necessarie prima di leggere o scrivere i dati.
+
+Questa regola evita un problema concreto: se l'interfaccia accedesse
+direttamente al database, le regole di business ("lo sconto si applica
+solo se...") finirebbero duplicate in più punti (pagina web, app mobile,
+un'esportazione dati) — e il giorno in cui una regola cambia, il rischio è
+che qualcuno aggiorni una copia e si scordi le altre, senza che nessuno
+sappia più **dove sta la verità**.
 
 ### Analogia
 

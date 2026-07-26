@@ -120,9 +120,32 @@ flowchart TB
 
 ### 6.2.1 Product Owner: la voce del business
 
-Il **Product Owner** (spesso abbreviato **PO**) è la persona responsabile
-di **massimizzare il valore** del prodotto che il team sta costruendo.
-In pratica, decide **cosa** il team deve realizzare e **in che ordine di
+Prima che ShopFacile avesse un Product Owner formalmente riconosciuto,
+capitava una scena come questa: in una stessa settimana, il commerciale
+chiede ad **Ahmed** di aggiungere "con urgenza" un banner promozionale per
+un cliente importante, quello stesso cliente importante scrive
+direttamente al team chiedendo invece una correzione al proprio account,
+e l'amministratore delegato, passando in ufficio, dice che la vera
+priorità è "finalmente" il nuovo modulo di reportistica. Ahmed, che vuole
+fare bene con tutti, comincia il banner, lo abbandona a metà per la
+correzione dell'account, poi passa al modulo di reportistica quando arriva
+la richiesta dell'AD. A fine settimana, nessuna delle tre cose è finita, e
+tre persone diverse sono convinte che "la loro" fosse la priorità
+assoluta che nessuno ha rispettato.
+
+Questo è esattamente il problema che il ruolo di Product Owner esiste per
+prevenire. Il **Product Owner** (spesso abbreviato **PO**) non è
+semplicemente "la persona che decide cosa fare": è la persona che fa
+esistere **una sola lista di priorità**, condivisa e visibile, così che il
+team non diventi il campo di battaglia di richieste in conflitto che
+arrivano da direzioni diverse. Oggi, su ShopFacile, quel ruolo lo occupa
+**Sara**: è lei il punto a cui commerciale, cliente e management devono
+rivolgersi, ed è lei che decide come le tre richieste dell'esempio sopra
+si ordinano davvero, non i toni di voce di chi le fa.
+
+Più formalmente, il Product Owner è la persona responsabile di
+**massimizzare il valore** del prodotto che il team sta costruendo. In
+pratica, decide **cosa** il team deve realizzare e **in che ordine di
 priorità**, rappresentando gli interessi del cliente, degli utenti finali e
 del business.
 
@@ -159,10 +182,26 @@ PO decide le priorità di business, non l'implementazione tecnica.
 
 ### 6.2.2 Scrum Master: il facilitatore (il TUO ruolo)
 
-Il **Scrum Master** è la persona responsabile di **far funzionare bene il
+Prima che Luca presidiasse questo ruolo su ShopFacile, era successo questo:
+**Giulia** aveva bisogno dell'accesso a un ambiente di test per completare
+il proprio lavoro. Lo aveva segnalato, ma nessuno si sentiva responsabile
+di seguirlo fino in fondo: non toccava a Marco, che aveva i suoi task; non
+toccava a Sara, che si occupava di priorità di business, non di permessi
+IT. Il ticket aperto con il reparto IT è rimasto in coda, insieme ad altri
+cento ticket simili, per **una settimana intera**. Giulia, nel frattempo,
+non è rimasta ferma: ha iniziato altro lavoro per non "perdere tempo", ma
+questo ha significato accumulare più cose iniziate e non finite, proprio
+il tipo di situazione che un limite di WIP (lo vedrai nella sezione 7)
+cerca di evitare.
+
+Il problema, in quel caso, non era tecnico: era che **nessuno aveva la
+responsabilità esplicita di farsi carico degli ostacoli del team**. Il
+**Scrum Master** è la persona responsabile di **far funzionare bene il
 processo Scrum**: si assicura che il team capisca e applichi correttamente
 la teoria, le pratiche e le regole di Scrum, e lavora attivamente per
-rimuovere tutto ciò che ostacola il team.
+rimuovere tutto ciò che ostacola il team — compreso un ticket IT che
+altrimenti resterebbe bloccato una settimana senza che nessuno lo
+sblocchi.
 
 Questo è il ruolo che tu andrai a occupare, quindi vale la pena spenderci
 più tempo degli altri due.
@@ -214,21 +253,35 @@ rimuoverli**, anche quando la soluzione non dipende direttamente da lui/lei
 (in quel caso, il compito diventa "scalare" il problema alla persona giusta
 e seguirne la risoluzione).
 
-> 📌 **Esempio pratico**: durante il Daily Scrum, uno sviluppatore di
-> ShopFacile dice "sono bloccato da due giorni: aspetto le credenziali di
-> accesso a un ambiente di test". **Luca**, lo Scrum Master, annota
-> l'impedimento, non lo discute lì (per non allungare il daily), e subito
-> dopo scrive al responsabile IT per sollecitare l'accesso, aggiornando il
-> team il giorno seguente. Non risolve lui stesso il problema tecnico: si
-> assicura che chi può risolverlo lo faccia in tempi rapidi.
+> 📌 **Esempio pratico**: oggi, con Luca nel ruolo, un impedimento come
+> quello di Giulia non resterebbe più bloccato una settimana. Emerge nel
+> Daily Scrum, Luca lo annota senza discuterlo lì (per non allungare il
+> daily) e subito dopo scrive al responsabile IT per sollecitarlo,
+> aggiornando il team il giorno seguente. Non risolve lui stesso il
+> problema tecnico: si assicura che chi può risolverlo lo faccia in tempi
+> rapidi.
 
 ### 6.2.3 Team di sviluppo: chi realizza il prodotto
 
-Il **Team di sviluppo** (in inglese *Developers*, termine che nella Scrum
-Guide più recente indica chiunque contribuisca a realizzare l'Increment:
-programmatori, ma anche designer, tester, analisti, a seconda del contesto)
-è il gruppo di persone che **trasforma le voci del Product Backlog in un
-prodotto funzionante**, sprint dopo sprint.
+Immagina, per un momento, una versione di ShopFacile in cui Marco, Giulia
+e Ahmed non sono un team con una responsabilità collettiva, ma tre
+individui con compiti separati e nessuna visione d'insieme. A fine sprint,
+la funzionalità di Ahmed è "finita" — il codice è scritto — ma nessuno
+l'ha testata. Quella di Marco è testata, ma non è mai stata integrata con
+il resto del sistema. Alla Sprint Review non c'è niente di realmente
+funzionante da mostrare, anche se, tecnicamente, ognuno dei tre ha
+completato il proprio pezzo di lavoro individuale. "Io ho fatto la mia
+parte" è vero per ciascuno, e allo stesso tempo il prodotto non avanza.
+
+È per evitare esattamente questo che Scrum non definisce il terzo ruolo
+come una somma di individui, ma come un **team con una responsabilità
+condivisa sul risultato**. Il **Team di sviluppo** (in inglese
+*Developers*, termine che nella Scrum Guide più recente indica chiunque
+contribuisca a realizzare l'Increment: programmatori, ma anche designer,
+tester, analisti, a seconda del contesto) è il gruppo di persone che
+**trasforma le voci del Product Backlog in un prodotto funzionante**,
+sprint dopo sprint — non ciascuno il proprio pezzo, ma tutti insieme
+l'incremento completo.
 
 > 💡 **Analogia**: continuando il paragone gastronomico, il team di sviluppo
 > è la **brigata di cucina**: chi taglia le verdure, chi cucina la carne,
@@ -292,6 +345,23 @@ per produrre un incremento di prodotto potenzialmente utilizzabile.
   di sviluppo).
 - **Obiettivo**: consegnare un incremento di valore, utilizzabile e di
   qualità sufficiente, entro la fine del periodo stabilito.
+
+Quella durata, "1 a 4 settimane", non è un dettaglio arbitrario: nasconde
+un compromesso reale che dovrai gestire come Scrum Master. Sprint più
+**corti** (una settimana) danno un feedback più rapido — se il team ha
+sbagliato direzione, lo scopri quasi subito — ma il costo dei riti
+(Planning, Review, Retrospective) resta più o meno lo stesso in valore
+assoluto e quindi pesa proporzionalmente di più: passare 3 ore su 5 giorni
+lavorativi in riunioni di sprint è un carico ben diverso da 3 ore su 10
+giorni. Sprint più **lunghi** (un mese) diluiscono quel costo, ma il
+rovescio della medaglia è che il team scopre più tardi di aver preso una
+direzione sbagliata, e nel frattempo ha continuato a lavorarci per
+settimane. Non esiste una durata "giusta" in assoluto: dipende da quanto
+rapidamente cambia il contesto in cui il team lavora. Un team che deve
+reagire in fretta a un mercato che cambia spesso (come ShopFacile durante
+un periodo di promozioni aggressive dei concorrenti) trova più valore in
+sprint corti; un team con requisiti più stabili può permettersi sprint più
+lunghi senza perderci molto.
 
 > 💡 **Analogia**: lo Sprint è come una **puntata di una serie TV**: ha una
 > durata fissa, racconta un pezzo di storia autoconclusivo (l'incremento di
@@ -357,6 +427,17 @@ fa è proprio il Daily Scrum.
 Il **Daily Scrum** (spesso chiamato semplicemente "il daily" o "lo
 stand-up") è una breve riunione quotidiana in cui il team di sviluppo
 sincronizza il proprio lavoro e pianifica le prossime 24 ore.
+
+Vale la pena immaginare cosa succede a un team che decide di saltarlo
+"perché siamo tutti impegnati" o "abbiamo già detto tutto in chat". Marco e
+Ahmed, senza volerlo, finiscono per lavorare tre giorni sulla stessa parte
+del carrello, scoprendolo solo quando aprono due Pull Request che si
+sovrappongono. Nel frattempo, il blocco di Giulia sull'ambiente di test
+(lo hai visto nell'esempio del paragrafo 6.2.2) resta invisibile a tutti
+tranne a lei fino al giorno prima della fine dello sprint, quando è troppo
+tardi per risolverlo in tempo. Il Daily Scrum non è un rituale burocratico:
+è il meccanismo che fa emergere questi problemi entro 24 ore, non entro
+una settimana.
 
 - **Durata tipica**: **massimo 15 minuti**, sempre alla stessa ora e nello
   stesso luogo (fisico o virtuale) per creare abitudine e ridurre attrito.
@@ -780,11 +861,11 @@ per confrontare team diversi** ("il team A fa 40 punti, il team B solo 20,
 quindi il team A lavora meglio") né come metrica di performance individuale.
 I Story Point sono relativi e specifici di ogni singolo team: un punto per
 il team A non equivale a un punto per il team B, perché ogni team ha una
-propria scala interna di riferimento. Usare la Velocity per confrontare
-team, o peggio persone, è uno degli errori più dannosi che si possano fare
-con questa metrica, e può spingere i team a "gonfiare" artificialmente le
-stime — proteggere il team da questo uso scorretto della metrica è
-anch'esso un compito dello Scrum Master.
+propria scala interna di riferimento. È uno degli errori più dannosi che
+si possano fare con questa metrica, e spinge facilmente i team a
+"gonfiare" artificialmente le stime — proteggere il team da questo uso
+scorretto è anch'esso un compito dello Scrum Master (lo ritroverai anche
+tra gli antipattern in 6.11).
 
 Sapere quanto il team riesce a fare non basta, però, se le storie che gli
 arrivano in Sprint Planning sono ancora ambigue o mal definite: serve un
@@ -824,6 +905,15 @@ ma un insieme comune potrebbe essere):
 > stima. Non soddisfa la Definition of Ready: resta nel Product Backlog,
 > **Sara** la raffina con il team in una sessione di refinement, e potrà
 > entrare in uno sprint successivo, quando sarà davvero "pronta".
+
+Quella "sessione di refinement" citata nell'esempio non è un evento
+ufficiale di Scrum (non è nell'elenco dei cinque visti in 6.3), ma è una
+pratica così diffusa che vale la pena definirla: il **refinement** (o
+raffinamento del backlog) è il momento, spesso ricorrente ma non fisso,
+in cui il team e il Product Owner **chiariscono e dimensionano** le voci
+del Product Backlog **prima** che arrivino a una Sprint Planning — è
+esattamente il lavoro che permette a una storia di passare da "vaga" a
+conforme alla Definition of Ready.
 
 Perché la Definition of Ready è utile: evita che il team scopra, a metà
 sprint, che una storia era troppo ambigua per essere realizzata bene,
@@ -883,11 +973,10 @@ Perché la Definition of Done è cruciale, e perché sarà una delle tue
 responsabilità quotidiane più importanti come Scrum Master: senza una DoD
 condivisa e rispettata, il team rischia di accumulare **debito tecnico
 nascosto** — storie segnate come "fatte" che in realtà mancano di test, di
-qualità, di rifiniture. Questo debito, prima o poi, esplode: bug in
-produzione, funzionalità che si rompono al primo cambiamento, sfiducia da
-parte del cliente. Uno dei compiti meno visibili ma più importanti dello
-Scrum Master è proprio **vigilare che il team non "bari" sulla Definition
-of Done** solo per dichiarare più storie completate in fretta.
+qualità, di rifiniture (ne vedi subito il meccanismo nel dettaglio). Uno
+dei compiti meno visibili ma più importanti dello Scrum Master è proprio
+**vigilare che il team non "bari" sulla Definition of Done** solo per
+dichiarare più storie completate in fretta.
 
 ### Definition of Ready vs. Definition of Done: non confonderle
 
@@ -896,6 +985,14 @@ of Done** solo per dichiarare più storie completate in fretta.
 | **Quando si applica** | Prima che una storia entri in sprint | Prima che una storia si consideri completata |
 | **Risponde alla domanda** | "Siamo pronti a iniziare a lavorarci?" | "Abbiamo davvero finito di lavorarci?" |
 | **Se non soddisfatta** | La storia resta nel Product Backlog, non entra in sprint | La storia resta "in corso", non si conta come completata |
+
+### Debito tecnico: il conto che arriva dopo
+
+Il "debito tecnico nascosto" accennato sopra merita una spiegazione propria, perché lo incontrerai spesso e nessuno te lo definirà per te sul lavoro. La metafora è di **Ward Cunningham**, uno dei firmatari del Manifesto Agile: prendere una scorciatoia tecnica per andare più veloci oggi è come prendere un **prestito**. Guadagni tempo subito, ma paghi **interessi** dopo, sotto forma di lavoro che diventa via via più lento e più rischioso, ogni volta che tocchi quella parte di codice.
+
+> 📌 **Esempio pratico**: per rispettare una scadenza commerciale su ShopFacile, il team decide di saltare la copertura dei test automatici su una parte del flusso di checkout — "la aggiungiamo dopo", si dice in quel momento. Tre mesi dopo, una modifica in quella stessa area del checkout, che normalmente richiederebbe un giorno di lavoro, ne richiede il triplo: senza test, nessuno sa con certezza cosa si romperà toccando quel codice, e ogni modifica va verificata a mano, riga per riga.
+
+Il punto operativo per il tuo ruolo è questo: il debito tecnico **non è un fallimento tecnico** del team, è una **decisione di business** presa consapevolmente — a volte è del tutto ragionevole accettarla, se la scadenza vale davvero quel rischio. Il problema non è contrarre debito tecnico, è farlo **in silenzio**: se resta nascosto, nessuno lo ripaga mai, perché non compare da nessuna parte finché non esplode. Il tuo compito è renderlo **visibile nel Product Backlog** come qualsiasi altra voce (es. "Aggiungere test automatici al flusso di checkout"), così che Sara possa decidere consapevolmente quando dargli priorità, invece di scoprirlo solo quando causa un incidente in produzione.
 
 Ruoli, eventi, artefatti, stime e criteri di qualità: abbiamo visto tutti
 i pezzi che il team di ShopFacile usa ogni sprint. Vale la pena, prima di
@@ -958,9 +1055,9 @@ elenco realistico di attività quotidiane e ricorrenti:
   concentrazione durante lo sprint — senza isolare il team dal mondo, ma
   facendo da filtro intelligente.
 - **Monitorare metriche utili** (Velocity, numero di storie completate,
-  eventuali "burndown chart" che mostrano l'avanzamento giorno per giorno
-  dentro lo sprint), non per giudicare le persone, ma per aiutare il team a
-  capire il proprio ritmo e migliorare le previsioni.
+  eventuali "burndown chart", che vediamo subito nel dettaglio), non per
+  giudicare le persone, ma per aiutare il team a capire il proprio ritmo e
+  migliorare le previsioni.
 - **Coaching del team sull'Agile mindset**: aiutare, nel tempo, il team a
   interiorizzare i principi Agile visti nella sezione precedente, non solo
   a "eseguire" meccanicamente i rituali di Scrum.
@@ -972,6 +1069,55 @@ elenco realistico di attività quotidiane e ricorrenti:
   concreto alle azioni decise nelle Retrospective, verificando negli
   sprint successivi se hanno davvero funzionato, e aggiustando se non è
   così.
+
+### Il burndown chart: leggere l'andamento di uno sprint
+
+Il **burndown chart** è un grafico semplice che mostra, giorno per giorno
+durante lo sprint, quanto lavoro **resta ancora da fare** (di solito in
+Story Point) rispetto a quanto ne era stato pianificato. L'asse orizzontale
+rappresenta i giorni dello sprint, l'asse verticale il lavoro residuo: idealmente
+la linea scende in modo abbastanza regolare da "tutto il lavoro" a "zero"
+esattamente all'ultimo giorno.
+
+Ecco un burndown realistico per uno sprint di 10 giorni lavorativi partito
+con 26 punti da completare:
+
+| Giorno | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Punti residui | 26 | 24 | 24 | 24 | 21 | 15 | 15 | 15 | 6 | 0 |
+
+Il numero non conta da solo: conta **come si legge** l'andamento. Dal
+giorno 2 al giorno 4 la linea resta **piatta a 24**: nessun punto viene
+chiuso per tre giorni di fila. È un segnale preciso, quasi sempre di uno
+di questi problemi: una storia è "quasi finita" da giorni ma nessuno la
+chiude davvero, un impedimento non segnalato blocca qualcuno in
+silenzio, oppure il team ha sottovalutato la complessità del lavoro in
+Sprint Planning. Una linea piatta per giorni consecutivi dice, a chi
+conduce il team, *quando* è nato il problema — non solo che esiste.
+
+### Antipattern comuni del neo Scrum Master
+
+Chi arriva a questo ruolo per la prima volta cade quasi sempre in alcuni
+errori tipici. Conoscerli in anticipo aiuta a evitarli:
+
+- **Trasformare il Daily in un rapporto di stato rivolto a sé.** Se il
+  team riferisce a te invece che agli altri membri, il Daily ha perso il
+  suo scopo. *Correzione*: fai un passo indietro e lascia che il team
+  parli tra sé, tu ascolti e intervieni solo sugli impedimenti.
+- **Assegnare i task al posto del team.** Decidere tu chi fa cosa
+  contraddice l'auto-organizzazione vista in 6.2.3. *Correzione*: proponi,
+  non imporre — lascia che sia il team a dividersi il lavoro.
+- **Usare la Velocity per confrontare team o persone.** L'hai già visto in
+  6.7: è uno degli usi più dannosi della metrica. *Correzione*: usala solo
+  per le previsioni interne dello stesso team, mai come classifica.
+- **Accettare che la Retrospective produca solo lamentele.** Una retro che
+  finisce senza un'azione concreta è tempo perso. *Correzione*: chiudi
+  sempre con almeno un'azione scelta dal team, piccola e verificabile.
+- **Proteggere il team fino a isolarlo dagli stakeholder.** Fare da filtro
+  non significa costruire un muro: un team completamente isolato perde il
+  contatto con il "perché" del proprio lavoro. *Correzione*: filtra le
+  interruzioni inutili, ma mantieni visibili i canali di comunicazione che
+  contano davvero (come la Sprint Review).
 
 Un consiglio pratico per iniziare: nei primi sprint che seguirai, il tuo
 obiettivo principale non è "cambiare tutto e ottimizzare subito". È

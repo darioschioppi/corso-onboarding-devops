@@ -102,6 +102,8 @@ Esistono diversi tipi di test, con diversi livelli di dettaglio:
 
 Perché si testa? Perché è molto più economico e veloce trovare un errore prima che il software arrivi agli utenti, piuttosto che scoprirlo quando migliaia di persone lo stanno già usando (e magari perdendo dati o soldi a causa di quell'errore).
 
+Ogni tipo di test, però, ha anche un costo in tempo: un test unitario si scrive ed esegue in pochi secondi, un test di integrazione richiede più preparazione, un test manuale approfondito può occupare ore di lavoro di una persona come Giulia. Per questo, nella pratica, un PM non applica meccanicamente tutta la scala a ogni modifica: negozia con il team **quanto** testare in base al rischio reale di quella modifica. Un piccolo cambio al colore di un bottone non richiede lo stesso investimento di test di una modifica al calcolo del prezzo nel carrello.
+
 **Esempio pratico**: per la nuova funzionalità di ricerca prodotti di ShopFacile, Ahmed scrive un test unitario che verifica che la funzione di ricerca restituisca risultati corretti con un solo prodotto nel catalogo; Giulia, sempre molto attenta alla qualità, scrive un test di integrazione che verifica che la ricerca funzioni correttamente insieme al filtro dei prezzi, e poi prova lei stessa a digitare caratteri strani (accenti, emoji, campo vuoto) nella barra di ricerca per vedere se qualcosa si rompe. Solo dopo che tutti e tre i livelli di test danno esito positivo, la funzionalità viene considerata pronta per il passo successivo.
 
 I test sono tutti verdi: la funzionalità può finalmente lasciare l'ambiente del team ed essere messa nelle mani degli utenti veri.
@@ -177,6 +179,10 @@ Tornando all'analogia della casa: se il requisito funzionale è "vogliamo una cu
 
 Un errore comune di chi inizia in questo settore è concentrarsi solo sui requisiti funzionali, perché sono i più "visibili" e i clienti li richiedono esplicitamente. Ma un buon Project Manager sa che i requisiti non funzionali (velocità, sicurezza, affidabilità) sono altrettanto critici: un'app che fa tutto quello che deve, ma è lentissima o insicura, è comunque un fallimento.
 
+### Perché stimare software è così difficile
+
+Quando Sara chiede "quanto tempo ci vuole per il recupero password?", Marco non può rispondere guardando un catalogo prezzi: ogni funzionalità di ShopFacile è, in un certo senso, unica, e a differenza di una casa — dove chi costruisce sa quasi esattamente quante ore servono per averne già fatte centinaia simili — un software raramente è "la stessa cosa" di qualcosa già fatto prima: cambiano i requisiti, il codice esistente su cui si innesta, i casi limite che emergono solo scrivendo il codice. Buona parte della difficoltà reale **emerge mentre ci si lavora**, non prima: Marco può stimare "due giorni" e poi scoprire a metà lavoro che il sistema di invio email esistente non supporta link temporanei e va modificato anche quello. Cosa significa questo per te, futuro PM? Che una stima è una **previsione con un margine di errore**, non una promessa: comunicarla al cliente come una data certa crea aspettative che il team, prima o poi, non riuscirà a rispettare. Riprenderemo questo concetto quando parleremo di Story Point, nella sezione 6 su Scrum.
+
 Anche il requisito meglio scritto, però, non garantisce che il codice finale si comporti come previsto: a volte qualcosa va storto, ed è lì che entra in scena il bug.
 
 ## 🐛 Bug: quando qualcosa va storto
@@ -186,6 +192,19 @@ Un **bug** è un difetto nel software: un comportamento non corretto, non previs
 > **Curiosità storica**: si racconta che nel 1947, mentre lavorava su uno dei primi grandi calcolatori (il Harvard Mark II), la programmatrice e informatica Grace Hopper e il suo team trovarono una falena vera e propria incastrata tra i contatti di un relè elettromeccanico, che causava un malfunzionamento. Il team incollò l'insetto su un foglio del registro di laboratorio con la scritta "First actual case of bug being found" (primo caso reale di un bug trovato). Da allora, "bug" è diventato il termine universale per indicare un errore nel software (anche se il termine era già usato in ambito ingegneristico prima di quell'episodio).
 
 **Esempio concreto di bug**: su ShopFacile, Giulia scopre durante un test che se metti nel carrello più di 99 pezzi dello stesso prodotto, il prezzo totale diventa negativo per un errore nel calcolo. L'utente potrebbe finire per "guadagnare" acquistando, invece di pagare! Questo è esattamente il tipo di comportamento inatteso che un bug produce: qualcosa che nessuno ha previsto o voluto, che si scopre spesso solo quando il software viene usato in modi che gli sviluppatori non avevano immaginato.
+
+Perché succedono cose come questa, se il team ha già scritto dei test? La
+ragione di fondo è che un software come ShopFacile ha un numero enorme di
+stati e combinazioni possibili: quanti pezzi nel carrello, quali codici
+sconto, quale browser, quale sequenza di click. Anche pochi elementi che si
+combinano tra loro generano rapidamente migliaia di casi diversi (una vera
+e propria "esplosione combinatoria"), e nessun team, per quanto bravo, ha il
+tempo di percorrerli tutti prima di ogni rilascio. Per questo "testare
+tutto" non è un obiettivo realistico: testare significa sempre **scegliere
+dove guardare**, concentrando l'attenzione sulle combinazioni più probabili
+o più rischiose. È anche per questo che, come futuro PM, non potrai mai
+pretendere "zero bug": potrai solo negoziare quanto rischio il team accetta
+di correre su ogni singola area del prodotto.
 
 I bug possono essere piccoli e quasi invisibili (un testo scritto con il colore sbagliato) o gravissimi (un sistema bancario che addebita importi errati). Parte del lavoro di un Project Manager è proprio aiutare a **classificare** i bug per gravità e priorità, per decidere quali vanno risolti immediatamente e quali possono aspettare: il bug del prezzo negativo di ShopFacile, per esempio, è abbastanza grave da bloccare tutto il resto.
 
@@ -240,7 +259,7 @@ Numerare le versioni presuppone però che il codice arrivi in modo ordinato a un
 
 ## 🌿 Branching: lavorare in parallelo
 
-Immagina un team di 5 sviluppatori — pensa a Marco, Giulia, Ahmed e ai loro colleghi di ShopFacile — che lavorano tutti insieme, contemporaneamente, sullo stesso identico file di codice. Cosa potrebbe succedere? Molto probabilmente, un disastro: le modifiche di uno cancellerebbero quelle di un altro, e sarebbe impossibile capire chi ha cambiato cosa.
+A Marco e Ahmed è capitato di recente un piccolo disastro proprio per questo motivo: si sono scambiati via chat lo stesso file per un intervento urgente, ognuno partendo dalla propria copia locale, e uno dei due ha finito per salvare sopra la correzione dell'altro senza saperlo. Lo vedrai raccontato passo passo, con tutti i dettagli, nella prossima sezione dedicata a Git e GitHub — qui basta l'idea: lavorare sulla stessa copia di un file, in parallelo e senza un sistema che tenga traccia delle modifiche, è un rischio concreto, non un'ipotesi da manuale.
 
 Per questo esiste il concetto di **branch** (in italiano "ramo"). Un branch è come una copia parallela e temporanea del progetto, su cui una persona (o un piccolo gruppo) può lavorare in isolamento, senza disturbare il lavoro degli altri, per poi ricongiungere le modifiche al progetto principale quando sono pronte.
 
@@ -261,7 +280,7 @@ gitGraph
     merge feature-login id: "unione al ramo principale"
 ```
 
-Questo concetto sarà spiegato con molti più dettagli pratici (comandi, strumenti, esempi passo-passo) nella prossima sezione dedicata a Git e GitHub. Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi.
+Per ora ti basta capire l'idea: il branching permette a più persone di lavorare in parallelo sullo stesso progetto senza pestarsi i piedi. I dettagli pratici (comandi, strumenti, esempi passo-passo) arrivano nella prossima sezione.
 
 **Esempio pratico**: mentre Ahmed lavora sul branch `feature-ricerca-prodotti` per aggiungere la barra di ricerca, Giulia lavora in parallelo sul branch `fix-carrello` per correggere il bug del prezzo negativo visto prima. Nessuno dei due deve aspettare che l'altro finisca: lavorano entrambi sul proprio ramo, isolati, e uniranno le modifiche al tronco principale quando saranno pronti, ciascuno con i suoi tempi.
 

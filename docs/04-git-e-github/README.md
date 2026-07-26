@@ -4,15 +4,18 @@
 > 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/04-git-e-github.pdf)** — utile per la stampa o la lettura offline.
 
 
-Se hai mai lavorato su un documento Word con altre persone, probabilmente
-conosci già l'incubo dei file chiamati `Progetto_finale_v2_DEFINITIVO_uso_questo.docx`.
-Qualcuno ha modificato una frase, qualcun altro ha cancellato per errore
-un paragrafo importante, e nessuno ricorda più qual è la versione "buona".
+Una settimana dopo aver corretto un bug critico nel checkout di ShopFacile,
+Marco lo ritrova identico, di nuovo in produzione. Ricostruendo i fatti con
+Ahmed capisce cosa è successo: si erano scambiati il file `checkout.js` via
+chat per un intervento urgente, ognuno partendo dalla propria copia locale.
+Ahmed ha salvato sopra la sua versione più vecchia senza saperlo, cancellando
+la correzione di Marco — e nessuna delle due copie porta scritto chi l'ha
+modificata, quando, o perché.
 
 Git e GitHub esistono per risolvere esattamente questo problema, ma applicato
-al codice sorgente di un software: migliaia di file di testo che decine di
-persone modificano ogni giorno, in parallelo, senza pestarsi i piedi a
-vicenda.
+al codice sorgente di un software: migliaia di file che decine di persone
+modificano ogni giorno, in parallelo, senza perdere traccia di chi ha
+cambiato cosa.
 
 Questa è probabilmente la sezione più "pratica" del corso: gli strumenti che
 imparerai qui li vedrai citati in ogni standup, in ogni pull request, in
@@ -218,17 +221,47 @@ qualsiasi momento futuro — utile per capire, ad esempio, "in quale commit
 > `git log` per capire esattamente in quale commit — e quindi in che
 > momento — è stata introdotta quella modifica.
 
+> ⚠️ **La cronologia dei commit è per sempre**: qualsiasi cosa finisca in un
+> commit resta nella storia del repository per sempre, anche se in un
+> commit successivo cancelli quel file. Chiunque abbia accesso al
+> repository può tornare indietro fino al primo commit e recuperarla.
+>
+> La conseguenza operativa, importante anche per un PM: se una password,
+> una chiave API o un altro segreto finisce per errore in un commit,
+> **non basta rimuovere il file**. Quella credenziale va considerata
+> compromessa e va **sostituita subito**, ovunque venga usata — riscrivere
+> la cronologia per "far finta che non sia successo" è un'operazione
+> tecnica complessa e rischiosa, non una soluzione al problema.
+>
+> Lo strumento che previene tutto questo a monte è il file `.gitignore`:
+> elenca quali file (chiavi, credenziali, file temporanei, cartelle di
+> build) Git deve ignorare, evitando che entrino per errore in un commit.
+
 ---
 
 ## 4.5 Branch: un ramo di lavoro parallelo
 
 Ogni commit di Marco si accumula in sequenza sulla stessa linea temporale: ma cosa succede quando Giulia e Ahmed devono lavorare *contemporaneamente* su cose diverse, senza pestarsi i piedi? Serve poter deviare dalla linea principale, ed è qui che entra in gioco il branch.
 
+C'è una posta in gioco più seria del semplice "non ostacolarsi": ShopFacile
+è già online, con clienti che stanno pagando in questo momento. Se Marco,
+per aggiungere un nuovo metodo di pagamento, lavorasse direttamente su
+`main`, un suo errore fermerebbe il checkout subito, per tutti. Il branch è
+prima di tutto una **rete di sicurezza verso la produzione**, e solo in
+secondo luogo un modo per non ostacolare i colleghi.
+
 Un **branch** (letteralmente "ramo") è una linea di sviluppo indipendente
 che parte da un punto della storia del progetto. Permette di lavorare su
 qualcosa di nuovo (una funzionalità, una correzione) **senza toccare** la
 versione "stabile" del progetto, che di solito vive nel branch principale
-chiamato `main` (in passato spesso chiamato `master`).
+chiamato `main` (in passato spesso chiamato `master`). La transizione da un
+nome all'altro si è diffusa intorno al 2020: la ragione più citata è la
+volontà di abbandonare una coppia di termini (`master`/`slave`, usata in
+informatica per indicare un componente che comanda e uno che obbedisce)
+letta da molti come inopportuna. Il passaggio non è stato universale, così
+entrambi i nomi si incontrano ancora nei progetti esistenti: se apri un
+repository più vecchio e trovi `master`, è semplicemente il branch
+principale con il vecchio nome.
 
 > 💡 **Analogia**: pensa alla linea principale della storia (`main`) come
 > alla strada maestra di un progetto: deve restare sempre percorribile e
@@ -351,6 +384,11 @@ formale** di unire le modifiche di un branch dentro un altro branch (di
 solito dentro `main`), passando prima per una **revisione** da parte di
 altri membri del team.
 
+Il nome, tradotto alla lettera, è "richiesta di *tirare dentro*" (pull) il
+proprio lavoro nel ramo principale: eredità dell'epoca in cui si chiedeva a
+chi manteneva un progetto open source di prelevare le modifiche da un'altra
+copia del repository, su un altro computer.
+
 Questo è probabilmente il concetto più importante di tutta la sezione,
 perché è il meccanismo attraverso cui lavora quasi ogni team che usa
 GitHub. (Su altre piattaforme lo stesso identico concetto può avere un
@@ -416,7 +454,15 @@ utile di quanto è fluido il processo del team).
 
 ## 4.8 Issue: tracciare bug e richieste
 
-Finora abbiamo parlato di codice già scritto: branch, commit, pull request. Ma da dove nasce il lavoro stesso, cioè "cosa" bisogna scrivere o correggere? Spesso nasce da una Issue. Una **Issue** è una "voce" che descrive un problema da risolvere o una
+Finora abbiamo parlato di codice già scritto: branch, commit, pull request. Ma da dove nasce il lavoro stesso, cioè "cosa" bisogna scrivere o correggere?
+
+Prima che ShopFacile adottasse le Issue, i bug segnalati dai clienti
+finivano in email sparse o in un foglio Excel condiviso aggiornato a
+intermittenza: Sara si ritrovava a chiedere in chat "qualcuno si sta già
+occupando del bug del checkout?" senza risposta certa, perché nessuno sapeva
+se un problema fosse già noto, già assegnato o già risolto.
+
+Spesso il lavoro nasce da una Issue. Una **Issue** è una "voce" che descrive un problema da risolvere o una
 richiesta da realizzare: un bug da correggere, una nuova funzionalità da
 sviluppare, un miglioramento da valutare.
 
@@ -695,22 +741,21 @@ questi due modelli, adattandole al proprio contesto.
 
 Abbiamo visto molti comandi sparsi nei vari esempi di questa sezione: raccogliamoli qui in un unico prontuario, utile come riferimento veloce quando ti troverai a seguire una conversazione tecnica del team.
 
-```bash
-git init                              # crea un nuovo repository
-git clone <url>                       # scarica un repository esistente
-git status                            # mostra i file modificati
-git add <file>                        # prepara le modifiche per il commit
-git commit -m "messaggio"             # salva uno "scatto" delle modifiche
-git branch <nome>                     # crea un nuovo branch
-git checkout <nome>                   # mi sposto su un branch
-git checkout -b <nome>                # crea e mi sposto su un nuovo branch
-git merge <branch>                    # unisce un branch in quello corrente
-git tag -a <nome> -m "messaggio"      # crea un tag annotato
-git push origin <branch|tag>          # invia branch/tag al repository remoto
-```
+| Comando | Cosa fa |
+|---|---|
+| `git init` | crea un nuovo repository |
+| `git clone <url>` | scarica un repository esistente |
+| `git status` | mostra i file modificati |
+| `git add <file>` | prepara le modifiche per il commit |
+| `git commit -m "messaggio"` | salva uno "scatto" delle modifiche |
+| `git branch <nome>` | crea un nuovo branch |
+| `git checkout <nome>` | mi sposto su un branch |
+| `git checkout -b <nome>` | crea e mi sposto su un nuovo branch |
+| `git merge <branch>` | unisce un branch in quello corrente |
+| `git tag -a <nome> -m "messaggio"` | crea un tag annotato |
+| `git push origin <branch\|tag>` | invia branch/tag al repository remoto |
 
-Ricorda: non serve che tu memorizzi tutti questi comandi a memoria. Ciò
-che conta, nel tuo ruolo, è capire **cosa rappresentano concettualmente**
+Ciò che conta, nel tuo ruolo, è capire **cosa rappresentano concettualmente**
 (uno scatto, un ramo, un'unione) per poter seguire con consapevolezza le
 conversazioni tecniche del team, leggere lo stato di una Pull Request, e
 capire perché il team ha scelto un certo workflow.

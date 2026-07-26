@@ -41,6 +41,8 @@ Alla fine di questa sezione saprai:
 - capire cos'è un **quality gate** e come blocca un rilascio problematico;
 - descrivere cosa succede — e cosa dovrebbe succedere — quando un deploy
   va male (**rollback**);
+- capire cosa sono i **feature flag** e perché separano il rilascio
+  tecnico dalla decisione di business;
 - riconoscere alcuni **strumenti concreti** che implementano queste fasi
   nella realtà (Jenkins, Docker, SonarQube, Dynatrace, Jira Software).
 
@@ -75,6 +77,28 @@ fatta davvero.
 ---
 
 ## 10.2 Anatomia di una pipeline: le fasi tipiche
+
+Prima di guardare come funziona una pipeline, vale la pena ricordare come
+rilasciava ShopFacile prima di averne una. Si andava in produzione **una
+volta al mese**: Marco, Giulia e Ahmed accumulavano in media 40 modifiche
+diverse, che finivano tutte in produzione **nella stessa serata**. Tre
+settimane dopo l'ultimo rilascio, un cliente segnala che il totale del
+carrello è sbagliato quando si applica un codice sconto. Giulia passa una
+giornata intera a cercare quale, delle 40 modifiche, abbia causato il
+problema: sono troppe, mescolate insieme, e i dettagli di ciò che ciascuno
+aveva cambiato tre settimane prima sono già sfumati nella memoria di tutti.
+Per ridurre il rischio, Luca aveva proposto di spostare il rilascio al
+venerdì sera, "quando ci sono pochi utenti": il risultato era che, quando
+qualcosa andava storto, era il fine settimana del team ad andarsene,
+rincorrendo i problemi.
+
+Da qui nasce l'idea centrale di questa sezione, l'esatto opposto
+dell'istinto di "accumulare tutto e rilasciare quando siamo sicuri":
+**integrare e rilasciare pezzi piccoli e frequenti riduce il rischio per
+singola modifica** — un rilascio con 40 modifiche ha 40 possibili
+colpevoli, uno con una sola modifica ne ha uno solo. È esattamente questo
+principio, già visto in generale nella sezione DevOps, che una pipeline
+concreta rende possibile ogni giorno.
 
 Immagina una pipeline come una **catena di montaggio in una fabbrica**: il
 "pezzo" che entra da un lato è il codice appena scritto da uno
@@ -277,6 +301,13 @@ flowchart LR
     style STAGING fill:#ffe0b2
     style PROD fill:#d4edda
 ```
+
+Vale la pena notare, però, che avere più ambienti non è gratis: ognuno è
+infrastruttura reale da creare e mantenere, con un costo che si somma a
+quello della produzione. Se lo staging non riceve la stessa cura della
+produzione, i due **divergono silenziosamente** nel tempo — una libreria
+aggiornata solo in uno dei due — e da lì nasce il classico lamento "in
+staging funzionava".
 
 Approfondirai la configurazione pratica di questi ambienti — chi ci
 accede, come si isolano, come si gestiscono le credenziali diverse per
@@ -518,6 +549,16 @@ ho fretta". Questo è uno dei motivi per cui i team DevOps maturi riescono
 a rilasciare spesso *e* con affidabilità: i quality gate tolgono dalle
 spalle delle persone la responsabilità di "ricordarsi di controllare".
 
+Un quality gate, però, misura solo una **traccia** del valore che vuole
+proteggere, non il valore stesso. Una soglia mal tarata blocca rilasci per
+problemi irrilevanti; un gate che scatta troppo spesso, a torto, produce
+**assuefazione** — il team smette di prendere sul serio gli allarmi,
+l'esatto opposto dell'obiettivo. C'è poi un rischio più sottile: la
+metrica può essere "aggirata" — scrivendo test banali solo per far salire
+la percentuale di coverage. Un quality gate ben progettato richiede quindi
+soglie scelte con criterio e una revisione periodica, non un numero
+fissato una volta per tutte.
+
 Ma anche superando ogni quality gate immaginabile, resta un caso che
 nessun controllo automatico può eliminare del tutto: un problema che
 emerge solo quando il codice è già davanti agli utenti reali di
@@ -554,7 +595,13 @@ Alcune strategie comuni per rendere il rollback rapido e poco rischioso:
   mantengono due ambienti identici e si sposta il traffico dall'uno
   all'altro solo dopo aver verificato che tutto funzioni (blue-green). Se
   qualcosa va storto, si torna a instradare il traffico sulla versione
-  precedente, con impatto minimo sugli utenti.
+  precedente, con impatto minimo sugli utenti. Il prezzo di questa
+  sicurezza aggiuntiva è concreto: blue-green richiede di **mantenere due
+  ambienti di produzione** invece di uno (il doppio dei server attivi,
+  anche se solo uno riceve traffico reale in un dato momento), e sia
+  blue-green che canary richiedono un sistema di instradamento del
+  traffico più complesso da configurare e da mantenere di un semplice
+  "sostituisci tutto".
 - **Monitoraggio post-deploy**: metriche e allarmi automatici (es. tasso
   di errore, tempi di risposta) subito dopo un deploy, per accorgersi di
   un problema in minuti e non quando arrivano le segnalazioni degli
@@ -586,6 +633,35 @@ rollback rapido e testato è molto più sana di una che rilascia raramente
 sperando che "vada tutto bene", perché quest'ultima, quando qualcosa va
 storto (e prima o poi succede), non ha un piano B pronto.
 
+Rollback e deploy graduali riguardano cosa fare **dopo** che il codice è
+già in produzione. C'è però anche un modo per disinnescare il rischio
+**prima** ancora che serva un rollback, separando due decisioni che finora
+abbiamo trattato come una sola: quando il codice arriva in produzione, e
+quando la funzionalità diventa visibile agli utenti. È il compito dei
+feature flag.
+
+---
+
+## 10.10 Feature flag: disaccoppiare il rilascio dalla decisione di business
+
+Immagina che **Sara**, Product Owner di ShopFacile, voglia lanciare un
+nuovo filtro di ricerca solo dal lunedì prossimo, magari prima per il 10%
+degli utenti. Se "rilasciare il codice" e "attivare la funzionalità"
+fossero la stessa cosa, questa decisione di business finirebbe nelle mani
+del team tecnico al momento del deploy.
+
+Un **feature flag** (*feature toggle*) è un interruttore da configurazione
+che decide se una funzionalità è attiva o spenta, e per chi. Il codice può
+essere rilasciato già "spento", superando la pipeline come qualsiasi altra
+modifica; **Sara**, senza un nuovo deploy, decide poi quando accenderlo e
+per quale percentuale di utenti. Il flag **disaccoppia** così il rilascio
+tecnico dalla decisione di business.
+
+> ⚠️ Anche i feature flag costano, se non gestiti con disciplina: un flag
+> introdotto per un test e mai rimosso resta nel codice a tempo indefinito,
+> diventando esso stesso **debito tecnico** — va tracciato e rimosso appena
+> la decisione che rappresentava è definitiva.
+
 Fin qui abbiamo visto ogni fase, trigger e controllo della pipeline in
 modo concettuale, senza legarli a un prodotto specifico. Nella pratica,
 però, il team di ShopFacile usa strumenti reali per implementare ciascuna
@@ -593,7 +669,7 @@ di queste fasi: è il momento di vederli con i loro nomi.
 
 ---
 
-## 10.10 Strumenti concreti della pipeline
+## 10.11 Strumenti concreti della pipeline
 
 Finora abbiamo parlato di fasi, trigger, ambienti e quality gate in modo
 concettuale, senza legarci a un prodotto specifico. Nella pratica, ogni
@@ -672,10 +748,14 @@ anomalo dopo un rilascio, quel segnale è spesso l'innesco che porta il
 team a decidere un rollback, prima ancora che arrivino segnalazioni dagli
 utenti.
 
-Tutto questo percorso — build, packaging, quality gate, monitoraggio — non
-nasce dal nulla: parte quasi sempre da un ticket che descrive cosa
-costruire, ed è a quel ticket che il lavoro tecnico torna a riferirsi. È
-il ruolo di Jira Software.
+Tutto questo percorso — build, packaging, quality gate, monitoraggio —
+risolve il problema di portare il codice in produzione in modo sicuro. Ma
+resta un problema diverso, tipicamente di **Sara**, la Product Owner: una
+volta approvata una richiesta di business, come risalire, settimane dopo,
+a **quale codice** l'ha implementata e **quale rilascio** l'ha portata in
+produzione, senza chiedere a Marco o Giulia ogni volta? Senza un
+collegamento esplicito tra ticket di business e lavoro tecnico, questa
+domanda diventa una caccia al tesoro. È il ruolo di Jira Software.
 
 ### Jira Software: il tracking del lavoro, collegato alla pipeline
 
@@ -687,7 +767,8 @@ gestire il backlog: in questi casi è comune integrare i due strumenti,
 referenziando l'ID del ticket Jira (es. `PROJ-123`) nel nome del branch o
 nel messaggio di commit, così che Jira mostri automaticamente il
 collegamento alla Pull Request GitHub corrispondente, e chi guarda il
-ticket veda subito a che punto è il lavoro tecnico collegato.
+ticket veda subito a che punto è il lavoro tecnico collegato — risolvendo
+esattamente il problema di tracciabilità di cui parlavamo sopra.
 
 ### Come si incastrano nella pipeline
 
@@ -722,9 +803,15 @@ seguire con consapevolezza le conversazioni tecniche e capire, ad esempio,
 perché "il rilascio è bloccato dal quality gate di SonarQube" o "Dynatrace
 ha segnalato un'anomalia, stiamo valutando il rollback".
 
+Un'ultima cosa da non dare per scontata: questa catena di strumenti non si
+mantiene da sola. Qualcuno deve tenere aggiornato il file YAML della
+pipeline, decidere se alzare o abbassare una soglia di SonarQube, aggiornare
+le regole di Dynatrace. È lavoro vero, non manutenzione invisibile: va
+stimato e inserito nel backlog, come qualsiasi altra attività di sviluppo.
+
 ---
 
-## 10.11 Riepilogo
+## 10.12 Riepilogo
 
 In questa sezione hai visto, con più dettaglio pratico rispetto alla
 sezione DevOps, come funziona davvero una pipeline di CI/CD:
@@ -747,9 +834,13 @@ sezione DevOps, come funziona davvero una pipeline di CI/CD:
   soggettivo a regola automatica e oggettiva;
 - il **rollback** è il piano B necessario quando, nonostante tutti i
   controlli, qualcosa va comunque storto in produzione;
+- i **feature flag** separano il momento in cui il codice arriva in
+  produzione da quello in cui una funzionalità diventa visibile agli
+  utenti, spostando quella decisione verso il business;
 - strumenti concreti come **Jenkins**, **Docker**, **SonarQube**,
-  **Dynatrace** e **Jira Software** sono le implementazioni reali di
-  queste fasi che incontrerai nel lavoro quotidiano del team.
+  **Dynatrace** e **Jira Software** implementano queste fasi nella
+  realtà — ma non si mantengono da sole: la manutenzione di pipeline e
+  quality gate è lavoro da pianificare, non magia.
 
 Nelle prossime sezioni vedrai come questi concetti si intreccino con le
 scelte di **architettura software** (sezione 11) e con l'infrastruttura
@@ -819,12 +910,12 @@ in questa sezione, non ancora configurare strumenti in autonomia.
    definizione teorica.
 7. **Riconosci gli strumenti concreti del progetto.** Chiedi a un
    developer o al Tech Lead quali strumenti concreti, tra quelli visti al
-   paragrafo 10.10 (o eventuali equivalenti), usa davvero il progetto per
+   paragrafo 10.11 (o eventuali equivalenti), usa davvero il progetto per
    orchestrare la pipeline, fare code quality e monitorare la produzione.
    Per ciascuno che ti viene citato, scrivi a quale fase della pipeline
    corrisponde.
    ✅ **Come verificare**: confronta il tuo elenco con la tabella del
-   paragrafo 10.10 — se hai assegnato correttamente ogni strumento
+   paragrafo 10.11 — se hai assegnato correttamente ogni strumento
    citato alla fase giusta, hai capito il collegamento tra teoria e
    strumenti reali.
 

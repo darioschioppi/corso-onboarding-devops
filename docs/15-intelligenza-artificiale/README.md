@@ -63,12 +63,28 @@ Alla fine di questa sezione saprai:
 
 ## 15.1 Cos'è l'intelligenza artificiale, in parole semplici
 
-Il codice che hai seguito nella sezione 14, dal computer di Marco alla
-produzione, era scritto da una persona: ogni istruzione, ogni condizione "se
-succede X allora fai Y", è stata pensata e digitata da un umano. Questo è
-sempre stato, storicamente, il modo in cui si costruisce software. Ma esiste
-un'altra strada, radicalmente diversa, ed è da lì che dobbiamo partire per
-capire di cosa parliamo in questa sezione.
+Il codice che hai seguito nella sezione 14 era scritto da una persona: ogni
+istruzione "se succede X allora fai Y" pensata e digitata da un umano — il
+modo in cui si è sempre costruito software. Ma il team di ShopFacile si è
+scontrato con un compito che questo approccio non riusciva più a gestire:
+riconoscere un ordine potenzialmente fraudolento.
+
+Il primo tentativo è stato scrivere regole esplicite: "se l'importo supera
+1000 euro e l'indirizzo di spedizione è diverso da quello di fatturazione,
+segnala come sospetto". Funziona, per un po'. Poi arriva l'ordine legittimo
+di un cliente che fa un regalo: falso allarme, si aggiunge un'eccezione. Poi
+un nuovo schema di frode che nessuna regola copre, perché gli schemi
+cambiano ogni pochi mesi per eludere esattamente le regole scritte. Le
+eccezioni crescono senza fine, e il sistema continua a sbagliare — troppi
+criteri, troppo sfumati, che cambiano troppo per un elenco fisso di regole.
+
+È per problemi così che è nato un approccio radicalmente diverso: invece di
+far scrivere le regole a un programmatore, si mostrano al sistema migliaia
+di esempi (ordini fraudolenti o no) e si lascia che sia lui a **ricavare
+gli schemi dagli esempi**, individuando da solo le caratteristiche che
+distinguono un ordine sospetto da uno legittimo. Questa idea — imparare dai
+dati invece di seguire istruzioni scritte a mano — è il cuore di ciò che va
+sotto il nome, molto generale, di intelligenza artificiale.
 
 **Intelligenza Artificiale (AI - Artificial Intelligence)** è un termine
 molto ampio: indica qualsiasi sistema informatico capace di svolgere compiti
@@ -77,14 +93,10 @@ riconoscere un'immagine, capire una frase, prendere una decisione in base a
 dati incerti. Dentro questo termine ampio esistono approcci molto diversi tra
 loro, e per orientarti ti servono soprattutto due sotto-categorie:
 
-- **Machine Learning (ML)**, in italiano "apprendimento automatico": un
-  approccio all'AI in cui il sistema non segue regole scritte a mano da un
-  programmatore, ma **impara pattern a partire da grandi quantità di dati**.
-  Invece di scrivere "se l'importo dell'ordine è superiore a 1000 euro e
-  l'indirizzo di spedizione è diverso da quello di fatturazione, segnala come
-  sospetto", si mostrano al sistema migliaia di ordini passati, alcuni
-  fraudolenti e altri no, e si lascia che sia il sistema a trovare da solo le
-  caratteristiche che li distinguono.
+- **Machine Learning (ML)**, in italiano "apprendimento automatico": è
+  l'approccio appena descritto per il caso delle frodi — il sistema non
+  segue regole scritte a mano, ma **impara pattern a partire da grandi
+  quantità di dati**.
 - **Deep Learning**: un sotto-insieme del machine learning che usa un tipo
   particolare di modello, le **reti neurali**, organizzate in molti "strati"
   (da cui *deep*, profondo). È l'approccio dietro ai risultati più
@@ -108,12 +120,9 @@ flowchart TD
     end
 ```
 
-> 💡 **Analogia**: pensa a "veicolo", "automobile" e "auto elettrica". Ogni
-> auto elettrica è un'automobile, ed è anche un veicolo — ma non ogni veicolo
-> è un'automobile (una bicicletta è un veicolo, non un'automobile), e non ogni
-> automobile è elettrica. Allo stesso modo, ogni rete di deep learning è
-> machine learning ed è AI, ma non tutta l'AI è machine learning, e non tutto
-> il machine learning è deep learning.
+> 💡 **Analogia**: è come "veicolo", "automobile" e "auto elettrica" — ogni
+> auto elettrica è un'automobile ed è anche un veicolo, ma non vale il
+> contrario (una bicicletta è un veicolo, non un'automobile).
 
 La differenza di fondo con il software "tradizionale" visto nelle sezioni
 precedenti del corso è quindi questa: un programma tradizionale esegue
@@ -771,6 +780,40 @@ eccessiva — non sono solo un problema del tuo ruolo: sono parte di un
 insieme più ampio di rischi che riguardano l'uso dell'AI in qualsiasi
 contesto professionale, ed è utile vederli insieme, in modo più sistematico.
 
+### Cosa cambia, davvero, per stima e revisione
+
+C'è un effetto dell'AI che tocca direttamente due strumenti che conosci
+bene: la stima (sezione 6, Planning Poker) e la revisione del codice
+(sezione 4, richiamata al paragrafo 15.6).
+
+**La velocity accelera, ma non in modo uniforme.** Copilot aiuta
+moltissimo su compiti ripetitivi e ben definiti — codice "ovvio", bozze di
+test per il caso normale. Aiuta molto meno sulla parte più difficile del
+lavoro: capire **perché** un comportamento è sbagliato, diagnosticare un
+caso limite (come ha fatto Giulia al paragrafo 15.6 con i codici
+promozionali incompatibili), incastrare una funzionalità con regole di
+business complesse. Se il team completa più in fretta le user story
+"semplici" grazie all'AI, la **velocity** può salire senza che la capacità
+reale di risolvere problemi complessi sia cambiata in proporzione: i punti
+storici, da quel momento, **perdono confrontabilità** per chi guida lo
+sprint planning.
+
+**La revisione rischia un eccesso di fiducia.** Un codice generato da un
+modello, quando compila ed è scritto con sintassi impeccabile, **sembra**
+più affidabile di quanto lo sia — e questo abbassa, senza che chi revisiona
+se ne accorga, la soglia di attenzione. Un errore incorporato in codice
+fluente e ben formattato si nasconde meglio di uno scritto goffamente da un
+principiante.
+
+**La responsabilità resta comunque umana, e va tracciata dal processo.**
+Se Ahmed accetta un suggerimento con un difetto e Giulia lo approva senza
+accorgersene, la responsabilità non "appartiene" al modello che l'ha
+generato: appartiene alle persone e al processo, esattamente come la
+matrice RACI (sezione 8) assegna sempre la responsabilità a una persona,
+mai a uno strumento. Per questo è utile rendere il punto esplicito nella
+**Definition of Done** (sezione 6): il codice generato da AI si revisiona
+con gli stessi criteri di quello scritto a mano, senza sconti di scrutinio.
+
 ---
 
 ## 15.9 Rischi, limiti e uso responsabile
@@ -809,11 +852,16 @@ quelli su cui un PM/Scrum Master viene più spesso interpellato.
   visti in quella sezione.
 - **Proprietà intellettuale del codice generato**: chi è "l'autore" di una
   funzione generata da un'AI, addestrata su enormi quantità di codice
-  altrui? È un tema legale ancora in evoluzione e diverso da un paese
-  all'altro, che non spetta a te risolvere da sola o da solo, ma è utile
-  sapere che esiste: alcune aziende, per questo motivo, regolano con policy
-  interne precise quali strumenti di AI generativa di codice si possono
-  usare e come.
+  altrui, spesso pubblicato online con licenze diverse tra loro e non
+  sempre compatibili con un uso commerciale? La domanda si complica
+  ulteriormente chiedendosi chi possieda davvero l'output — chi ha scritto
+  il prompt, chi possiede il modello, o nessuno dei due. È un tema legale
+  ancora in evoluzione e diverso da un paese all'altro, che non spetta a te
+  risolvere da sola o da solo, ma è utile sapere cosa è in gioco: proprio
+  per questa incertezza, molte aziende adottano **policy interne** che
+  regolano quali strumenti di AI generativa di codice si possono usare e
+  come, invece di lasciare la questione alla sensibilità di ciascun
+  developer.
 - **Dipendenza eccessiva**: affidarsi sempre e comunque all'AI, senza mai
   verificare, allena progressivamente le persone a **non verificare più
   nulla** — con il rischio concreto, per una persona alle prime esperienze
@@ -847,6 +895,18 @@ quelli su cui un PM/Scrum Master viene più spesso interpellato.
 Il filo comune di tutti questi rischi è lo stesso: l'AI è uno strumento
 potente ma **non responsabile** delle proprie conclusioni — la responsabilità
 resta sempre di chi la usa e di chi decide sulla base di quello che produce.
+
+### Chi decide quali strumenti si possono usare
+
+L'episodio di Ahmed e Marco mostra perché lasciare la scelta "quale
+strumento di AI usare, e come" alla sensibilità di ciascuno non basta:
+qualcuno deve **decidere e mettere per iscritto** una policy, prima che il
+problema si presenti — chi decide quali strumenti sono ammessi sul
+progetto, dove finiscono davvero i dati inseriti (se addestrano il modello,
+se restano visibili al fornitore, per quanto tempo), e come si aggiorna la
+policy quando cambia lo strumento. Proporla e mantenerla aggiornata è
+materia tipica di chi coordina il team — lo Scrum Master o il Tech Lead —
+non un dettaglio lasciato al buon senso di ciascuno.
 
 ---
 

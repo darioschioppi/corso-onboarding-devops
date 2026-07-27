@@ -34,6 +34,8 @@ Alla fine di questa sezione saprai:
   capire cosa significa "promuovere" il codice tra di essi;
 - capire cos'è un **artifact** e perché viaggia da una fase all'altra
   della pipeline senza essere ricostruito ogni volta;
+- distinguere una **builder image** da una **runtime image**, e capire a
+  cosa serve un **multi-stage build**;
 - spiegare perché si scrive una pipeline come **codice versionato**
   (Pipeline as Code) invece di configurarla a mano da un'interfaccia
   grafica;
@@ -353,6 +355,82 @@ flowchart LR
     A --> DS[Deploy in Staging]
     A --> DP[Deploy in Produzione]
 ```
+
+### Builder image vs runtime image: cosa finisce davvero in produzione
+
+C'è un dettaglio che riguarda proprio la costruzione di un artifact
+Docker, ed è facile trascurarlo finché qualcuno non se ne accorge nel modo
+sbagliato: l'immagine che finisce in produzione pesa **1,2 GB**, e dentro
+ci sono il compilatore, gli strumenti di test, il codice sorgente completo
+(con tutta la cronologia di Git), e le credenziali che servivano per
+scaricare le librerie durante la build. Tre problemi in uno, non uno solo:
+si trascina in produzione roba che non serve a farla funzionare, solo ad
+attaccarla (più superficie di attacco, un tema che approfondisci nella
+sezione 13); l'immagine è pesante da trasferire a ogni singolo deploy,
+anche quando il codice applicativo cambiato è minimo; e il codice
+sorgente si trova dentro qualcosa che gira in un ambiente esposto, invece
+di restare solo dove è stato compilato.
+
+La soluzione è distinguere due immagini con scopi diversi:
+
+- la **builder image** è l'immagine che contiene **tutto ciò che serve
+  per costruire** l'applicazione: compilatore, strumenti di build, cache
+  delle dipendenze, a volte anche il codice sorgente e gli strumenti di
+  test;
+- la **runtime image** è l'immagine **minima** che contiene solo ciò che
+  serve per **eseguire** l'applicazione già costruita: il codice
+  compilato (o interpretato) e le sue dipendenze effettive, nient'altro.
+
+Il modo standard per ottenere la seconda dalla prima si chiama
+**multi-stage build**: un unico Dockerfile diviso in più "stadi", dove il
+primo stadio compila tutto con tutti gli strumenti necessari, e solo il
+risultato della compilazione viene **copiato** nello stadio successivo,
+molto più leggero, che è quello che finisce davvero in produzione.
+
+```dockerfile
+# --- Stadio 1: builder ---
+# Immagine "pesante", con tutto il necessario per compilare
+FROM node:20 AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm install                  # installa anche le dipendenze di sviluppo
+COPY . .
+RUN npm run build                # produce i file compilati in ./dist
+
+# --- Stadio 2: runtime ---
+# Immagine minima, contiene solo ciò che serve per eseguire
+FROM node:20-slim
+WORKDIR /app
+COPY --from=builder /app/dist ./dist       # copia solo il risultato
+COPY --from=builder /app/package*.json ./
+RUN npm install --omit=dev       # solo le dipendenze di produzione
+CMD ["node", "dist/main.js"]
+```
+
+Il compilatore, il codice sorgente non compilato, la cronologia Git e le
+credenziali di build **restano nel primo stadio**, che non viene mai
+distribuito da nessuna parte: solo lo stadio finale diventa l'artifact
+che viaggia verso Test, Staging e Produzione.
+
+Vale la pena notare che anche l'immagine di build **va versionata e
+mantenuta**, esattamente come qualsiasi altro artifact: non è un dettaglio
+da configurare una volta e dimenticare. Ed è proprio per questo che avere
+**un'immagine di build standard aziendale** — pensata, testata e
+mantenuta centralmente — rende ripetibili le build di tutti i team, invece
+di lasciare che ciascuno costruisca la propria a modo suo: è una delle
+cose che una piattaforma interna offre, tema che approfondisci nella
+sezione 12.
+
+> ⚠️ **Trade-off**: un Dockerfile a due stadi è meno immediato da leggere
+> di uno a stadio unico, e la cache di build diventa più delicata da
+> gestire (un cambiamento nello stadio "builder" può invalidare cache che
+> si vorrebbero mantenere nello stadio "runtime"). C'è poi un compromesso
+> più sottile: un'immagine runtime troppo spogliata, priva di qualsiasi
+> strumento da riga di comando, rende più difficile **diagnosticare** un
+> problema quando serve entrarci per capire cosa sta succedendo — è un
+> compromesso reale tra sicurezza (meno superficie di attacco) e
+> diagnosticabilità (più strumenti a disposizione in caso di incidente),
+> non una scelta a costo zero.
 
 Sappiamo ora **cosa** attraversa la pipeline (l'artifact) e **dove**
 (gli ambienti). Manca un pezzo: **chi decide** l'ordine esatto di queste
@@ -826,7 +904,11 @@ sezione DevOps, come funziona davvero una pipeline di CI/CD:
   Produzione) tramite un processo di **promozione**, senza essere
   ricostruito a ogni passaggio;
 - l'**artifact** è il pacchetto concreto (un eseguibile, un'immagine
-  Docker...) che viaggia identico da una fase all'altra;
+  Docker...) che viaggia identico da una fase all'altra; distinguere
+  **builder image** (tutto ciò che serve per costruire) da **runtime
+  image** (solo ciò che serve per eseguire), tramite un **multi-stage
+  build**, riduce peso e superficie di attacco dell'immagine che finisce
+  in produzione;
 - scrivere la pipeline come **Pipeline as Code** (un file YAML
   versionato) porta gli stessi benefici che Git porta al codice:
   storia, revisione, riuso;
@@ -918,6 +1000,16 @@ in questa sezione, non ancora configurare strumenti in autonomia.
    paragrafo 10.11 — se hai assegnato correttamente ogni strumento
    citato alla fase giusta, hai capito il collegamento tra teoria e
    strumenti reali.
+8. **Trova builder e runtime image nel progetto reale.** Chiedi a un
+   developer o DevOps engineer se il progetto usa un Dockerfile
+   multi-stage, e fatti indicare quanto pesa l'immagine finale che va in
+   produzione rispetto a quella usata per compilare. Chiedi anche se è
+   mai capitato di dover "entrare" in un container di produzione per
+   diagnosticare un problema, e quanto è stato facile o difficile farlo
+   con un'immagine runtime minimale.
+   ✅ **Come verificare**: sai spiegare a un collega, con parole tue, cosa
+   contiene la builder image che non contiene la runtime image, e perché
+   quella differenza non è un dettaglio ma una scelta di sicurezza.
 
 ---
 
@@ -925,6 +1017,7 @@ in questa sezione, non ancora configurare strumenti in autonomia.
 
 - [11. Architetture software](../11-architetture-software/README.md) — come è organizzato il software che la pipeline compila, testa e rilascia
 - [12. Cloud](../12-cloud/README.md) — dove "vivono" fisicamente gli ambienti di Dev, Test, Staging e Produzione su cui la pipeline effettua il deploy
+- [13. Sicurezza](../13-sicurezza/README.md) — perché ridurre la superficie di attacco di un'immagine runtime è parte della sicurezza, non solo delle performance
 
 ## 📚 Risorse
 
@@ -933,6 +1026,7 @@ in questa sezione, non ancora configurare strumenti in autonomia.
 - [GitHub Docs — Sintassi del workflow per GitHub Actions](https://docs.github.com/actions/using-workflows/workflow-syntax-for-github-actions)
 - [Jenkins — Documentazione ufficiale](https://www.jenkins.io/doc/)
 - [Docker Docs — What is a container image](https://docs.docker.com/get-started/docker-concepts/the-basics/what-is-an-image/)
+- [Docker Docs — Multi-stage builds](https://docs.docker.com/build/building/multi-stage/) — guida ufficiale alla tecnica builder image / runtime image
 - [SonarQube — Documentazione ufficiale](https://docs.sonarsource.com/sonarqube-server/)
 - [Dynatrace — Cos'è l'observability](https://www.dynatrace.com/platform/observability/)
 - [Atlassian — Jira Software, panoramica](https://www.atlassian.com/software/jira)

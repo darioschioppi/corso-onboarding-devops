@@ -33,6 +33,8 @@ Al termine di questa sezione saprai:
 - capire cos'è il modello client-server e l'architettura a 3 livelli;
 - avere un'idea di base di come comunicano i vari "pezzi" di un software
   (API/REST e code di messaggi);
+- capire cos'è un'**Event-Driven Architecture** e distinguere un evento
+  da un comando;
 - sapere cos'è il "serverless" e quando viene usato.
 
 ---
@@ -414,7 +416,150 @@ accumuli lavoro per gli altri. Esempi: **RabbitMQ**, **Azure Service Bus**,
 
 ---
 
-## 11.5 Frontend vs Backend
+## 11.5 Event-Driven Architecture: reagire invece di chiedere
+
+Cambiamo per un momento esempio, restando nel contesto assicurativo in cui
+lavori davvero: quando un cliente sottoscrive una polizza, non succede solo
+una cosa: ne succedono sette. Va emesso il documento di polizza, va
+incassato il primo premio, va aggiornata l'anagrafica del cliente, va
+avvisato l'agente che ha curato la vendita, va alimentato il datawarehouse
+per le statistiche, va spedita l'email di benvenuto, e va comunicata la
+sottoscrizione a un ente esterno per gli obblighi di legge. Il servizio che
+registra la polizza le chiama tutte e sette, una dopo l'altra, come nella
+comunicazione sincrona vista al paragrafo precedente: **Ahmed** ci ha
+messo tre giorni a scrivere quelle sette chiamate, con tutta la gestione
+degli errori che ciascuna richiede.
+
+Il problema arriva dopo, quando il codice è già in produzione. Se il
+sistema del datawarehouse è lento, il cliente resta davanti a una
+rotellina di caricamento per una cosa che, dal suo punto di vista, non gli
+serve a niente: sta solo aspettando che una statistica interna venga
+aggiornata. Se l'invio all'ente esterno è temporaneamente giù, la
+sottoscrizione **fallisce del tutto** — anche se la polizza, in realtà, è
+perfettamente valida e il premio è stato incassato. E ogni volta che il
+business chiede di aggiungere un ottavo destinatario (un nuovo report, un
+nuovo partner da avvisare), bisogna modificare e ritestare il servizio più
+critico dell'intera azienda: quello che vende le polizze.
+
+**Marco** lo riassume a **Luca** in una frase che vale l'intera
+sottosezione: *"il problema non è quello che facciamo, è chi deve
+saperlo"*. Il servizio Polizze non dovrebbe essere lui a doversi ricordare
+di tutti e sette gli interessati, uno per uno, e a restare in attesa che
+ciascuno gli risponda.
+
+### Il capovolgimento: dichiarare un fatto, non impartire ordini
+
+L'architettura **event-driven** (guidata dagli eventi) capovolge il
+problema. Invece che il servizio Polizze *chieda* a sette sistemi di fare
+qualcosa, dichiara semplicemente che **è accaduto un fatto**: "polizza
+88471 sottoscritta". Chi è interessato a quel fatto **reagisce** per conto
+proprio, senza che il servizio Polizze debba saperlo, aspettarlo o
+richiamarlo.
+
+Vale la pena fermarsi su questa distinzione, perché è il cuore di tutto il
+resto:
+
+- un **comando** è un ordine diretto al futuro, verso un destinatario
+  preciso: "Servizio Email, invia questa conferma". Chi lo riceve può
+  rifiutarlo o fallirlo, e chi lo manda normalmente se ne aspetta un
+  esito.
+- un **evento** è un fatto accaduto al passato, e per definizione
+  **immutabile**: "la polizza è stata sottoscritta". Non è indirizzato a
+  nessuno in particolare, non richiede una risposta, e non può essere
+  "rifiutato" — è già successo.
+
+Chi pubblica un evento si chiama **producer** (o *publisher*); chi lo
+riceve e reagisce si chiama **consumer** (o *subscriber*). Il meccanismo
+con cui i due si incontrano si chiama **pub/sub** (*publish/subscribe*,
+pubblica/sottoscrivi): il producer pubblica l'evento su un canale
+dedicato, chiamato **topic** ("polizze.sottoscritte"), e ogni consumer
+interessato si sottoscrive a quel topic per riceverne una copia. A fare da
+intermediario tra producer e consumer c'è un **broker**: il software che
+riceve gli eventi pubblicati e li distribuisce a tutti i sottoscrittori.
+Non è un componente nuovo da imparare: l'infrastruttura è esattamente
+quella già vista al paragrafo 11.4 a proposito delle code di messaggi —
+RabbitMQ, Azure Service Bus, Kafka. Cambia il modo di usarla: non un
+messaggio per un singolo destinatario noto, ma un evento per un numero
+qualsiasi di sottoscrittori, anche futuri.
+
+```mermaid
+graph LR
+    P["Servizio Polizze<br/>(producer)"] -->|"pubblica evento"| T[["Topic:<br/>polizze.sottoscritte"]]
+    T -->|"notifica"| C1["Fatturazione<br/>(consumer)"]
+    T -->|"notifica"| C2["Anagrafica<br/>(consumer)"]
+    T -->|"notifica"| C3["Email di benvenuto<br/>(consumer)"]
+    T -->|"notifica"| C4["Datawarehouse<br/>(consumer)"]
+    T -->|"notifica"| C5["Ente esterno<br/>(consumer)"]
+```
+
+### Il beneficio: disaccoppiamento, prima organizzativo che tecnico
+
+Con questo schema, aggiungere un ottavo consumatore (un nuovo report per
+un nuovo partner commerciale) significa scrivere un nuovo consumer che si
+sottoscrive al topic già esistente — **senza toccare** il servizio
+Polizze, senza rimetterlo in test, e senza dover chiedere una finestra di
+rilascio sul sistema più critico dell'azienda. Questo si chiama
+**disaccoppiamento**, ed è il vantaggio principale del pattern: per un PM
+non è (solo) un beneficio tecnico, è un beneficio **organizzativo**. Il
+team che gestisce le polizze non deve più coordinarsi con ogni altro team
+ogni volta che qualcuno ha bisogno di sapere qualcosa in più — si aggancia
+qui la Legge di Conway vista al paragrafo 11.3: se i team restano
+indipendenti anche nel modo in cui i loro sistemi comunicano, l'architettura
+a eventi è spesso ciò che rende quell'indipendenza possibile davvero,
+invece che solo desiderata sulla carta.
+
+> 💡 Sentirai talvolta due nomi più avanzati legati a questo mondo:
+> **event sourcing** (salvare la storia di un'entità come sequenza di
+> eventi accaduti, invece che il suo solo stato attuale) e **CQRS**
+> (*Command Query Responsibility Segregation*, separare i percorsi di
+> scrittura e lettura dei dati). Non ti servono a questo livello: è
+> sufficiente riconoscere i nomi quando li senti nominare, per non
+> confonderli con l'event-driven "di base" appena visto.
+
+### Il prezzo: cosa si perde rispetto a una catena di chiamate
+
+Il disaccoppiamento non è gratuito. Quattro conseguenze concrete, e reali:
+
+- **Il flusso non si legge più in un posto solo.** Nessuno può aprire il
+  codice del servizio Polizze e vedere, in ordine, "cosa succede dopo una
+  sottoscrizione": succede in cinque punti diversi del sistema, ciascuno
+  scritto da un team diverso. Per ricostruire la sequenza serve il
+  **tracciamento distribuito** visto nella sezione 9 (le tracce che
+  seguono una richiesta attraverso più servizi) — senza quello strumento,
+  capire "chi ha reagito e quando" a un singolo evento richiede una
+  caccia al tesoro tra i log di sistemi diversi.
+- **L'ordine di arrivo non è garantito, e un evento può arrivare due
+  volte.** Se la rete o il broker hanno un intoppo, un consumer può
+  ricevere lo stesso evento due volte. Se il consumer che incassa il
+  premio non se ne accorge, il cliente si trova il premio scalato due
+  volte dal conto. La protezione si chiama **idempotenza**: progettare il
+  consumer in modo che elaborare lo stesso evento due volte produca lo
+  stesso risultato di elaborarlo una volta sola (es. controllare prima "ho
+  già incassato questo premio?" invece di incassarlo incondizionatamente).
+- **La coerenza è eventuale, non immediata.** Subito dopo la
+  sottoscrizione, il cliente può già vedere la sua polizza attiva
+  nell'area clienti, mentre l'app dell'agente non l'ha ancora ricevuta,
+  perché il suo consumer non ha ancora elaborato l'evento — magari sono
+  passati solo due secondi, ma in quei due secondi i due sistemi
+  "raccontano" cose diverse. Questa **coerenza eventuale** (*eventual
+  consistency*) non è un bug da correggere: è una caratteristica del
+  pattern che il business deve **accettare consapevolmente**, decidendo
+  per quali processi è tollerabile e per quali no.
+- **Il debug richiede strumenti diversi.** Non basta più riprodurre una
+  chiamata e guardare la risposta: serve poter ricostruire, evento per
+  evento, chi ha pubblicato cosa e chi ha reagito come — di nuovo,
+  observability e tracciamento distribuito, non un debugger tradizionale.
+
+Il criterio per scegliere tra i due mondi resta quello visto al paragrafo
+11.4, solo più affilato: comunicazione **sincrona** quando chi chiama ha
+bisogno della risposta per decidere cosa fare subito dopo (es. "il
+pagamento è andato a buon fine? allora mostro la conferma"); comunicazione
+**a eventi** quando chi pubblica sta semplicemente informando che
+qualcosa è successo, senza bisogno di sapere chi reagirà né come.
+
+---
+
+## 11.6 Frontend vs Backend
 
 Finora abbiamo parlato di come i servizi di ShopFacile comunicano **tra
 loro**. Ma c'è un'altra comunicazione altrettanto importante: quella tra il
@@ -484,7 +629,7 @@ rapporto con il nome più tecnico che porta, il modello client-server.
 
 ---
 
-## 11.6 Client-Server: il concetto base
+## 11.7 Client-Server: il concetto base
 
 Hai già incontrato questo concetto nella sezione 2 parlando di HTTP: il
 modello **client-server** è l'idea di base secondo cui esiste un **client**
@@ -517,7 +662,7 @@ rispondere a questa domanda è l'architettura a 3 livelli.
 
 ---
 
-## 11.7 Architettura a 3 livelli
+## 11.8 Architettura a 3 livelli
 
 Un modo molto comune, semplice e diffuso di organizzare un'applicazione,
 soprattutto nei sistemi gestionali "classici", è l'**architettura a 3
@@ -598,7 +743,7 @@ che abbiamo dato per scontato finora: il serverless.
 
 ---
 
-## 11.8 Un accenno al Serverless
+## 11.9 Un accenno al Serverless
 
 Finora abbiamo parlato di software che gira su server (fisici, virtuali, o
 container) che devono restare **sempre attivi**, pronti a rispondere in
@@ -641,7 +786,7 @@ bisogno?". Prima di passare al Cloud, fermiamoci un momento a riepilogare.
 
 ---
 
-## 11.9 Riepilogo: cosa ti serve ricordare
+## 11.10 Riepilogo: cosa ti serve ricordare
 
 Non devi memorizzare ogni dettaglio di questa sezione. Ti basta portarti via
 questi concetti chiave, che ti aiuteranno a capire meglio le conversazioni
@@ -654,6 +799,12 @@ tecniche del team:
 - **API/REST** (comunicazione sincrona, "telefonata") e **code di messaggi**
   (comunicazione asincrona, "cassetta della posta") sono i due modi
   principali con cui i componenti di un software comunicano tra loro.
+- **Event-Driven Architecture**: invece di chiamare direttamente chi deve
+  fare qualcosa, un servizio pubblica un **evento** (un fatto accaduto) su
+  un **topic**, e chi è interessato (**consumer**) reagisce in autonomia,
+  senza che chi pubblica (**producer**) debba conoscerlo — un
+  **disaccoppiamento** organizzativo, non solo tecnico, che ha un prezzo:
+  coerenza eventuale, idempotenza da gestire, debug più complesso.
 - **Frontend** (sala) e **Backend** (cucina): la parte visibile all'utente e
   quella che elabora la logica e i dati.
 - **Client-Server**: chi fa la richiesta (client) e chi la elabora (server).
@@ -677,6 +828,10 @@ conversazione e fare le domande giuste.
 - Sapresti spiegare quando ha senso passare da monolite a microservizi?
 - Sai spiegare la differenza tra comunicazione sincrona e asincrona, con
   l'analogia della telefonata e della cassetta della posta?
+- Sai spiegare la differenza tra un comando e un evento, e perché è il
+  cuore dell'architettura event-driven?
+- Sai indicare almeno due trade-off concreti dell'architettura a eventi
+  (es. coerenza eventuale, idempotenza)?
 - Sai spiegare la differenza tra frontend e backend con l'analogia del
   ristorante?
 - Sai descrivere i tre livelli dell'architettura a 3 livelli?
@@ -716,16 +871,26 @@ conversazione e fare le domande giuste.
    "scrive" il messaggio, dove viene "depositato" e chi lo "legge" più
    tardi, senza che nessuno resti bloccato ad aspettare.
 
-4. **Intervista un developer sull'architettura del progetto.** Chiedi a un
+4. **Distingui un comando da un evento.** Prendi tre frasi che potresti
+   sentire in una daily standup del tuo progetto (es. "invia la mail di
+   conferma", "l'ordine è stato pagato", "aggiorna il saldo del cliente")
+   e classifica ciascuna come comando o come evento, spiegando perché.
+   ✅ **Come verificare**: per ogni frase, sai indicare se è diretta a un
+   destinatario preciso e richiede un'azione futura (comando) o descrive
+   un fatto già accaduto che qualcuno può scegliere di ignorare o reagire
+   (evento) — se confondi le due categorie su più di una frase, rileggi la
+   distinzione al paragrafo 11.5.
+
+5. **Intervista un developer sull'architettura del progetto.** Chiedi a un
    collega developer se il progetto su cui lavori è organizzato come
    monolite, come microservizi, o come una via di mezzo, e fatti indicare un
-   esempio concreto di comunicazione tra due componenti (API o coda di
-   messaggi).
+   esempio concreto di comunicazione tra due componenti (API, coda di
+   messaggi o evento pub/sub).
    ✅ **Come verificare**: dopo la chiacchierata, sapresti riassumere in 3-4
    frasi, senza guardare appunti, "come è fatto" il software del progetto e
    quali pezzi lo compongono.
 
-5. **Compila la tabella di confronto con un esempio reale.** Riprendi la
+6. **Compila la tabella di confronto con un esempio reale.** Riprendi la
    tabella "Monolite vs Microservizi" della sezione 11.3 e, per ogni riga,
    scrivi a fianco un esempio concreto (reale o immaginario) legato al
    contesto del tuo progetto.
@@ -733,7 +898,7 @@ conversazione e fare le domande giuste.
    Scrum Master/PM e chiedile se gli esempi che hai scelto sono plausibili
    per un progetto reale.
 
-6. **Individua un caso d'uso serverless.** Pensa a una funzionalità che, nel
+7. **Individua un caso d'uso serverless.** Pensa a una funzionalità che, nel
    progetto o in un'app che usi, viene eseguita "una tantum" e su richiesta
    (es. generazione di un PDF, invio di una notifica, ridimensionamento di
    un'immagine) e spiega perché potrebbe essere un buon candidato per il
@@ -746,6 +911,7 @@ conversazione e fare le domande giuste.
 
 ## 🔗 Collegamenti
 
+- [9. DevOps](../09-devops/README.md) — dove trovi observability, tracciamento distribuito e logging, gli strumenti che servono a seguire un flusso event-driven distribuito su più servizi
 - [12. Cloud](../12-cloud/README.md) — dove vedremo come queste architetture vengono effettivamente eseguite su infrastrutture cloud come Azure o AWS
 - [13. Sicurezza](../13-sicurezza/README.md) — dove vedremo come proteggere questi componenti e le comunicazioni tra di essi
 
@@ -754,6 +920,8 @@ conversazione e fare le domande giuste.
 - [Microsoft Learn – Architetture dei microservizi](https://learn.microsoft.com/it-it/dotnet/architecture/microservices/) — guida approfondita (in italiano) su monolite vs microservizi
 - [Martin Fowler – Microservices](https://martinfowler.com/articles/microservices.html) — l'articolo di riferimento sul tema, uno dei più citati nel settore
 - [Martin Fowler – MonolithFirst](https://martinfowler.com/bliki/MonolithFirst.html) — perché spesso ha senso partire da un monolite prima di passare ai microservizi
+- [Microsoft Learn – Event-driven architecture style](https://learn.microsoft.com/it-it/azure/architecture/guide/architecture-styles/event-driven) — introduzione al pattern event-driven e ai suoi trade-off
+- [Martin Fowler – What do you mean by Event-Driven?](https://martinfowler.com/articles/201701-event-driven.html) — chiarisce le diverse sfumature del termine "event-driven", incluso il confronto con event sourcing e CQRS
 - [Microsoft Learn – Cos'è il serverless computing](https://azure.microsoft.com/it-it/resources/cloud-computing-dictionary/what-is-serverless-computing) — introduzione al modello serverless
 - [Microsoft Learn – Message queue e comunicazione asincrona](https://learn.microsoft.com/en-us/azure/architecture/patterns/async-request-reply) — approfondimento sui pattern di comunicazione asincrona
 - [Documentazione ufficiale RabbitMQ – Concetti base](https://www.rabbitmq.com/tutorials) — introduzione pratica alle code di messaggi

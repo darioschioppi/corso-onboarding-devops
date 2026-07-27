@@ -75,6 +75,12 @@ flowchart LR
 
 ---
 
+### Active Directory (AD)
+Il servizio più diffuso nelle aziende enterprise per gestire in un unico posto l'elenco di utenti, gruppi, computer e politiche di sicurezza, invece di farli gestire a ogni applicazione per conto proprio; parla tipicamente il protocollo LDAP per farsi interrogare dalle altre applicazioni. → approfondito nella sezione 13 (Sicurezza). Si collega a: **LDAP** (il protocollo con cui viene interrogato) e **SSO (Single Sign-On)** (il meccanismo che tipicamente si costruisce sopra di esso).
+
+### ADR (Architecture Decision Record)
+Un documento breve, uno per ogni decisione tecnica rilevante, scritto nel momento in cui la decisione viene presa (non ricostruito a posteriori) e versionato nel repository accanto al codice: serve a non perdere il **perché** di una scelta, non solo il **cosa**. Un ADR non si cancella né si riscrive: se una decisione viene ripensata, si scrive un nuovo ADR che dichiara di superare il precedente. → approfondito nella sezione 3 (Come nasce un software).
+
 ### AI (Intelligenza Artificiale)
 Sigla di Artificial Intelligence: la capacità di un sistema informatico di svolgere compiti che normalmente richiederebbero l'intelligenza umana, come riconoscere immagini, capire il linguaggio o generare testo. → approfondito nella sezione 15 (Intelligenza artificiale).
 
@@ -111,6 +117,12 @@ Il processo che stabilisce, dopo che sei stato riconosciuto (autenticazione), a 
 ### Backend
 La parte "dietro le quinte" di un'applicazione: server, database e logica di business che l'utente non vede direttamente, ma che elabora le richieste e restituisce i risultati al Frontend. → approfondito nella sezione 11 (Architetture software).
 
+### Batch (elaborazione batch) / Farm batch
+L'elaborazione di grandi volumi di dati "a lotti", tutti insieme e secondo una schedulazione (a un orario fisso o dopo un evento), invece che uno alla volta in risposta a una richiesta dell'utente: tipica del lavoro notturno di un'assicurazione (calcolo premi, produzione documenti, invii a enti esterni). La farm batch è l'insieme delle macchine dedicate a farlo girare, spesso separate dai server che servono il sito o l'app. → approfondito nella sezione 9 (DevOps). Si collega a: **ITSM** (di cui condivide l'attenzione operativa) e **Disaster Recovery** (rilevante se la farm batch è ferma per un guasto).
+
+### BIA (Business Impact Analysis)
+L'analisi che stima, processo per processo, quanto costa un'ora di fermo in senso di business (non tecnico): quanti ordini non confermati, quanti clienti persi, quale obbligo normativo non rispettato. È il numero che determina quale RTO e quale RPO ha senso concordare per ciascun sistema: una decisione di business, non una scelta tecnica lasciata al team IT. → approfondito nella sezione 13 (Sicurezza). Si collega a: **Business Continuity** (il piano che la BIA aiuta a costruire) e **Disaster Recovery** (i cui RTO/RPO la BIA determina).
+
 ### Bias
 Una distorsione sistematica nelle risposte di un modello di intelligenza artificiale, che nasce quasi sempre dai dati con cui è stato addestrato (ad esempio se quei dati rappresentano in modo sbilanciato certi gruppi o scenari) e che il team deve conoscere per usare questi strumenti in modo responsabile. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **Training (addestramento)** (la fase in cui più spesso si origina) e **Modello (AI)** (che lo eredita e lo riproduce nelle risposte).
 
@@ -126,17 +138,32 @@ La pratica di creare e gestire più Branch per isolare il lavoro su funzionalit�
 ### Bug
 Un errore nel software che produce un comportamento diverso da quello previsto: dal termine inglese per "insetto", nato da un aneddoto storico legato a un vero insetto trovato in un computer degli anni '40. → approfondito nella sezione 3 (Come nasce un software).
 
+### Builder image
+La prima fase di un multi-stage build: un'immagine Docker "temporanea" che contiene tutti gli strumenti necessari a compilare l'applicazione (compilatore, dipendenze di sviluppo), ma che non finisce mai in produzione — solo il risultato della compilazione viene copiato nell'immagine finale, più piccola e senza gli strumenti di build. → approfondito nella sezione 10 (CI/CD). Si collega a: **Multi-stage build** (la tecnica che la usa) e **Artifact (build)** (il prodotto finale, più leggero, che ne deriva).
+
 ### Burndown Chart
 Un grafico che mostra quanto lavoro **resta** da fare in uno Sprint (o in un progetto) man mano che passano i giorni: la linea idealmente "scende" verso lo zero. → approfondito nella sezione 8 (Project Management).
 
 ### Burnup Chart
 Un grafico simile al Burndown Chart, ma che mostra il lavoro **già completato** che "sale" verso il totale previsto, rendendo più facile notare se l'ambito del progetto (lo scope) cresce nel tempo. → approfondito nella sezione 8 (Project Management).
 
+### Business Continuity (BC)
+La disciplina che risponde alla domanda "come continua a funzionare l'azienda mentre i sistemi non ci sono?", distinta dal Disaster Recovery che risponde invece a "come rimetto in piedi i sistemi?". Include procedure alternative per le persone (cosa fa il call center quando il sistema è giù), comunicazione di crisi e test periodici del piano. → approfondito nella sezione 13 (Sicurezza). Si collega a: **Disaster Recovery** (il piano tecnico complementare) e **BIA (Business Impact Analysis)** (l'analisi che ne guida le priorità).
+
+### Cactus (modello di branching)
+Un modello di branching Git, noto anche come OneFlow, che si colloca tra Git Flow e Trunk Based Development: un solo tronco principale a lungo termine, branch di feature brevi, e branch di release solo quando serve davvero gestire più versioni in produzione contemporaneamente. → approfondito nella sezione 4 (Git e GitHub). Si collega a: **Git Flow** (il modello più strutturato da cui si differenzia) e **Trunk Based Development** (il modello più semplice all'altro estremo).
+
 ### CALMS
 Un acronimo (Culture, Automation, Lean, Measurement, Sharing) che riassume i cinque pilastri della cultura DevOps: cultura collaborativa, automazione, approccio lean, misurazione dei risultati e condivisione della conoscenza. → approfondito nella sezione 9 (DevOps).
 
 ### Change Request (richiesta di modifica)
 Una proposta formale di modificare qualcosa già deciso nel progetto — ambito, tempi, costi o requisiti — che va valutata e approvata prima di essere applicata, invece di lasciare che il progetto cambi rotta senza controllo. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope Creep** (il rischio che corre un progetto se le richieste di modifica non passano da qui).
+
+### Chiave esterna (foreign key)
+Una colonna (o gruppo di colonne) di una tabella che contiene lo stesso valore della chiave primaria di un'altra tabella, creando così una relazione tra le due; il database la fa rispettare attivamente, rifiutando di creare righe che puntano a un valore inesistente (integrità referenziale). → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **Chiave primaria** (a cui punta) e **JOIN** (l'operazione SQL che la usa per unire le due tabelle).
+
+### Chiave primaria (primary key)
+Una colonna (o un piccolo gruppo di colonne) che identifica in modo univoco e stabile ogni riga di una tabella, e che il database si impegna a non far duplicare mai: deve essere unica, mai vuota e stabile nel tempo. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **Chiave esterna** (che la referenzia da un'altra tabella) e **Database relazionale** (di cui è un elemento cardine).
 
 ### Chunk
 Un piccolo pezzo di testo (poche frasi o un paragrafo) in cui viene spezzato un documento lungo prima di elaborarlo con l'intelligenza artificiale, ad esempio nel RAG: dividere in pezzi più piccoli permette di recuperare solo la parte di documento davvero rilevante per una domanda, invece di doverlo leggere per intero ogni volta. → approfondito nella sezione 15 (Intelligenza artificiale).
@@ -180,6 +207,9 @@ Sigla di Central Processing Unit, il "cervello" del computer: il componente che 
 ### Critical Path (percorso critico)
 La sequenza di attività di un progetto che, messe una dopo l'altra, determinano la durata minima totale del progetto: se anche una sola di queste attività si ritarda, l'intero progetto si ritarda. Le attività non sul percorso critico hanno invece un margine di ritardo (la "slack") che non impatta la data finale. → approfondito nella sezione 8 (Project Management). Si collega a: **Diagramma di Gantt** (lo strumento visivo con cui si rappresenta) e **WBS (Work Breakdown Structure)** (da cui derivano le attività su cui si calcola).
 
+### CRUD
+Acronimo di Create, Read, Update, Delete (Crea, Leggi, Aggiorna, Elimina): le quattro operazioni fondamentali che si possono fare su un qualsiasi dato salvato da qualche parte, corrispondenti ai verbi HTTP POST/GET/PUT-PATCH/DELETE e ai comandi SQL INSERT/SELECT/UPDATE/DELETE. Quando un tecnico dice "è solo un CRUD" indica una stima semplice, senza logica di business particolare. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **REST** (i verbi HTTP con cui si esprime) e **SQL** (i comandi con cui si realizza sul database).
+
 ### Cultura DevOps
 Un modo di lavorare che abbatte le barriere tra chi sviluppa il software (Dev) e chi lo gestisce in produzione (Ops), promuovendo collaborazione, responsabilità condivisa e automazione. → approfondito nella sezione 9 (DevOps).
 
@@ -219,6 +249,9 @@ L'operazione di rendere disponibile una nuova versione del software agli utenti,
 ### Deriva di configurazione
 Il progressivo disallineamento tra ambienti che dovrebbero somigliarsi (es. Test/QA, Staging, Produzione) quando una modifica di configurazione viene fatta in uno solo di essi e non replicata negli altri, portando col tempo a test che "passano" senza dire nulla sul comportamento reale. → approfondito nella sezione 14 (Ambienti di sviluppo).
 
+### Developer Experience (DX)
+Quanto è facile, per chi scrive codice, capire cosa fare e farlo: documentazione chiara, messaggi d'errore utili, strumenti che non richiedono di leggere un manuale prima di poterli usare. È uno dei tre pilastri di un Internal Developer Platform, insieme a standardizzazione e automazione. → approfondito nella sezione 12 (Cloud). Si collega a: **IDP (Internal Developer Platform)** (lo strumento che la mette in pratica) e **Golden path** (il percorso raccomandato che la incarna).
+
 ### DevOps
 La fusione tra "Development" (sviluppo) e "Operations" (gestione dei sistemi): un approccio che unisce persone, processi e strumenti per rilasciare software in modo più rapido, frequente e affidabile. → approfondito nella sezione 9 (DevOps). Si collega a: **CALMS** (che ne riassume i pilastri) e **CI (Continuous Integration)** (una delle pratiche concrete che lo realizzano).
 
@@ -242,6 +275,12 @@ Una rappresentazione numerica (una lista di numeri) del significato di un testo,
 
 ### Epic
 Un'attività molto grande, che raggruppa più User Story legate a un unico obiettivo di ampio respiro, troppo estesa per essere completata in un singolo Sprint. → approfondito nella sezione 6 (Scrum).
+
+### Event-Driven Architecture
+Un'architettura in cui un servizio, invece di chiamare direttamente chi deve fare qualcosa, pubblica un evento (un fatto accaduto) su un topic dedicato; chi è interessato (consumer) reagisce in autonomia, senza che chi pubblica (producer) debba conoscerlo. Il meccanismo con cui producer e consumer si incontrano si chiama pub/sub. → approfondito nella sezione 11 (Architetture software). Si collega a: **Evento** (l'unità che vi circola) e **Message Queue** (l'infrastruttura sottostante, usata qui in modo diverso).
+
+### Evento
+Un fatto accaduto al passato, per definizione immutabile (es. "la polizza è stata sottoscritta"): a differenza di un comando, non è indirizzato a nessuno in particolare, non richiede una risposta e non può essere "rifiutato" perché è già successo. → approfondito nella sezione 11 (Architetture software). Si collega a: **Event-Driven Architecture** (il pattern che si basa su di esso).
 
 ### EVM (Earned Value Management)
 Una tecnica di Project Management che confronta tre valori — quanto lavoro era pianificato (PV, Planned Value), quanto è stato effettivamente completato in termini di valore (EV, Earned Value) e quanto è realmente costato (AC, Actual Cost) — per capire in modo oggettivo se un progetto è in linea con tempi e budget, invece di basarsi solo su una sensazione. → approfondito nella sezione 8 (Project Management). Si collega a: **CPI (Cost Performance Index)** e **SPI (Schedule Performance Index)** (i due indici che questa tecnica calcola).
@@ -270,6 +309,12 @@ Il Regolamento Generale sulla Protezione dei Dati (General Data Protection Regul
 ### Git Flow
 Un modello ben definito di organizzazione dei Branch in Git, con rami dedicati per lo sviluppo, le funzionalità, i rilasci e le correzioni urgenti, utile in progetti con rilasci pianificati e meno frequenti. → approfondito nella sezione 4 (Git e GitHub).
 
+### Golden path
+Il percorso raccomandato e già pronto per costruire e rilasciare un servizio, che copre la maggior parte dei casi tipici: non l'unico percorso possibile (un team con esigenze particolari può uscirne), ma quello che rende semplice fare la cosa giusta senza dover reinventare tutto da zero. → approfondito nella sezione 12 (Cloud). Si collega a: **IDP (Internal Developer Platform)** (lo strumento che lo rende disponibile) e **Self-service** (il modo in cui viene ottenuto).
+
+### HTML
+Il linguaggio di marcatura che descrive la struttura di una pagina web (titoli, paragrafi, link, immagini) tramite tag, dicendo al browser cosa mostrare; a differenza di Markdown, gestisce anche la formattazione visiva più fine (tramite CSS) ed è il "compilato" verso cui Markdown viene spesso convertito. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **Markdown** (il linguaggio più semplice da cui viene spesso generato) e **XML** (un altro linguaggio a tag, ma pensato per i dati non per le pagine).
+
 ### HTTP
 Sigla di HyperText Transfer Protocol: il linguaggio con cui il browser e i siti web si scambiano informazioni su internet, ad esempio quando richiedi una pagina web. → approfondito nella sezione 2 (Fondamenti di informatica).
 
@@ -282,6 +327,12 @@ Sigla di Infrastructure as a Service: un modello cloud in cui il fornitore ti d�
 ### IaC (Infrastructure as Code)
 La pratica di descrivere l'infrastruttura informatica (server, reti, configurazioni) tramite file di testo/codice invece che configurandola manualmente, così da poterla creare, versionare e ripetere in modo automatico e affidabile. → approfondito nella sezione 9 (DevOps).
 
+### Idempotenza
+La proprietà di un'operazione per cui eseguirla più volte con lo stesso input produce lo stesso risultato di eseguirla una sola volta: fondamentale per i consumer di un'architettura event-driven, dove un evento può arrivare duplicato (es. controllare "ho già incassato questo premio?" invece di incassarlo incondizionatamente). → approfondito nella sezione 11 (Architetture software). Si collega a: **Event-Driven Architecture** (il contesto in cui diventa cruciale) e **Evento** (che può arrivare più di una volta allo stesso consumer).
+
+### IDP (Internal Developer Platform)
+Il livello di self-service che un team di piattaforma costruisce sopra l'infrastruttura (cloud, Kubernetes, pipeline), così che un team di sviluppo possa ottenere ambienti, database o pipeline senza passare ogni volta da zero. Si basa su tre pilastri: standardizzazione, automazione e Developer Experience. → approfondito nella sezione 12 (Cloud). Si collega a: **Platform Engineering** (la disciplina che lo costruisce) e **Golden path** (il percorso che offre).
+
 ### Increment
 Il risultato concreto e utilizzabile prodotto durante uno Sprint: la somma di tutte le User Story completate, che si aggiunge a quanto già costruito nei Sprint precedenti. → approfondito nella sezione 6 (Scrum).
 
@@ -290,6 +341,18 @@ Il momento in cui un modello di intelligenza artificiale già addestrato viene e
 
 ### Issue
 Una "segnalazione" aperta in un repository (su GitHub Issues) per tracciare un bug, una richiesta di funzionalità o qualsiasi attività da discutere e risolvere. → approfondito nella sezione 4 (Git e GitHub).
+
+### ITIL
+Il framework di riferimento più diffuso per l'ITSM (attualmente alla versione ITIL 4): una raccolta di buone pratiche, non uno standard obbligatorio, usata da moltissime organizzazioni enterprise come vocabolario comune per organizzare i processi di gestione dei servizi IT. → approfondito nella sezione 9 (DevOps). Si collega a: **ITSM** (la disciplina che descrive).
+
+### ITSM (IT Service Management)
+L'insieme di processi con cui un'organizzazione IT gestisce i servizi che fornisce, perché funzionino in modo prevedibile tutti i giorni, non solo il giorno del rilascio: incident management (ripristinare il servizio), problem management (trovare la causa radice), change management (autorizzare le modifiche) e service request (richieste che non sono guasti). → approfondito nella sezione 9 (DevOps). Si collega a: **ITIL** (il framework di riferimento) e **Change Request (richiesta di modifica)** (l'equivalente PMP del concetto di change management).
+
+### JOIN
+L'istruzione SQL che unisce temporaneamente le righe di due tabelle collegate tra loro tramite una chiave esterna, per recuperare insieme informazioni che vivono in tabelle diverse. Una INNER JOIN restituisce solo le righe con corrispondenza in entrambe le tabelle; una LEFT JOIN restituisce anche quelle senza corrispondenza. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **Chiave esterna** (su cui si basa) e **Normalizzazione** (il principio che rende la JOIN necessaria).
+
+### JQL (Jira Query Language)
+Il linguaggio di interrogazione di Jira che permette di costruire ricerche precise sulle issue (per progetto, assegnatario, stato, data) invece di filtrare a mano una lista lunghissima, ed è alla base della maggior parte dei report e delle dashboard costruite su Jira. → approfondito nella sezione 8 (Project Management).
 
 ### JSON
 Sigla di JavaScript Object Notation: un formato di testo semplice e leggibile usato moltissimo per scambiare dati tra programmi, ad esempio nelle risposte delle API. → approfondito nella sezione 2 (Fondamenti di informatica).
@@ -302,6 +365,9 @@ Sigla di Key Performance Indicator: un indicatore numerico che misura quanto ben
 
 ### Kubernetes
 Uno strumento che gestisce automaticamente grandi quantità di Container in produzione: li avvia, li riavvia se si bloccano, li distribuisce su più macchine e ne regola il numero in base al carico. → approfondito nella sezione 2 (Fondamenti di informatica).
+
+### LDAP (Lightweight Directory Access Protocol)
+Il protocollo con cui le applicazioni interrogano una directory di identità (tipicamente Active Directory) per verificare utenti, gruppi e permessi, senza che ogni applicazione debba reinventare la propria gestione degli accessi. → approfondito nella sezione 13 (Sicurezza). Si collega a: **Active Directory (AD)** (l'implementazione più diffusa che lo parla).
 
 ### Lead Time
 Il tempo totale che intercorre dal momento in cui un'attività viene **richiesta** al momento in cui viene **consegnata**, includendo anche l'attesa prima che il lavoro inizi davvero. → approfondito nella sezione 7 (Kanban).
@@ -326,6 +392,12 @@ Un ramo dell'intelligenza artificiale in cui un sistema impara a svolgere un com
 
 ### Manifesto Agile
 Il documento pubblicato nel 2001 da un gruppo di sviluppatori che definisce i valori e i principi alla base dell'approccio Agile, come privilegiare le persone e la collaborazione rispetto a processi rigidi e documentazione eccessiva. → approfondito nella sezione 5 (Agile).
+
+### Markdown
+Un linguaggio di marcatura leggero per scrivere documenti formattati (titoli, elenchi, grassetto, link) usando pochi simboli semplici (`#`, `*`, `[]()`), pensato per essere leggibile anche senza essere convertito, a differenza dell'HTML. Questo stesso corso è scritto in Markdown. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **HTML** (il linguaggio più ricco verso cui viene spesso convertito).
+
+### Maven
+Uno strumento di build e gestione delle dipendenze per progetti Java: legge un file di configurazione (il POM) che dichiara le librerie esterne necessarie e le scarica automaticamente, insieme alle loro dipendenze transitive, invece di doverle procurare e aggiornare a mano una per una. → approfondito nella sezione 4 (Git e GitHub). Si collega a: **POM** (il file che lo configura).
 
 ### MCP (Model Context Protocol)
 Sigla di Model Context Protocol: uno standard aperto, introdotto da Anthropic e con adozione crescente, che definisce un modo comune con cui un assistente AI si collega a fonti di dati e strumenti esterni, un po' come una presa USB-C che permette di collegare dispositivi diversi con lo stesso connettore. Prima di MCP, ogni assistente andava collegato "a mano" a ogni sistema con cui doveva interagire; MCP evita questa moltiplicazione di integrazioni su misura. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **LLM (Large Language Model)** (l'assistente che, tramite MCP, si collega agli strumenti esterni) e **API** (il modo con cui, dietro le quinte, un MCP server spesso espone le proprie capacità).
@@ -363,8 +435,26 @@ L'attività di osservare costantemente lo stato di un sistema (uso della CPU, te
 ### Monolite
 Un'architettura software in cui tutta l'applicazione è costruita come un unico grande blocco di codice, con tutte le funzionalità interdipendenti tra loro, contrapposta ai Microservizi. → approfondito nella sezione 11 (Architetture software).
 
+### Multi-stage build
+Una tecnica per scrivere un Dockerfile in più fasi (stage): una "builder image" compila l'applicazione con tutti gli strumenti di sviluppo necessari, poi solo il risultato della compilazione viene copiato in un'immagine finale più piccola e senza quegli strumenti, che è quella che finisce davvero in produzione. → approfondito nella sezione 10 (CI/CD). Si collega a: **Builder image** (la fase intermedia che rende possibile) e **Artifact (build)** (il prodotto finale, più leggero, che ne risulta).
+
+### Normalizzazione
+Il principio secondo cui ogni informazione in un database relazionale viene scritta una volta sola, nel posto giusto, e recuperata altrove tramite relazioni e JOIN quando serve, invece di essere ripetuta in più righe (con il rischio che, se cambia, venga aggiornata in un posto e dimenticata in un altro). → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **JOIN** (lo strumento che rende possibile recuperare i dati normalizzati) e **Chiave esterna** (su cui si basano le relazioni normalizzate).
+
+### OAuth
+Un protocollo che permette di delegare un'autorizzazione limitata e revocabile a un'applicazione terza, senza mai cederle la password (es. "puoi leggere solo i miei documenti, per i prossimi 30 giorni"): è il meccanismo dietro al pulsante "accedi con..." di tanti siti. → approfondito nella sezione 13 (Sicurezza). Si collega a: **OpenID Connect** (che aggiunge l'autenticazione allo stesso meccanismo) e **Token** (lo strumento con cui l'autorizzazione viene concessa in pratica).
+
 ### Observability
 La capacità di capire **cosa sta succedendo dentro** un sistema complesso osservandolo dall'esterno, combinando log, metriche e tracce; va oltre il semplice Monitoring perché aiuta a capire anche il "perché" di un problema, non solo il "cosa". → approfondito nella sezione 9 (DevOps).
+
+### OpenAPI / Swagger
+OpenAPI è uno standard per descrivere un'API REST (risorse, verbi, campi di richiesta e risposta) in un formato leggibile sia da una persona che da una macchina, trasformandola da "documento di cui ci si fida" a contratto verificabile tra due team. Swagger è il nome della famiglia di strumenti storicamente associata a OpenAPI, che genera documentazione navigabile e codice di base a partire dalla stessa descrizione. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **REST** (lo stile di API che descrive) e **JSON** (uno dei formati in cui la specifica è tipicamente scritta).
+
+### OpenID Connect (OIDC)
+Un livello costruito sopra OAuth che aggiunge l'autenticazione vera e propria ("dimmi chi è questa persona"), non solo la delega di un permesso limitato: OAuth risponde a "cosa posso fare per conto tuo", OIDC risponde anche a "chi sono". → approfondito nella sezione 13 (Sicurezza). Si collega a: **OAuth** (il protocollo su cui si basa) e **SSO (Single Sign-On)** (uno degli usi pratici più comuni di questa combinazione).
+
+### OpenShift (OCP)
+Il prodotto di Red Hat che racchiude Kubernetes con registry, autenticazione, rete, pipeline e monitoraggio già integrati, oltre a un supporto commerciale e a vincoli di sicurezza più severi per impostazione predefinita (es. niente container con privilegi di root). OpenShift *è* Kubernetes, non lo sostituisce. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **Kubernetes** (che racchiude) e **Platform Engineering** (di cui è un mattone possibile, non l'intera piattaforma).
 
 ### Overfitting
 Un problema che si verifica quando un modello di intelligenza artificiale "impara a memoria" i dati di Training invece di generalizzare, risultando molto bravo sugli esempi già visti ma poco affidabile su dati nuovi. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **Training (addestramento)** (la fase in cui si verifica) e **Modello (AI)** (che ne risulta compromesso, con previsioni poco affidabili su casi nuovi).
@@ -384,6 +474,9 @@ Una sequenza automatizzata di passaggi (compilare, testare, rilasciare) che il c
 ### Pipeline as Code
 La pratica di definire i passaggi di una pipeline in un file di testo versionato insieme al codice, invece che configurarla a mano tramite un'interfaccia grafica, così da poterla tracciare e riutilizzare facilmente. → approfondito nella sezione 10 (CI/CD).
 
+### Platform Engineering
+La disciplina di costruire e mantenere una piattaforma interna per gli sviluppatori, trattata come un prodotto con dei clienti (i team di sviluppo) che possono, in linea di principio, scegliere di non usarla — a differenza di un ufficio che impone strumenti per decreto. Nasce come risposta al debito organizzativo lasciato scoperto dal DevOps preso alla lettera. → approfondito nella sezione 12 (Cloud). Si collega a: **IDP (Internal Developer Platform)** (ciò che concretamente costruisce) e **DevOps** (la cultura di cui completa la promessa).
+
 ### PMBOK Guide
 Sigla di Project Management Body of Knowledge: la guida pubblicata dal PMI che raccoglie le conoscenze, i processi e le pratiche di riferimento del Project Management. Attenzione: le edizioni non sono tutte uguali — la 6ª edizione è basata su 5 gruppi di processi e 10 aree di conoscenza, mentre la 7ª edizione (2021) ha cambiato impostazione, basandosi su 12 principi e 8 performance domain. Quando qualcuno cita "il PMBOK" senza specificare l'edizione, vale la pena chiedere a quale delle due si riferisce. → approfondito nella sezione 8 (Project Management). Si collega a: **PMI (Project Management Institute)** (l'organizzazione che la pubblica) e **PMP (Project Management Professional)** (la certificazione che su questa guida si basa).
 
@@ -392,6 +485,9 @@ L'organizzazione internazionale di riferimento per il Project Management: pubbli
 
 ### PMP (Project Management Professional)
 Una certificazione professionale rilasciata dal PMI, tra le più riconosciute al mondo per chi gestisce progetti: attesta la conoscenza dei processi e delle pratiche descritte nel PMBOK Guide e un certo numero di anni di esperienza sul campo. Per i requisiti aggiornati (esperienza richiesta, costi, modalità d'esame) fai sempre riferimento al sito ufficiale del PMI, perché cambiano nel tempo. → approfondito nella sezione 8 (Project Management).
+
+### POM (Project Object Model)
+Il file (tipicamente `pom.xml`) con cui Maven configura la build di un progetto Java: dichiara nome e versione del progetto, le dipendenze esterne necessarie con la loro versione precisa, e le fasi della build (compile, test, package). → approfondito nella sezione 4 (Git e GitHub). Si collega a: **Maven** (lo strumento che lo legge ed esegue).
 
 ### Process Group (gruppo di processi)
 Nell'impostazione del PMBOK Guide 6ª edizione, una delle 5 macro-fasi in cui si organizzano i processi di un progetto: Avvio, Pianificazione, Esecuzione, Monitoraggio e Controllo, Chiusura. Non sono fasi rigidamente sequenziali quanto categorie di attività che possono anche sovrapporsi nel tempo. → approfondito nella sezione 8 (Project Management). Si collega a: **Knowledge Area (area di conoscenza)** (l'altra dimensione con cui il PMBOK 6 organizza gli stessi processi).
@@ -416,6 +512,9 @@ Il documento che autorizza formalmente l'esistenza di un progetto: definisce obi
 
 ### Prompt
 Il testo (un'istruzione, una domanda, una richiesta) che un utente fornisce a un modello di AI generativa per ottenere una risposta: la qualità del prompt influenza molto la qualità della risposta ottenuta. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **AI generativa** (il tipo di strumento con cui si usa) e **LLM (Large Language Model)** (il modello che lo interpreta per generare una risposta).
+
+### Pub/Sub (publish/subscribe)
+Il meccanismo con cui producer e consumer si incontrano in un'architettura event-driven: il producer pubblica un evento su un canale dedicato (topic), e ogni consumer interessato si sottoscrive a quel topic per riceverne una copia, tramite un broker che fa da intermediario. → approfondito nella sezione 11 (Architetture software). Si collega a: **Event-Driven Architecture** (il pattern che lo usa) e **Message Queue** (l'infrastruttura sottostante, usata qui in modo diverso: non un messaggio per un destinatario noto, ma un evento per un numero qualsiasi di sottoscrittori).
 
 ### Pull Request
 Una richiesta formale di unire le proprie modifiche di codice (spesso su un Branch) al codice principale, che di solito viene prima discussa e revisionata dal team (Code Review) prima di essere accettata: è il termine usato da GitHub per questo meccanismo (spesso abbreviata PR). → approfondito nella sezione 3 (Come nasce un software). Si collega a: **Branch** (che la genera) e **Code Review** (che ne consegue, prima dell'approvazione).
@@ -477,17 +576,26 @@ La persona che facilita l'applicazione di Scrum nel team, rimuove gli ostacoli c
 ### Scrumban
 Un approccio ibrido che combina elementi di Scrum (come i ruoli e le cerimonie) con elementi di Kanban (come il flusso continuo e i limiti di WIP), utile per team che vogliono più struttura di Kanban ma più flessibilità di Scrum. → approfondito nella sezione 7 (Kanban).
 
+### Self-service
+La possibilità di ottenere un ambiente, un database o una pipeline senza aprire un ticket e senza aspettare una persona: un modulo, un comando, un catalogo di opzioni pre-approvate, non un'email a chi "se ne occupa". → approfondito nella sezione 12 (Cloud). Si collega a: **Golden path** (il percorso che il self-service rende disponibile senza attriti) e **IDP (Internal Developer Platform)** (lo strumento che lo implementa).
+
 ### Semantic Versioning
 Una convenzione per numerare le versioni del software nel formato MAJOR.MINOR.PATCH (es. 2.4.1), dove ogni numero comunica il tipo di cambiamento avvenuto rispetto alla versione precedente. → approfondito nella sezione 3 (Come nasce un software).
 
 ### Serverless
 Un modello cloud in cui scrivi solo il codice della funzione che ti serve e il fornitore si occupa di tutto il resto (server, scalabilità, manutenzione), facendoti pagare solo per l'effettivo utilizzo. → approfondito nella sezione 11 (Architetture software).
 
+### Single Sign-On (SSO)
+Un'autenticazione unica valida per molte applicazioni: chi si autentica lo fa una sola volta e da lì accede a email, repository, gestionale e strumenti cloud senza rifare il login su ciascuno. Concentra però anche il rischio: se il sistema di SSO cade, cade l'accesso a tutto contemporaneamente. → approfondito nella sezione 13 (Sicurezza). Si collega a: **Active Directory (AD)** (la directory su cui tipicamente si costruisce) e **Token** (lo strumento con cui l'identità viene poi dimostrata a ogni applicazione).
+
 ### Sistema Operativo
 Il software di base che gestisce le risorse del computer (CPU, RAM, Disco) e permette a te e alle altre applicazioni di usarle, facendo da intermediario tra hardware e programmi. Esempi: Windows, macOS, Linux. → approfondito nella sezione 2 (Fondamenti di informatica).
 
 ### SLA
 Sigla di Service Level Agreement: un accordo, spesso contrattuale, che definisce il livello di servizio garantito da un fornitore (ad esempio il tempo massimo di inattività accettabile o il tempo massimo di risposta a una segnalazione), con conseguenze concrete (spesso economiche) se non viene rispettato. → approfondito nella sezione 13 (Sicurezza).
+
+### Solution Architect
+Il ruolo che tiene insieme una soluzione tra più sistemi e più team, traducendo requisiti di business in scelte tecniche e viceversa, e presidiando i requisiti non funzionali del sistema nel suo complesso — a differenza del Tech Lead, che si occupa di un singolo team, o dell'Enterprise Architect, che si occupa di tutta l'organizzazione. → approfondito nella sezione 8 (Project Management). Si collega a: **ADR (Architecture Decision Record)** (lo strumento con cui documenta le decisioni tra sistemi) e **Requisiti (funzionali e non funzionali)** (quelli non funzionali, che più spesso presidia).
 
 ### SPI (Schedule Performance Index)
 Un indice dell'Earned Value Management che misura quanto il progetto è in linea con i tempi pianificati: si calcola dividendo il valore del lavoro effettivamente completato (EV) per il valore del lavoro che era pianificato a questo punto (PV). Un SPI sopra 1 significa che si è avanti rispetto al piano, sotto 1 significa che si è in ritardo. → approfondito nella sezione 8 (Project Management). Si collega a: **EVM (Earned Value Management)** (il sistema di cui fa parte) e **CPI (Cost Performance Index)** (l'indice analogo sui costi).
@@ -525,6 +633,9 @@ Qualsiasi persona o gruppo che ha un interesse nel progetto o ne è influenzato:
 ### Story Point
 Un'unità di misura relativa (non temporale) usata per stimare quanto sia complessa una User Story rispetto alle altre, tenendo conto di difficoltà, incertezza e quantità di lavoro. → approfondito nella sezione 6 (Scrum).
 
+### Sub-task
+In Jira, un pezzo di lavoro dentro una Story o un Task più grande, non stimabile da solo come issue a sé stante: il livello più fine della gerarchia Epic → Story/Task → Sub-task. → approfondito nella sezione 8 (Project Management). Si collega a: **User Story** (il livello sopra, di cui il sub-task è parte) e **WBS (Work Breakdown Structure)** (l'equivalente concettuale nel vocabolario PMP).
+
 ### Tag
 Un'etichetta che Git può assegnare a un Commit specifico, tipicamente per marcare un punto importante come una Release (es. "v2.4.1"). → approfondito nella sezione 4 (Git e GitHub).
 
@@ -538,7 +649,7 @@ Una "sotto-unità" di un Processo che può eseguire istruzioni in modo indipende
 La quantità di lavoro (attività completate, richieste gestite) che un team o un sistema riesce a portare a termine in un'unità di tempo: per un team è quante attività completa a settimana, per un sistema informatico è quante richieste gestisce al secondo. → approfondito nella sezione 7 (Kanban).
 
 ### Token
-La più piccola unità di testo (una parola, parte di una parola o un simbolo di punteggiatura) in cui un LLM scompone il testo per elaborarlo; i servizi di AI generativa spesso fatturano l'utilizzo proprio in base al numero di token letti e generati. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **LLM (Large Language Model)** (che elabora il testo proprio in unità di questo tipo).
+Il termine ha due significati distinti nel corso. In ambito AI: la più piccola unità di testo (una parola, parte di una parola o un simbolo di punteggiatura) in cui un LLM scompone il testo per elaborarlo; i servizi di AI generativa spesso fatturano l'utilizzo proprio in base al numero di token letti e generati (→ sezione 15, Intelligenza artificiale). In ambito sicurezza: un "biglietto" temporaneo con scadenza breve che un sistema rilascia dopo l'autenticazione (tipicamente via SSO), da presentare a ogni richiesta successiva invece della password; va trattato come una password, e se finisce per errore in un repository va considerato compromesso e sostituito (→ sezione 13, Sicurezza). Si collega a: **LLM (Large Language Model)** (che elabora il testo nel primo senso) e **SSO (Single Sign-On)** / **OAuth** (con cui si rilascia e usa nel secondo senso).
 
 ### Training (addestramento)
 Il processo con cui un modello di intelligenza artificiale "impara" analizzando grandi quantità di dati di esempio, aggiustando progressivamente i propri parametri interni finché le sue previsioni non diventano sufficientemente accurate. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **Modello (AI)** (il risultato di questo processo) e **Overfitting** (un rischio tipico se il training non è condotto con attenzione).
@@ -567,11 +678,14 @@ La pratica di assegnare un numero o un'etichetta univoca a ogni versione del sof
 ### Virtual Machine (VM)
 Un "computer dentro il computer": un ambiente simulato dal software che si comporta come una macchina indipendente, con proprio sistema operativo, pur condividendo l'hardware fisico con altre VM. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### Vista (VIEW)
+Una query SQL salvata con un nome, che si comporta come se fosse essa stessa una tabella: permette a chi la usa di non dover riscrivere (né conoscere) la JOIN che c'è dietro. Non elimina il costo della query sottostante, che viene comunque eseguita a ogni chiamata. → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **JOIN** (l'operazione che tipicamente racchiude) e **Database relazionale** (il contesto in cui vive).
+
 ### Waterfall
 Un approccio tradizionale alla gestione dei progetti in cui le fasi (analisi, progettazione, sviluppo, test, rilascio) si susseguono in modo lineare e sequenziale, una dopo l'altra, a differenza dell'iteratività di Agile. → approfondito nella sezione 5 (Agile).
 
 ### WBS (Work Breakdown Structure)
-La scomposizione gerarchica di tutto il lavoro necessario a completare lo scope di un progetto, dai macro-obiettivi fino a singole attività gestibili e stimabili. È uno degli strumenti cardine della pianificazione tradizionale, e serve da base per stimare tempi e costi. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope (ambito)** (ciò che la WBS scompone) e **Product Backlog** (l'equivalente Agile, più flessibile e continuamente ri-prioritizzato invece che fissato all'inizio).
+La scomposizione gerarchica di tutto il lavoro necessario a completare lo scope di un progetto, dai macro-obiettivi fino a singole attività gestibili e stimabili, spesso rappresentata con codici gerarchici (1, 1.1, 1.1.1...) anche in un semplice foglio Excel. Il livello più basso della scomposizione si chiama **work package**: abbastanza piccolo da poter essere stimato con sicurezza e assegnato a una singola persona. È uno degli strumenti cardine della pianificazione tradizionale, e serve da base per stimare tempi e costi. → approfondito nella sezione 8 (Project Management). Si collega a: **Scope (ambito)** (ciò che la WBS scompone) e **Product Backlog** (l'equivalente Agile, più flessibile e continuamente ri-prioritizzato invece che fissato all'inizio).
 
 ### WIP (Work In Progress)
 Il numero di attività che sono attualmente "in corso" in una Board Kanban; limitare il WIP (fissando un tetto massimo per colonna) aiuta il team a concentrarsi e a completare il lavoro più rapidamente invece di iniziarne troppo in parallelo. → approfondito nella sezione 7 (Kanban).

@@ -72,7 +72,13 @@ Alla fine di questa sezione saprai:
 - leggere un **percorso critico (critical path)** semplice e interpretare
   le metriche base dell'**Earned Value Management** (PV, EV, AC, SPI, CPI);
 - muoverti con sicurezza in un contesto **ibrido**, che unisce pratiche PMP
-  e pratiche Agile, come accade in molte aziende reali.
+  e pratiche Agile, come accade in molte aziende reali;
+- riconoscere in **Jira** la gerarchia Epic/Story/Task/Sub-task e leggere
+  backlog, board e Gantt come viste diverse sugli stessi dati;
+- usare **Excel** con criterio per WBS e reportistica, sapendo quando è la
+  scelta giusta e quando invece serve lo strumento condiviso del team;
+- distinguere il ruolo del **Solution Architect** da quello di Tech Lead,
+  Product Owner ed Enterprise Architect, e capire quando coinvolgerlo.
 
 ---
 
@@ -292,6 +298,72 @@ Qualche osservazione utile da tenere a mente quando costruisci una RACI:
 - Troppi "C" su un'attività la rendono lenta: ogni consultazione è un
   potenziale collo di bottiglia. Usa "C" solo dove il parere serve
   davvero.
+
+### Il Solution Architect: chi tiene insieme la soluzione tra i team
+
+La RACI qui sopra elenca ruoli di progetto — Sviluppatore, Tech Lead, PM,
+QA, Cliente — ma su un progetto più grande di ShopFacile, con più team che
+lavorano su sistemi diversi che devono parlarsi tra loro, manca spesso un
+ruolo che nessuno dei precedenti coprirebbe davvero.
+
+Immagina questo scenario, plausibile appena l'azienda ha più di un team:
+il team di **Marco** decide di gestire l'autenticazione degli utenti con un
+proprio sistema di login; in parallelo, un altro team che lavora sull'app
+mobile di ShopFacile decide, indipendentemente e per motivi altrettanto
+ragionevoli, di implementarne uno diverso; un terzo team, quello che si
+occupa delle notifiche, scopre solo a integrazione quasi ultimata che
+nessuno dei due sistemi di login gli fornisce l'informazione di cui ha
+bisogno per inviare un avviso push. Ogni scelta, presa da sola, era
+sensata. Il risultato **complessivo** non sta in piedi: due sistemi che
+risolvono lo stesso problema in modo incompatibile, e un'integrazione che
+nessuno ha progettato perché apparteneva esattamente al confine tra due
+team, quindi a nessuno.
+
+Il **Solution Architect** è il ruolo che esiste per questo: tiene insieme
+la soluzione **tra** i sistemi e **tra** i team, non dentro a uno solo. In
+concreto:
+
+- traduce i requisiti di business in scelte tecniche, e — altrettanto
+  importante — traduce i vincoli tecnici in conseguenze di business
+  (costi, tempi, rischi) che uno sponsor può capire senza background
+  tecnico;
+- decide anche dove **non** costruire (usare un servizio già esistente
+  invece di farne un altro identico in un altro team);
+- presidia i **requisiti non funzionali** del sistema nel suo complesso —
+  li hai già incontrati nella sezione 3 — perché sono quasi sempre loro,
+  non i requisiti funzionali, a rompersi ai confini tra sistemi diversi
+  (un sistema pensato per 100 richieste al secondo che deve integrarsi con
+  uno che ne sopporta 10, per esempio).
+
+Un ruolo con un nome simile, ma con un ambito diverso, genera confusione
+quasi automatica: eccola chiarita in una tabella.
+
+| Ruolo | Ambito | Orizzonte temporale | Tipo di decisione | Risponde a |
+|---|---|---|---|---|
+| **Solution Architect** | Una soluzione specifica, che attraversa più sistemi/team | Il progetto o programma in corso | Come i sistemi coinvolti si integrano tra loro | Sponsor del progetto, Enterprise Architect (se presente) |
+| **Enterprise Architect** | Tutta l'organizzazione, tutti i sistemi | Anni, a prescindere dal singolo progetto | Standard tecnologici, quali sistemi l'azienda deve avere nel suo insieme | Direzione IT/CTO |
+| **Tech Lead** | Un singolo team | Lo sprint o la release corrente | Come si scrive e si organizza il codice di quel team | Il team, e spesso il Solution Architect |
+| **Product Owner** | Il valore per l'utente di un prodotto | Il backlog, sprint dopo sprint | Cosa costruire, in che ordine di priorità | Il business/gli stakeholder |
+
+Cosa significa questo, in pratica, per un Junior Project Manager? Il
+Solution Architect è l'interlocutore giusto per capire se una richiesta è
+"grande" **prima** di stimarla con il team — e va coinvolto prima, non
+dopo: se lo coinvolgi solo a valle, quando le scelte tecniche sono già
+state fatte team per team, l'unico ruolo che gli resta è quello di dire no
+a integrazioni che a quel punto sono già difficili da cambiare.
+
+Come ogni ruolo di questo tipo, anche il Solution Architect ha un
+trade-off da conoscere. Un architetto troppo lontano dal codice — che
+disegna soluzioni sulla carta senza mai verificarne la fattibilità con chi
+scrive davvero il software — produce disegni eleganti che poi non si
+realizzano: è il rischio noto come **"ivory tower architect"** (architetto
+nella torre d'avorio). Il rischio opposto è altrettanto reale: un
+architetto che vive dentro un solo team perde esattamente la visione
+d'insieme che dovrebbe garantire. La contromisura più efficace contro
+entrambi gli estremi è la stessa: un Solution Architect che scrive **ADR**
+per le decisioni importanti (li hai già incontrati nella sezione 3) e le
+discute apertamente con i team coinvolti, invece di deciderle in isolamento
+e comunicarle già chiuse.
 
 Una RACI ben fatta chiarisce chi fa cosa lungo il percorso di un rilascio,
 ma non dice ancora **quando** quel rilascio conta davvero per chi guarda il
@@ -1356,7 +1428,216 @@ o puramente Agile.
 
 ---
 
-## 8.21 Riepilogo
+## 8.21 Jira: la gerarchia degli oggetti e le due viste
+
+Prima di parlare di Jira in sé, vale la pena vedere il problema che risolve
+con una scena fin troppo comune. Luca segue lo stato di avanzamento di
+ShopFacile su un foglio di calcolo che aggiorna la sera, quando ha tempo;
+gli sviluppatori, nel frattempo, scrivono lo stato reale del loro lavoro in
+chat, a chi lo chiede. Il risultato, puntuale ogni settimana: alla riunione
+di stato non si discute più di **cosa fare**, ma di **quale numero sia
+vero** — il foglio di Luca o l'ultimo messaggio in chat. Il motivo per cui
+esistono strumenti come **Jira** è avere **un unico posto dove il lavoro
+esiste**, aggiornato da chi lo fa, non ricostruito la sera da chi lo
+insegue.
+
+Nella sezione 10 incontrerai Jira come alternativa alle Issue di GitHub
+per il tracking del lavoro. Qui vediamo già la parte che lì resterà sullo
+sfondo: come Jira organizza quel lavoro internamente, e perché la stessa
+informazione appare in modo così diverso in una board e in un Gantt.
+
+### Issue: il termine ombrello che confonde tutti all'inizio
+
+La prima cosa che confonde chiunque arrivi da GitHub Issues: in Jira,
+**tutto** è una **issue**. Un bug, una nuova funzionalità, un compito
+tecnico, un piccolo pezzo di un lavoro più grande — sono tutte, sotto il
+cofano, lo stesso tipo di oggetto. Quello che li distingue è il **tipo di
+issue** (Epic, Story, Task, Bug, Sub-task): un'etichetta sul contenitore,
+non un contenitore diverso. Quando qualcuno dice "ho aperto una issue",
+sta dicendo pochissimo su cosa sia davvero: bisogna sempre chiedere (o
+guardare) il tipo.
+
+### La gerarchia: da Epic a Sub-task
+
+Le issue si organizzano in una gerarchia, dal più grande al più piccolo:
+
+| Tipo | Cosa rappresenta | Chi la scrive tipicamente | Orizzonte temporale | Esempio in ShopFacile |
+|---|---|---|---|---|
+| **Initiative / Epic** | Un obiettivo ampio, che raggruppa più Story/Task | Product Owner, a volte con il Solution Architect | Mesi, più release | "Preventivatore online" |
+| **Story** | Una User Story: valore per l'utente, scritta dal suo punto di vista | Product Owner (con il team) | Uno o pochi sprint | "Come cliente voglio salvare un preventivo per riprenderlo dopo" |
+| **Task** | Lavoro tecnico necessario, che nessun utente chiederebbe mai esplicitamente | Il team di sviluppo | Uno sprint o meno | "Configurare il job di pulizia automatica dei preventivi scaduti" |
+| **Bug** | Un difetto da correggere (già visto nella sezione 3) | Chiunque lo scopre | Variabile, spesso urgente | "Il preventivo salvato perde lo sconto applicato" |
+| **Sub-task** | Un pezzo di lavoro dentro una Story/Task più grande, non stimabile da solo come issue a sé | Chi lavora sulla Story/Task | Ore o giorni | "Predisporre la tabella `preventivi` nel database" |
+
+Il punto che vale la pena chiarire bene, perché genera confusione quanto il
+termine "issue": **Story e Task convivono, non sono alternative**. La
+Story "salvare un preventivo" ha valore diretto per il cliente di
+ShopFacile; per realizzarla, il team la scompone in Sub-task (uno dei
+quali, "predisporre la tabella preventivi", è un Task tecnico puro — nessun
+cliente lo chiederebbe mai, ma senza di esso la Story non esiste). Una Epic
+come "Preventivatore online" raggruppa più Story di questo tipo, ciascuna
+scomponibile a sua volta.
+
+### Backlog, sprint, board: lo stesso lavoro, vista diversa
+
+Le stesse issue, con lo stesso stato, si vedono in modi diversi secondo
+cosa stai cercando di capire: nel **backlog** le vedi come lista ordinata,
+in attesa di essere pianificate; nello **sprint** attivo le vedi come il
+sottoinsieme selezionato per le prossime settimane; nella **board** (già
+vista nelle sezioni 6 e 7) le vedi disposte per colonna, secondo lo stato
+di avanzamento (Da fare, In corso, Fatto, e le colonne intermedie che il
+team ha definito).
+
+Il passaggio da una colonna all'altra segue un **workflow**: le
+transizioni di stato permesse (una issue non può "saltare" da Da fare a
+Fatto senza passare da In corso, se il workflow non lo consente). Qui sta
+il punto che vale oro per un Project Manager: **se la board non rispecchia
+il modo in cui il lavoro scorre davvero**, le persone smettono di
+aggiornarla in tempo reale e la aggiornano tutta insieme a fine giornata —
+a quel punto i dati che stai guardando sono una **ricostruzione a
+posteriori**, non lo stato reale del lavoro. Una board che mente non è un
+problema di Jira: è un problema di processo che Jira si limita a rendere
+visibile (o a nascondere, se nessuno la aggiorna).
+
+### Le due viste sullo stesso dato: board e Gantt
+
+Le due sezioni precedenti — la WBS in 8.14 e le dipendenze/critical path
+in 8.15 — hanno già introdotto il ragionamento su **come le attività si
+incastrano nel tempo**. In Jira, quel ragionamento prende la forma di una
+vista **Gantt/timeline**, affiancata alla board Agile. Non sono due metodi
+in competizione: sono **due domande diverse sugli stessi dati**.
+
+- La **board Agile** risponde a: chi sta facendo cosa **adesso**?
+- Il **Gantt/timeline** risponde a: come le cose si incastrano **nel
+  tempo**, con quali dipendenze tra loro?
+
+Il limite da non dimenticare, in entrambi i casi: il Gantt di Jira è
+affidabile esattamente quanto le stime e le dipendenze che **qualcuno ha
+inserito a mano**. Se nessuno collega due Story con una dipendenza reale,
+il Gantt disegnerà due barre indipendenti che, nella realtà, non lo sono —
+la stessa illusione di precisione già vista nella sezione 8.15 a proposito
+del Gantt tradizionale.
+
+### JQL e i report che un PM userà davvero
+
+Le issue di Jira si possono interrogare con un linguaggio di filtro
+chiamato **JQL** (Jira Query Language): permette di costruire ricerche
+precise ("tutte le Story dell'Epic Preventivatore, non completate, con
+priorità alta") senza dover scorrere manualmente il backlog. Non serve
+scriverlo per capirsi con il team: basta sapere che esiste, per riconoscere
+un filtro salvato quando qualcuno lo condivide.
+
+I report che userai più spesso: il **burndown** (già visto nella sezione
+6, qui è semplicemente la stessa vista applicata dentro lo strumento), la
+**velocity** (sezione 6.7, aggregata sprint dopo sprint) e il **cumulative
+flow diagram**, che mostra quante issue si trovano in ciascuna colonna del
+workflow nel tempo — utile soprattutto per individuare un **collo di
+bottiglia**: se la colonna "In review" si allarga sempre di più mentre le
+altre restano stabili, il problema non è "il team scrive poco codice", è
+che nessuno ha tempo per revisionarlo.
+
+### Trade-off: lo strumento amplifica il processo, non lo crea
+
+Jira, come ogni strumento di questo tipo, non risolve un processo debole:
+lo **amplifica**, nel bene e nel male. Un team con un processo chiaro lo
+rende visibile e misurabile; un team senza un processo condiviso lo usa
+per litigare più velocemente su numeri diversi. Due rischi concreti da
+conoscere: un Jira personalizzato all'eccesso (campi su misura, workflow
+complicati, automazioni su automazioni) diventa un **secondo lavoro** da
+mantenere, che qualcuno deve gestire oltre al progetto vero; e i **campi
+obbligatori che nessuno usa davvero** (perché troppi, perché nessuno ne
+capisce lo scopo) producono dati completi solo nella forma — che nessuno,
+poi, guarda mai per decidere qualcosa.
+
+---
+
+## 8.22 Excel: reporting e WBS
+
+Nel corso, finora, Excel è comparso solo come il foglio condiviso che Luca
+aggiorna la sera — raccontato, giustamente, come parte del problema che
+Jira risolve. Ma sarebbe un errore concludere che Excel è solo "lo
+strumento di ripiego di chi non ha ancora adottato uno strumento vero": è,
+di fatto, lo strumento di project management più usato al mondo, e ci sono
+casi in cui **resta la scelta migliore**: prototipare velocemente una
+struttura prima di formalizzarla in Jira, un calcolo ad hoc che nessuno
+strumento di ticketing prevede, un'analisi una tantum che non merita un
+processo permanente, un report per un pubblico (un fornitore, un revisore
+esterno) che non ha e non avrà accesso al tuo strumento di ticketing.
+
+### La WBS in Excel
+
+La WBS vista in 8.14 si presta particolarmente bene a un foglio Excel,
+proprio perché è gerarchica e stabile (a differenza del backlog, che
+cambia di continuo). Una struttura tipica usa **codici gerarchici**
+(1, 1.1, 1.1.1...) con colonne per attività, responsabile, stima e
+dipendenze:
+
+| Codice | Attività | Responsabile | Stima (giorni) | Dipende da |
+|---|---|---|---|---|
+| 1 | Modulo pagamenti ShopFacile | — | — | — |
+| 1.1 | Integrazione fornitore esterno | — | — | — |
+| 1.1.1 | Configurazione ambiente di test | Marco | 2 | — |
+| 1.1.2 | Sviluppo connettore di pagamento | Marco | 5 | 1.1.1 |
+| 1.2 | Sicurezza | — | — | — |
+| 1.2.1 | Test di sicurezza sui token | Giulia | 3 | 1.1.2 |
+
+La numerazione gerarchica, da sola, è già un'informazione: leggendo solo i
+codici (senza nemmeno i nomi delle attività) capisci istantaneamente cosa
+è contenuto in cosa, e a quale livello di dettaglio ti trovi. Scendendo nei
+livelli si arriva al **work package** (già introdotto in 8.14): il livello
+più basso della scomposizione, quello abbastanza piccolo da poter essere
+stimato con sicurezza e assegnato a una singola persona — esattamente le
+righe 1.1.1, 1.1.2 e 1.2.1 della tabella sopra.
+
+### Reporting: le poche funzioni che contano davvero
+
+Per il reporting in Excel, poche funzioni risolvono la maggior parte dei
+casi reali:
+
+- le **tabelle pivot**, per riassumere rapidamente grandi elenchi (quante
+  issue per stato, quante ore per persona, senza scrivere formule);
+- **CERCA.VERT** o **CERCA.X**, per unire due elenchi che condividono una
+  colonna in comune (es. un elenco di attività e un elenco di
+  responsabili) — lo stesso principio della JOIN vista nella sezione 2 a
+  proposito delle tabelle di un database, solo applicato a due fogli
+  invece che a due tabelle SQL;
+- la **formattazione condizionale**, per far saltare all'occhio subito i
+  problemi (una cella che si colora di rosso se una data è passata e
+  l'attività non è ancora completata);
+- i **grafici**, per rendere leggibile a chi non guarda il dettaglio ogni
+  giorno un andamento che altrimenti resterebbe sepolto in righe di
+  numeri.
+
+Un errore classico da conoscere, perché lo vedrai capitare: un report
+costruito su un'estrazione di dati fatta **a mano** una volta, che nessuno
+rifà nello stesso modo il mese dopo. Il numero nel report sembra identico
+nella forma, ma la procedura che lo ha prodotto è già cambiata (magari un
+filtro diverso, una colonna in più): il confronto tra un mese e l'altro,
+a quel punto, confronta cose diverse senza che nessuno se ne accorga.
+
+### Trade-off e limiti, senza sconti
+
+I limiti di Excel, per essere onesti, sono altrettanto reali dei suoi
+vantaggi: **nessuna storia delle modifiche** utile quanto quella di Git
+(sezione 4) — capire chi ha cambiato cosa e quando è, nella pratica,
+quasi impossibile; **nessuna fonte unica di verità**, perché un file si
+copia, si scarica, si modifica in locale; il classico scenario delle
+**tre versioni dello stesso file in tre e-mail diverse**, con nessuno
+sicuro di quale sia quella corretta. E un rischio meno ovvio ma reale: un
+foglio Excel che, con il tempo, **diventa un processo aziendale** — usato
+da tutti, ma senza controllo di versione, senza backup dedicato, senza
+nessuno che ne sia davvero responsabile — è un rischio operativo silenzioso,
+non uno strumento "leggero e senza conseguenze".
+
+Il criterio pratico da portarti via: **Excel per pensare, lo strumento
+condiviso (Jira o equivalente) per far scorrere il lavoro**. Il primo è
+perfetto per esplorare un'idea prima che diventi un processo; il secondo è
+indispensabile una volta che quel lavoro deve essere visibile, tracciabile
+e condiviso da più persone nel tempo.
+
+---
+
+## 8.23 Riepilogo
 
 In questa sezione hai visto come i concetti di project management si
 inseriscano in un contesto Agile/DevOps, senza contraddire ciò che hai
@@ -1366,7 +1647,9 @@ progetto nel suo insieme:
 - gli **stakeholder** ti dicono chi coinvolgere e come;
 - il **RAID Log** ti dà un metodo per non farti sorprendere da rischi,
   assunzioni non verificate, problemi e dipendenze;
-- la **RACI** chiarisce chi fa cosa, evitando ambiguità e conflitti;
+- la **RACI** chiarisce chi fa cosa, evitando ambiguità e conflitti, e il
+  **Solution Architect** è il ruolo che tiene insieme la soluzione tra
+  sistemi e team diversi, quando la RACI di un singolo team non basta più;
 - le **milestone** segnano i traguardi che contano davvero, distinti dalle
   scadenze operative quotidiane;
 - la gestione del **rischio** ti allena a pensare in anticipo, non solo a
@@ -1411,6 +1694,13 @@ manager, clienti e fornitori:
 - l'**approccio ibrido** — usare il vocabolario PMP per governare budget e
   stakeholder, e il metodo Agile per il lavoro quotidiano del team — è la
   realtà di gran parte delle aziende in cui lavorerai.
+
+Infine hai visto due strumenti molto concreti, che userai quasi ogni
+giorno: **Jira**, con la sua gerarchia di Epic/Story/Task/Sub-task e le due
+viste (board e Gantt) sullo stesso lavoro; ed **Excel**, che resta
+indispensabile per prototipare, calcolare e riportare, ma va tenuto
+separato dal ruolo di "fonte unica di verità" che spetta allo strumento
+condiviso del team.
 
 Nelle prossime sezioni vedrai come molti di questi concetti si traducano in
 strumenti concreti: la cultura DevOps (sezione 9) e piattaforme come
@@ -1535,15 +1825,45 @@ strumento conta meno del ragionamento che ci metti dietro.
     la sottosezione corrispondente: quasi sempre c'è una differenza
     concreta (es. struttura, stabilità, chi decide).
 
+11. **Classifica issue nella gerarchia di Jira.** Scegli una funzionalità
+    software di media complessità (puoi riusare quella dell'esercizio 8) e
+    scrivi: una possibile Epic che la contiene, 2 Story con valore diretto
+    per l'utente, 1 Task tecnico che nessun utente chiederebbe mai, e 2
+    Sub-task per una delle Story.
+    ✅ **Come verificare**: se il tuo Task "tecnico" in realtà descrive un
+    beneficio visibile all'utente, probabilmente è una Story mascherata da
+    Task — rileggi la distinzione della sezione 8.21.
+
+12. **Riconosci quando un lavoro sta meglio in Excel o in Jira.** Elenca 4
+    situazioni plausibili in un progetto (es. "calcolare una volta il
+    costo di un'opzione tecnica alternativa", "tracciare lo stato di 40
+    Story per lo sprint in corso") e per ciascuna decidi quale dei due
+    strumenti useresti, motivando con il criterio della sezione 8.22.
+    ✅ **Come verificare**: se hai scelto Excel per un caso che richiede
+    aggiornamenti quotidiani da più persone, o Jira per un calcolo isolato
+    che nessuno riuserà, rileggi il criterio "Excel per pensare, lo
+    strumento condiviso per far scorrere il lavoro".
+
+13. **Distingui Solution Architect da Tech Lead in uno scenario.** Immagina
+    che due team di ShopFacile debbano integrare i rispettivi sistemi (es.
+    catalogo prodotti e gestione ordini) e stai decidendo chi coinvolgere
+    e quando. Scrivi in 3-4 righe cosa chiederesti al Solution Architect e
+    cosa chiederesti invece al Tech Lead di ciascun team.
+    ✅ **Come verificare**: se le domande che faresti ai due ruoli sono
+    intercambiabili, rileggi la tabella di confronto della sezione 8.3 —
+    dovrebbe emergere una differenza di ambito (tra i team vs dentro un
+    team), non solo di titolo.
+
 ---
 
 ## 🔗 Collegamenti
 
+- [3. Come nasce un software](../03-come-nasce-un-software/README.md) — i requisiti non funzionali che il Solution Architect presidia, e gli ADR con cui documenta le decisioni tra sistemi
 - [4. Git e GitHub](../04-git-e-github/README.md) — dove Issue, Pull Request e GitHub Projects diventano gli strumenti concreti per tracciare RAID Log e dashboard
 - [5. Agile](../05-agile/README.md) — i principi che spiegano perché, in un contesto Agile, lo scope è la variabile che si adatta e non il tempo
-- [6. Scrum](../06-scrum/README.md) — i ruoli (Scrum Master, Product Owner) e la Sprint Retrospective che dialogano con Project Manager, sponsor e lessons learned del PMBOK
+- [6. Scrum](../06-scrum/README.md) — i ruoli (Scrum Master, Product Owner), le User Story e le Epic che in Jira diventano oggetti concreti, e la Sprint Retrospective che dialoga con Project Manager, sponsor e lessons learned del PMBOK
 - [9. DevOps](../09-devops/README.md) — la cultura e le pratiche che rendono possibile un monitoraggio continuo e KPI come deployment frequency e MTTR
-- [10. CI/CD](../10-ci-cd/README.md) — i quality gate della pipeline come automazione concreta del Quality Control visto in 8.18
+- [10. CI/CD](../10-ci-cd/README.md) — i quality gate della pipeline come automazione concreta del Quality Control visto in 8.18, e Jira Software come strumento di tracking collegato alla pipeline
 - [16. Glossario](../16-glossario/README.md) — le definizioni sintetiche di RAID Log, RACI, milestone, change request e degli altri termini incontrati in questa sezione
 
 ## 📚 Risorse
@@ -1560,3 +1880,8 @@ strumento conta meno del ragionamento che ci metti dietro.
 - [Atlassian — Burndown chart](https://www.atlassian.com/agile/tutorials/burndown-charts)
 - [Scrum.org — Risk Management in Scrum](https://www.scrum.org/resources/blog)
 - [Axelos — PRINCE2 e RAID Log](https://www.axelos.com/certifications/propath/project-management-prince2)
+- [Atlassian — Jira Software, panoramica](https://www.atlassian.com/software/jira)
+- [Atlassian — Guida a Epic, Story e Task in Jira](https://www.atlassian.com/agile/project-management/epics-stories-themes)
+- [Atlassian — Cumulative flow diagram](https://www.atlassian.com/agile/project-management/metrics)
+- [Microsoft Support — Panoramica delle tabelle pivot in Excel](https://support.microsoft.com/it-it/office/panoramica-delle-tabelle-pivot-e-dei-grafici-pivot-527c8fa3-02c0-445a-a2db-7794676bce96)
+- [Wikipedia — Enterprise Architecture](https://en.wikipedia.org/wiki/Enterprise_architecture) — per la differenza di ambito tra Enterprise Architect e Solution Architect

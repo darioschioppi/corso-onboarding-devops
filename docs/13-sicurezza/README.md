@@ -27,6 +27,9 @@ Al termine di questa sezione saprai:
 - spiegare perché la sicurezza informatica non è "un problema tecnico" ma
   riguarda anche costi, reputazione, contratti e conformità legale;
 - distinguere **autenticazione** e **autorizzazione**;
+- riconoscere il ruolo di **Active Directory**, **Single Sign-On**,
+  **token** e **OAuth/OpenID Connect** nella gestione delle identità
+  aziendali;
 - descrivere le buone pratiche di base su password e **autenticazione a più
   fattori (MFA)**;
 - ricollegare HTTPS e crittografia a quanto già visto nei Fondamenti di
@@ -42,7 +45,10 @@ Al termine di questa sezione saprai:
 - spiegare, a livello base, perché il **GDPR** e la protezione dei dati
   personali riguardano anche il tuo lavoro di PM;
 - capire perché **backup e disaster recovery** sono parte della sicurezza,
-  non un tema separato.
+  non un tema separato;
+- distinguere il **Disaster Recovery** dalla **Business Continuity**, e
+  capire perché la **Business Impact Analysis** rende RTO e RPO una
+  decisione di business.
 
 ---
 
@@ -162,6 +168,111 @@ catalogo prodotti e non a **modificare** le impostazioni della pipeline di
 produzione — quel permesso è riservato, ad esempio, a Marco o a Luca. Due
 sviluppatori autenticati sulla stessa piattaforma possono avere
 autorizzazioni completamente diverse.
+
+### Chi gestisce davvero autenticazione e autorizzazione, in un'azienda vera
+
+Nella scena sopra, Ahmed si autentica su un solo sistema. Nella realtà di
+un'azienda enterprise, però, quando Ahmed è entrato nel team ha ricevuto
+**sei credenziali diverse su sei canali diversi**: una per la
+posta, una per GitHub, una per la VPN, una per il gestionale interno, una
+per lo strumento di ticketing, una per l'ambiente cloud. Quando **Giulia**,
+qualche mese dopo, lascia il progetto, ha **cinque accessi** che nessuno
+sa elencare con certezza — e disattivarli tutti significa ricordarsi di
+cinque sistemi diversi, sperando di non scordarne uno. Nel frattempo, ogni
+nuova applicazione che il team costruisce si trova a dover reinventare da
+zero la sua schermata di login, cioè a reimplementare, applicazione per
+applicazione, la parte più delicata dell'intero sistema. **Luca** la
+sintetizza così: l'unica lista completa di "chi può fare cosa" **non
+esiste da nessuna parte**.
+
+**Directory e Active Directory.** La soluzione a questo problema è avere
+una **fonte unica delle identità**: una directory che contiene utenti,
+gruppi, computer e politiche di sicurezza dell'intera azienda, invece di
+farle gestire a ogni applicazione per conto proprio. **Active Directory**
+(spesso abbreviato AD) è l'implementazione più diffusa nelle aziende
+enterprise, e parla tipicamente il protocollo **LDAP** (*Lightweight
+Directory Access Protocol*) per farsi interrogare dalle altre
+applicazioni; **Entra ID** (il nome attuale di quello che si chiamava
+Azure AD) è la sua versione pensata per il cloud. Il dettaglio che
+riguarda direttamente il tuo ruolo: l'appartenenza a un **gruppo** nella
+directory diventa un'**autorizzazione** — "chi è nel gruppo Developer
+Catalogo può modificare quel repository" — e quindi **gestire gli accessi
+diventa, in pratica, gestire i gruppi**. È il motivo per cui, quando arriva
+una persona nuova nel team, è comune che un PM venga coinvolto: non per
+decidere la tecnologia, ma per confermare a quali gruppi quella persona
+deve appartenere.
+
+**SSO (Single Sign-On).** Una volta che esiste una directory unica, ha
+senso costruirci sopra un'unica autenticazione valida per molte
+applicazioni: è il **Single Sign-On (SSO)**. Con l'SSO attivo, Ahmed si
+autentica **una sola volta** e da lì accede a email, GitHub, gestionale e
+strumenti cloud senza rifare il login su ciascuno — le sue sei credenziali
+diventano una sola identità; e quando Giulia lascia il progetto, i suoi
+cinque accessi si spengono **con un solo interruttore**, quello della sua
+identità centrale, invece di dover essere disattivati sistema per sistema.
+Il rovescio della medaglia è che l'SSO **concentra** il rischio esattamente
+dove concentra la comodità: se il sistema di SSO cade, cade l'accesso a
+tutto contemporaneamente; se una credenziale viene rubata, quella singola
+credenziale apre tutto, non solo un'applicazione. Ed è **per questo**,
+non per policy generica, che l'MFA — che vedremo nel dettaglio al
+paragrafo 13.3 — non è opzionale proprio sull'identità centrale: più un
+accesso è "la chiave di tutto", più quella chiave deve avere una seconda
+verifica.
+
+**Token.** Una volta autenticato tramite SSO, il sistema non manda più la
+password a ogni singola richiesta — sarebbe come dover riesibire il
+biglietto del cinema (l'analogia vista sopra) a ogni passo del corridoio.
+Manda invece un **token**: un biglietto temporaneo che dice chi sei e cosa
+puoi fare, con una **scadenza**. La scadenza breve non è un fastidio, è
+una protezione: se un token viene intercettato o rubato, il danno che può
+fare è limitato alla finestra di tempo in cui è ancora valido, non a
+tempo indefinito. Per lo stesso motivo, un token va trattato **esattamente
+come una password**: se finisce per errore in un file del repository — lo
+stesso errore che vedremo tra poco per le chiavi di accesso, al paragrafo
+13.3 — va considerato compromesso e sostituito, non semplicemente rimosso
+dal commit successivo.
+
+**OAuth e OpenID Connect.** C'è una distinzione che quasi nessuno spiega
+bene, ed è proprio quella che separa OAuth da tutto il resto: **OAuth**
+serve a **delegare un'autorizzazione limitata**, senza mai cedere la
+password. Immagina un'applicazione di terzi che deve leggere i documenti
+di un cliente di ShopFacile per conto suo (es. per compilare
+automaticamente un modulo): il cliente non le consegna la sua password,
+le concede un **permesso limitato e revocabile** — "puoi leggere solo i
+documenti, solo per i prossimi 30 giorni". Il pulsante "accedi con..." che
+vedi su tanti siti è l'esempio quotidiano di questo meccanismo. **OpenID
+Connect (OIDC)** costruisce sopra OAuth un livello ulteriore: non si
+limita a delegare un permesso, aggiunge l'**autenticazione** vera e
+propria — "dimmi chi è questa persona", non solo "dammi il permesso di
+fare questa cosa specifica". Il punto in cui un PM deve fare attenzione è
+il momento del **consenso**: quando un'applicazione chiede "vuoi
+autorizzare X a leggere i tuoi documenti?", la domanda da porsi non è solo
+"mi fido di X", ma **cosa** sto autorizzando esattamente a leggere, e
+**per quanto tempo** — un permesso concesso una volta e poi dimenticato
+resta attivo silenziosamente, anche quando non serve più.
+
+| Termine | Risponde alla domanda |
+|---|---|
+| **Autenticazione** | Chi sei? |
+| **Autorizzazione** | Cosa puoi fare, ora che sappiamo chi sei? |
+| **SSO** | Posso autenticarmi una volta sola per più applicazioni? |
+| **Token** | Come dimostro chi sono e cosa posso fare, senza rimandare la password ogni volta? |
+| **OAuth** | Come do a un'app un permesso limitato, senza darle la mia password? |
+| **OpenID Connect** | Come uso lo stesso meccanismo di OAuth anche per dire "chi sono"? |
+| **Active Directory / LDAP** | Dove vive, in un unico posto, l'elenco di chi esiste e a cosa appartiene? |
+
+I trade-off da portare con te: un'identità centralizzata (directory + SSO)
+è comoda e, allo stesso tempo, fragile, perché concentra in un solo punto
+un rischio che prima era distribuito su tanti sistemi diversi; un token a
+vita lunga è comodo (non devi rifare login spesso) ed è proprio per questo
+pericoloso, perché resta utilizzabile a lungo se rubato; la delega OAuth
+è potente ma i permessi concessi vengono spesso **dimenticati** — nessuno
+torna a controllare, mesi dopo, se quell'app di terzi ha ancora bisogno di
+leggere i documenti del cliente. È esattamente per questo che la
+**revisione periodica degli accessi**, già citata come pratica di
+governance della sicurezza al paragrafo 13.7, non riguarda solo chi ha
+accesso a un repository: riguarda anche quali applicazioni terze hanno
+ancora un permesso OAuth attivo che nessuno usa più.
 
 ---
 
@@ -620,11 +731,10 @@ non un semplice bug da correggere alla prossima release.
 
 Anche il progetto più attento a GDPR, scan e code review non è immune da
 un imprevisto puro e semplice: un tema che a volte viene percepito come
-"amministrativo" ma è parte integrante della sicurezza, ed è l'ultimo
-ingrediente di questa sezione. Cosa succede se, nonostante tutte le
-precauzioni, qualcosa va comunque storto — un guasto hardware, un errore
-umano che cancella dati per sbaglio, o un attacco che compromette un
-sistema.
+"amministrativo" ma è parte integrante della sicurezza. Cosa succede se,
+nonostante tutte le precauzioni, qualcosa va comunque storto — un guasto
+hardware, un errore umano che cancella dati per sbaglio, o un attacco che
+compromette un sistema.
 
 - **Backup**: una copia dei dati, salvata separatamente (spesso in un
   luogo fisicamente diverso), che permette di recuperare le informazioni
@@ -675,7 +785,77 @@ precisione.
 
 ---
 
-## 13.11 Riepilogo
+## 13.11 Business Continuity: cosa fa l'azienda mentre i sistemi sono giù
+
+Il piano di Disaster Recovery di ShopFacile, alla prova dei fatti,
+**funziona**: il database ordini viene ripristinato entro le due ore
+concordate, esattamente come previsto. Il problema è quello che succede
+**prima** che il ripristino sia completo. Per sei ore — perché stavolta il
+guasto è più serio del solito, e il ripristino richiede più tempo del
+solito — i venditori che lavorano con ShopFacile non possono confermare
+un ordine, e il call center riceve chiamate di clienti che chiedono aiuto
+senza che nessuno abbia detto loro cosa rispondere. Nessun sistema, in
+queste sei ore, è "in errore" nel senso tecnico: il DR sta facendo
+esattamente il suo lavoro. Quello che manca è un piano per le **persone**
+— per i venditori, per il call center, per i clienti — mentre i sistemi
+sono fermi. È questo il confine tra Disaster Recovery e **Business
+Continuity (BC)**: il DR risponde alla domanda "come rimetto in piedi i
+sistemi?"; la Business Continuity risponde a una domanda diversa, "come
+continua a funzionare **l'azienda** mentre i sistemi non ci sono?".
+
+Gli ingredienti principali di un piano di Business Continuity:
+
+- **BIA (Business Impact Analysis)**: l'analisi che stima, processo per
+  processo, quanto costa un'ora di fermo — non in senso tecnico, in senso
+  di business: quanti ordini non confermati, quanti clienti persi, quale
+  obbligo normativo non rispettato. È questo numero, e non una
+  preferenza tecnica, a determinare quale RTO e quale RPO ha senso
+  concordare per ciascun sistema (visti al paragrafo 13.10): un processo
+  che costa poco stare fermo un giorno può accettare un RTO di ore; un
+  processo che costa moltissimo ogni minuto di fermo giustifica un
+  investimento ben più alto in ridondanza. È il collegamento più
+  importante di questa sottosezione: **i numeri di RTO e RPO sono una
+  decisione di business**, presa sulla base della BIA, non una scelta
+  tecnica lasciata al team IT.
+- **Processi critici e procedure alternative**: cosa fa il call center
+  quando il sistema è giù — un copione da seguire, un modulo cartaceo per
+  registrare a mano una richiesta urgente, un numero di emergenza da dare
+  al cliente. Sono procedure manuali, spesso "vecchio stile" apposta,
+  pensate proprio per i momenti in cui la tecnologia non è disponibile.
+- **Comunicazione di crisi e catena di comando**: chi decide cosa dire ai
+  clienti, chi lo dice, e chi ha l'autorità di prendere decisioni senza
+  aspettare l'approvazione di qualcuno che magari, in quel momento, non è
+  raggiungibile.
+- **Il test**, con una verità scomoda: un piano di Business Continuity mai
+  provato è un **documento**, non un piano. E i piani, quando vengono
+  finalmente testati (o messi alla prova da un incidente vero), falliscono
+  quasi sempre su dettagli banali: la lista dei numeri di telefono del
+  call center non è aggiornata da un anno, l'unica persona che conosce a
+  memoria la procedura manuale è in ferie quella settimana, la password
+  del sistema di emergenza è scaduta e nessuno se n'era accorto perché non
+  la usa mai nessuno.
+
+| | Disaster Recovery | Business Continuity |
+|---|---|---|
+| **Obiettivo** | Ripristinare sistemi e dati | Far continuare a operare l'azienda |
+| **Ambito** | Infrastruttura tecnica (server, database, rete) | Processi, persone, comunicazione |
+| **Chi lo redige** | Team IT/infrastruttura | Business, con il supporto dell'IT |
+| **Chi lo attiva** | Team tecnico, al momento del guasto | Management/crisis team, insieme al tecnico |
+| **Come si misura** | RTO, RPO | Tempo di continuità operativa accettabile per processo, definito dalla BIA |
+| **Esempio** | Ripristinare il database ordini in 2 ore | Il call center segue un copione manuale mentre il database è giù |
+
+Come per il DR, anche la continuità operativa **costa in proporzione a
+quanto la si vuole**: una ridondanza completa (uffici alternativi, sistemi
+di emergenza sempre pronti, personale duplicato) raddoppia i costi e va
+giustificata processo per processo con la BIA, non applicata
+indiscriminatamente a tutto. C'è poi un costo nascosto, meno visibile ma
+altrettanto reale: il piano va **mantenuto** nel tempo — numeri di
+telefono, procedure, responsabili — altrimenti, il giorno in cui serve,
+descrive un'azienda che non esiste più.
+
+---
+
+## 13.12 Riepilogo
 
 In questa sezione hai visto i concetti di base della sicurezza informatica
 utili al tuo ruolo di PM/Scrum Master:
@@ -684,6 +864,12 @@ utili al tuo ruolo di PM/Scrum Master:
   reputazione, contratti e conformità legale;
 - **autenticazione** (chi sei) e **autorizzazione** (cosa puoi fare) sono
   due controlli distinti e sequenziali;
+- un'**Active Directory** (o il suo equivalente cloud, Entra ID) è la
+  fonte unica delle identità aziendali; il **Single Sign-On** unifica
+  l'autenticazione su più applicazioni; il **token** è il "biglietto"
+  temporaneo che sostituisce la password ad ogni richiesta; **OAuth**
+  delega un permesso limitato senza cedere la password, e **OpenID
+  Connect** ci aggiunge sopra l'autenticazione;
 - password forti, gestori di password e **MFA** sono le difese di base
   contro il tipo di incidente più comune: il furto di credenziali;
 - **HTTPS** cifra i dati in transito; i dati "a riposo" (salvati) vanno
@@ -701,7 +887,11 @@ utili al tuo ruolo di PM/Scrum Master:
 - il **GDPR** impone obblighi legali precisi sulla protezione dei dati
   personali, con conseguenze concrete in caso di violazione;
 - **backup e disaster recovery** sono il piano B necessario quando,
-  nonostante tutte le precauzioni, qualcosa va comunque storto.
+  nonostante tutte le precauzioni, qualcosa va comunque storto;
+- la **Business Continuity** è diversa dal Disaster Recovery: il DR
+  rimette in piedi i sistemi, la BC fa continuare a funzionare l'azienda
+  mentre i sistemi non ci sono — e la **Business Impact Analysis** è ciò
+  che trasforma RTO e RPO da numeri tecnici a decisioni di business.
 
 Nella prossima sezione vedrai come questi concetti si traducono in scelte
 concrete di configurazione degli ambienti di sviluppo, test, staging e
@@ -716,6 +906,11 @@ voce, o scrivendo due righe) a queste domande:
 
 - Sai spiegare la differenza tra autenticazione e autorizzazione con
   l'analogia del cinema?
+- Sai spiegare cos'è un token e perché la sua scadenza breve è una
+  protezione, non un fastidio?
+- Sai spiegare la differenza tra OAuth e OpenID Connect con un esempio
+  concreto (un'app che deve leggere i tuoi documenti per conto tuo)?
+- Sai spiegare perché il Single Sign-On è insieme comodo e rischioso?
 - Sai spiegare a cosa serve l'MFA e perché rafforza la sola password?
 - Sai spiegare, con parole tue, cosa significa "dato cifrato"?
 - Sapresti spiegare a un collega non tecnico perché il codice va testato
@@ -727,6 +922,8 @@ voce, o scrivendo due righe) a queste domande:
 - Sai spiegare perché il GDPR riguarda anche le scelte di un PM, non solo
   i legali?
 - Sai spiegare la differenza tra backup e disaster recovery?
+- Sai spiegare la differenza tra Disaster Recovery e Business Continuity,
+  e perché la Business Impact Analysis determina RTO e RPO?
 
 ---
 
@@ -749,7 +946,18 @@ voce, o scrivendo due righe) a queste domande:
    usi, se l'MFA è attiva sì/no, e sai spiegare a un collega perché è
    importante che lo sia anche se la password è "forte".
 
-3. **Riconosci una vulnerabilità in un caso pratico**: leggi la
+3. **Mappa le tue identità digitali di lavoro**: elenca tutti gli
+   strumenti a cui accedi per lavoro (email, GitHub, VPN, gestionale,
+   cloud...) e verifica quali passano da un Single Sign-On aziendale e
+   quali richiedono ancora un login separato. Per almeno un'applicazione
+   che usa il pulsante "accedi con...", individua quale permesso OAuth le
+   hai concesso.
+   ✅ **Come verificare**: sai indicare quanti "punti di accesso separati"
+   avresti se il SSO non esistesse, e sai spiegare a un collega cosa
+   succederebbe ai tuoi accessi se la tua identità centrale venisse
+   disattivata.
+
+4. **Riconosci una vulnerabilità in un caso pratico**: leggi la
    descrizione di una vulnerabilità reale (puoi cercarne una recente sul
    sito OWASP o in una news di settore, senza bisogno di capirne i
    dettagli tecnici) e prova a classificarla: assomiglia più a una SQL
@@ -760,7 +968,7 @@ voce, o scrivendo due righe) a queste domande:
    tecnico eccessivo, cosa rischiava di succedere e perché "testare anche
    per la sicurezza" avrebbe potuto prevenirlo.
 
-4. **Trova gli scan di sicurezza nella pipeline reale**: chiedi a un
+5. **Trova gli scan di sicurezza nella pipeline reale**: chiedi a un
    collega (developer o DevOps engineer) di farti vedere, nella pipeline
    CI/CD del progetto, dove sono configurati gli scan di sicurezza (SAST,
    SCA, o eventualmente DAST) e cosa succede quando trovano una
@@ -770,7 +978,7 @@ voce, o scrivendo due righe) a queste domande:
    team quando un quality gate di sicurezza blocca un rilascio (una
    notifica? un'email? il rilascio che semplicemente non parte?).
 
-5. **Simula una richiesta del cliente sul GDPR**: immagina che il cliente
+6. **Simula una richiesta del cliente sul GDPR**: immagina che il cliente
    chieda "per quanto tempo conservate i dati personali degli utenti dopo
    che chiudono l'account, e chi può accedervi?". Prova a scrivere, in 5-6
    righe, come struttureresti la risposta (anche senza conoscere i dettagli
@@ -781,7 +989,7 @@ voce, o scrivendo due righe) a queste domande:
    decide i tempi di conservazione, chi ha accesso), e non promette nulla
    che non puoi verificare con il team.
 
-6. **Chiedi RTO e RPO reali del progetto**: chiedi alla tua collega
+7. **Chiedi RTO e RPO reali del progetto**: chiedi alla tua collega
    Scrum Master/PM o a un membro del team operations quali sono, se
    definiti, l'RTO e l'RPO concordati per l'ambiente di produzione del
    progetto (anche se la risposta è "non sono ancora stati definiti
@@ -789,6 +997,15 @@ voce, o scrivendo due righe) a queste domande:
    ✅ **Come verificare**: sai riportare a un collega, con le tue parole,
    cosa significano quei due numeri specifici (non la definizione
    generica del libro) applicati al contesto reale del progetto.
+
+8. **Distingui DR e BC su uno scenario reale**: pensa a un possibile
+   incidente nel tuo progetto (o immaginane uno plausibile) e descrivi, in
+   due elenchi separati, cosa farebbe il piano di Disaster Recovery
+   (sistemi) e cosa dovrebbe fare un piano di Business Continuity
+   (persone e processi) nelle stesse ore.
+   ✅ **Come verificare**: il tuo elenco "Business Continuity" non
+   contiene nessuna azione tecnica sui sistemi (ripristini, failover) —
+   se ne trovi una, appartiene al DR, non alla BC.
 
 ---
 
@@ -805,3 +1022,7 @@ voce, o scrivendo due righe) a queste domande:
 - [Microsoft Learn — Security concepts](https://learn.microsoft.com/en-us/security/zero-trust/zero-trust-overview) — introduzione ai principi moderni di sicurezza (Zero Trust) applicati al cloud
 - [Microsoft Learn — Cos'è il DevSecOps](https://learn.microsoft.com/it-it/devops/operate/security-in-devops) — approfondimento su come la sicurezza si integra nel ciclo DevOps
 - [Garante per la protezione dei dati personali — Cos'è il GDPR](https://www.garanteprivacy.it/regolamentoue) — riferimento istituzionale italiano sul regolamento europeo
+- [Microsoft Learn — Cos'è Microsoft Entra ID (Azure AD)](https://learn.microsoft.com/it-it/entra/fundamentals/whatis) — introduzione a directory, SSO e identità nel cloud
+- [OAuth.net — An Introduction to OAuth 2.0](https://oauth.net/2/) — panoramica non tecnica sul funzionamento della delega OAuth
+- [OpenID Foundation — What is OpenID Connect](https://openid.net/developers/how-connect-works/) — chiarisce la differenza tra OAuth (autorizzazione) e OIDC (autenticazione)
+- [Ready.gov — Business Continuity Planning](https://www.ready.gov/business-continuity-plan) — guida pratica e istituzionale (in inglese) alla pianificazione della continuità operativa

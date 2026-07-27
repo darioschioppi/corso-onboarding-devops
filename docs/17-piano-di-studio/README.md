@@ -10,7 +10,7 @@ Il piano che segue copre **9 settimane**. Non è un vincolo rigido: è una tracc
 
 ## Come usare questo piano
 
-- **È un percorso, non una gara.** Le ore indicate per ogni settimana (in media 5-12 ore) sono una stima per un neolaureato senza background informatico che studia part-time, in parallelo all'affiancamento quotidiano sul progetto. Se una settimana ti serve più tempo — è normalissimo, soprattutto per le sezioni 2 e 9, e per la sezione 8 dopo l'aggiunta del vocabolario PMP/PMBOK, che sono le più dense — **rallenta**. È molto meglio arrivare alla settimana 9 con basi solide che aver "letto tutto" senza averlo capito.
+- **È un percorso, non una gara.** Le ore indicate per ogni settimana (in media 5-13 ore) sono una stima per un neolaureato senza background informatico che studia part-time, in parallelo all'affiancamento quotidiano sul progetto. Se una settimana ti serve più tempo — è normalissimo, soprattutto per le sezioni 2, 8 e 9, cresciute con il vocabolario PMP/PMBOK, Jira/Excel e ITSM, e per la settimana 7 che ora copre anche Platform Engineering e identità digitale — **rallenta**. È molto meglio arrivare alla settimana 9 con basi solide che aver "letto tutto" senza averlo capito.
 - **Le settimane si possono spostare, non solo comprimere.** Se il progetto ti mette in un contesto reale prima del previsto (es. partecipi a un Sprint Planning già alla settimana 2), va benissimo anticipare la lettura della sezione corrispondente: il piano è una guida, il contesto reale è il miglior maestro che hai.
 - **Il check-in con la tua collega è la parte più importante del piano**, non un'aggiunta facoltativa. Ogni settimana prevede almeno un momento di confronto (15-30 minuti bastano) in cui le racconti cosa hai capito, le fai le domande che ti sono rimaste in sospeso e — soprattutto — collega la teoria che hai letto a un esempio concreto del progetto ("quello che ho letto sulle user story, corrisponde a come scriviamo le card sul backlog?"). Senza questo passaggio, il rischio è restare con una conoscenza da manuale che non si aggancia mai alla pratica quotidiana.
 - **Gli esercizi pratici non sono opzionali.** Leggere una sezione ti dà il vocabolario; l'esercizio è quello che lo trasforma in competenza. Se salti gli esercizi per fare prima, arriverai alla fine del percorso con parole difficili ma poca sicurezza nell'usarle.
@@ -58,7 +58,7 @@ Il percorso segue una logica a blocchi progressivi: prima il **linguaggio di bas
 | | |
 |---|---|
 | **Argomenti** | [Sezione 1 — Introduzione](../01-introduzione/README.md) · [Sezione 2 — Fondamenti di informatica](../02-fondamenti-informatica/README.md) |
-| **Tempo stimato** | 8-10 ore (la sezione 2 è la più densa dell'intero corso: CPU, RAM, rete, database, container, Docker, Kubernetes — non sentirti in colpa se ti serve più tempo) |
+| **Tempo stimato** | 9-11 ore (la sezione 2 è la più densa dell'intero corso: CPU, RAM, rete, database — incluse chiavi, JOIN e normalizzazione —, container, Docker, Kubernetes, OpenShift, e infine Markdown/HTML — non sentirti in colpa se ti serve più tempo) |
 
 **Esercizi pratici**
 
@@ -87,7 +87,7 @@ Sai spiegare a un amico non tecnico, in meno di due minuti, la differenza tra un
 | | |
 |---|---|
 | **Argomenti** | [Sezione 3 — Come nasce un software](../03-come-nasce-un-software/README.md) · [Sezione 4 — Git e GitHub](../04-git-e-github/README.md) |
-| **Tempo stimato** | 7-9 ore (la sezione 4 richiede pratica al computer, non solo lettura) |
+| **Tempo stimato** | 8-10 ore (la sezione 4 richiede pratica al computer, non solo lettura, e copre anche due modelli di branching aggiuntivi — cactus/OneFlow — più Maven/POM per chi lavora su progetti Java) |
 
 **Esercizi pratici**
 
@@ -103,8 +103,10 @@ Al termine della settimana devi saper:
 
 - descrivere le fasi principali del ciclo di vita di un software (analisi, progettazione, sviluppo, test, rilascio, manutenzione);
 - distinguere un bug da una richiesta di nuova funzionalità;
+- spiegare perché una decisione tecnica importante va scritta in un ADR, e cosa significa che un ADR viene "superato";
 - spiegare cosa sono repository, commit, branch e pull request;
-- distinguere concettualmente Git Flow e Trunk Based Development (anche solo a grandi linee, senza padroneggiarli).
+- distinguere concettualmente Git Flow, il modello cactus/OneFlow e Trunk Based Development (anche solo a grandi linee, senza padroneggiarli);
+- riconoscere a cosa serve Maven e il file `pom.xml`, e cosa sono le dipendenze transitive.
 
 **Verifica finale della settimana**
 
@@ -174,7 +176,7 @@ Sai spiegare a parole tue la differenza tra Sprint (Scrum) e flusso continuo (Ka
 | | |
 |---|---|
 | **Argomenti** | [Sezione 8 — Project Management](../08-project-management/README.md) |
-| **Tempo stimato** | 9-11 ore (la sezione è cresciuta molto: oltre a stakeholder, RAID log e RACI, copre anche il vocabolario PMP/PMBOK — charter, WBS, tempi e costi — quindi mettici più tempo del previsto, specialmente se l'ambito PMP è del tutto nuovo per te) |
+| **Tempo stimato** | 11-13 ore (la sezione è la più lunga del corso: oltre a stakeholder, RAID log, RACI e Solution Architect, copre il vocabolario PMP/PMBOK — charter, WBS, tempi e costi — e la gerarchia Jira/Excel per il tracking quotidiano del lavoro, quindi mettici più tempo del previsto, specialmente se l'ambito PMP è del tutto nuovo per te) |
 
 **Esercizi pratici**
 
@@ -183,6 +185,8 @@ Sai spiegare a parole tue la differenza tra Sprint (Scrum) e flusso continuo (Ka
 3. Scrivi un Project Charter minimale (anche solo mezza pagina) per un piccolo progetto immaginario: obiettivo, sponsor, vincoli principali.
 4. Prova a scomporre lo stesso progetto immaginario in una WBS di 2 livelli (macro-attività e sotto-attività), poi individua a occhio quale sequenza di attività ne determina la durata minima (il critical path).
 5. Con numeri inventati e semplici (es. PV = 1000, EV = 800, AC = 900), calcola a mano SPI e CPI e interpreta il risultato: il progetto immaginario è in anticipo o in ritardo? Sta spendendo di più o di meno del previsto?
+6. Chiedi a un collega di mostrarti la gerarchia Epic/Story/Task/Sub-task su Jira (o lo strumento equivalente del progetto) e osserva la stessa issue vista da due prospettive diverse: la board e un eventuale Gantt/roadmap.
+7. Apri un foglio Excel di esempio con almeno due colonne in comune con un secondo elenco, e prova a usare CERCA.VERT (o CERCA.X) per unirle: è lo stesso principio della JOIN vista nella sezione 2, applicato a due fogli invece che a due tabelle SQL.
 
 **Obiettivi di apprendimento**
 
@@ -194,7 +198,9 @@ Al termine della settimana devi saper:
 - scomporre l'ambito (scope) di un piccolo progetto in una WBS, e riconoscere cos'è il critical path in un Diagramma di Gantt;
 - spiegare cos'è l'Earned Value Management e leggere gli indici SPI e CPI;
 - spiegare il triplo vincolo (tempo, costo, ambito) e perché una change request serve a evitare lo scope creep;
-- confrontare a grandi linee l'approccio PMP/PMBOK con quello Agile, e capire cosa significa "approccio ibrido".
+- confrontare a grandi linee l'approccio PMP/PMBOK con quello Agile, e capire cosa significa "approccio ibrido";
+- leggere la gerarchia Epic/Story/Task/Sub-task di Jira e riconoscere quando Excel resta lo strumento giusto (reporting rapido, WBS) e quando serve invece lo strumento condiviso del team;
+- distinguere il ruolo del Solution Architect da quello di Tech Lead, Product Owner ed Enterprise Architect.
 
 **Verifica finale della settimana**
 
@@ -207,7 +213,7 @@ Sai spiegare, con un esempio, cosa significherebbe per il progetto ShopFacile un
 | | |
 |---|---|
 | **Argomenti** | [Sezione 9 — DevOps](../09-devops/README.md) · [Sezione 10 — CI/CD](../10-ci-cd/README.md) |
-| **Tempo stimato** | 10-12 ore (settimana densa e centrale: cultura, CI/CD concettuale e pratico, Infrastructure as Code, monitoring/observability — vale la pena dedicarle tempo extra) |
+| **Tempo stimato** | 11-13 ore (settimana densa e centrale: cultura, CI/CD concettuale e pratico, Infrastructure as Code, monitoring/observability, e ora anche ITSM/ITIL — incident, problem e change management — e il mondo dei job batch notturni: vale la pena dedicarle tempo extra) |
 
 **Esercizi pratici**
 
@@ -218,6 +224,8 @@ Sai spiegare, con un esempio, cosa significherebbe per il progetto ShopFacile un
 5. Osserva una pipeline CI/CD reale del progetto in esecuzione (o la sua ultima esecuzione registrata) e **disegna uno schema** di come funziona: trigger, fasi (build, test, deploy), ambienti coinvolti, eventuali quality gate.
 6. Trova nel progetto un file di pipeline (ad esempio un workflow GitHub Actions in `.github/workflows/`) e prova a identificare, senza capire ogni riga, dove sono definiti trigger, stage e job.
 7. Chiedi cosa succede quando una pipeline "si rompe" (fallisce un quality gate, un test): chi viene notificato, cosa succede al rilascio.
+8. Chiedi a chi gestisce la produzione di raccontarti l'ultimo incidente reale gestito dal team: prova a distinguere a voce alta cosa è stato incident management (ripristinare) e cosa problem management (capire la causa).
+9. Se il progetto ha job schedulati/batch (calcoli notturni, invii automatici), chiedi a un collega quali dipendenze esistono tra un job e il successivo, e cosa succede se il primo slitta.
 
 **Obiettivi di apprendimento**
 
@@ -229,7 +237,9 @@ Al termine della settimana devi saper:
 - spiegare cos'è l'Infrastructure as Code e perché è utile;
 - distinguere monitoring, observability e logging;
 - descrivere le fasi tipiche di una pipeline CI/CD (checkout, build, test, pubblicazione artifact, deploy);
-- spiegare cosa fa scattare (trigger) una pipeline e cos'è un quality gate.
+- spiegare cosa fa scattare (trigger) una pipeline e cos'è un quality gate;
+- distinguere incident management, problem management e change management (ITSM/ITIL), e capire come il change management convive con il CI/CD;
+- spiegare cos'è l'elaborazione batch e perché la finestra notturna è un vincolo di progetto, non solo un dettaglio tecnico.
 
 **Verifica finale della settimana**
 
@@ -242,7 +252,7 @@ Sai descrivere le fasi di una pipeline CI/CD del progetto, dal commit del develo
 | | |
 |---|---|
 | **Argomenti** | [Sezione 11 — Architetture software](../11-architetture-software/README.md) · [Sezione 12 — Cloud](../12-cloud/README.md) · [Sezione 13 — Sicurezza](../13-sicurezza/README.md) · [Sezione 14 — Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) |
-| **Tempo stimato** | 8-10 ore (quattro sezioni più brevi, ma trasversali: prova a leggerle collegandole sempre al progetto reale) |
+| **Tempo stimato** | 10-12 ore (quattro sezioni trasversali, tutte cresciute: Event-Driven Architecture nella 11, Platform Engineering e Integration Platform nella 12, identità/OAuth/SSO e Business Continuity nella 13 — prova a leggerle collegandole sempre al progetto reale) |
 
 **Esercizi pratici**
 
@@ -250,14 +260,20 @@ Sai descrivere le fasi di una pipeline CI/CD del progetto, dal commit del develo
 2. Individua, con l'aiuto di un collega, quale provider cloud usa il progetto (Azure, AWS o altro) e quali servizi principali (IaaS, PaaS, SaaS) sono in uso — anche solo i nomi, senza approfondire ogni dettaglio tecnico.
 3. Chiedi come funzionano autenticazione e autorizzazione nell'applicazione del progetto (login, ruoli, permessi) e prova a mappare i concetti visti nella sezione 13 su questo esempio reale.
 4. Ricostruisci, con l'aiuto della tua collega, la sequenza reale degli ambienti del progetto (Dev, Test, Staging, Prod o equivalenti) e chi/cosa decide quando il codice passa da uno all'altro.
+5. Chiedi a un developer un esempio concreto di comunicazione a eventi (pub/sub) nel progetto, oppure, se non esiste ancora, discutete insieme quale processo trarrebbe beneficio dal passare da una chiamata sincrona a un evento.
+6. Chiedi come è organizzata la piattaforma interna del progetto (self-service, pipeline standard, catalogo di ambienti) e se esiste un "golden path" per creare un nuovo servizio.
+7. Fatti raccontare la differenza tra il piano di Disaster Recovery e quello di Business Continuity del progetto: cosa succede ai sistemi, e cosa succede alle persone, se una piattaforma resta giù per alcune ore.
 
 **Obiettivi di apprendimento**
 
 Al termine della settimana devi saper:
 
 - distinguere monolite e microservizi, e frontend e backend;
+- distinguere un comando da un evento, e spiegare a grandi linee cos'è un'architettura event-driven (producer, consumer, topic, pub/sub);
 - distinguere IaaS, PaaS e SaaS con un esempio ciascuno;
-- spiegare la differenza tra autenticazione e autorizzazione, e cos'è il DevSecOps;
+- spiegare cos'è il Platform Engineering e la differenza tra piattaforma DevOps e piattaforma di integrazione;
+- spiegare la differenza tra autenticazione e autorizzazione, cos'è il DevSecOps, e a cosa servono Active Directory/SSO/token/OAuth nella gestione delle identità;
+- distinguere Disaster Recovery e Business Continuity;
 - descrivere a cosa serve ciascun ambiente (Dev, Test, Staging, Prod) nella catena di rilascio del progetto.
 
 **Verifica finale della settimana**
@@ -330,16 +346,16 @@ Se dovessi spiegare in 5 minuti a un/una nuovo/a collega, arrivato/a oggi, "come
 
 | Settimana | Argomenti | Tempo stimato | Focus dell'esercizio pratico |
 |---|---|---|---|
-| 1 | [Introduzione](../01-introduzione/README.md) · [Fondamenti di informatica](../02-fondamenti-informatica/README.md) | 8-10 ore | Docker in locale, schema client/server/DB |
-| 2 | [Come nasce un software](../03-come-nasce-un-software/README.md) · [Git e GitHub](../04-git-e-github/README.md) | 7-9 ore | Repository, branch e pull request fittizia su GitHub |
+| 1 | [Introduzione](../01-introduzione/README.md) · [Fondamenti di informatica](../02-fondamenti-informatica/README.md) | 9-11 ore | Docker in locale, schema client/server/DB |
+| 2 | [Come nasce un software](../03-come-nasce-un-software/README.md) · [Git e GitHub](../04-git-e-github/README.md) | 8-10 ore | Repository, branch e pull request fittizia su GitHub |
 | 3 | [Agile](../05-agile/README.md) · [Scrum](../06-scrum/README.md) | 8-10 ore | Osservazione Sprint Planning/Daily, scrittura di 3 user story |
 | 4 | [Kanban](../07-kanban/README.md) | 5-6 ore | Board Kanban di prova, calcolo di lead time e cycle time |
-| 5 | [Project Management](../08-project-management/README.md) | 9-11 ore | Tabella RACI, Project Charter e WBS di esempio, calcolo di SPI/CPI |
-| 6 | [DevOps](../09-devops/README.md) · [CI/CD](../10-ci-cd/README.md) | 10-12 ore | Osservazione dashboard di monitoring e pipeline reale, disegno dello schema |
-| 7 | [Architetture software](../11-architetture-software/README.md) · [Cloud](../12-cloud/README.md) · [Sicurezza](../13-sicurezza/README.md) · [Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) | 8-10 ore | Mappatura architettura, cloud provider e ambienti reali del progetto |
+| 5 | [Project Management](../08-project-management/README.md) | 11-13 ore | Tabella RACI, Project Charter e WBS di esempio, calcolo di SPI/CPI, gerarchia Jira |
+| 6 | [DevOps](../09-devops/README.md) · [CI/CD](../10-ci-cd/README.md) | 11-13 ore | Osservazione dashboard di monitoring e pipeline reale, disegno dello schema, un incidente reale (ITSM) |
+| 7 | [Architetture software](../11-architetture-software/README.md) · [Cloud](../12-cloud/README.md) · [Sicurezza](../13-sicurezza/README.md) · [Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) | 10-12 ore | Mappatura architettura, cloud provider, piattaforma interna e ambienti reali del progetto |
 | 8 | [Intelligenza artificiale](../15-intelligenza-artificiale/README.md) | 7-9 ore | Osservazione di GitHub Copilot in azione, scrittura di prompt di esempio |
 | 9 | Ripasso generale · [Glossario](../16-glossario/README.md) · [Libri](../18-libri-consigliati/README.md) · [Risorse online](../19-risorse-online/README.md) | 6-8 ore | Mappa mentale finale e colloquio conclusivo con la collega |
-| **Totale** | | **68-85 ore** | |
+| **Totale** | | **75-92 ore** | |
 
 ---
 

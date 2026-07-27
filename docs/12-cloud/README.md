@@ -23,7 +23,12 @@ Al termine di questa sezione saprai:
 - distinguere IaaS, PaaS e SaaS e sapere chi gestisce cosa in ciascun modello;
 - riconoscere i nomi dei principali servizi Azure e i loro equivalenti AWS;
 - capire cosa significano scalabilità verticale/orizzontale, pay-as-you-go,
-  regioni e alta disponibilità.
+  regioni e alta disponibilità;
+- capire cos'è il **Platform Engineering** e perché nasce come risposta a un
+  problema che DevOps, da solo, lascia scoperto;
+- distinguere la **piattaforma DevOps** dalla **piattaforma di
+  integrazione**, due significati diversi che condividono il nome
+  "piattaforma".
 
 ---
 
@@ -466,11 +471,212 @@ di interruzioni del servizio.
 
 ---
 
-Con questo, il percorso di ShopFacile dal server in ufficio a un'infrastruttura
-cloud distribuita su più data center è completo: riassumiamo i concetti
-principali visti lungo la strada.
+## 12.9 Platform Engineering: rendere semplice la strada giusta
 
-## 12.9 Riepilogo: cosa ti serve ricordare
+La prima volta che **Ahmed** ha dovuto mettere in produzione un
+microservizio tutto suo, è andata così. Nessuno gli nega nulla:
+semplicemente, deve capire da solo come si fa. Apre un ticket per farsi
+creare l'ambiente di test, e aspetta. Chiede a **Giulia** il file della
+pipeline di un altro servizio, "tanto è uguale a quello che serve a te" —
+scopre dopo un giorno che non era uguale: usava un registro artefatti
+diverso, con permessi diversi. Scopre al terzo giorno che per pubblicare
+l'immagine del suo servizio sul registry serve un'autorizzazione che
+nessuno gli ha detto di richiedere. Chiede a **Marco**, che ha
+attraversato lo stesso percorso tempo prima: Marco si ricorda che c'era un
+problema simile, ma non ricorda più come
+l'aveva risolto, e deve rimettersi a cercare tra i suoi vecchi commit.
+**Due settimane e mezzo** dopo il primo commit, la prima riga di codice di
+Ahmed arriva finalmente in produzione — non per un problema nel suo codice,
+che era pronto dal secondo giorno, ma per tutto quello che stava intorno.
+
+Il rovescio della medaglia si vede dal lato di chi mantiene, non di chi
+arriva. In ShopFacile, col tempo, sono nati sette team diversi, e ciascuno
+ha risolto **lo stesso problema** di Ahmed a modo suo: sette pipeline
+diverse, quattro modi diversi di gestire i segreti (password, chiavi API),
+tre modi diversi di scrivere i log. Il giorno in cui esce una vulnerabilità
+grave in una libreria usata quasi ovunque, la domanda "in quanti posti
+dobbiamo intervenire?" non ha una risposta rapida — bisogna chiederlo,
+team per team, e sperare che nessuno risponda in ritardo.
+
+**Luca** vede lo stesso problema da una terza angolazione, quella delle
+stime: ogni volta che un team stima un nuovo servizio, dentro la stima c'è
+un margine per "il tempo che serve per mettere in piedi tutto il resto" —
+ambiente, pipeline, permessi — e quel margine varia enormemente da team a
+team, senza che nessuno sappia spiegare bene perché uno ci metta tre giorni
+e un altro tre settimane.
+
+Il punto di svolta è culturale, prima che tecnico. DevOps (sezione 9) ha
+detto: **ogni team è responsabile del proprio software fino alla
+produzione**. Preso alla lettera, questo significa che ogni team deve
+diventare esperto di Kubernetes, di reti, di sicurezza, di observability —
+tutto quello che hai visto nelle sezioni precedenti, moltiplicato per sette
+team che lo imparano ciascuno per la propria strada. **Non è realistico, e
+quando DevOps è nato nessuno l'aveva detto esplicitamente.** Il
+**Platform Engineering** nasce esattamente da questa contraddizione: non è
+una moda del momento, è la risposta a un debito che il modello DevOps, preso
+alla lettera, ha lasciato scoperto.
+
+### Cos'è il Platform Engineering
+
+Il **Platform Engineering** è la disciplina di costruire e mantenere una
+**piattaforma interna** per gli sviluppatori — non un decreto, un
+**prodotto**: con dei clienti (gli sviluppatori dei vari team) che possono,
+in linea di principio, scegliere di non usarla. Questo è il criterio che
+distingue davvero una piattaforma da un ufficio che impone strumenti: **se
+l'adozione è obbligatoria per decreto, non hai una piattaforma, hai una
+nuova burocrazia** con un nome più moderno.
+
+A occuparsene è un **team di piattaforma**: un team come gli altri, con il
+proprio backlog, che però non consegna funzionalità per il cliente finale
+di ShopFacile, ma funzionalità per gli **altri team di sviluppo**. Il suo
+successo si misura con indicatori concreti, non con "quanti strumenti
+abbiamo costruito": quanto tempo passa dal codice scritto alla produzione,
+quanto tempo serve per creare un nuovo servizio da zero, e — l'indicatore
+più onesto di tutti — **quale percentuale di team usa la piattaforma per
+scelta**, non per obbligo.
+
+### Internal Developer Platform (IDP): il self-service sopra l'infrastruttura
+
+L'**Internal Developer Platform (IDP)** è ciò che il team di piattaforma
+costruisce concretamente: il livello di **self-service** che si mette
+sopra l'infrastruttura (il cloud visto in questa sezione, Kubernetes visto
+nella sezione 2, le pipeline della sezione 10), così che un team di
+sviluppo possa ottenerne i pezzi che gli servono senza passare ogni volta
+da zero. Il syllabus del settore individua tre pilastri:
+
+- **Standardizzazione**: gli stessi mattoni per tutti — un unico modo di
+  gestire i segreti, un unico formato di log, una struttura comune per le
+  pipeline. Non impedisce le eccezioni, ma fa in modo che l'eccezione sia
+  una scelta consapevole, non l'esito di sette invenzioni indipendenti.
+- **Automazione**: creare un ambiente, un database, una pipeline non
+  richiede più una sequenza di passaggi manuali fatti a mano da un
+  ingegnere esperto, ma un processo automatico, ripetibile, uguale ogni
+  volta.
+- **Developer Experience**: quanto è facile, per chi scrive codice, capire
+  cosa fare e farlo — documentazione chiara, messaggi d'errore utili,
+  strumenti che non richiedono di leggere un manuale di cinquanta pagine
+  prima di poterli usare.
+
+Due parole del vocabolario tornano continuamente parlando di IDP. Il
+**golden path** è il percorso raccomandato e già pronto, che copre l'80%
+dei casi tipici — non l'unico percorso possibile: un team con esigenze
+particolari può ancora uscirne, ma deve saperlo e deciderlo, non scoprirlo
+per caso mesi dopo. Il **self-service** è la possibilità di ottenere un
+ambiente, un database o una pipeline **senza aprire un ticket e senza
+aspettare una persona**: un modulo, un comando, un catalogo di opzioni
+pre-approvate, non un'email a chi "se ne occupa".
+
+Torniamo ad Ahmed, con una piattaforma di questo tipo in funzione. Apre il
+catalogo interno, sceglie il modello "microservizio REST standard", il
+sistema gli crea ambiente, pipeline e permessi già configurati secondo il
+golden path. La sua prima riga di codice arriva in produzione **in mezza
+giornata**, non in due settimane e mezzo. Ma vale la pena essere onesti su
+cosa questo **non** risolve: se Ahmed ha bisogno di qualcosa fuori dal
+golden path (un tipo di database che nessun altro usa, un requisito di
+sicurezza particolare), la piattaforma non lo aiuta più di prima — anzi,
+può disorientarlo, perché si aspetta che "funzioni tutto in automatico"
+anche dove il golden path semplicemente non arriva. E la piattaforma non
+rende Ahmed esperto di quello che sta usando: gli permette di non doverlo
+essere subito, il che è diverso.
+
+Un prodotto come **OpenShift**, che hai visto nella sezione 2 come
+distribuzione di Kubernetes con molti pezzi già integrati, è un **mattone**
+su cui si costruisce una piattaforma interna — non è già la piattaforma,
+perché la piattaforma include anche le convenzioni, i modelli di partenza
+e il supporto alle persone che OpenShift da solo non fornisce.
+
+### Trade-off: una piattaforma non è mai gratis
+
+Come ogni soluzione vista in questo corso, anche il Platform Engineering ha
+un costo, e vale la pena elencarlo con la stessa onestà con cui abbiamo
+raccontato il beneficio:
+
+- È un **investimento che non produce valore visibile per il cliente
+  finale nel breve periodo**: il team di piattaforma non consegna una
+  funzionalità che il cliente di ShopFacile vede, consegna capacità agli
+  altri team — un beneficio che si vede a distanza di mesi, non di sprint.
+- **Sotto una certa dimensione — indicativamente meno di 3-4 team — il
+  costo di costruire e mantenere una piattaforma supera quello che rende**:
+  gli stessi problemi si possono risolvere con convenzioni condivise e
+  poca disciplina, senza bisogno di un team dedicato.
+- La piattaforma diventa un **collo di bottiglia** se il team di
+  piattaforma resta l'unico che può fare certe cose: si torna, con un nome
+  diverso, al vecchio ticket verso l'infrastruttura che il Platform
+  Engineering voleva eliminare.
+- Il **golden path invecchia**: se nessuno lo mantiene, diventa la strada
+  che tutti aggirano perché non copre più i casi reali — e un golden path
+  aggirato da tutti è peggio che non averlo mai avuto, perché nasconde la
+  frammentazione invece di prevenirla.
+- Il caso peggiore, quello più comune da vedere davvero: una piattaforma
+  costruita *per* gli sviluppatori ma *senza* gli sviluppatori — decisa a
+  tavolino dal team di piattaforma, senza ascoltare chi la dovrebbe usare
+  ogni giorno — che finisce per non essere adottata da nessuno, con il
+  budget e il tempo già spesi.
+
+> 💡 Il concetto di "platform team" è documentato in modo approfondito in
+> **Team Topologies** di Matthew Skelton e Manuel Pais, che lo descrive
+> come uno dei quattro tipi fondamentali di team in un'organizzazione
+> tecnologica; i report **DORA** (DevOps Research and Assessment) discutono
+> da anni la relazione tra piattaforme interne, produttività degli
+> sviluppatori e velocità di rilascio.
+
+---
+
+## 12.10 DevOps Platform e Integration Platform: due mondi che si confondono
+
+Parlando di "piattaforma" in un contesto enterprise, il syllabus distingue
+due cose che condividono il nome ma risolvono problemi diversi, e vale la
+pena non confonderle.
+
+La **piattaforma DevOps** è quella che hai già incontrato pezzo per pezzo
+in questo corso: la catena di strumenti che porta il codice dallo sviluppo
+alla produzione — repository (sezione 4), pipeline (sezione 10), artifact e
+registry, ambienti (sezione 14). Risolve il problema di "come faccio
+arrivare il mio codice in produzione in modo ripetibile".
+
+La **piattaforma di integrazione** risolve un problema diverso: far
+parlare tra loro **sistemi che non sono nati per parlarsi**. Include
+componenti come l'**API gateway** e l'**API management** (il punto unico
+da cui passano le chiamate verso i servizi, con autenticazione e limiti di
+traffico centralizzati), il **middleware**, a volte ancora chiamato **ESB**
+(Enterprise Service Bus, il "bus" software su cui i sistemi si scambiano
+messaggi), le **code e gli stream di eventi** — lo stesso meccanismo
+pub/sub visto nella sezione 11 a proposito dell'Event-Driven Architecture,
+qui applicato non tra microservizi dello stesso sistema ma tra piattaforme
+ed epoche diverse — e i **connettori verso i sistemi legacy**, come il
+mainframe.
+
+In un'assicurazione questo pesa più che altrove: i sistemi che tengono le
+polizze hanno spesso **trent'anni**, funzionano, gestiscono dati critici, e
+**non si riscrivono** — riscriverli da zero sarebbe un progetto pluriennale
+a rischio altissimo, per un beneficio incerto. La piattaforma di
+integrazione è ciò che permette al software nuovo (un sito ShopFacile, una
+app, un servizio moderno a microservizi) di **usare** quel sistema
+vecchio, leggendo e scrivendo dati, **senza doverlo toccare**.
+
+| | Piattaforma DevOps | Piattaforma di integrazione |
+|---|---|---|
+| **Problema che risolve** | Portare il codice dallo sviluppo alla produzione in modo ripetibile | Far comunicare sistemi diversi, spesso di età ed epoche diverse |
+| **Chi la usa** | Sviluppatori, team di piattaforma, chi rilascia | Team applicativi che devono leggere/scrivere dati su altri sistemi, incluso il legacy |
+| **Esempi di componenti** | Repository, pipeline CI/CD, artifact, container registry, ambienti | API gateway, API management, middleware/ESB, code/stream di eventi, connettori legacy/mainframe |
+| **Domanda tipica a cui risponde** | "Come faccio arrivare questo codice in produzione?" | "Come faccio leggere il dato di una polizza che vive su un sistema di trent'anni fa?" |
+
+Le due piattaforme, nella pratica di un'azienda enterprise come quella
+assicurativa di questo corso, convivono e si sovrappongono: una pipeline
+DevOps può rilasciare un servizio che, una volta in produzione, comunica
+con il resto del mondo passando esattamente dalla piattaforma di
+integrazione. Non sono la stessa cosa, ma il software moderno di
+ShopFacile ha bisogno di entrambe per funzionare davvero in un contesto con
+sistemi vecchi e nuovi che devono convivere.
+
+---
+
+Con questo, il percorso di ShopFacile dal server in ufficio a un'infrastruttura
+cloud distribuita su più data center, con le sue piattaforme interne e di
+integrazione, è completo: riassumiamo i concetti principali visti lungo la
+strada.
+
+## 12.11 Riepilogo: cosa ti serve ricordare
 
 - **Cloud computing**: usare risorse informatiche (server, storage, rete) di
   qualcun altro via internet, invece di possedere e gestire hardware
@@ -493,6 +699,18 @@ principali visti lungo la strada.
   infrastrutture in tutto il mondo, garantendo vicinanza agli utenti e
   **alta disponibilità** (continuità del servizio anche in caso di guasti
   locali).
+- **Platform Engineering**: costruire e mantenere una **piattaforma
+  interna** come un prodotto, con un **team di piattaforma** e
+  un'**Internal Developer Platform (IDP)** basata su
+  **standardizzazione**, **automazione** e **Developer Experience**, con
+  un **golden path** raccomandato e un accesso **self-service** senza
+  ticket — ma solo se il team di piattaforma resta al servizio degli
+  sviluppatori, non il contrario.
+- **Piattaforma DevOps vs piattaforma di integrazione**: la prima porta il
+  codice dallo sviluppo alla produzione; la seconda fa parlare tra loro
+  sistemi diversi (API gateway, middleware/ESB, code di eventi, connettori
+  legacy) — cruciale in un contesto enterprise con sistemi vecchi che non
+  si riscrivono.
 
 ---
 
@@ -506,6 +724,10 @@ principali visti lungo la strada.
 - Sai spiegare cosa significa "pay-as-you-go" con un esempio concreto?
 - Sai spiegare perché avere più regioni/data center aiuta l'alta
   disponibilità?
+- Sai spiegare la differenza tra Platform Engineering e un semplice
+  "ufficio che impone strumenti"?
+- Sai indicare almeno due componenti di una piattaforma di integrazione e
+  perché servono di più in un contesto enterprise che in una startup?
 
 ---
 
@@ -562,10 +784,34 @@ principali visti lungo la strada.
    succederebbe se il data center principale del progetto avesse un
    problema per un giorno?" basandoti su quello che hai scoperto.
 
+7. **Piattaforma o burocrazia?** Pensa a uno strumento o processo interno
+   che il tuo team è "obbligato" a usare (anche fuori dall'IT, se non ti
+   viene in mente un esempio tecnico). Applica il criterio visto nella
+   sezione 12.9: se nessuno può scegliere di non usarlo, e non ha "clienti"
+   che ne guidano il miglioramento, è più vicino a una burocrazia che a una
+   piattaforma. Scrivi due righe che spiegano la tua conclusione.
+   ✅ **Come verificare**: la tua risposta cita esplicitamente il criterio
+   dell'adozione volontaria, non solo "è comodo/scomodo da usare".
+
+8. **DevOps o Integration Platform?** Per ciascuno di questi tre problemi,
+   decidi quale delle due piattaforme viste nella sezione 12.10 useresti
+   per risolverlo, motivando la scelta: (a) "il nuovo servizio di
+   pagamento deve arrivare in produzione ogni giorno, non ogni mese"; (b)
+   "un nuovo servizio deve leggere il numero di polizza da un sistema
+   gestionale assicurativo scritto trent'anni fa, che nessuno vuole
+   riscrivere"; (c)
+   "due team diversi vogliono ricevere una notifica ogni volta che un
+   ordine cambia stato, senza doversi chiamare a interfaccia diretta".
+   ✅ **Come verificare**: hai assegnato (a) alla piattaforma DevOps e (b)
+   e (c) alla piattaforma di integrazione, con una frase di motivazione per
+   ciascuna.
+
 ---
 
 ## 🔗 Collegamenti
 
+- [9. DevOps](../09-devops/README.md) — la cultura "you build it, you run it" da cui nasce il debito che il Platform Engineering colma, e Service Management/ITSM per quello che succede dopo il rilascio
+- [10. CI/CD](../10-ci-cd/README.md) — la piattaforma DevOps vista qui in concreto: repository, pipeline, artifact, registry
 - [13. Sicurezza](../13-sicurezza/README.md) — dove vedremo come proteggere i dati e i sistemi che girano su queste infrastrutture cloud
 - [14. Ambienti di sviluppo](../14-ambienti-di-sviluppo/README.md) — dove vedremo come sviluppo, test e produzione si organizzano concretamente, spesso proprio su infrastrutture cloud come quelle viste qui
 
@@ -576,3 +822,6 @@ principali visti lungo la strada.
 - [AWS – What is Cloud Computing?](https://aws.amazon.com/what-is-cloud-computing/) — la spiegazione ufficiale di Amazon Web Services
 - [AWS – Tipi di cloud computing](https://aws.amazon.com/types-of-cloud-computing/) — approfondimento su IaaS, PaaS e SaaS lato AWS
 - [Microsoft Learn – Panoramica dei servizi Azure](https://learn.microsoft.com/it-it/azure/?product=popular) — elenco dei servizi Azure più usati
+- [Team Topologies – Platform team](https://teamtopologies.com/key-concepts) — Skelton & Pais sui quattro tipi fondamentali di team, incluso il platform team
+- [Google Cloud – DORA: DevOps Research and Assessment](https://cloud.google.com/devops/state-of-devops) — i report annuali citati a proposito di piattaforme interne e produttività
+- [Red Hat – Cos'è Platform Engineering](https://www.redhat.com/it/topics/devops/what-is-platform-engineering) — introduzione a Platform Engineering e Internal Developer Platform

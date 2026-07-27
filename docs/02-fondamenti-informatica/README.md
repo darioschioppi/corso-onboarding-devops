@@ -24,11 +24,17 @@ Al termine di questa sezione saprai:
 - capire come sono organizzati i file su un computer;
 - spiegare in modo semplice come funziona una rete, internet, e i protocolli
   TCP/IP, HTTP/HTTPS, DNS;
-- capire cos'è un'API, cosa significa REST, e leggere un semplice JSON;
-- capire la differenza tra database relazionali e NoSQL;
-- capire cosa sono Virtual Machine, Container, Docker e Kubernetes — i
-  mattoncini su cui si basa gran parte del mondo DevOps che incontrerai nel
-  team.
+- capire cos'è un'API, cosa significa REST, riconoscere le quattro
+  operazioni **CRUD** e leggere un semplice JSON, e capire a cosa servono
+  **Swagger/OpenAPI** come contratto tra due team;
+- capire la differenza tra database relazionali e NoSQL, cosa sono
+  **chiave primaria**, **chiave esterna** e **JOIN**, e perché la
+  **normalizzazione** evita di scrivere la stessa informazione più volte;
+- capire cosa sono Virtual Machine, Container, Docker, Kubernetes e
+  **OpenShift** — i mattoncini su cui si basa gran parte del mondo DevOps
+  che incontrerai nel team;
+- distinguere **Markdown** e **HTML**, i due linguaggi con cui è scritto
+  anche questo stesso corso.
 
 ---
 
@@ -671,6 +677,74 @@ per "recuperare i dettagli dell'ordine con id 42".
 Sentirai questo termine costantemente parlando con gli sviluppatori del
 team, quindi è importante che il concetto ti sia chiaro.
 
+### CRUD: le quattro operazioni fondamentali
+
+Guarda di nuovo la tabella dei verbi HTTP appena vista: leggere, creare,
+modificare, eliminare. Non è un caso che si ripresentino quasi identiche in
+ogni sistema che gestisce dati — hanno un nome tecnico che sentirai usare in
+continuazione dagli sviluppatori: **CRUD**, l'acronimo di **Create, Read,
+Update, Delete** (Crea, Leggi, Aggiorna, Elimina).
+
+Sono le quattro operazioni fondamentali che si possono fare su un qualsiasi
+dato salvato da qualche parte — un ordine, un cliente, una polizza — e si
+ritrovano a ogni livello che hai incontrato finora:
+
+| Operazione | Verbo HTTP | Comando SQL (sezione 2.15) |
+|---|---|---|
+| Create (crea) | `POST` | `INSERT` |
+| Read (leggi) | `GET` | `SELECT` |
+| Update (aggiorna) | `PUT` / `PATCH` | `UPDATE` |
+| Delete (elimina) | `DELETE` | `DELETE` |
+
+Perché ti interessa da PM? Perché quando un tecnico dice "è solo un CRUD"
+sta dicendo qualcosa di preciso sulla stima: che la funzionalità richiesta
+si limita a creare, leggere, aggiornare ed eliminare un dato, senza logica
+di business particolare dietro — un lavoro relativamente standard e
+prevedibile. Quando invece dice "non è un CRUD" (o "c'è più logica sotto"),
+ti sta avvisando che dentro quell'operazione ci sono regole, calcoli,
+verifiche, integrazioni con altri sistemi: la stima va rivista al rialzo, ed
+è un segnale che vale la pena approfondire prima di fissare una scadenza.
+
+### Swagger e OpenAPI: il contratto tra due team
+
+Immagina che Ahmed debba esporre un'API REST per gli ordini di ShopFacile, e
+che un partner esterno (un servizio di logistica) debba integrarsi con
+quell'API per ricevere gli ordini da spedire. Il modo "artigianale" di
+gestire questo accordo è un documento Word con l'elenco delle chiamate
+possibili, i campi richiesti, un paio di esempi. Funziona per una settimana:
+poi il documento invecchia, qualcuno cambia un campo nel codice senza
+aggiornarlo, e il team esterno scopre — in fase di test, non prima — che la
+specifica dice `codiceCliente` mentre l'API restituisce davvero
+`customerCode`. L'integrazione si rompe, e nessuno dei due team ha
+"sbagliato": si stavano semplicemente fidando di un documento che nessuno
+aveva l'obbligo di mantenere sincronizzato con la realtà.
+
+Da questo problema nasce **OpenAPI**: uno standard per descrivere un'API
+REST — le sue risorse, i verbi disponibili, i campi di ogni richiesta e
+risposta — in un formato leggibile sia da una persona che da una macchina
+(tipicamente JSON o YAML, il formato JSON lo hai visto in §2.14). **Swagger**
+è il nome della famiglia di strumenti storicamente associata a OpenAPI: a
+partire dalla stessa descrizione, genera automaticamente documentazione
+navigabile nel browser — che permette di "provare" le chiamate senza
+scrivere una riga di codice — oltre a codice di base (client e stub) per chi
+deve integrarsi.
+
+Il punto per un PM non è lo strumento, ma il cambio di natura del
+documento: una specifica OpenAPI non è più "un documento di cui ci fidiamo",
+è un **contratto** verificabile. Questo permette a due team di lavorare **in
+parallelo**: chi fornisce l'API e chi deve consumarla possono partire nello
+stesso momento, il secondo costruendo la propria integrazione contro la
+specifica anche prima che il servizio esista davvero.
+
+> 💡 **Trade-off**: il contratto va comunque mantenuto a mano — se Ahmed
+> cambia l'API e non aggiorna la specifica OpenAPI, il problema del
+> documento Word invecchiato torna identico, solo con un formato più
+> elegante. E una specifica formalmente corretta ma concettualmente
+> sbagliata (es. descrive un campo come opzionale quando il servizio in
+> realtà lo richiede sempre) dà a entrambi i team una falsa sicurezza:
+> tutti si fidano di un contratto che non corrisponde al comportamento
+> reale.
+
 ---
 
 ## 2.14 JSON e XML: i formati per scambiarsi dati
@@ -796,12 +870,88 @@ Esempio, tabella `Clienti` del database di ShopFacile:
 | 1  | Mario Rossi | mario.rossi@email.com |
 | 2  | Anna Bianchi | anna.bianchi@email.com |
 
+### Chiave primaria: come distinguere due righe che si somigliano
+
+Guarda di nuovo quella colonna `id`: perché esiste, se la tabella ha già
+`nome` ed `email`? Il problema che risolve è concreto: prova a immaginare due
+clienti che si chiamano entrambi "Mario Rossi" (capita più spesso di quanto
+si pensi). Se il database cercasse gli ordini di "Mario Rossi" per nome,
+potrebbe restituire — o modificare — gli ordini della persona sbagliata.
+
+Per questo ogni tabella ha una **chiave primaria**: una colonna (o un
+piccolo gruppo di colonne) che identifica **in modo univoco e stabile** ogni
+riga, e che il database stesso si impegna a non far duplicare mai. Perché
+funzioni, una chiave primaria deve essere:
+
+- **unica**: nessuna altra riga può averne lo stesso valore;
+- **mai vuota**: ogni riga deve averne una;
+- **stabile nel tempo**: non deve cambiare durante la vita della riga.
+
+È tentante usare come chiave primaria qualcosa che sembra già unico, come il
+codice fiscale o l'indirizzo e-mail di un cliente — ma sono scelte
+rischiose: un'e-mail può cambiare (il cliente cambia provider), un codice
+fiscale può essere inserito con un errore di digitazione e va corretto, e in
+entrambi i casi "correggere la chiave primaria" è un'operazione delicata che
+rischia di rompere ogni collegamento con le altre tabelle. Per questo, nella
+grande maggioranza dei casi, si preferisce un numero generato apposta dal
+database (come l'`id` della tabella `Clienti`), che non ha alcun significato
+nel mondo reale e quindi non ha motivo di dover cambiare mai.
+
 Esempio, tabella `Ordini`:
 
 | id | id_cliente | totale |
 |----|------------|--------|
 | 101 | 1 | 129.90 |
 | 102 | 2 | 59.00 |
+
+### Chiave esterna: il collegamento che il database fa rispettare
+
+Nota la colonna `id_cliente` nella tabella `Ordini`: contiene lo stesso
+valore della chiave primaria della tabella `Clienti`. Questo collegamento si
+chiama **chiave esterna** (foreign key), ed è ciò che rende possibile la
+"relazione" da cui il database relazionale prende il nome.
+
+Non è solo una convenzione di comodo: è una regola che il database **fa
+rispettare attivamente**. Se qualcuno provasse a creare un ordine con
+`id_cliente = 999` e nella tabella `Clienti` non esistesse nessun cliente con
+quell'id, il database **rifiuta l'operazione**. Questo si chiama vincolo di
+**integrità referenziale**, ed è un tassello dell'integrità dei dati di cui
+hai già sentito parlare in questa sezione: garantisce che non possano
+esistere in giro ordini "orfani", intestati a un cliente inesistente.
+
+Perché interessa a un PM: se un giorno senti che una funzionalità è stata
+bloccata perché "violerebbe un vincolo di integrità referenziale", non è un
+capriccio tecnico — è il database che sta impedendo attivamente che i dati
+diventino incoerenti.
+
+### Relazioni: uno-a-molti e molti-a-molti
+
+La relazione tra `Clienti` e `Ordini` è di tipo **uno-a-molti**: un cliente
+può avere molti ordini, ma ogni ordine appartiene a un solo cliente. È il
+caso più comune, e si riconosce così: la chiave esterna vive nella tabella
+"dalla parte dei molti" (`Ordini`).
+
+Esiste anche il caso in cui **entrambi i lati possono avere molti elementi
+collegati** — le **relazioni molti-a-molti**. Pensa al dominio assicurativo
+che frequenterai: un cliente può avere più polizze, ma soprattutto ogni
+**polizza** può includere più **garanzie** (furto, incendio, responsabilità
+civile...), e la stessa garanzia (es. "furto") può comparire in tante
+polizze diverse. Non puoi risolverlo con una singola chiave esterna da un
+lato o dall'altro, perché nessuna delle due tabelle "contiene" davvero
+l'altra. La soluzione è una terza tabella, chiamata **tabella ponte** (o
+tabella di associazione), che contiene solo coppie di chiavi esterne:
+
+| id_polizza | id_garanzia |
+|---|---|
+| 1 | Furto |
+| 1 | Incendio |
+| 2 | Furto |
+| 2 | Responsabilità civile |
+
+Questa tabella dice, riga per riga, "questa polizza include questa
+garanzia": la polizza 1 ha furto e incendio, la polizza 2 ha furto e
+responsabilità civile, e "furto" compare in entrambe senza essere duplicato
+come informazione.
 
 ### SQL: il linguaggio per "interrogare" il database
 
@@ -825,6 +975,100 @@ SELECT * FROM Ordini WHERE totale > 100;
 Non ti verrà chiesto di scrivere SQL nel tuo ruolo di PM, ma capire questa
 logica di base ti aiuterà a seguire discussioni tecniche sul team riguardo
 "performance del database", "query lente", "migrazione dati", ecc.
+
+### JOIN: perché i dati sono divisi in tabelle diverse
+
+Torniamo alle due tabelle `Clienti` e `Ordini`. Un giorno Sara chiede: "mi
+serve l'elenco degli ordini con il nome del cliente accanto, per mandarlo al
+servizio spedizioni". Le due informazioni, però, vivono in due tabelle
+diverse. La risposta è la **JOIN**: un'istruzione SQL che "unisce"
+temporaneamente le righe di due tabelle collegate tra loro tramite la chiave
+esterna vista sopra.
+
+```sql
+SELECT Ordini.id, Clienti.nome, Ordini.totale
+FROM Ordini
+JOIN Clienti ON Ordini.id_cliente = Clienti.id;
+```
+
+Il risultato è una nuova tabella "virtuale" che mette insieme i dati delle
+due:
+
+| id | nome | totale |
+|----|------|--------|
+| 101 | Mario Rossi | 129.90 |
+| 102 | Anna Bianchi | 59.00 |
+
+Ma perché non scrivere semplicemente il nome del cliente **dentro** ogni riga
+della tabella `Ordini`, evitando del tutto la JOIN? Perché il nome di Mario
+Rossi, se ha fatto 300 ordini, finirebbe scritto 300 volte, in 300 posti
+diversi. Se un giorno Mario Rossi corregge il proprio nome, bisognerebbe
+aggiornarlo in 300 righe — e se anche una sola venisse dimenticata, il
+database conterrebbe due versioni diverse della stessa verità. Il principio
+che evita questo problema si chiama **normalizzazione**: ogni informazione
+viene scritta **una volta sola**, nel posto giusto, e recuperata altrove
+tramite relazioni e JOIN quando serve.
+
+Esistono due tipi principali di JOIN, e la differenza tra loro è una delle
+fonti più comuni di report "sbagliati" che un PM incontra:
+
+- una **INNER JOIN** (quella vista sopra) restituisce solo le righe che
+  hanno una corrispondenza in entrambe le tabelle: se un cliente non ha mai
+  fatto un ordine, non compare affatto nel risultato;
+- una **LEFT JOIN** restituisce **tutte** le righe della prima tabella, anche
+  quelle senza corrispondenza nella seconda (con dei "vuoti" al posto dei
+  dati mancanti).
+
+Caso concreto: se Sara vuole "l'elenco di tutti i clienti, con il totale
+ordinato se ne hanno fatto uno", e chi scrive la query usa una INNER JOIN
+invece di una LEFT JOIN, i clienti che non hanno mai ordinato **spariscono
+silenziosamente** dal report — non per un bug evidente, ma per la scelta di
+JOIN sbagliata rispetto alla domanda di business. È esattamente il tipo di
+errore che produce un numero "pulito" ma scorretto in una presentazione.
+
+### Vista (VIEW): dare un nome a una query complessa
+
+Se la query con la JOIN qui sopra viene usata ogni settimana per il report
+delle spedizioni, ha senso salvarla con un nome, così chi si occupa di
+reporting non deve riscriverla — e non deve nemmeno sapere come sono
+strutturate le tabelle sottostanti. Questo si chiama **vista** (VIEW): una
+query salvata, che si comporta come se fosse essa stessa una tabella.
+
+```sql
+CREATE VIEW OrdiniConCliente AS
+SELECT Ordini.id, Clienti.nome, Ordini.totale
+FROM Ordini
+JOIN Clienti ON Ordini.id_cliente = Clienti.id;
+```
+
+Da quel momento, chiunque può scrivere semplicemente
+`SELECT * FROM OrdiniConCliente` senza conoscere la JOIN che c'è dietro.
+
+> 💡 **Trade-off**: la vista nasconde la complessità, ma non la elimina — la
+> query dietro le quinte viene comunque eseguita ogni volta. Se qualcuno
+> crea una vista che si appoggia su un'altra vista, che a sua volta si
+> appoggia su un'altra ancora, il database finisce a eseguire in cascata
+> query via via più pesanti a ogni chiamata: è un problema di performance
+> che nessuno vede arrivare, perché ogni singola vista, presa da sola,
+> sembra innocua.
+
+### Modellare i dati prima di scrivere codice
+
+Tutto quello che hai visto in questa sottosezione — quali tabelle creare,
+quali colonne, quali relazioni, dove metterle — è il risultato di una fase
+che si chiama **modellazione dei dati**: decidere, prima ancora di scrivere
+una riga di codice, come rappresentare la realtà del progetto (clienti,
+ordini, polizze, garanzie) in tabelle e relazioni coerenti.
+
+Non è un dettaglio tecnico da poco: un errore nel modello (una relazione
+uno-a-molti dove in realtà serviva molti-a-molti, una chiave primaria scelta
+male) scoperto quando il sistema è già in produzione, con migliaia di righe
+già scritte, costa ordini di grandezza in più da correggere rispetto a un
+errore scoperto sul tavolo da disegno, prima che una sola riga di dati sia
+mai stata salvata. È uno dei motivi per cui gli sviluppatori insistono a
+volte per "fermarsi a discutere il modello" prima di partire a costruire una
+nuova funzionalità, anche quando sembra di poter "iniziare subito a
+programmare".
 
 Esempi di database relazionali diffusi: **Microsoft SQL Server**,
 **PostgreSQL**, **MySQL**, **Oracle Database**.
@@ -1155,9 +1399,185 @@ il beneficio ottenuto.
 > numero di container a 3, risparmiando risorse — tutto senza che nessuno
 > del team debba intervenire manualmente nel cuore della notte.
 
+### OpenShift: Kubernetes "con il cruscotto"
+
+C'è però un problema che Kubernetes da solo non risolve: installarlo e
+farlo funzionare bene non basta a renderlo utilizzabile in un'azienda. Serve
+anche un posto dove salvare le immagini Docker (il registry visto in
+§2.19), un sistema per autenticare chi può fare cosa, una gestione della
+rete e degli indirizzi, delle pipeline che colleghino il codice al
+deployment, uno strumento di monitoraggio che avvisi quando qualcosa non
+va. Kubernetes "nudo" è un motore potente, ma senza cruscotto: ogni azienda
+che lo adotta da zero finisce per scegliere, installare e mantenere decine
+di componenti aggiuntivi, spesso diversi da quelli scelti dall'azienda
+vicina — con il risultato che due aziende che dicono entrambe "usiamo
+Kubernetes" possono avere due piattaforme profondamente diverse da gestire
+e da cui assumere competenze.
+
+Da questo problema nasce **OpenShift** (spesso abbreviato **OCP**,
+OpenShift Container Platform), il prodotto di Red Hat che è oggi una delle
+distribuzioni Kubernetes più diffuse nelle grandi aziende, incluso il
+settore assicurativo. OpenShift **è** Kubernetes — non lo sostituisce, lo
+racchiude — ma arriva già con registry, autenticazione, rete, pipeline e
+monitoraggio integrati, con supporto commerciale (un fornitore da chiamare
+quando qualcosa si rompe) e con vincoli di sicurezza più severi per
+impostazione predefinita.
+
+Questo ultimo punto è quello che arriva più spesso sotto forma di ticket:
+per impostazione predefinita, OpenShift **non permette** ai container di
+girare con privilegi da amministratore (root), a differenza di molte
+installazioni "nude" di Kubernetes più permissive. Un'immagine Docker
+costruita e testata altrove, che assumeva implicitamente di poter girare
+come root, può quindi rifiutarsi di partire su OpenShift finché non viene
+corretta — non è un capriccio della piattaforma, è una scelta di sicurezza
+esplicita, ma è anche esattamente il tipo di attrito che arriva come
+segnalazione confusa ("il deployment non parte, dicono che è un problema di
+permessi") sul tavolo di un PM.
+
+| | Kubernetes "nudo" | OpenShift (OCP) |
+|---|---|---|
+| Chi lo mantiene | Comunità open source | Red Hat (prodotto commerciale) |
+| Componenti aggiuntivi (registry, rete, pipeline, monitoring...) | Da scegliere e integrare a parte | Già inclusi e integrati |
+| Costo | Nessuna licenza (ma costo di integrazione interno) | Licenza a pagamento |
+| Supporto | Community, nessun contratto | Supporto commerciale con SLA |
+| Sicurezza predefinita | Configurabile, spesso più permissiva | Più restrittiva di default (es. niente root nei container) |
+| Curva di adozione | Più lenta all'inizio (tutto da assemblare) | Più rapida all'inizio, con vincoli da imparare a rispettare |
+
+> 💡 **Trade-off**: scegliere OpenShift significa pagare una licenza e
+> accettare un certo grado di vincolo verso un unico fornitore (lock-in), in
+> cambio di tempo di setup risparmiato, sicurezza predefinita più solida e —
+> concretamente — un numero di telefono da chiamare alle tre di notte
+> quando qualcosa smette di funzionare in produzione. Nessuna delle due
+> strade è "quella giusta" in assoluto: dipende da quante competenze interne
+> l'azienda vuole (e può permettersi di) mantenere. In ogni caso, le
+> competenze Kubernetes non si buttano: sotto OpenShift resta Kubernetes, e
+> chi lo sa usare non deve ripartire da zero.
+
+Questo è il primo passo di un'idea più grande, che vedremo nella sezione
+12: costruire una piattaforma interna che renda semplice la strada giusta.
+
 ---
 
-## 2.21 Riepilogo: come si incastrano tutti questi pezzi
+## 2.21 Markdown e HTML: i due linguaggi per scrivere documenti e pagine
+
+Fin qui abbiamo parlato di come i dati viaggiano (API, JSON) e di come
+vengono salvati (SQL). C'è però un altro tipo di contenuto con cui avrai a
+che fare quotidianamente come PM, anche solo leggendolo: i **documenti** —
+questo stesso corso, un README di progetto, una pagina web. Anche questi
+hanno un "linguaggio" con cui vengono scritti, e vale la pena riconoscerlo.
+
+### Markdown: perché la documentazione di progetto raramente sta in un file Word
+
+Immagina la documentazione di un progetto scritta in Word: vive come
+allegato in una lunga catena di e-mail, ognuno ha in locale la versione che
+gli è arrivata per ultima, nessuno sa con certezza qual è quella corretta e
+aggiornata, e per capire cosa è cambiato tra due revisioni bisogna aprire
+entrambi i file e confrontarli a occhio, riga per riga. Soprattutto, quel
+documento non sta **accanto al codice** di cui parla: vive altrove, in un
+altro sistema, con un altro ciclo di vita.
+
+Da questo problema nasce **Markdown**: un modo di scrivere testo formattato
+usando pochi simboli semplici, direttamente in un file di testo puro. Un
+file Markdown si può salvare in Git esattamente come un file di codice
+(lo vedrai nella sezione 4): ha una cronologia di modifiche, si possono
+vedere le differenze esatte tra due versioni, e vive nella stessa cartella
+del codice a cui si riferisce.
+
+> 💡 **Il corso che stai leggendo in questo momento è scritto in Markdown.**
+> Ogni titolo, ogni tabella, ogni blocco di testo che hai letto finora è
+> testo semplice con una sintassi minima, non un documento Word o PDF fatto
+> a mano.
+
+| Sintassi | Risultato | Esempio |
+|---|---|---|
+| `# Titolo` | Titolo di primo livello | `# Introduzione` |
+| `## Sottotitolo` | Titolo di livello inferiore | `## 2.21 Markdown` |
+| `**testo**` | **grassetto** | `**importante**` |
+| `*testo*` | *corsivo* | `*nota*` |
+| `- voce` | Elenco puntato | `- primo punto` |
+| `[testo](url)` | Link | `[vai al sito](https://...)` |
+| `` `codice` `` | Testo in stile codice | `` `SELECT * FROM` `` |
+| `\| a \| b \|` | Tabella | come quella che stai leggendo |
+
+Come PM incontrerai Markdown molto più spesso di quanto pensi, senza mai
+dover scrivere codice: i README dei progetti su GitHub, le pagine wiki
+interne, la descrizione di una issue in Jira o GitHub (che spesso accetta
+proprio questa sintassi), il testo di una pull request, un ADR (Architecture
+Decision Record). Saperlo *leggere* — capire che `**questo**` era pensato per
+apparire in grassetto, che una riga che inizia con `#` è un titolo — ti
+basta per non sentirti perso di fronte a un file `.md` grezzo, ad esempio
+aperto per errore fuori dal suo visualizzatore.
+
+### HTML: il linguaggio che dice al browser cosa mostrare
+
+Quando il tuo browser mostra la pagina di ShopFacile, sta interpretando un
+altro linguaggio, pensato non per essere letto come testo semplice ma per
+essere **visualizzato**: l'**HTML** (HyperText Markup Language). L'HTML
+descrive la **struttura** di una pagina attraverso dei **tag** annidati uno
+dentro l'altro — non troppo diverso dai tag XML visti in §2.14, e non è un
+caso: HTML e XML condividono la stessa idea di fondo di racchiudere
+contenuto tra marcatori con un nome.
+
+```html
+<html>
+  <body>
+    <h1>Benvenuto su ShopFacile</h1>
+    <p>Il tuo carrello contiene <strong>2 articoli</strong>.</p>
+  </body>
+</html>
+```
+
+Si legge così: c'è un titolo di primo livello (`<h1>`) con il testo
+"Benvenuto su ShopFacile", seguito da un paragrafo (`<p>`) che contiene a
+sua volta del testo in grassetto (`<strong>`) per evidenziare "2 articoli".
+Ogni tag apre con `<nome>` e chiude con `</nome>`, e i tag possono contenerne
+altri, in una struttura ad albero — la stessa logica delle cartelle annidate
+vista in §2.7, applicata al contenuto di una pagina invece che ai file su
+disco.
+
+L'HTML, da solo, descrive **solo la struttura**: cosa c'è e in che ordine.
+Non dice nulla su colori, font o posizionamento (se ne occupa il **CSS**,
+Cascading Style Sheets) né su cosa succede quando l'utente clicca un
+bottone (se ne occupa il **JavaScript**). Questa separazione — struttura
+(HTML), aspetto (CSS), comportamento (JavaScript) — è la ragione per cui,
+quando un tecnico ti dice "è solo un problema di CSS", sta dicendo qualcosa
+di preciso: il contenuto e il comportamento della pagina sono corretti, cambia
+solo qualcosa nell'aspetto visivo (un colore sbagliato, un elemento
+allineato male). Non è però sempre un problema piccolo: un CSS che nasconde
+per errore un bottone di conferma pagamento è "solo CSS" nella causa
+tecnica, ma ha un impatto di business enorme — vale la pena non liquidare
+mai un ticket solo perché la causa dichiarata è "solo CSS".
+
+### Il ponte tra i due: entrambi sono linguaggi di marcatura
+
+Markdown e HTML non sono in competizione: sono due linguaggi di
+**marcatura** (proprio come XML, §2.14) pensati per scopi diversi.
+Markdown è più semplice e leggibile anche "grezzo", pensato per essere
+scritto rapidamente da una persona; HTML è più potente e dettagliato, pensato
+per essere interpretato da un browser. Non è un caso che siano collegati
+direttamente: quando un file Markdown viene mostrato in un browser (ad
+esempio proprio le pagine di questo corso), viene prima **tradotto** in
+HTML, perché è l'unico dei due linguaggi che il browser sa davvero
+interpretare e disegnare a schermo.
+
+> 💡 **Trade-off**: Markdown è deliberatamente povero di proprietà. Non
+> permette impaginazioni fini (margini precisi, numeri di pagina,
+> intestazioni ripetute), non ha un vero sistema di commenti "in revisione"
+> come quello di Word, e non è pensato per documenti destinati alla stampa
+> formale (un contratto, una relazione ufficiale per un cliente esterno).
+> Per quei casi, Word resta spesso la scelta giusta: la scelta tra i due non
+> è "Markdown ha vinto", è "quale documento sto scrivendo e chi lo deve
+> leggere". La documentazione tecnica che vive vicino al codice, sì,
+> Markdown quasi sempre; un documento contrattuale per un cliente, quasi
+> mai.
+
+Non ti verrà mai chiesto di scrivere HTML o CSS in questo ruolo: l'obiettivo
+di questa sottosezione è che tu sappia **riconoscerli** quando li vedi
+citati in una conversazione tecnica, non produrli.
+
+---
+
+## 2.22 Riepilogo: come si incastrano tutti questi pezzi
 
 Facciamo un ultimo passaggio per vedere come i concetti di questa sezione si
 incastrano in uno scenario reale — ad esempio, quando un utente usa un sito
@@ -1206,6 +1626,15 @@ difficoltà, torna a rileggere il paragrafo corrispondente:
 - Sai spiegare la differenza tra database relazionale e NoSQL?
 - Sai spiegare la differenza tra una VM e un container?
 - Sai spiegare a cosa serve Kubernetes, a grandi linee?
+- Sai spiegare cos'è il CRUD e cosa significa quando un tecnico dice "è solo
+  un CRUD"?
+- Sai spiegare, con parole tue, a cosa serve una specifica OpenAPI/Swagger
+  tra due team che devono integrarsi?
+- Sai spiegare la differenza tra chiave primaria e chiave esterna, e a cosa
+  serve una JOIN?
+- Sai spiegare la differenza tra OpenShift e Kubernetes "nudo"?
+- Sai spiegare la differenza tra Markdown e HTML, e perché questo corso è
+  scritto in Markdown?
 
 ---
 
@@ -1264,9 +1693,41 @@ ai colleghi.
    mano), disegna il percorso di una richiesta utente che visita una pagina
    della piattaforma: browser → DNS → server/container → database → e
    ritorno, etichettando ogni passaggio con il termine giusto (IP, HTTP/S,
-   API, JSON, SQL...), ispirandoti al diagramma della sezione 2.21.
+   API, JSON, SQL...), ispirandoti al diagramma della sezione 2.22.
    ✅ **Come verificare**: riesci a spiegare il tuo disegno a un collega non
    tecnico in meno di 3 minuti, senza dover consultare gli appunti?
+
+7. **Riconosci un CRUD.** Prendi una funzionalità qualsiasi già rilasciata
+   sul tuo progetto (o chiedine una a un collega) e chiedi al team: "questa
+   era solo un CRUD, o c'era logica di business dentro?". Ascolta la
+   risposta e prova a capire, dal loro tono, se la stima era stata semplice
+   o complicata da fare.
+   ✅ **Come verificare**: sapresti spiegare a un collega non tecnico, con
+   parole tue, la differenza tra "è solo un CRUD" e "non è un CRUD" in
+   termini di stima e rischio?
+
+8. **Trova una specifica OpenAPI/Swagger reale.** Chiedi a uno sviluppatore
+   del team se esiste una documentazione Swagger per una delle API del
+   progetto (spesso è raggiungibile da un browser, con un indirizzo che
+   contiene `/swagger` o `/api-docs`) e fatti mostrare la pagina.
+   ✅ **Come verificare**: sapresti indicare, guardando quella pagina, quali
+   operazioni sono disponibili su una risorsa e distinguere GET, POST, PUT e
+   DELETE tra loro?
+
+9. **Leggi due tabelle collegate.** Chiedi a un collega tecnico di mostrarti
+   (anche solo a voce, con carta e penna) due tabelle reali del progetto
+   collegate da una chiave esterna, e chiedi cosa succede se provi a
+   inserire una riga che punta a un id inesistente.
+   ✅ **Come verificare**: sapresti spiegare cosa significa "integrità
+   referenziale" con parole tue, partendo da quell'esempio?
+
+10. **Apri il codice sorgente di una pagina.** Su un sito qualsiasi, apri gli
+    strumenti di sviluppo del browser (F12 o tasto destro → "Ispeziona
+    elemento") e guarda il codice HTML della pagina per un minuto, senza
+    modificare nulla.
+    ✅ **Come verificare**: sapresti indicare almeno un tag di apertura e la
+    sua chiusura corrispondente, e distinguere a colpo d'occhio cosa è
+    struttura (HTML) da cosa potrebbe essere solo aspetto (CSS)?
 
 ---
 
@@ -1276,7 +1737,7 @@ ai colleghi.
 - [4. Git e GitHub](../04-git-e-github/README.md) — vedrai come i concetti di file e cartelle si applicano al codice
 - [9. DevOps](../09-devops/README.md) — dove Docker e Kubernetes tornano centrali
 - [11. Architetture software](../11-architetture-software/README.md) — dove API e REST vengono approfonditi
-- [12. Cloud](../12-cloud/README.md) — dove VM e container vengono usati concretamente su Azure/AWS
+- [12. Cloud](../12-cloud/README.md) — dove VM, container e OpenShift vengono usati concretamente, e dove ritroverai il tema della piattaforma interna
 - [16. Glossario](../16-glossario/README.md) — per ripassare rapidamente ogni termine visto qui
 
 ## 📚 Risorse
@@ -1285,4 +1746,7 @@ ai colleghi.
 - [MDN Web Docs – Panoramica su HTTP](https://developer.mozilla.org/it/docs/Web/HTTP/Overview) — approfondimento sul protocollo HTTP/HTTPS
 - [Microsoft Learn – Cos'è un container?](https://learn.microsoft.com/it-it/dotnet/architecture/microservices/container-docker-introduction/containers-vs-virtual-machines) — confronto ufficiale container vs VM
 - [Documentazione ufficiale Docker – Introduzione](https://docs.docker.com/get-started/docker-overview/) — guida introduttiva ufficiale a Docker
+- [Red Hat – Cos'è OpenShift?](https://www.redhat.com/it/technologies/cloud-computing/openshift) — panoramica ufficiale della piattaforma
+- [Swagger – Cos'è OpenAPI?](https://swagger.io/docs/specification/about/) — introduzione ufficiale allo standard OpenAPI
+- [Markdown Guide (in inglese)](https://www.markdownguide.org/) — riferimento rapido alla sintassi Markdown
 - [Documentazione ufficiale Kubernetes – Concetti base](https://kubernetes.io/it/docs/concepts/overview/) — introduzione ufficiale a Kubernetes (disponibile anche in italiano)

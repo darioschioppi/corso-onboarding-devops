@@ -21,6 +21,7 @@ Alla fine di questa sezione saprai:
 - Spiegare la differenza tra bug e feature
 - Capire perché il software viene "numerato" con le versioni
 - Comprendere, a livello concettuale, cosa sono branch, pull request, code review e merge
+- Capire perché una decisione tecnica importante va scritta in un ADR (Architecture Decision Record), e cosa significa che un ADR viene "superato"
 
 ## 🔄 Il ciclo di vita del software
 
@@ -340,6 +341,56 @@ flowchart LR
 
 Questo flusso — branch, pull request, code review, merge — è oggi lo standard adottato dalla stragrande maggioranza dei team di sviluppo professionali nel mondo, e lo ritroverai costantemente nel tuo lavoro quotidiano come Project Manager, anche solo per monitorare lo stato di avanzamento delle attività del team.
 
+## 📝 ADR: perché una decisione tecnica va scritta
+
+Otto mesi dopo il rilascio del modulo di pagamento, Giulia deve modificare il modo in cui ShopFacile salva i documenti dei clienti (fatture, ricevute) e si imbatte in una scelta che la lascia perplessa: quei file non stanno nel database insieme al resto dei dati, ma su uno storage separato, dedicato solo a loro. Chi ha preso questa decisione non lavora più in azienda. Il codice le dice **cosa** succede — i file vengono scritti su quello storage — ma non **perché** qualcuno abbia scelto di separarli dal database. A questo punto Giulia ha solo due strade, entrambe rischiose: rifare la scelta da zero (rischiando di ripetere lo stesso errore, se era un errore, o di buttare via una buona ragione che semplicemente non conosce), oppure non toccare nulla per paura di rompere qualcosa che non capisce. Entrambe le strade costano tempo e certezza. Il vero costo non è la decisione originale: è la decisione **perduta**.
+
+Luca vede la stessa dinamica da un'angolazione diversa, più politica che tecnica: in riunione, la discussione su "dove mettiamo i documenti dei clienti" torna a galla ogni sei mesi, e ogni volta si riparte da zero, come se non se ne fosse mai parlato.
+
+Per questo esistono gli **ADR** (**Architecture Decision Record**, record di decisione architetturale): un documento breve, uno per ogni decisione tecnica rilevante, scritto nel momento in cui la decisione viene presa — non ricostruito a posteriori — e versionato nel repository, accanto al codice che quella decisione riguarda. Il formato è stato proposto nel 2011 da Michael Nygard, ed è oggi ampiamente adottato nei team che si sono scontrati almeno una volta con il problema visto sopra.
+
+Un ADR tipico ha una struttura fissa e volutamente breve:
+
+```text
+# ADR-NNN: Titolo della decisione
+
+Data: AAAA-MM-GG
+Stato: proposta | accettata | superata (da ADR-XXX)
+
+## Contesto
+Qual è il problema? Quali vincoli tecnici o di business
+rendono necessaria questa decisione, in questo momento?
+
+## Decisione
+Cosa si è deciso di fare, in modo diretto e verificabile.
+
+## Conseguenze
+Cosa cambia, in positivo e in negativo, per il sistema
+e per chi ci lavorerà in futuro.
+
+## Alternative considerate
+Quali altre opzioni erano sul tavolo, e perché sono
+state scartate.
+```
+
+Un esempio compilato, realistico per il caso di Giulia:
+
+> **ADR-014: Archiviare i documenti dei clienti su object storage, non nel database**
+>
+> **Stato**: accettata
+>
+> **Contesto**: i documenti dei clienti (fatture, ricevute) crescono di volume rapidamente e vengono letti raramente dopo i primi giorni. Tenerli come campi binari nel database appesantisce i backup e le query su una tabella che, per il resto, è consultata di continuo.
+>
+> **Decisione**: i documenti vengono salvati su uno storage a oggetti dedicato; il database conserva solo un riferimento (un identificativo) al file, non il file stesso.
+>
+> **Conseguenze**: i backup del database restano leggeri e veloci; in cambio, il sistema ora dipende da un servizio esterno in più, che va monitorato separatamente.
+>
+> **Alternative considerate**: tenere i file nel database (scartata per il peso sui backup); un file system condiviso tra i server applicativi (scartata perché non scala bene se si aggiungono altri server).
+
+Il dettaglio che vale più di ogni altro per un PM è lo stato **"superata"**: un ADR non si cancella e non si riscrive mai. Se una decisione viene ripensata, si scrive un **nuovo** ADR che dichiara esplicitamente di superare il precedente (e il vecchio ADR resta lì, marcato come superato, non sparisce). Così la storia del ragionamento — cosa si sapeva, cosa si è deciso, perché — resta intatta e consultabile. È, per le decisioni, lo stesso principio che hai appena visto per il codice con Git: la cronologia non si riscrive per "far finta che non sia successo", si aggiunge un nuovo capitolo (lo ritroverai in pratica nella prossima sezione).
+
+Come ogni strumento di documentazione, però, gli ADR hanno un costo reale, e un Project Manager deve conoscerlo per non farne un rito vuoto: scriverli richiede tempo che si sottrae ad altro, e se pubblicarne uno richiede un'approvazione lenta e burocratica, il team semplicemente smette di scriverli. All'estremo opposto, se si scrive un ADR per ogni microscopica scelta (il nome di una variabile, l'ordine di due parametri), il formato perde senso: nessuno legge più trenta ADR per trovare quello che conta. Il criterio pratico che vale la pena portarsi via: **scrivi un ADR quando la decisione è costosa da cambiare dopo** — un cambio di database, la scelta di un fornitore esterno, il modo in cui due sistemi si parlano. Per il resto, un buon commento o una riga nella pull request bastano.
+
 ## 🧩 Come si collegano tutti questi concetti
 
 Abbiamo visto tanti termini uno alla volta: requisiti, bug, feature, versioning, branch, pull request, code review, merge. Facciamo un piccolo riepilogo con un esempio end-to-end sul progetto ShopFacile, per vedere come tutti i concetti di questa sezione si incastrano insieme in un caso reale (semplificato):
@@ -376,9 +427,12 @@ Questi esercizi ti aiutano a consolidare i concetti di questa sezione prima di p
 5. **Disegna il flusso branch → merge con un esempio del progetto.** Su un foglio (anche a mano), disegna il flowchart "branch, sviluppo, pull request, code review, merge" visto in questa sezione, ma sostituendo le etichette generiche con un esempio verosimile del progetto (es. "branch fix-notifiche-email" invece di "creazione del branch"). Poi racconta il disegno a voce alta, come se lo spiegassi a un collega nuovo arrivato.
    ✅ **Come verificare**: se riesci a raccontare il disegno senza guardare gli appunti e senza incepparti su nessun passaggio, hai interiorizzato bene il flusso.
 
+6. **Riconosci quando serve un ADR.** Pensa a 4 decisioni tecniche plausibili nel progetto ShopFacile (es. "cambiare il database di produzione", "rinominare una variabile interna", "scegliere un fornitore esterno di pagamenti", "aggiungere un commento nel codice"): per ciascuna, decidi se merita un ADR o no, motivando con il criterio "quanto è costosa da cambiare dopo".
+   ✅ **Come verificare**: se hai risposto "sì" a tutte e 4 o "no" a tutte e 4, riguarda il criterio: dovrebbero emergere sia casi che meritano un ADR sia casi che non lo meritano.
+
 ## 🔗 Collegamenti
 
-- [4. Git e GitHub](../04-git-e-github/README.md) — per capire in pratica, con comandi ed esempi, come funzionano davvero branch, commit, pull request e merge
+- [4. Git e GitHub](../04-git-e-github/README.md) — per capire in pratica, con comandi ed esempi, come funzionano davvero branch, commit, pull request e merge, e per vedere il modello "cactus" a metà strada tra Git Flow e Trunk Based
 - [5. Agile](../05-agile/README.md) — per scoprire come i team moderni organizzano il ciclo di vita del software in iterazioni brevi e continue
 - [9. DevOps](../09-devops/README.md) — per approfondire come le fasi di sviluppo, testing e rilascio vengono oggi collegate e automatizzate
 - [10. CI/CD](../10-ci-cd/README.md) — per capire come build, test e deploy possono essere automatizzati end-to-end
@@ -386,6 +440,7 @@ Questi esercizi ti aiutano a consolidare i concetti di questa sezione prima di p
 ## 📚 Risorse
 
 - [Atlassian — What is SDLC? Software Development Life Cycle Explained](https://www.atlassian.com/agile/software-development/sdlc) — panoramica chiara sul ciclo di vita del software
+- [Michael Nygard — Documenting Architecture Decisions (2011)](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) — il post che ha proposto per primo il formato ADR
 - [Semantic Versioning 2.0.0](https://semver.org/) — la specifica ufficiale del versionamento semantico (in inglese, ma con esempi semplici)
 - [GitHub Docs — About pull requests](https://docs.github.com) — documentazione ufficiale su cosa sono e come funzionano le pull request
 - [Atlassian — Code Review Best Practices](https://www.atlassian.com/agile/software-development/code-reviews) — guida pratica sul perché e come si fa code review

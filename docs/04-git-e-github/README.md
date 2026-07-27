@@ -32,8 +32,12 @@ Alla fine di questa sezione saprai:
 - capire come funziona una Pull Request e perché è il cuore della
   collaborazione su GitHub;
 - distinguere Issue, Release e Tag;
-- conoscere due modelli di lavoro (workflow) molto diffusi: **Git Flow** e
-  **Trunk Based Development**, e capire quando si usa l'uno o l'altro.
+- conoscere tre modelli di lavoro (workflow) diffusi: **Git Flow**, il
+  modello **cactus (OneFlow)** e il **Trunk Based Development**, e capire
+  quando si usa l'uno o l'altro;
+- riconoscere a cosa serve **Maven** e il file **`pom.xml`** nei progetti
+  Java, e capire perché la gestione delle dipendenze esterne è un problema
+  comune a ogni linguaggio di programmazione.
 
 ---
 
@@ -163,6 +167,56 @@ progetto, compresa tutta la sua storia — pronta per essere modificata.
 > `git clone https://github.com/shopfacile/backend-api.git`, ti
 > ritroveresti in una cartella `backend-api` con dentro tutti quei file,
 > pronti per essere letti — anche se non li modifichi mai.
+
+### Maven e il file POM: gestire le librerie che il team non ha scritto
+
+Un repository come `backend-api`, però, non contiene *tutto* il codice che
+il software usa davvero. Il software di oggi non è scritto tutto in casa:
+un'applicazione tipica si appoggia a decine di librerie scritte da altri
+(per parlare con un database, per gestire le date, per validare un'email),
+e ognuna di quelle librerie usa a sua volta altre librerie. Scaricarle a
+mano una per una e infilarle nel repository è ingestibile — e il classico
+"sul mio computer funziona" nasce spesso proprio da due sviluppatori con
+due versioni leggermente diverse della stessa libreria installate a mano.
+
+Nel mondo Java, lo strumento che risolve questo problema si chiama
+**Maven**: gestisce sia la build del progetto (compilazione, test,
+creazione del pacchetto finale) sia le sue dipendenze esterne. Il cuore di
+Maven è un file chiamato **POM** (**Project Object Model**), quasi sempre
+salvato come `pom.xml` nella radice del repository — è lì che, aprendo un
+progetto Java, riconoscerai a colpo d'occhio "questo usa Maven".
+
+```xml
+<project>
+  <groupId>it.shopfacile</groupId>
+  <artifactId>backend-api</artifactId>
+  <version>2.4.0</version>          <!-- versione del progetto (sezione 3) -->
+
+  <dependencies>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.7.3</version>     <!-- una dipendenza dichiarata, con versione precisa -->
+    </dependency>
+  </dependencies>
+</project>
+```
+
+Poche cose contano davvero, per riconoscere e dialogare, non per scrivere
+XML: la dipendenza dichiarata nel `pom.xml` porta con sé anche le
+**dipendenze transitive**, quelle di cui nessuno nel team ha scritto una
+riga né chiesto esplicitamente — arrivano perché la libreria che hai
+dichiarato ne usa altre a sua volta — e sono spesso il punto in cui
+compaiono le vulnerabilità note di sicurezza (approfondito nella sezione
+13). In azienda, queste librerie non si scaricano da internet a ogni
+build: vengono scaricate una volta e conservate in un **repository di
+artifact** interno (strumenti come Nexus o Artifactory), sia per velocità
+sia per non dipendere da internet in produzione. Il ciclo tipico di build
+Maven è `compile → test → package → install → deploy`, lo stesso spirito
+delle fasi di pipeline che vedrai nella sezione 10. Ecosistemi diversi
+risolvono lo stesso problema con nomi diversi: **npm** per JavaScript (già
+citato nella sezione 10), **pip** per Python, **NuGet** per .NET — stesso
+ruolo di Maven, in un altro mondo.
 
 ---
 
@@ -733,11 +787,79 @@ diventa rischioso.
 Non esiste un modello "migliore in assoluto": la scelta dipende dalla
 maturità del team, dal tipo di prodotto e dalla frequenza di rilascio
 desiderata. Molti team reali usano versioni semplificate o ibride di
-questi due modelli, adattandole al proprio contesto.
+questi due modelli, adattandole al proprio contesto — e la via di mezzo più
+diffusa ha un nome proprio, che vale la pena conoscere prima di incontrarlo
+in una riunione.
 
 ---
 
-## 4.13 Riepilogo dei comandi visti in questa sezione
+## 4.13 Il modello "cactus" (OneFlow): una via di mezzo
+
+Git Flow, con `main` e `develop` sempre vivi in parallelo, raddoppia i punti
+in cui il codice può divergere: ogni feature branch deve tenersi allineato
+con `develop`, e `develop` a sua volta con `main` a ogni release. Trunk
+Based Development risolve il problema riducendo tutto a un solo branch
+di lunga vita, ma **richiede** una suite di test automatici molto solida e
+feature flag maturi — condizioni che non tutti i team hanno il primo
+giorno. Nella pratica, molte aziende non stanno né perfettamente nell'uno
+né nell'altro: stanno in mezzo.
+
+Il modello che descrive questa via di mezzo è conosciuto informalmente come
+**modello "cactus"**, e anche come **OneFlow**. L'idea: un solo tronco
+(`main`) da cui partono ed a cui tornano rami corti di feature — come in
+Trunk Based — ma da cui, quando serve preparare o mantenere una release, si
+staccano anche rami di release più longevi, che a loro volta si biforcano
+solo per le correzioni urgenti (hotfix). Visto nel suo insieme, con il
+tronco centrale e questi rami corti che si irradiano ai lati, la forma
+ricorda vagamente un cactus — da cui il nome.
+
+```mermaid
+gitGraph
+    commit id: "v1.0"
+    branch feature/carrello
+    checkout feature/carrello
+    commit id: "sviluppo carrello"
+    checkout main
+    merge feature/carrello
+    branch release/1.1
+    checkout release/1.1
+    commit id: "stabilizzazione 1.1"
+    checkout main
+    merge release/1.1 tag: "v1.1"
+    branch hotfix/bug-urgente
+    checkout hotfix/bug-urgente
+    commit id: "fix urgente"
+    checkout release/1.1
+    merge hotfix/bug-urgente
+    checkout main
+    merge hotfix/bug-urgente tag: "v1.1.1"
+```
+
+A differenza di Git Flow, però, non esiste un branch `develop` permanente:
+le feature vanno dirette su `main` (o quasi), e i rami di release sono
+temporanei, legati a una specifica versione da mantenere, non un secondo
+tronco parallelo da tenere sincronizzato per sempre.
+
+Un avvertimento pratico più importante del nome stesso: a differenza di
+"Git Flow", la terminologia del modello cactus **non è standardizzata**.
+Team diversi, quando dicono "usiamo un modello cactus" (o "OneFlow"),
+possono intendere varianti anche sensibilmente diverse tra loro. Se un
+collega te lo dice in una riunione, la cosa giusta da fare non è annuire
+come se il nome bastasse a spiegare tutto: è chiedere di disegnarlo sulla
+lavagna, per capire davvero quali branch vivono a lungo e quali sono
+temporanei nel progetto specifico su cui lavori.
+
+| | Git Flow | Cactus (OneFlow) | Trunk Based |
+|---|---|---|---|
+| **Branch di lunga vita** | Due (`main`, `develop`) | Uno (`main`), più i rami di release finché sono mantenuti | Uno solo (`main`) |
+| **Frequenza di rilascio** | Pianificata, es. mensile | Flessibile: rilasci frequenti dal tronco, release più stabili quando serve | Continua, più volte al giorno |
+| **Correzioni urgenti** | Branch `hotfix/...` da `main`, poi riportato anche in `develop` | Branch `hotfix/...` dal ramo di release interessato, poi riportato su `main` | Fix diretto su `main`, spesso dietro feature flag |
+| **Requisiti di test automatici** | Moderati: la fase di stabilizzazione del branch `release/...` compensa test meno maturi | Medio-alti: servono buoni test, ma il ramo di release dà un margine di sicurezza in più | Molto alti: senza test solidi, ogni commit su `main` è un rischio |
+| **Contesto in cui conviene** | Rilasci pianificati, più versioni in produzione contemporaneamente | Prodotto con rilasci abbastanza frequenti ma che deve anche mantenere versioni precedenti (es. per clienti enterprise) | Prodotto SaaS con un'unica versione in produzione, cultura DevOps matura |
+
+---
+
+## 4.14 Riepilogo dei comandi visti in questa sezione
 
 Abbiamo visto molti comandi sparsi nei vari esempi di questa sezione: raccogliamoli qui in un unico prontuario, utile come riferimento veloce quando ti troverai a seguire una conversazione tecnica del team.
 
@@ -822,23 +944,32 @@ che poi puoi anche eliminare.
 
 6. **Disegna il workflow del tuo progetto reale.**
    Chiedi a un collega developer quale workflow (Git Flow, Trunk Based
-   Development, o una via di mezzo) usa il progetto su cui sei inserito/a,
-   e provate insieme a disegnare — anche su un foglio — la sequenza di
-   branch che si crea per una feature "tipica" del progetto, dalla
-   creazione del branch fino al rilascio in produzione.
-   ✅ **Come verificare**: sai indicare, senza guardare gli appunti, se il
-   progetto usa (o si avvicina a) Git Flow o a Trunk Based Development, e
-   sai spiegare perché quella scelta si adatta al ritmo di rilascio del
-   progetto.
+   Development, modello cactus/OneFlow, o una via di mezzo) usa il progetto
+   su cui sei inserito/a, e provate insieme a disegnare — anche su un
+   foglio — la sequenza di branch che si crea per una feature "tipica" del
+   progetto, dalla creazione del branch fino al rilascio in produzione.
+   ✅ **Come verificare**: sai indicare, senza guardare gli appunti, a quale
+   dei tre modelli visti in questa sezione il progetto si avvicina di più
+   (o se è un ibrido), e sai spiegare perché quella scelta si adatta al
+   ritmo di rilascio del progetto.
+
+7. **Riconosci un `pom.xml`.** Chiedi a un developer del progetto (se il
+   backend è Java) di farti vedere il file `pom.xml` reale, oppure cercane
+   uno di esempio online. Individua senza aiuto: il nome e la versione del
+   progetto, almeno una dipendenza dichiarata con la sua versione.
+   ✅ **Come verificare**: sai indicare a un collega, guardando il file,
+   quale libreria esterna il progetto usa e quale versione — senza dover
+   capire una riga di XML in più del necessario.
 
 ---
 
 ## 🔗 Collegamenti
 
-- [3. Come nasce un software](../03-come-nasce-un-software/README.md) — dove si inserisce Git nel ciclo di vita di un progetto software
+- [3. Come nasce un software](../03-come-nasce-un-software/README.md) — dove si inserisce Git nel ciclo di vita di un progetto software, e dove trovi gli ADR per documentare le decisioni tecniche
 - [5. Agile](../05-agile/README.md) — il mindset dietro le pratiche di integrazione frequente che abbiamo visto con il Trunk Based Development
 - [9. DevOps](../09-devops/README.md) — la cultura di automazione e rilascio continuo che rende possibile il Trunk Based Development
-- [10. CI/CD](../10-ci-cd/README.md) — le pipeline automatiche (GitHub Actions) che si attivano su commit e Pull Request
+- [10. CI/CD](../10-ci-cd/README.md) — le pipeline automatiche (GitHub Actions) che si attivano su commit e Pull Request, e dove il ciclo di build di Maven si collega alla generazione dell'artifact
+- [13. Sicurezza](../13-sicurezza/README.md) — dove si approfondisce come le dipendenze (comprese quelle transitive viste in questa sezione) possono introdurre vulnerabilità note
 - [16. Glossario](../16-glossario/README.md) — per ripassare velocemente i termini di questa sezione
 
 ## 📚 Risorse
@@ -852,4 +983,6 @@ che poi puoi anche eliminare.
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Semantic Versioning](https://semver.org/lang/it/)
 - [Trunk Based Development](https://trunkbaseddevelopment.com/)
+- [OneFlow — a Git branching model and workflow](https://www.endoflineblog.com/oneflow-a-git-branching-model-and-workflow) — la descrizione originale del modello "cactus"
+- [Apache Maven — Guida introduttiva](https://maven.apache.org/guides/getting-started/)
 - [A successful Git branching model (Git Flow, Vincent Driessen)](https://nvie.com/posts/a-successful-git-branching-model/)

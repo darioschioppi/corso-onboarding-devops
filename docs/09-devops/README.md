@@ -50,7 +50,13 @@ Alla fine di questa sezione saprai:
 - capire cos'è l'**Infrastructure as Code** e perché ha cambiato il modo di
   gestire server e reti;
 - distinguere **monitoring**, **observability** e **logging**, tre
-  attività complementari per capire lo stato di un sistema in produzione.
+  attività complementari per capire lo stato di un sistema in produzione;
+- riconoscere i processi principali dell'**ITSM** (incident, problem e
+  change management, service request) e il vocabolario **ITIL** che li
+  descrive;
+- capire cos'è l'**elaborazione batch** e perché la finestra notturna e le
+  dipendenze tra job sono un vincolo di progetto, non solo un dettaglio
+  tecnico.
 
 ---
 
@@ -99,6 +105,29 @@ comprare attrezzi da falegname non fa di te un falegname. Gli strumenti
 aiutano, e sono importanti — li vedrai nel dettaglio nella prossima
 sezione — ma senza il cambiamento di cultura e di collaborazione, restano
 scatole vuote.
+
+> 💡 **Nota per un futuro Project Manager: quel titolo "DevOps Engineer"
+> esiste davvero**. Sopra abbiamo detto che DevOps non dovrebbe essere un
+> ruolo con una targhetta sulla porta — ed è un punto di vista difendibile.
+> Ma se guardi un organigramma reale, o un annuncio di lavoro, quel titolo
+> c'è, e continuerai a incontrarlo per tutta la carriera. In pratica, chi
+> porta quel titolo si occupa soprattutto di pipeline, di automazione
+> dell'infrastruttura (l'IaC che vedrai al paragrafo 9.8), di piattaforme
+> interne (le vedrai nella sezione 12) e di affidabilità dei sistemi in
+> produzione: fa, insomma, il lavoro tecnico che rende possibile la cultura
+> DevOps. Il purista storce il naso perché teme che dare a una sola persona
+> la targhetta "DevOps" faccia sentire il resto del team autorizzato a
+> disinteressarsene — ricostruendo, con un'etichetta diversa, lo stesso
+> muro della confusione. Per te, in pratica: leggere quel titolo su un CV o
+> su un organigramma ti dice "questa persona sa di pipeline e
+> infrastruttura", non "questa persona è responsabile lei sola della
+> qualità in produzione".
+>
+> Lo stesso vale per **Operations**: non è finita insieme al muro della
+> confusione. Esiste ancora oggi come disciplina, con persone che se ne
+> occupano a tempo pieno — cambia *come* lavora (in modo più collaborativo,
+> spesso nella forma di **SRE**, che vedrai al paragrafo 9.3), non il fatto
+> che continui a esistere.
 
 Ma se DevOps è "solo" una cultura, perché è diventata così centrale nel
 lavoro quotidiano di un team come quello di ShopFacile? Per rispondere
@@ -1041,15 +1070,216 @@ raccolti in un **unico sistema centralizzato**, per poterli cercare e
 correlare tutti insieme, invece di dover collegarsi manualmente a decine
 di server diversi per leggere ciascuno il proprio file di log locale.
 
-Con questo, il team di ShopFacile — e tu insieme a loro — ha attraversato
-tutti i concetti chiave di DevOps, dalla cultura agli strumenti concreti.
-Prima di passare al CI/CD, dove questi concetti diventano una pipeline
-concreta e cliccabile, vale la pena fermarsi un momento a ricapitolare il
-percorso fatto.
+Monitoring, observability e logging ti dicono, con sempre maggiore
+dettaglio, *che cosa* sta succedendo e *perché*. Ma sapere che qualcosa non
+va non è la stessa cosa che sapere **chi deve alzarsi dalla scrivania**, chi
+ha l'autorità di bloccare un rilascio, o chi deve chiamare il servizio
+clienti. È il tema del prossimo paragrafo.
 
 ---
 
-## 9.12 Riepilogo
+## 9.12 Service Management: cosa succede quando il software è in produzione
+
+Martedì, 9:40. Sul sito di ShopFacile i clienti non riescono a completare il
+pagamento: il checkout si blocca all'ultimo passaggio. L'alert del
+monitoring (visto al paragrafo 9.9) è scattato puntuale alle 9:16, come
+doveva. Il problema è tutto quello che succede *dopo* quell'alert. **Marco**
+vede l'alert e inizia a indagare sul servizio ordini. In parallelo, senza
+saperlo, anche **Ahmed** ha visto lo stesso alert e ha iniziato a indagare
+sul database — nessuno dei due sa che l'altro è già al lavoro sullo stesso
+incidente. **Giulia**, che nel frattempo stava guardando le tracce viste al
+paragrafo 9.10, ha già capito che il problema è un timeout verso il
+servizio di pagamento esterno: lo scrive in una chat di canale tecnico che
+Marco e Ahmed non leggono, perché lavorano in un altro canale. Il servizio
+clienti, che riceve le prime chiamate dei clienti già alle 9:20, non è stato
+avvisato da nessuno: continua a rispondere "controlliamo e la ricontattiamo
+a breve" senza sapere che il team lo sa già da quattro minuti. Alle 10:05,
+quando finalmente qualcuno mette insieme i tre pezzi, il problema è
+identico a quello che Giulia aveva già individuato un'ora prima.
+
+Nessuno, in questa scena, è incompetente. Marco, Ahmed e Giulia hanno fatto
+esattamente il lavoro tecnico giusto. Quello che è mancato non è
+competenza: è un **processo** che dicesse, prima che il problema
+succedesse, chi coordina, dove si comunica, e chi parla con il cliente. È
+esattamente da questa mancanza che nasce l'**ITSM**.
+
+### ITSM: da "consegniamo progetti" a "gestiamo servizi"
+
+**ITSM (IT Service Management)** è l'insieme di processi con cui
+un'organizzazione IT gestisce i servizi che fornisce, in modo che
+funzionino in modo prevedibile **tutti i giorni**, non solo il giorno del
+rilascio. È un cambio di prospettiva rispetto a tutto quello che hai visto
+nelle sezioni su Agile e Project Management (sezioni 5-8): lì il focus era
+consegnare un progetto, con un inizio e una fine; qui il focus è **gestire
+un servizio che deve restare in piedi indefinitamente**, molto dopo che il
+progetto che l'ha creato è stato chiuso.
+
+Il framework di riferimento più diffuso per l'ITSM è **ITIL** (attualmente
+alla versione **ITIL 4**): una raccolta di buone pratiche, non uno standard
+obbligatorio, che moltissime organizzazioni enterprise — comprese le
+compagnie assicurative — usano come vocabolario comune per organizzare
+questi processi. Non serve conoscerlo in dettaglio: serve riconoscere i
+processi che contiene, perché li sentirai nominare quasi ogni settimana.
+
+### Incident management: ripristinare, non capire
+
+L'**incident management** si occupa di una cosa sola: **ripristinare il
+servizio il più presto possibile**. Non gli interessa, in questa fase,
+*perché* il checkout si è rotto: gli interessa farlo funzionare di nuovo.
+Per questo un incidente viene classificato per **severità/priorità** (un
+checkout bloccato per tutti i clienti non è la stessa cosa di un pulsante
+mal allineato per un browser di nicchia) e, se chi lo gestisce non riesce a
+risolverlo in tempi accettabili, si attiva l'**escalation**: il problema
+sale a qualcuno con più competenza, più autorità, o entrambe. Nello
+scenario di ShopFacile sopra, un incident management funzionante avrebbe
+fatto esattamente due cose che sono mancate: un solo punto di
+coordinamento (non tre indagini parallele) e un avviso tempestivo al
+servizio clienti.
+
+### Problem management: capire la causa, dopo
+
+Il **problem management** è un processo diverso, e separato apposta: si
+occupa di trovare e rimuovere la **causa radice**, in modo che
+quell'incidente non si ripeta. È deliberatamente disaccoppiato
+dall'incident management per un motivo molto concreto: se li confondi, hai
+due esiti possibili, entrambi cattivi. O tieni il servizio bloccato mentre
+indaghi a fondo sulla causa (il cliente aspetta mentre tu capisci), oppure
+ripristini in fretta senza mai indagare, e lo stesso timeout verso il
+servizio di pagamento tornerà a bloccare il checkout la settimana
+successiva. Nello scenario sopra: ripristinare il checkout è incident
+management; capire perché il servizio di pagamento esterno vada in timeout
+sotto un certo carico, e magari introdurre un timeout più aggressivo o un
+circuito di failover, è problem management — un lavoro che può, e spesso
+deve, continuare anche dopo che il servizio è di nuovo su.
+
+### Change management e change request: chi autorizza una modifica
+
+Il **change management** decide **chi autorizza** una modifica in
+produzione e con che criterio, tipicamente attraverso una **change
+request**: una richiesta formale che descrive cosa si vuole cambiare, quale
+rischio comporta, e chi deve approvarla prima che venga eseguita.
+
+Qui si incontra il collegamento più interessante di questa sezione. Il
+change management "classico" nasce per ridurre il rischio di un
+cambiamento **rallentandolo**: più persone lo guardano, più tempo passa
+prima che venga approvato, minore la probabilità che qualcosa vada storto
+senza che nessuno se ne accorga in anticipo. Il **CI/CD** che vedrai nella
+sezione 10 riduce lo stesso rischio nel modo esattamente opposto:
+**automatizzando e rimpicciolendo** i cambiamenti, così che ciascuno sia
+troppo piccolo e troppo testato per fare danni seri. Non sono nemici, ma
+**convivono male se nessuno lo dice esplicitamente**: un team che rilascia
+dieci volte al giorno e deve comunque aspettare una riunione settimanale di
+change advisory board per ogni singolo rilascio non sta facendo CI/CD, sta
+solo rallentando entrambi i processi. Il punto d'incontro più comune è il
+**change standard** (o pre-autorizzato): una categoria di cambiamenti
+a basso rischio, già valutata una volta per tutte, che non richiede una
+nuova approvazione umana ogni volta — esattamente il tipo di cambiamento
+che una pipeline CI/CD ben testata produce in continuazione.
+
+> 💡 Il dato che sorprende chi viene da un mondo change-management
+> tradizionale: i report **DORA** (DevOps Research and Assessment)
+> mostrano da anni che i team che rilasciano **più spesso** tendono ad
+> avere **meno** incidenti in produzione, non di più. Rilasci piccoli e
+> frequenti sono più facili da testare, da capire e — se qualcosa va
+> storto — da annullare, rispetto a un grande rilascio trimestrale.
+
+### Service Request e Service Desk
+
+Non tutto quello che arriva al team è un guasto. Una **service request** è
+una richiesta di servizio — "ho bisogno di un accesso al database di
+staging", "vorrei una nuova licenza software" — che non indica che
+qualcosa si sia rotto, ma che qualcuno ha bisogno di qualcosa. Trattarla
+come un incidente (con la stessa urgenza, la stessa escalation) confonde le
+priorità e intasa i canali pensati per le vere emergenze. Il **Service
+Desk** è il punto di contatto unico per entrambe le cose — incidenti e
+richieste di servizio — così che chi ha un problema non debba sapere in
+anticipo a quale team specifico rivolgersi.
+
+### SLA e SLO
+
+Gli **SLA (Service Level Agreement)**, che ritroverai nella sezione 13 come
+accordi contrattuali sul livello di servizio garantito, e il concetto di
+**error budget**, già introdotto al paragrafo 9.3 a proposito di SRE, sono
+gli strumenti con cui questi processi vengono misurati: non
+"abbiamo risposto in fretta", ma "abbiamo rispettato il tempo di ripristino
+concordato in contratto".
+
+### I processi in sintesi
+
+| Processo | Cosa lo attiva | Chi è coinvolto | "Successo" significa |
+|---|---|---|---|
+| **Incident management** | Il servizio è degradato o fermo | Chi è di turno/on-call, escalation se serve | Servizio ripristinato, il più in fretta possibile |
+| **Problem management** | Un incidente (spesso ricorrente) da capire a fondo | Chi ha competenza tecnica sul componente coinvolto | Causa radice trovata e rimossa, l'incidente non si ripete |
+| **Change management** | Una modifica pianificata in produzione | Chi propone il cambio, chi approva (change advisory) | Il cambiamento è avvenuto senza sorprese, o è stato bloccato prima che causasse danni |
+| **Service Request** | Una richiesta legittima, non un guasto | Service Desk, team che eroga la risorsa richiesta | Richiesta soddisfatta nei tempi previsti |
+
+### Il trade-off: un processo aggirato è peggio di nessun processo
+
+Anche qui, come ovunque in questa sezione, non c'è una scelta senza costo.
+Un processo di change management pensato per proteggere la produzione, se
+pesa troppo — un modulo da otto giorni per autorizzare una modifica di due
+righe — spinge le persone a **aggirarlo**: la modifica "veloce" fatta di
+nascosto, senza change request, perché "tanto è una cosa piccola e passare
+dal processo ufficiale richiede troppo". Questo è più pericoloso di non
+avere affatto un processo di change management, perché **dà l'illusione del
+controllo**: chi guarda i numeri crede che ogni modifica sia tracciata e
+autorizzata, mentre in realtà un canale informale e invisibile sta
+bypassando ogni controllo. Un processo troppo leggero fallisce in modo
+visibile; un processo troppo pesante fallisce in silenzio, ed è per questo
+più difficile da correggere in tempo.
+
+Chiudiamo con una nota sui ruoli, perché la troverai utile quanto quella
+sulle figure DevOps vista al paragrafo 9.1: in molte organizzazioni
+enterprise esiste una funzione dedicata — spesso chiamata proprio "ITSM" o
+"Service Management" — con persone che gestiscono incident, change e
+service desk come lavoro a tempo pieno, distinto da chi scrive il codice.
+È una delle figure con cui, da Project Manager, dialogherai più spesso: ogni
+volta che un tuo progetto deve rilasciare qualcosa in produzione, è a
+questa funzione — non solo al tuo team di sviluppo — che dovrai rendere
+conto.
+
+---
+
+## 9.13 Farm batch e processi schedulati: il lavoro che gira di notte
+
+Non tutto il software di un'assicurazione risponde a un clic di un utente.
+Una quantità enorme di lavoro gira **di notte, quando nessuno guarda**: il
+calcolo dei premi su migliaia di polizze, la produzione dei documenti
+contrattuali da spedire, le riconciliazioni contabili tra i sistemi, gli
+invii dei dati verso enti esterni (l'IVASS, il fisco, un partner
+riassicurativo) che hanno una scadenza fissa e non aspettano nessuno.
+
+Questo lavoro si chiama **elaborazione batch**: elaborare grandi volumi di
+dati **a lotti**, tutti insieme, invece che uno alla volta in risposta a
+una richiesta. La **schedulazione** è il meccanismo che decide *quando*
+questo lavoro parte — a un orario fisso (le 2:00 di notte) o dopo un
+evento (appena il file del giorno precedente è arrivato) — senza che una
+persona debba avviarlo a mano. La **farm batch** è l'insieme delle macchine
+dedicate a farli girare: spesso separate dai server che servono il sito o
+l'app, proprio perché lavorano su orari e con carichi diversi.
+
+Il dettaglio che rende questo mondo interessante per un PM è l'effetto
+domino delle **dipendenze tra job**: il calcolo dei premi deve girare prima
+della produzione dei documenti, che deve girare prima degli invii esterni.
+Se il primo job slitta di due ore — un file di input arrivato tardi, un
+guasto sulla farm — ogni job successivo slitta a cascata, e la **finestra
+notturna** (le poche ore in cui questi job possono girare senza intralciare
+gli utenti del giorno dopo) può non bastare più.
+
+> 💡 **Perché interessa a un PM**: la finestra batch è un vincolo di
+> progetto tanto reale quanto una dipendenza in un Gantt. Un rilascio che
+> allunga anche di pochi minuti il tempo di esecuzione di un job batch
+> critico può far mancare una scadenza normativa — l'invio dei dati
+> all'IVASS entro una certa ora, per esempio — con conseguenze molto più
+> concrete di un ritardo interno. Questo mondo si tocca da vicino con il
+> **disaster recovery** (se la farm batch è ferma per un guasto, chi
+> recupera il lavoro non fatto, e in quanto tempo?) e con gli **SLA**: un
+> "il servizio deve essere disponibile entro le 6:00" nasconde quasi sempre
+> un batch notturno che deve finire prima di quell'ora.
+
+---
+
+## 9.14 Riepilogo
 
 Questa sezione ha introdotto DevOps non come uno strumento, ma come una
 **cultura e un insieme di pratiche** che nascono per risolvere un problema
@@ -1082,6 +1312,15 @@ sviluppa il software e chi lo gestisce in produzione.
   oltre e permette di capire il "perché", basandosi su metriche, log e
   tracce; il **logging** è la registrazione dettagliata degli eventi,
   fondamentale per la diagnosi e la tracciabilità.
+- L'**ITSM** (framework di riferimento: **ITIL**) governa cosa succede
+  *dopo* che il software è in produzione: **incident management**
+  (ripristinare in fretta), **problem management** (capire la causa,
+  separatamente), **change management** e **change request** (chi
+  autorizza una modifica, e come convive con il CI/CD), **service
+  request** e **Service Desk** (una richiesta non è un guasto).
+- Il mondo **batch**: elaborazioni notturne a grandi volumi, con
+  **schedulazione**, **farm batch** dedicate e **dipendenze tra job** che
+  possono far slittare a cascata un'intera finestra notturna.
 
 Nella prossima sezione vedrai come tutti questi concetti — in particolare
 la pipeline CI/CD — si traducano in un meccanismo concreto e verificabile,
@@ -1180,12 +1419,41 @@ del progetto ogni volta che puoi.
    colpevolizzante verso te stesso o altri, e termina con un'azione
    concreta e verificabile (non un generico "starò più attento").
 
+8. **Incident o problem?** Racconta a parole tue un guasto qualsiasi (reale
+   o inventato, es. "il sito è lento ogni lunedì mattina"). Scrivi separate
+   l'azione di **incident management** (cosa faresti per far tornare il
+   servizio normale subito) e l'azione di **problem management** (cosa
+   indagheresti per capire perché succede, e magari evitare che si ripeta).
+   ✅ **Come verificare**: le due azioni che hai scritto sono diverse tra
+   loro, e la prima non richiede di aver già capito la causa per essere
+   eseguita.
+
+9. **Change request o via libera al CI/CD?** Immagina due modifiche
+   diverse su ShopFacile: (a) cambiare il colore di un pulsante nel
+   catalogo, (b) modificare la logica di calcolo di uno sconto che tocca
+   tutti gli ordini. Per ciascuna, decidi se ti aspetteresti che passi per
+   una change request formale con approvazione umana, o che sia un
+   "change standard" già pre-autorizzato che una pipeline CI/CD gestisce da
+   sola, motivando la scelta con il rischio del cambiamento, non con la sua
+   dimensione in righe di codice.
+   ✅ **Come verificare**: la tua motivazione parla di rischio e impatto
+   sugli utenti, non solo di "quanto codice cambia".
+
+10. **Trova la finestra batch del tuo progetto reale.** Chiedi a un collega
+    developer o operations se il progetto su cui lavori ha elaborazioni
+    notturne o schedulate (calcoli, invii, riconciliazioni) e, se sì, quanto
+    dura la finestra disponibile e cosa succede se un job slitta.
+    ✅ **Come verificare**: sai rispondere in una frase alla domanda "cosa
+    succederebbe a un rilascio del venerdì se allungasse il batch della
+    notte successiva di 30 minuti?" — anche solo con un'ipotesi plausibile.
+
 ---
 
 ## 🔗 Collegamenti
 
-- [10. CI/CD](../10-ci-cd/README.md) — approfondimento tecnico su pipeline, Continuous Integration, Delivery e Deployment
-- [12. Cloud](../12-cloud/README.md) — dove gira davvero l'infrastruttura gestita con Infrastructure as Code
+- [10. CI/CD](../10-ci-cd/README.md) — approfondimento tecnico su pipeline, Continuous Integration, Delivery e Deployment, e su come il change management convive con i rilasci frequenti
+- [12. Cloud](../12-cloud/README.md) — dove gira davvero l'infrastruttura gestita con Infrastructure as Code, e dove trovi Platform Engineering e Internal Developer Platform
+- [13. Sicurezza](../13-sicurezza/README.md) — SLA, backup e disaster recovery, richiamati a proposito di Service Management e farm batch
 
 ## 📚 Risorse
 
@@ -1194,3 +1462,6 @@ del progetto ogni volta che puoi.
 - [Microsoft Learn — Introduzione a DevOps](https://learn.microsoft.com/it-it/devops/what-is-devops)
 - [Microsoft Learn — Infrastructure as Code](https://learn.microsoft.com/it-it/devops/deliver/what-is-infrastructure-as-code)
 - [Atlassian — CI/CD: guida completa](https://www.atlassian.com/continuous-delivery/continuous-integration)
+- [Axelos/ITIL — Cos'è ITIL 4](https://www.axelos.com/certifications/itil-service-management)
+- [Atlassian — ITSM: guida completa](https://www.atlassian.com/itsm)
+- [Google Cloud — DORA: DevOps Research and Assessment](https://cloud.google.com/devops/state-of-devops)

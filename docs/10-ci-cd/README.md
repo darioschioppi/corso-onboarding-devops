@@ -2,6 +2,8 @@
 
 
 > 📄 **[Scarica questa sezione in PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/10-ci-cd.pdf)** — utile per la stampa o la lettura offline.
+>
+> 🖥️ **[Slide di approfondimento: CI/CD e Kafka](materiali/CI_CD_Kafka.pptx)** — presentazione con un esempio di pipeline CI/CD applicata a un'architettura basata su Kafka.
 
 
 Nella sezione DevOps hai già incontrato i concetti di **Continuous

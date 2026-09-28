@@ -24,7 +24,7 @@ Il modello **Client-Server** descrive chi chiede (client) e chi risponde (server
 Un'applicazione divide le proprie responsabilità tra **Frontend** (quello che l'utente vede) e **Backend** (la logica e i dati che l'utente non vede); quest'ultimo può essere organizzato come un unico **Monolite** oppure spezzato in **Microservizi** indipendenti che comunicano tra loro, a volte tramite una **Message Queue** invece che con chiamate dirette. Un'alternativa a gestire server propri è il modello **Serverless**, dove il codice viene eseguito solo su richiesta.
 
 ### Dove vivono i dati
-I dati di ShopFacile si salvano in un **Database relazionale**, interrogabile con **SQL**, oppure in un **Database NoSQL** quando la struttura dei dati è più flessibile o i volumi molto grandi: la scelta tra i due dipende dalla forma dei dati (es. il catalogo prodotti rispetto ai log delle sessioni carrello).
+I dati di ShopFacile si salvano in un **Database relazionale**, interrogabile con **SQL**, oppure in un **Database NoSQL** quando la struttura dei dati è più flessibile o i volumi molto grandi: la scelta tra i due dipende dalla forma dei dati (es. il catalogo prodotti rispetto ai log delle sessioni carrello), ma anche dal **CAP Theorem**, che spiega quale compromesso tra coerenza e disponibilità ciascun database privilegia quando la rete ha un problema. Quando un database da solo non basta più, entrano in gioco due strategie complementari: la **Replication** (più copie per scalare le letture) e lo **Sharding** (dati divisi tra più macchine per scalare volumi e scritture). Per evitare di interrogare il database ad ogni richiesta, si usa spesso una **Cache-Aside (lazy loading)**, con un **TTL** che ne scandisce la scadenza.
 
 ### Come si scrive e si versiona il codice
 Tutto il codice vive in un **Repository**, la cui storia è fatta di **Commit** successivi, ciascuno registrato su un **Branch** dedicato per non toccare il codice principale durante lo sviluppo. Quando una modifica è pronta, si apre una **Pull Request**: qui il team fa **Code Review** prima di eseguire il **Merge** che la unisce definitivamente. Un punto del repository può poi essere marcato con un **Tag**, tipicamente per identificare una **Release**, seguendo una convenzione di **Versioning** come il **Semantic Versioning**. Il modo in cui i branch vengono organizzati nel tempo segue un modello come il **Git Flow** oppure, all'opposto, il **Trunk Based Development**; un problema scoperto lungo il percorso viene tracciato come **Issue**.
@@ -74,6 +74,9 @@ flowchart LR
 ```
 
 ---
+
+### ACID
+L'insieme di quattro proprietà che una transazione di database deve garantire: Atomicity (tutto o nulla), Consistency (il database resta in uno stato valido), Isolation (le transazioni concorrenti non si vedono a metà strada) e Durability (una modifica confermata resta anche dopo un crash). → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **MVCC** (la tecnica con cui i database moderni implementano l'isolamento senza bloccare tutto) e **Livello di isolamento** (che stabilisce quanto rigorosamente viene garantita l'isolation).
 
 ### Active Directory (AD)
 Il servizio più diffuso nelle aziende enterprise per gestire in un unico posto l'elenco di utenti, gruppi, computer e politiche di sicurezza, invece di farli gestire a ogni applicazione per conto proprio; parla tipicamente il protocollo LDAP per farsi interrogare dalle altre applicazioni. → approfondito nella sezione 13 (Sicurezza). Si collega a: **LDAP** (il protocollo con cui viene interrogato) e **SSO (Single Sign-On)** (il meccanismo che tipicamente si costruisce sopra di esso).
@@ -150,8 +153,14 @@ Un grafico simile al Burndown Chart, ma che mostra il lavoro **già completato**
 ### Business Continuity (BC)
 La disciplina che risponde alla domanda "come continua a funzionare l'azienda mentre i sistemi non ci sono?", distinta dal Disaster Recovery che risponde invece a "come rimetto in piedi i sistemi?". Include procedure alternative per le persone (cosa fa il call center quando il sistema è giù), comunicazione di crisi e test periodici del piano. → approfondito nella sezione 13 (Sicurezza). Si collega a: **Disaster Recovery** (il piano tecnico complementare) e **BIA (Business Impact Analysis)** (l'analisi che ne guida le priorità).
 
+### Cache-Aside (lazy loading)
+La strategia di caching più diffusa: l'applicazione controlla prima la cache; se il dato c'è (cache hit) lo restituisce subito senza toccare il database, se non c'è (cache miss) lo recupera dal database, lo salva in cache per la prossima volta, e poi risponde. È semplice e "fallisce bene": se la cache non è disponibile, il sistema continua a funzionare appoggiandosi al database, solo più lentamente. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **TTL (Time To Live)** (una delle tecniche più comuni per invalidare i dati salvati con questa strategia).
+
 ### Cactus (modello di branching)
 Un modello di branching Git, noto anche come OneFlow, che si colloca tra Git Flow e Trunk Based Development: un solo tronco principale a lungo termine, branch di feature brevi, e branch di release solo quando serve davvero gestire più versioni in produzione contemporaneamente. → approfondito nella sezione 4 (Git e GitHub). Si collega a: **Git Flow** (il modello più strutturato da cui si differenzia) e **Trunk Based Development** (il modello più semplice all'altro estremo).
+
+### CAP Theorem
+Un teorema che afferma che, in un sistema distribuito, si possono garantire solo due delle tre proprietà Consistency (tutti i nodi vedono gli stessi dati), Availability (il sistema resta sempre disponibile) e Partition Tolerance (il sistema funziona anche con la rete interrotta tra i nodi): dato che la partition tolerance non è quasi mai opzionale in un sistema reale, la scelta pratica è tra Consistency e Availability. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Database NoSQL** (i cui diversi prodotti fanno scelte diverse su questo teorema) e **Sharding** (un'altra strategia tipica dei sistemi distribuiti a cui il teorema si applica).
 
 ### CALMS
 Un acronimo (Culture, Automation, Lean, Measurement, Sharing) che riassume i cinque pilastri della cultura DevOps: cultura collaborativa, automazione, approccio lean, misurazione dei risultati e condivisione della conoscenza. → approfondito nella sezione 9 (DevOps).
@@ -357,6 +366,9 @@ Il linguaggio di interrogazione di Jira che permette di costruire ricerche preci
 ### JSON
 Sigla di JavaScript Object Notation: un formato di testo semplice e leggibile usato moltissimo per scambiare dati tra programmi, ad esempio nelle risposte delle API. → approfondito nella sezione 2 (Fondamenti di informatica).
 
+### JWT (JSON Web Token)
+Un token compatto e firmato, composto da tre parti (header.payload.signature), usato per l'autenticazione stateless: contiene già i dati sull'identità di chi lo possiede, così il server può verificarne l'autenticità senza dover consultare nulla, a differenza di una sessione server-side. Va usato con una scadenza breve, perché non può essere revocato a metà strada come una sessione. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Token** (di cui è un'implementazione concreta molto diffusa) e **OAuth** (che spesso lo usa come formato dell'access token).
+
 ### Knowledge Area (area di conoscenza)
 Nell'impostazione del PMBOK Guide 6ª edizione, una delle 10 categorie in cui viene organizzata la conoscenza necessaria a gestire un progetto (ad esempio i costi, i tempi, la qualità, le comunicazioni). Ogni area raggruppa i processi legati a quel tema specifico, indipendentemente dalla fase del progetto in cui si applicano. → approfondito nella sezione 8 (Project Management). Si collega a: **Process Group (gruppo di processi)** (l'altra dimensione, complementare, con cui il PMBOK 6 organizza gli stessi processi).
 
@@ -378,14 +390,23 @@ L'osservazione secondo cui la struttura di un software tende a rispecchiare la s
 ### Lessons Learned
 La raccolta strutturata, alla chiusura di un progetto (o di una sua fase), di cosa ha funzionato bene e cosa no, così da non ripetere gli stessi errori nei progetti successivi. → approfondito nella sezione 8 (Project Management). Si collega a: **Sprint Retrospective** (l'equivalente Agile, ma ripetuto a ogni Sprint invece che solo a fine progetto).
 
+### Livello di isolamento
+Una delle configurazioni (Read Uncommitted, Read Committed, Repeatable Read, Serializable) con cui un database stabilisce quanto rigorosamente proteggere una transazione dagli effetti di altre transazioni concorrenti: livelli più rigorosi prevengono più problemi (dirty read, non-repeatable read, phantom read) ma costano in performance. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **ACID** (la proprietà Isolation che questi livelli implementano in pratica) e **MVCC** (la tecnica con cui molti database moderni realizzano l'isolamento senza bloccare le letture).
+
 ### LLM (Large Language Model)
 Sigla di Large Language Model, un modello di intelligenza artificiale addestrato su enormi quantità di testo per prevedere e generare linguaggio naturale in modo fluido; è la tecnologia dietro strumenti come ChatGPT o GitHub Copilot. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **AI generativa** (la categoria di utilizzo più diffusa per questi modelli) e **Token** (l'unità in cui il modello scompone il testo per elaborarlo).
+
+### Load Balancer (bilanciatore di carico)
+Un componente che riceve tutte le richieste in arrivo verso un sistema e le distribuisce su più server applicativi identici, invece di farle gestire a un unico server: se un server si guasta il traffico continua a fluire sugli altri, e se il traffico cresce basta aggiungere un altro server dietro lo stesso bilanciatore. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Scalabilità verticale e orizzontale** (lo strumento che rende possibile la scalabilità orizzontale) e **Client-Server** (il modello che, per funzionare con più server dietro un load balancer, richiede che le richieste non dipendano da uno stato salvato su un server specifico).
 
 ### Lock-in
 La dipendenza da un provider cloud (o da un fornitore di software) che si crea usando i suoi servizi specifici: più se ne usano, più diventa costoso, in tempo e denaro, cambiare fornitore in futuro. Non è un divieto ad usare quei servizi, ma un costo da valutare consapevolmente. → approfondito nella sezione 12 (Cloud).
 
 ### Logging
 La pratica di registrare in modo continuo gli eventi che accadono in un sistema (errori, richieste, azioni) in file o strumenti dedicati, utile per capire cosa è successo quando qualcosa va storto. → approfondito nella sezione 9 (DevOps).
+
+### Lost Update (aggiornamento perso)
+Un problema di concorrenza in cui due transazioni leggono lo stesso valore, lo modificano entrambe e l'ultima sovrascrive silenziosamente il lavoro della prima, senza nessun errore visibile: ad esempio due operatori che aggiornano lo stock dello stesso prodotto contemporaneamente. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Livello di isolamento** (il meccanismo che, se scelto correttamente, previene questo problema) e **Race Condition** (di cui è un caso specifico, applicato a una transazione di database).
 
 ### Machine Learning
 Un ramo dell'intelligenza artificiale in cui un sistema impara a svolgere un compito analizzando esempi (dati) invece di seguire regole scritte a mano da un programmatore, migliorando le proprie previsioni con l'esperienza. → approfondito nella sezione 15 (Intelligenza artificiale). Si collega a: **AI (Intelligenza Artificiale)** (il campo più ampio di cui è una branca) e **Deep Learning** (una delle sue tecniche più diffuse oggi).
@@ -437,6 +458,9 @@ Un'architettura software in cui tutta l'applicazione è costruita come un unico 
 
 ### Multi-stage build
 Una tecnica per scrivere un Dockerfile in più fasi (stage): una "builder image" compila l'applicazione con tutti gli strumenti di sviluppo necessari, poi solo il risultato della compilazione viene copiato in un'immagine finale più piccola e senza quegli strumenti, che è quella che finisce davvero in produzione. → approfondito nella sezione 10 (CI/CD). Si collega a: **Builder image** (la fase intermedia che rende possibile) e **Artifact (build)** (il prodotto finale, più leggero, che ne risulta).
+
+### MVCC (Multi-Version Concurrency Control)
+Una tecnica usata dai database moderni (PostgreSQL, MySQL InnoDB) per gestire l'isolamento tra transazioni senza bloccare tutto: quando una riga viene modificata, il database mantiene più versioni della stessa riga contemporaneamente, così chi legge continua a vedere una versione coerente mentre chi scrive lavora su una nuova versione — i lettori non bloccano gli scrittori, e viceversa. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Livello di isolamento** (il comportamento che questa tecnica realizza in pratica) e **ACID** (la proprietà Isolation di cui è un'implementazione efficiente).
 
 ### Normalizzazione
 Il principio secondo cui ogni informazione in un database relazionale viene scritta una volta sola, nel posto giusto, e recuperata altrove tramite relazioni e JOIN quando serve, invece di essere ripetuta in più righe (con il rischio che, se cambia, venga aggiornata in un posto e dimenticata in un altro). → approfondito nella sezione 2 (Fondamenti di informatica). Si collega a: **JOIN** (lo strumento che rende possibile recuperare i dati normalizzati) e **Chiave esterna** (su cui si basano le relazioni normalizzate).
@@ -531,11 +555,17 @@ Sigla di Retrieval-Augmented Generation, cioè "generazione aumentata dal recupe
 ### RAID Log
 Un registro che il project manager tiene per tracciare Risks (rischi), Assumptions (assunzioni), Issues (problemi) e Dependencies (dipendenze) di un progetto, per avere sempre sotto controllo i punti critici. → approfondito nella sezione 8 (Project Management).
 
+### Race Condition
+Un problema che si verifica quando più thread (o processi) accedono e modificano lo stesso dato condiviso contemporaneamente senza coordinamento, producendo un risultato finale inconsistente e dipendente dall'ordine casuale con cui le operazioni si sono sovrapposte. Si previene con lock (mutex) o strutture dati pensate apposta per la concorrenza. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Thread** (l'unità di esecuzione tra cui il problema si manifesta) e **Lost Update** (un caso specifico di race condition applicato a una transazione di database).
+
 ### RAM
 Sigla di Random Access Memory: la memoria "di lavoro" del computer, veloce ma temporanea, che perde i dati quando il computer viene spento — a differenza del Disco. → approfondito nella sezione 2 (Fondamenti di informatica).
 
 ### Release
 Una versione del software resa disponibile agli utenti, spesso accompagnata da un elenco delle novità e delle correzioni incluse rispetto alla versione precedente. → approfondito nella sezione 4 (Git e GitHub).
+
+### Replication
+La strategia di scaling che mantiene più copie identiche dello stesso database: un nodo primario (master) gestisce tutte le scritture e le propaga a uno o più nodi replica (slave) dedicati alle letture, distribuendo così il carico di lettura e fornendo alta disponibilità se il primario si guasta. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Sharding** (la strategia complementare, che scala i dati invece delle sole letture) e **Scalabilità verticale e orizzontale** (di cui è una forma pratica di scalabilità orizzontale).
 
 ### Repository
 Lo "spazio" (cartella speciale) dove Git conserva tutto il codice di un progetto insieme alla sua intera storia di modifiche (Commit). → approfondito nella sezione 4 (Git e GitHub). Si collega a: **Commit** (che ne costituisce la storia) e **Branch** (che ne organizza lo sviluppo in parallelo).
@@ -584,6 +614,9 @@ Una convenzione per numerare le versioni del software nel formato MAJOR.MINOR.PA
 
 ### Serverless
 Un modello cloud in cui scrivi solo il codice della funzione che ti serve e il fornitore si occupa di tutto il resto (server, scalabilità, manutenzione), facendoti pagare solo per l'effettivo utilizzo. → approfondito nella sezione 11 (Architetture software).
+
+### Sharding
+La strategia di scaling che divide i dati in porzioni indipendenti (shard) distribuite su macchine diverse, in base a una chiave di sharding (es. user_id o region): a differenza della Replication, ogni shard contiene solo una parte dei dati, non l'intero database, ed è la tecnica usata quando i dati o le scritture sono troppo grandi per una singola macchina. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Replication** (la strategia complementare, per scalare le sole letture) e **CAP Theorem** (il compromesso teorico che governa questi sistemi distribuiti).
 
 ### Single Sign-On (SSO)
 Un'autenticazione unica valida per molte applicazioni: chi si autentica lo fa una sola volta e da lì accede a email, repository, gestionale e strumenti cloud senza rifare il login su ciascuno. Concentra però anche il rischio: se il sistema di SSO cade, cade l'accesso a tutto contemporaneamente. → approfondito nella sezione 13 (Sicurezza). Si collega a: **Active Directory (AD)** (la directory su cui tipicamente si costruisce) e **Token** (lo strumento con cui l'identità viene poi dimostrata a ogni applicazione).
@@ -648,6 +681,9 @@ Una "sotto-unità" di un Processo che può eseguire istruzioni in modo indipende
 ### Throughput
 La quantità di lavoro (attività completate, richieste gestite) che un team o un sistema riesce a portare a termine in un'unità di tempo: per un team è quante attività completa a settimana, per un sistema informatico è quante richieste gestisce al secondo. → approfondito nella sezione 7 (Kanban).
 
+### TLS/SSL (handshake)
+Il protocollo che rende sicura una connessione HTTPS: prima di scambiare dati, client e server negoziano una chiave di cifratura condivisa (usando crittografia asimmetrica, più lenta ma solo per questa fase iniziale), verificano l'identità del server tramite un certificato firmato da una Autorità di Certificazione, e poi passano a cifrare tutta la comunicazione con crittografia simmetrica, molto più rapida. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **HTTPS** (il protocollo che questo handshake rende possibile) e **Token** (che viaggia in sicurezza proprio grazie a questa cifratura).
+
 ### Token
 Il termine ha due significati distinti nel corso. In ambito AI: la più piccola unità di testo (una parola, parte di una parola o un simbolo di punteggiatura) in cui un LLM scompone il testo per elaborarlo; i servizi di AI generativa spesso fatturano l'utilizzo proprio in base al numero di token letti e generati (→ sezione 15, Intelligenza artificiale). In ambito sicurezza: un "biglietto" temporaneo con scadenza breve che un sistema rilascia dopo l'autenticazione (tipicamente via SSO), da presentare a ogni richiesta successiva invece della password; va trattato come una password, e se finisce per errore in un repository va considerato compromesso e sostituito (→ sezione 13, Sicurezza). Si collega a: **LLM (Large Language Model)** (che elabora il testo nel primo senso) e **SSO (Single Sign-On)** / **OAuth** (con cui si rilascia e usa nel secondo senso).
 
@@ -662,6 +698,9 @@ Il principio secondo cui un progetto è sempre limitato da tre fattori collegati
 
 ### Trunk Based Development
 Una pratica in cui tutti gli sviluppatori integrano il proprio codice molto frequentemente su un unico ramo principale (il "trunk"), evitando Branch di lunga durata e favorendo una forte automazione dei test. → approfondito nella sezione 4 (Git e GitHub).
+
+### TTL (Time To Live)
+Il tempo dopo il quale un dato salvato in cache scade automaticamente ed è considerato non più valido: semplice da implementare, ma per tutta quella finestra di tempo il dato in cache può non essere più aggiornato rispetto al database. → approfondito nella sezione 20 (Backend Engineering Avanzato). Si collega a: **Cache-Aside (lazy loading)** (la strategia di caching con cui questo meccanismo di scadenza viene usato più spesso).
 
 ### User Story
 Una breve descrizione di una funzionalità scritta dal punto di vista dell'utente, spesso nel formato "Come [ruolo], voglio [obiettivo], per [beneficio]", usata per catturare i requisiti in modo semplice e centrato sulle persone. → approfondito nella sezione 6 (Scrum). Si collega a: **Requisiti (funzionali e non funzionali)** (da cui spesso nasce) e **Product Backlog** (dove viene inserita in attesa di essere pianificata).

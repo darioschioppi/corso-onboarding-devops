@@ -23,3 +23,6 @@
   - [17. Piano di studio](docs/17-piano-di-studio/README.md)
   - [18. Libri consigliati](docs/18-libri-consigliati/README.md)
   - [19. Risorse online](docs/19-risorse-online/README.md)
+
+- **Approfondimenti**
+  - [20. Backend Engineering Avanzato](docs/20-backend-engineering/README.md)

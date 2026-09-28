@@ -56,6 +56,7 @@ spiegato dalle basi, con analogie semplici, esempi concreti e diagrammi.
 | 17 | [Piano di studio](docs/17-piano-di-studio/README.md) | Programma dettagliato di 9 settimane | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/17-piano-di-studio.pdf) |
 | 18 | [Libri consigliati](docs/18-libri-consigliati/README.md) | Letture per livello, con motivazione | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/18-libri-consigliati.pdf) |
 | 19 | [Risorse online](docs/19-risorse-online/README.md) | Documentazione, corsi, video | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/19-risorse-online.pdf) |
+| 20 | [Backend Engineering Avanzato](docs/20-backend-engineering/README.md) | Approfondimento: HTTP/TLS, JWT/OAuth2, ACID, isolamento, CAP theorem, replication/sharding, caching, concorrenza, query optimization | [📄](https://darioschioppi.github.io/corso-onboarding-devops/pdf/20-backend-engineering.pdf) |
 
 > 📚 **[Scarica il corso completo in un unico PDF](https://darioschioppi.github.io/corso-onboarding-devops/pdf/corso-completo.pdf)**
 
